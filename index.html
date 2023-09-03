@@ -1,0 +1,321 @@
+<!doctype html>
+
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
+
+    <title>Sheriffderek Consulting: Guidance Design Implementation</title>
+    <meta
+      property='og:title'
+      content='Sheriffderek Consulting: Guidance | Design | Implementation'
+    />
+
+    <meta
+      name='description'
+      content='A thoughtful approach to your goals. Research, content strategy, user-testing, UX, layouts, UI, design patterns, live style-guides, system architecture, cms, team building, brochures, content portals, applications, and whatever other buzzwords you can muster up. (It’s all really just Design)'
+    />
+    <meta
+      property='og:description'
+      content='A thoughtful approach to your goals. Research, content strategy, user-testing, UX, layouts, UI, design patterns, live style-guides, system architecture, cms, team building, brochures, content portals, applications, and whatever other buzzwords you can muster up. (It’s all really just Design)'
+    />
+
+    <meta property='og:type' content='website' />
+    <meta property='og:url' content='https://sheriffderek.consulting' />
+    <meta
+      property='og:image'
+      content='https://sheriffderek.consulting/meta/portrait.jpg'
+    />
+
+    <link rel='icon' type='image/svg+xml' href='meta/favicon.svg' />
+    <link rel='icon' href='meta/favicon.svg' />
+
+    <style>
+      /* quick and dirty reset */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      h1,
+      h2 {
+        margin: 0;
+        font-size: initial;
+        font-weight: initial;
+      }
+
+      .visually-hidden {
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        height: 1px;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+      }
+
+      smart-svg,
+      inner-column {
+        /* custom elements are inline by default */
+        display: block;
+      }
+
+      svg {
+        display: block;
+        width: 100%;
+      }
+
+      html {
+        --ink: #5c4f57;
+        --paper: #ffffff;
+        --color: #ad0046;
+        /* Should it be on :root? */
+      }
+      body {
+        color: var(--ink);
+        background-color: var(--paper);
+      }
+
+      /* structure */
+      inner-column {
+        width: 98%;
+        max-width: 740px;
+        margin-inline: auto;
+        padding: 1rem;
+      }
+
+      article {
+        display: grid;
+        gap: 40px;
+      }
+
+      /* type patterns */
+      article :is(p, li) {
+        font-size: 1rem;
+        line-height: 1.5;
+        max-width: 70ch;
+      }
+      article h2 {
+        font-size: 23px;
+        line-height: 1.3;
+        letter-spacing: 0.02em;
+      }
+      article :is(p + p) {
+        margin-top: 1em;
+      }
+      article :is(p + h2) {
+        margin-top: 2em;
+      }
+      article :is(h2 + p, h2 + ol) {
+        margin-top: 1.4rem;
+        /* should this be em? */
+      }
+      article :is(ol + p) {
+        margin-top: 1em;
+      }
+      article ol {
+        padding: 0;
+        padding-left: 1.2em;
+      }
+      article ol li {
+        margin-top: 1em;
+      }
+      article strong {
+        font-weight: 700;
+      }
+
+      /* theme */
+      @font-face {
+        font-family: system;
+        font-style: normal;
+        font-weight: 300;
+        src: local('.SFNSText-Light'),
+          local('.HelveticaNeueDeskInterface-Light'), local('.LucidaGrandeUI'),
+          local('Ubuntu Light'), local('Segoe UI Light'), local('Roboto-Light'),
+          local('DroidSans'), local('Tahoma');
+      }
+
+      body {
+        font-family: 'system';
+        padding-top: 20px;
+        padding-bottom: 15vh;
+      }
+      .site-header inner-column {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+      }
+      .company-name {
+        font-size: 18px;
+        line-height: 1.3;
+        letter-spacing: 0.02em;
+      }
+      a {
+        color: var(--color);
+      }
+      .logo {
+        max-width: 50px;
+        flex-shrink: 0;
+      }
+      @media (min-width: 375px) {
+        .company-name {
+          font-size: 1.5rem;
+        }
+      }
+      @media (prefers-color-scheme: dark) {
+        html {
+          --ink: #d3ceff;
+          --paper: #090921;
+          --color: #cc80ff;
+        }
+      }
+      [data-theme='dark'] {
+        --ink: #d3ceff;
+        --paper: #090921;
+        --color: #cc80ff;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class='site-header' aria-label='Site header'>
+      <inner-column>
+        <smart-svg class='logo'>
+          <svg
+            roll='img'
+            id='insignia'
+            viewBox='0 0 4167 4167'
+            xmlns='http://www.w3.org/2000/svg'
+            aria-labelledby='insignia-title'
+          >
+            <title id='insignia-title'>sheriffderek insignia</title>
+            <defs>
+              <style>
+                #insignia {
+                  --color: pink;
+                  --highlight: #f06;
+                }
+                #insignia .left {
+                  fill: var(--color);
+                }
+                #insignia .right {
+                  fill: var(--highlight);
+                  animation: fade 1s infinite;
+                }
+                @media (prefers-color-scheme: dark) {
+                  #insignia {
+                    --color: #d3ceff;
+                    --highlight: #cc80ff;
+                  }
+                }
+                [data-theme='dark'] #insignia {
+                  --color: #d3ceff;
+                  --highlight: #cc80ff;
+                }
+              </style>
+
+              <script>
+                function setTheme(name) { document.body.dataset.theme = name; }
+                const icon = document.querySelector('#insignia');
+                icon.addEventListener('click', function(event) { if
+                (event.target.matches('.left')) { setTheme('light');
+                console.log('theme change!?'); } if
+                (event.target.matches('.right')) { setTheme('dark');
+                console.log('theme change!?'); } });
+              </script>
+            </defs>
+            <path
+              class='left'
+              d='M1554.3 4098.7C660.3 3864.3 0 3050.3 0 2083.3 0 933.5 933.5 0 2083.3 0c175.7 0 346.4 21.8 509.5 63L1554.3 4098.7Z'
+              fill='#f2abab'
+              role='button'
+              aria-label='Secret light-mode switch'
+            />
+            <path
+              class='right'
+              d='M2592.8 63c903.8 227.3 1573.9 1046.2 1573.9 2020.3 0 1149.9-933.5 2083.4-2083.4 2083.4-182.8 0-360.1-23.6-529-68L2592.8 63Z'
+              fill='#f80365'
+              role='button'
+              aria-label='Secret dark-mode switch'
+            />
+          </svg>
+        </smart-svg>
+
+        <div class='info'>
+          <h1 class='company-name'>Sheriffderek Consulting</h1>
+        </div>
+      </inner-column>
+    </header>
+
+    <main class='page-content' aria-label='Page Content'>
+      <inner-column>
+        <!-- ^ don't know what this is? 
+            That's OK. Don't freak out - it's an autonomous custom element (basically a div in this case) 
+        -->
+
+        <article>
+          <section aria-label='Updates'>
+            <h2 class='visually-hidden'>What I'm up to</h2>
+
+            <p>It’s 2023!? My main passion at the moment is building out the education curriculum for <a href='https://perpetual.education' target='pe'>Perpetual&nbsp;Education</a> called <strong>Design for <em>The Web</em></strong>. It is super fun. Check out what we're doing.</p>
+
+            <p>As part of the program, students build real-world client projects. If you’ve got a project in mind, <a href='mailto:projects@perpetual.education' target='projects'>let’s talk about it</a>. Ask me about special pricing and how you can get <em>your</em> project built by a fresh and passionate team of&nbsp;designers.</p>
+
+            <p><strong>As a designer</strong>/developer/product designer: I provide a thoughtful approach to your goals. Research, content strategy, user-testing, UX, layouts, UI, design patterns, live style-guides, system architecture, cms, team building, brochures, content portals, applications, <em>and whatever other buzzwords you can muster up</em>.</p>
+
+            <p>(It’s all really just <em>Design</em>)</p>
+
+            <p>I enjoy a lean and iterative design process. So, if you're just getting started - that’s when I can be the most effective.</p>
+
+            <!-- <p>Do you have a goal? I’ll get you there. Don’t have a clear goal worked out? I’ll help you uncover it.</p> -->
+          </section>
+
+          <section aria-label='Contact'>
+            <h2>Would you like to be friends?</h2>
+
+            <ol>
+              <li>I don't want to live in the metaverse. I much prefer real life.</li>
+
+              <li>If you'd like to talk with me face to face, just <a href='https://calendly.com/perpetual-education/project-consulting' target='calendly' rel='noopener noreferrer'>Schedule a time</a>. I do not bite.</li>
+
+              <li>You can email me <a href='mailto:derek@sheriffderek.consulting' target='mail' rel='noopener noreferrer'>derek@sheriffderek.consulting</a></li>
+
+              <li>I am @sheriffderek in web-related social arenas. My real name is <em>Derek&nbsp;Wood</em>. You can call me Derek or Sheriff.</li>
+
+              <!-- always take a look at my <a href='https://www.linkedin.com/in/derekthomaswood/' target='linkedin' rel='noopener noreferrer'>LinkedIn&nbsp;profile</a> if you want a list of my official past "jobs." -->
+
+              <li>Are you a developer? I <em>really like</em> <abbr title='Cascading Style Sheets'>CSS</abbr>. If you are trying to learn, (we're always learning...) join us on the <a href='https://discord.gg/pFc6XmH' target='discord'>CSS Discord</a>. From there - there are also links to many other servers for the various languages.</li>
+
+              <li>I also write about design and CSS all over the place. For example, you can <a href='https://css-tricks.com/on-type-patterns-and-style-guides/' target='csst'>read my article</a> <em>On Type Patterns and Style Guides</em> over at CSS-Tricks.</li>
+
+              <!-- <li>To start off 2022, I’m doing some exciting work with <a href='https://www.equivalent.design' target='eq'>Equivalent.Design</a> (What a fucking nightmare). Do you know about accessibility? Let's talk about it!</li> -->
+
+              <li>As of mid 2023: In addition to <abbr title='Perpetual Education'>PE</abbr> duties, I'm also contracting on a really cool project with BetterLife doing some UI/UX work and working with Nuxt. And for mentorship outside of PE, I'm now available via <a href='https://mentorcruise.com/mentor/derekwood/' target='mentorcruise'>Mentor Cruise</a>.</li>
+
+              <!-- <li>Sometimes people want to <a href='https://ko-fi.com/sheriffderek' target='ko-fi'>buy me coffee</a>. You can do that if you want.</li> -->
+            </ol>
+
+            <p>Join the <a href='https://sheriffderek.substack.com/' target='dc'>Design/Conversations newsletter</a> to hear about what I’m thinking. 🤠</p>
+
+            <p>You can watch <a href='https://www.youtube.com/channel/UCsylnzDgWak2H4Ojv2CQ2pA' target='yt'>some videos I've made</a> on YouTube.</p>
+
+            <p>If you really want to... you can connect on <a href='https://x.com/sheriffderek' target='x'>X</a> or <a href='https://www.linkedin.com/in/derekthomaswood/' target='linkedInSucks'>LinkedIn</a>, but I don't put any time into those platforms. If you really want to help me out, then come back me up on <a href='https://www.reddit.com/user/sheriffderek/' target='redditMostlySucks'>Reddit</a>. These trolls are out of their minds.</p>
+
+            <p class='visually-hidden'>That's all! Nothing more to see here folks, (for now)</p>
+          </section>
+        </article>
+
+      </inner-column>
+    </main>
+
+    <script>
+      console.info(
+        `They say "The Cobbler's children have no shoes." This site is so simple! Does this guy even know how to build websites? But I've kept it like this on purpose. If you want to see some fancy sites - or you want to talk about why this website is so simple, then let's do it! Set up a time!  :)`
+      );
+
+      console.info(
+        `I've been keeping this thing dead simple the last few years to remind my students that you don't need much to get the job done. A simple finished page is better than a really grea idea that never got done. But they never listen haha - so, it's about time for me to step it up a notch. There's a whole video series of me making it if you want to watch it.`
+      );
+    </script>
+  </body>
+</html>
