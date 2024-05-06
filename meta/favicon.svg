@@ -1,58 +1,68 @@
 <svg roll="img" id="insignia" 
-   viewBox="0 0 4167 4167" 
-   xmlns="http://www.w3.org/2000/svg" 
-   aria-labelledby="insignia-title"
- >
- <title id="insignia-title">sheriffderek insignia</title>
- <defs>
-   <style>
-     #insignia {
-       --color: pink;
-       --highlight: #f06;
-     }
-     #insignia .left {
-       fill: var(--color);
-       animation: fade 10s infinite;
-       transform-origin: center;
-     }
-     #insignia .right {
-       fill: var(--highlight);
-       animation: fade 10s infinite;
-       transform-origin: center;
-     }
-     @media (prefers-color-scheme: dark) {
-       #insignia {
-         --color: #d3ceff;
-         --highlight: #cc80ff;
-       }
-     }
-		@keyframes fade {
-			0% {
-				transform: rotate(0deg);
-			}
-			100% {
-				transform: rotate(360deg);
-			}
-		}
-   </style>
+  viewBox="0 0 4167 4167" 
+  xmlns="http://www.w3.org/2000/svg" 
+  aria-labelledby="insignia-title"
+  width="60"
+>
+  <title id="insignia-title">sheriffderek insignia</title>
+  
+  <defs>
+    <!-- actually... the JS shouldn't be in here... -->
+  </defs>
 
-   <script>
-     function setTheme(name) {
-       document.body.dataset.theme = name;
-     }
-     const icon = document.querySelector('#insignia');
-     icon.addEventListener('click', function(event) {
-       if (event.target.matches('.left')) {
-         setTheme('pink');
-         console.log('theme change!?');
-       }
-       if (event.target.matches('.right')) {
-         setTheme('dark');
-         console.log('theme change!?');
-       }
-     });
-   </script>
- </defs>
- <path class='left' d="M1554.3 4098.7C660.3 3864.3 0 3050.3 0 2083.3 0 933.5 933.5 0 2083.3 0c175.7 0 346.4 21.8 509.5 63L1554.3 4098.7Z" fill="#f2abab"/>
- <path class='right' d="M2592.8 63c903.8 227.3 1573.9 1046.2 1573.9 2020.3 0 1149.9-933.5 2083.4-2083.4 2083.4-182.8 0-360.1-23.6-529-68L2592.8 63Z" fill="#f80365"/>
+  <script>
+    <![CDATA[
+      document.addEventListener('DOMContentLoaded', (event)=> {
+        const insignia = document.querySelector('#insignia');
+
+        // just trying this out... it works! But not as the favicon
+
+        insignia.addEventListener('click', function(event) {
+          this.classList.toggle('changed');
+        });
+      });
+    ]]>
+  </script>
+
+  <path class='left' d="M1554.3 4098.7C660.3 3864.3 0 3050.3 0 2083.3 0 933.5 933.5 0 2083.3 0c175.7 0 346.4 21.8 509.5 63L1554.3 4098.7Z" fill="#f2abab"/>
+  <path class='right' d="M2592.8 63c903.8 227.3 1573.9 1046.2 1573.9 2020.3 0 1149.9-933.5 2083.4-2083.4 2083.4-182.8 0-360.1-23.6-529-68L2592.8 63Z" fill="#f80365"/>
+
+  <style>
+    #insignia {
+      --color: pink;
+      --highlight: #f06;
+    }
+    #insignia .left {
+      fill: var(--color);
+      animation: rotate 10s infinite;
+      transform-origin: center;
+    }
+    #insignia .right {
+      fill: var(--highlight);
+      animation: rotate 10s infinite;
+      transform-origin: center;
+    }
+    #insignia.changed {
+      --color: #f06;
+      --highlight: pink;
+    }
+    @media (prefers-color-scheme: dark) {
+      #insignia {
+        --color: #d3ceff;
+        --highlight: #cc80ff;
+      }
+      #insignia.changed {
+        --color: #cc80ff;
+        --highlight: #d3ceff;
+      }
+    }
+    @keyframes rotate {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
 </svg>
