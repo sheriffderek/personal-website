@@ -1,0 +1,139 @@
+:root {
+	/* --font-heading and --font-body live in the theme bundle (settings.css).
+	   --font-ui and --font-code are scheme/theme-invariant role tokens. */
+	--font-ui: var(--font-sans);
+	--font-code: var(--font-mono);
+}
+
+body {
+	font-family: var(--font-body);
+	font-size: var(--type-anchor);
+}
+
+/* Any heading defaults to the display font, even without a voice class.
+   Voices still set size/weight/rhythm; this only guarantees the family so a
+   raw heading in authored content never falls back to the body font. */
+h1,
+h2,
+h3,
+h4 {
+	font-family: var(--font-heading);
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+	text-wrap: pretty;
+}
+
+.calm-voice,
+p {
+	font-family: var(--font-body);
+	font-size: 1.1rem;
+	line-height: 1.5;
+	max-width: 72ch;
+	text-wrap: pretty;
+
+	a {
+		&.relaxed {
+			color: inherit;
+		}
+	}
+}
+
+.calm-voice em,
+p em {
+	font-style: italic;
+}
+.calm-voice strong,
+p strong {
+	font-weight: 700;
+}
+
+.strong-voice {
+	font-family: var(--font-heading);
+	font-size: var(--step-up-1);
+	line-height: 1.2;
+	font-weight: 500;
+}
+
+:root {
+	--attention-voice-font-family: var(--font-heading);
+	--attention-voice-font-size: var(--step-up-3);
+	--attention-voice-line-height: 1.2;
+}
+
+.attention-voice {
+	font-family: var(--attention-voice-font-family);
+	font-size: var(--attention-voice-font-size);
+	line-height: var(--attention-voice-line-height);
+}
+
+.loud-voice {
+	font-family: var(--font-heading);
+	font-size: var(--step-up-4);
+	font-weight: 500;
+	line-height: 1.2;
+	max-width: 28ch;
+}
+
+.quiet-voice {
+	font-family: var(--font-ui);
+	font-size: var(--step-down-1);
+	font-weight: 300;
+	line-height: 1.3;
+}
+
+.data-voice {
+	font-family: var(--font-code);
+	font-size: calc(var(--step-0) * 0.85);
+	line-height: 1.4;
+	letter-spacing: 0.01em;
+	font-feature-settings: "tnum" 1;
+}
+
+.label-voice {
+	font-family: var(--font-ui);
+	font-size: var(--step-down-1);
+	line-height: 1.3;
+	font-weight: 500;
+}
+
+.high-voice {
+	font-family: var(--font-ui);
+	font-size: var(--step-down-1);
+	line-height: 1.2;
+	font-weight: 400;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+:where(article.styled, text-content.styled) {
+	p + p {
+		margin-top: 1em;
+	}
+
+	h1 + p {
+		margin-top: 0.75em;
+	}
+
+	h2 + p,
+	h3 + p {
+		margin-top: 1em;
+	}
+	p + h2,
+	p + h3 {
+		margin-top: 1.3em;
+	}
+}
+
+code {
+	font-family: var(--font-code);
+	font-size: 0.9em;
+}
+
+:where(a, span).link {
+	text-decoration: underline;
+}

@@ -1,0 +1,233 @@
+/* Theme tokens.
+   :root is the default. [data-theme='X'] overrides the same names.
+   [data-scheme='dark'] (and prefers-color-scheme: dark) overrides them again.
+   Every selector declares the full set — no chaining, no var-of-var. */
+
+:root {
+	--fill-primary: var(--color-stone-50);
+	--fill-secondary: var(--color-stone-100);
+	--fill-auxiliary: var(--color-stone-200);
+
+	--ink-primary: var(--color-stone-900);
+	--ink-secondary: var(--color-stone-600);
+	--ink-auxiliary: var(--color-stone-500);
+
+	--stroke-primary: var(--color-stone-400);
+	--stroke-secondary: var(--color-stone-300);
+	--stroke-auxiliary: var(--color-stone-200);
+
+	--accent: var(--color-blue-600);
+	--link-color: var(--accent);
+
+	/* Scrim behind the mobile menu. Scheme-dependent only (not per theme),
+	   so it's set at the scheme level and not restated in each theme block. */
+	--scrim: rgb(0 0 0 / 0.15);
+
+	/* Pair convention: heading = the display font (left), body = the reading
+	   font (right). Default pair: Boska (display, --font-serif) / General Sans. */
+	--font-heading: var(--font-serif);
+	--font-body: var(--font-sans);
+}
+
+[data-theme='default'] {
+	/* we need this -- so, we can nest these: */
+
+	[data-flavor='warm'] {
+		--poster-fill: var(--color-amber-100);
+		--poster-ink: var(--color-orange-900);
+	}
+
+	[data-flavor='cool'] {
+		--poster-fill: var(--color-sky-100);
+		--poster-ink: var(--color-blue-900);
+	}
+
+	[data-flavor='stone'] {
+		--poster-fill: #c9c9be;
+		--poster-ink: var(--color-stone-900);
+	}
+
+	[data-flavor='night'] {
+		--poster-fill: var(--color-stone-900);
+		--poster-ink: var(--color-amber-200);
+	}
+
+	[data-flavor='moss'] {
+		--poster-fill: var(--color-green-100);
+		--poster-ink: var(--color-green-900);
+	}
+
+	[data-flavor='rose'] {
+		--poster-fill: var(--color-red-100);
+		--poster-ink: var(--color-red-900);
+	}
+}
+
+[data-theme='serif'] {
+	--fill-primary: var(--color-taupe-50);
+	--fill-secondary: var(--color-taupe-100);
+	--fill-auxiliary: var(--color-taupe-200);
+
+	--ink-primary: var(--color-taupe-900);
+	--ink-secondary: var(--color-taupe-600);
+	--ink-auxiliary: var(--color-taupe-500);
+
+	--stroke-primary: var(--color-taupe-400);
+	--stroke-secondary: var(--color-taupe-300);
+	--stroke-auxiliary: var(--color-taupe-200);
+
+	--accent: var(--color-amber-700);
+
+	--font-heading: var(--font-serif);
+	--font-body: var(--font-serif);
+}
+
+[data-theme='mono'] {
+	--fill-primary: var(--color-neutral-50);
+	--fill-secondary: var(--color-neutral-100);
+	--fill-auxiliary: var(--color-neutral-200);
+
+	--ink-primary: var(--color-neutral-900);
+	--ink-secondary: var(--color-neutral-600);
+	--ink-auxiliary: var(--color-neutral-500);
+
+	--stroke-primary: var(--color-neutral-400);
+	--stroke-secondary: var(--color-neutral-300);
+	--stroke-auxiliary: var(--color-neutral-200);
+
+	--accent: var(--color-neutral-700);
+
+	--font-heading: var(--font-mono);
+	--font-body: var(--font-mono);
+}
+
+[data-theme='display'] {
+	--fill-primary: var(--color-slate-50);
+	--fill-secondary: var(--color-slate-100);
+	--fill-auxiliary: var(--color-slate-200);
+
+	--ink-primary: var(--color-slate-900);
+	--ink-secondary: var(--color-slate-600);
+	--ink-auxiliary: var(--color-slate-500);
+
+	--stroke-primary: var(--color-slate-400);
+	--stroke-secondary: var(--color-slate-300);
+	--stroke-auxiliary: var(--color-slate-200);
+
+	--accent: var(--color-violet-600);
+
+	--font-heading: var(--font-sans);
+	--font-body: var(--font-serif);
+}
+
+html {
+	background-color: var(--fill-primary);
+	color: var(--ink-primary);
+}
+
+/* Dark scheme — system preference OR explicit data-scheme='dark'. */
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-scheme='light']) {
+		--fill-primary: var(--color-stone-900);
+		--fill-secondary: var(--color-stone-800);
+		--fill-auxiliary: var(--color-stone-700);
+		--ink-primary: var(--color-stone-50);
+		--ink-secondary: var(--color-stone-300);
+		--ink-auxiliary: var(--color-stone-400);
+		--stroke-primary: var(--color-stone-600);
+		--stroke-secondary: var(--color-stone-700);
+		--stroke-auxiliary: var(--color-stone-800);
+		--accent: var(--color-blue-300);
+		--scrim: rgb(0 0 0 / 0.45);
+	}
+	[data-theme='serif']:not([data-scheme='light']) {
+		--fill-primary: var(--color-taupe-900);
+		--fill-secondary: var(--color-taupe-800);
+		--fill-auxiliary: var(--color-taupe-700);
+		--ink-primary: var(--color-taupe-50);
+		--ink-secondary: var(--color-taupe-300);
+		--ink-auxiliary: var(--color-taupe-400);
+		--stroke-primary: var(--color-taupe-600);
+		--stroke-secondary: var(--color-taupe-700);
+		--stroke-auxiliary: var(--color-taupe-800);
+		--accent: var(--color-amber-300);
+	}
+	[data-theme='mono']:not([data-scheme='light']) {
+		--fill-primary: var(--color-neutral-900);
+		--fill-secondary: var(--color-neutral-800);
+		--fill-auxiliary: var(--color-neutral-700);
+		--ink-primary: var(--color-neutral-50);
+		--ink-secondary: var(--color-neutral-300);
+		--ink-auxiliary: var(--color-neutral-400);
+		--stroke-primary: var(--color-neutral-600);
+		--stroke-secondary: var(--color-neutral-700);
+		--stroke-auxiliary: var(--color-neutral-800);
+		--accent: var(--color-neutral-300);
+	}
+	[data-theme='display']:not([data-scheme='light']) {
+		--fill-primary: var(--color-slate-900);
+		--fill-secondary: var(--color-slate-800);
+		--fill-auxiliary: var(--color-slate-700);
+		--ink-primary: var(--color-slate-50);
+		--ink-secondary: var(--color-slate-300);
+		--ink-auxiliary: var(--color-slate-400);
+		--stroke-primary: var(--color-slate-600);
+		--stroke-secondary: var(--color-slate-700);
+		--stroke-auxiliary: var(--color-slate-800);
+		--accent: var(--color-violet-300);
+	}
+}
+
+[data-scheme='dark'] {
+	--fill-primary: var(--color-stone-900);
+	--fill-secondary: var(--color-stone-800);
+	--fill-auxiliary: var(--color-stone-700);
+	--ink-primary: var(--color-stone-50);
+	--ink-secondary: var(--color-stone-300);
+	--ink-auxiliary: var(--color-stone-400);
+	--stroke-primary: var(--color-stone-600);
+	--stroke-secondary: var(--color-stone-700);
+	--stroke-auxiliary: var(--color-stone-800);
+	--accent: var(--color-blue-300);
+	--scrim: rgb(0 0 0 / 0.45);
+}
+
+[data-theme='serif'][data-scheme='dark'] {
+	--fill-primary: var(--color-taupe-900);
+	--fill-secondary: var(--color-taupe-800);
+	--fill-auxiliary: var(--color-taupe-700);
+	--ink-primary: var(--color-taupe-50);
+	--ink-secondary: var(--color-taupe-300);
+	--ink-auxiliary: var(--color-taupe-400);
+	--stroke-primary: var(--color-taupe-600);
+	--stroke-secondary: var(--color-taupe-700);
+	--stroke-auxiliary: var(--color-taupe-800);
+	--accent: var(--color-amber-300);
+}
+
+[data-theme='mono'][data-scheme='dark'] {
+	--fill-primary: var(--color-neutral-900);
+	--fill-secondary: var(--color-neutral-800);
+	--fill-auxiliary: var(--color-neutral-700);
+	--ink-primary: var(--color-neutral-50);
+	--ink-secondary: var(--color-neutral-300);
+	--ink-auxiliary: var(--color-neutral-400);
+	--stroke-primary: var(--color-neutral-600);
+	--stroke-secondary: var(--color-neutral-700);
+	--stroke-auxiliary: var(--color-neutral-800);
+	--accent: var(--color-neutral-300);
+}
+
+[data-theme='display'][data-scheme='dark'] {
+	--fill-primary: var(--color-slate-900);
+	--fill-secondary: var(--color-slate-800);
+	--fill-auxiliary: var(--color-slate-700);
+	--ink-primary: var(--color-slate-50);
+	--ink-secondary: var(--color-slate-300);
+	--ink-auxiliary: var(--color-slate-400);
+	--stroke-primary: var(--color-slate-600);
+	--stroke-secondary: var(--color-slate-700);
+	--stroke-auxiliary: var(--color-slate-800);
+	--accent: var(--color-violet-300);
+}

@@ -1,0 +1,52 @@
+@import 'viewport.css';
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html, body,
+h1, h2, h3, h4, h5, h6,
+p,
+blockquote, pre,
+dl, dt, dd, ol, ul,
+figure, figcaption,
+hr {
+	margin: 0;
+	padding: 0;
+}
+
+button,
+input,
+textarea,
+select {
+	font: inherit;
+	color: inherit;
+}
+
+html {
+	-moz-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+}
+
+blockquote, q {
+	quotes: none;
+}
+blockquote::before, blockquote::after,
+q::before, q::after {
+	content: '';
+	content: none;
+}
+
+fieldset {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}

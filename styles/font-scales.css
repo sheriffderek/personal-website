@@ -1,0 +1,40 @@
+:root {
+	/* The three stacks the theme bundles pair up (see settings.css).
+	   Fontshare families first, system fonts as the readable fallback tail.
+	   To audition a different family, swap the name below - all of these are
+	   already loaded (primary in <head>, the rest async):
+	     sans:  General Sans, Switzer, Supreme, Spline Sans, Hind, Poppins,
+	            Quicksand, Nunito, Pilcrow Rounded, Bebas Neue (display)
+	     serif: Boska, Bonny, Gambarino
+	     mono:  none on Fontshare - stays system. */
+	--font-sans: 'General Sans', system-ui, sans-serif;
+	--font-serif: 'Boska', Georgia, serif;
+	--font-mono: Menlo, Consolas, monospace;
+}
+
+:root {
+	--type-anchor: 1rem;
+	--scale-ratio: 1.25;
+
+	--step-down-2: calc(var(--step-down-1) / var(--scale-ratio));
+	--step-down-1: calc(var(--step-0) / var(--scale-ratio));
+	--step-0: var(--type-anchor);
+	--step-up-1: calc(var(--step-0) * var(--scale-ratio));
+	--step-up-2: calc(var(--step-up-1) * var(--scale-ratio));
+	--step-up-3: calc(var(--step-up-2) * var(--scale-ratio));
+	--step-up-4: calc(var(--step-up-3) * var(--scale-ratio));
+	--step-up-5: calc(var(--step-up-4) * var(--scale-ratio));
+}
+
+[data-type-scale='minor-second']     { --scale-ratio: 1.067; }
+[data-type-scale='major-second']     { --scale-ratio: 1.125; }
+[data-type-scale='minor-third']      { --scale-ratio: 1.2; }
+[data-type-scale='major-third']      { --scale-ratio: 1.25; }
+[data-type-scale='perfect-fourth']   { --scale-ratio: 1.333; }
+[data-type-scale='augmented-fourth'] { --scale-ratio: 1.414; }
+[data-type-scale='perfect-fifth']    { --scale-ratio: 1.5; }
+[data-type-scale='golden-ratio']     { --scale-ratio: 1.618; }
+[data-type-scale='major-sixth']      { --scale-ratio: 1.667; }
+[data-type-scale='minor-seventh']    { --scale-ratio: 1.778; }
+[data-type-scale='major-seventh']    { --scale-ratio: 1.875; }
+[data-type-scale='octave']           { --scale-ratio: 2; }

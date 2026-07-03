@@ -1,0 +1,61 @@
+/* Interactive controls opt out of double-tap-to-zoom. This removes the
+   iOS tap delay (taps fire on press, not after the browser waits to rule
+   out a double-tap) and stops accidental zoom when tapping buttons/sliders.
+   Normal scrolling and pinch-zoom are unaffected. */
+a,
+button,
+summary,
+input,
+label {
+	touch-action: manipulation;
+
+	/* Kill the gray flash iOS paints over a tapped control. */
+	-webkit-tap-highlight-color: transparent;
+}
+
+a {
+	display: block;
+	text-decoration: none;
+	color: inherit;
+}
+
+p a,
+a.link {
+	display: inline;
+	color: var(--link-color, blue);
+	text-decoration: underline;
+}
+
+/*a.relaxed {
+	color: inherit;
+}*/
+
+picture {
+	display: block;
+	overflow: clip;
+}
+
+img,
+video,
+svg,
+canvas {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+iframe,
+audio {
+	display: block;
+}
+
+ul[role='list'],
+ol[role='list'] {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+:where(:not(:defined)) {
+	display: block;
+}

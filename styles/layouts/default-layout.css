@@ -1,0 +1,108 @@
+body {
+	margin: 0;
+}
+
+/* Site shell.
+   Mobile: flex column. Aside is sticky to viewport top throughout the page.
+   Desktop: 4-column grid — gutter | content (720) | rail (300) | gutter.
+   Aside contents are right-aligned so the popover panel
+   (position-area: bottom span-left) lands inside the rail, not in content. */
+.page-wrapper {
+	display: flex;
+	flex-direction: column;
+	min-height: 100dvh;
+}
+.site-header,
+main {
+	padding: 1rem;
+}
+
+/* The first content block sits at the same top offset on every page: on
+   home that block is the page-header (.site-header); on every other page
+   it's main itself. When the home intro is present, main comes after it
+   and only needs normal spacing (reset just below). */
+.site-header,
+main {
+	padding-top: 80px;
+}
+
+.site-header ~ main {
+	padding-top: 1rem;
+}
+
+.site-header {
+	details {
+		margin-top: 1em;
+	}
+}
+
+.rail-sentinel {
+	height: 0;
+}
+
+.page-rail {
+	position: sticky;
+	top: 0;
+	transition: 0.5;
+	z-index: 50;
+
+	background-color: var(--fill-primary);
+
+	padding: 0.5rem 1rem;
+
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+/* Small screens only: once the rail pins to the top, give it a bottom
+   border so it reads as a header. sticky-header.js sets .is-stuck. */
+@media (width < 1024px) {
+	.page-rail.is-stuck {
+		border-bottom: 1px solid var(--stroke-secondary);
+	}
+}
+
+@media (width >= 1024px) {
+	.page-wrapper {
+		display: grid;
+		grid-template-columns: 1fr minmax(0, 720px) 300px 1fr;
+		grid-template-rows: auto 1fr auto;
+		column-gap: 1.5rem;
+	}
+
+	.site-header {
+		grid-column: 2;
+		grid-row: 1;
+	}
+
+	main {
+		grid-column: 2;
+		grid-row: 2;
+	}
+
+	.site-footer {
+		grid-column: 2;
+		grid-row: 3;
+	}
+
+	.page-wrapper > .page-rail {
+		grid-column: 3;
+		grid-row: 1 / -1;
+		align-self: start;
+	}
+}
+
+inner-column {
+	display: block;
+	max-width: var(--inner-column-max, 1100px);
+	margin-inline: auto;
+	padding: var(--inner-column-padding-block, 30px)
+		var(--inner-column-padding-inline, 16px);
+	container-type: inline-size;
+}
+
+.site-footer {
+	padding-block: 100px 50px;
+	padding-inline: 1rem;
+}

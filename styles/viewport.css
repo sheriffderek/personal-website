@@ -1,0 +1,11 @@
+html {
+	scrollbar-gutter: stable;
+}
+
+html:has(dialog[open]) {
+	overflow: hidden;
+}
+
+:target {
+	scroll-margin-block: var(--target-scroll-margin, 3rem);
+}

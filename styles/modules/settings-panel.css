@@ -1,0 +1,293 @@
+/* Display settings toolbox
+   ------------------------
+   Generic toolbox primitive (trigger + popover panel) + settings-specific rows.
+   Native HTML popover handles open/close, Esc, and light-dismiss.
+   CSS anchor positioning pins the panel to the trigger — no JS measurement.
+
+   Chrome lives inside [data-ui='app'] so the theme bundle's font families
+   don't leak into the panel chrome. Token names map to the project's
+   existing semantic tokens (--fill-primary, --ink-primary, --accent,
+   --stroke-secondary) rather than re-introducing --bg/--fg parallel set.
+*/
+
+[data-ui='app'] {
+	/* Pin type families inside the panel so the theme switcher doesn't
+	   restyle its own chrome (mono theme would otherwise hit panel labels). */
+	--font-body: var(--font-sans);
+	--font-heading: var(--font-sans);
+
+	--app-data-voice-font-family: var(--font-mono);
+	--app-data-voice-font-size: calc(var(--step-0) * 0.85);
+	--app-data-voice-line-height: 1.4;
+	--app-data-voice-letter-spacing: 0.01em;
+}
+
+.app-data-voice {
+	margin: 0 0 0.4rem;
+	font-family:    var(--app-data-voice-font-family);
+	font-size:      var(--app-data-voice-font-size);
+	line-height:    var(--app-data-voice-line-height);
+	letter-spacing: var(--app-data-voice-letter-spacing);
+	color: var(--ink-secondary);
+}
+
+button.toolbox-trigger {
+	all: unset;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	vertical-align: middle;
+	cursor: pointer;
+	padding: 0.25rem 0.5rem;
+	font-size: 1.25rem;
+	line-height: 1;
+	color: var(--ink-primary);
+
+	&:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 2px;
+		border-radius: 4px;
+	}
+}
+
+.toolbox-glyph {
+	--glyph-size: 1.25rem;
+	--glyph-line-width: 10px;
+	--glyph-line-height: 1.5px;
+	--glyph-line-gap: 5.25px;
+	--glyph-line-radius: calc(var(--glyph-line-height) / 2);
+
+	width: var(--glyph-size);
+	height: var(--glyph-size);
+	display: block;
+
+	.glyph-line {
+		fill: currentColor;
+		width: var(--glyph-line-width);
+		height: var(--glyph-line-height);
+		rx: var(--glyph-line-radius);
+		x: calc((16px - var(--glyph-line-width)) / 2);
+	}
+	.glyph-line-1 { y: calc(8px - var(--glyph-line-gap) - var(--glyph-line-height) / 2); }
+	.glyph-line-2 { y: calc(8px - var(--glyph-line-height) / 2); }
+	.glyph-line-3 { y: calc(8px + var(--glyph-line-gap) - var(--glyph-line-height) / 2); }
+}
+
+.toolbox-panel {
+	/* Direct anchor positioning. Using top + right (not position-area) means
+	   only one end of each axis is pinned, so the panel sizes to its content
+	   instead of stretching to fill an inset region. */
+	inset: auto;
+	top: anchor(bottom);
+	right: anchor(right);
+	margin: 0.5rem 0 0 0;
+
+	width: max-content;
+	min-width: 280px;
+	max-width: 360px;
+
+	padding: 1.25rem;
+
+	background: var(--fill-primary);
+	color: var(--ink-primary);
+	border: 1px solid var(--stroke-primary);
+	border-radius: 8px;
+	box-shadow: var(--panel-shadow, 0 4px 12px rgb(0 0 0 / 0.12));
+
+	font-family:    var(--app-data-voice-font-family);
+	font-size:      var(--app-data-voice-font-size);
+	line-height:    var(--app-data-voice-line-height);
+	letter-spacing: var(--app-data-voice-letter-spacing);
+
+	opacity: 1;
+	transition: opacity 120ms ease, display 120ms allow-discrete;
+
+	&:not(:popover-open) { opacity: 0; }
+}
+
+@starting-style {
+	.toolbox-panel:popover-open { opacity: 0; }
+}
+
+@supports not (anchor-name: --x) {
+	/* Fallback for browsers without anchor positioning: drop the popover
+	   into the viewport's top-right and let the rail's stacking pin it. */
+	.toolbox-panel {
+		top: 4rem;
+		right: 1rem;
+	}
+}
+
+/* Small screens: the panel reads as a modal over live content, so dim the
+   page behind it for focus and legibility. Tapping the backdrop dismisses it
+   (native where supported, plus the JS fallback in settings-panel.js). Desktop
+   keeps the anchored dropdown with no backdrop. */
+@media (width < 1024px) {
+	.toolbox-panel::backdrop {
+		/* Fallback repeats the light value in case a browser doesn't inherit
+		   custom properties onto the top-layer ::backdrop. */
+		background: var(--scrim, rgb(0 0 0 / 0.15));
+	}
+}
+
+/* iOS only dispatches tap events for "clickable" targets, which is why an
+   outside tap on the dimmed area can be swallowed. cursor: pointer marks the
+   page clickable so those taps are delivered (to native light-dismiss and our
+   JS fallback). Touch devices only - invisible there, no desktop effect. */
+@media (hover: none) {
+	body {
+		cursor: pointer;
+	}
+}
+
+/* Settings-specific: visible chrome on the trigger (project override of the
+   intentionally-minimal toolbox primitive), row spacing, selected state. */
+button.settings-trigger {
+	width: 2.25rem;
+	height: 2.25rem;
+	padding: 0;
+	border: 1px solid var(--stroke-primary);
+	background: var(--fill-primary);
+	border-radius: 50%;
+}
+
+.settings-panel {
+	> div { margin-bottom: 1.25rem; }
+	> div:last-child { margin-bottom: 0; }
+}
+
+/* Nested type-selectors are written with explicit & for cross-browser
+   reliability — the relaxed-nesting syntax (`button {}` directly inside a
+   parent) shipped late and is silently ignored by some still-current
+   browser versions. */
+.settings-panel button {
+	padding: 0.5rem 0.75rem;
+	border: 1px solid var(--stroke-primary);
+	background: var(--fill-primary);
+	color: var(--ink-primary);
+	border-radius: 6px;
+	font: inherit;
+	cursor: pointer;
+}
+
+.settings-panel button:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+}
+
+.settings-panel button[aria-pressed='true'] {
+	color: var(--fill-primary);
+	background: var(--accent);
+	background: linear-gradient(
+		to bottom,
+		color-mix(in oklch, var(--accent) 80%, white) 0%,
+		var(--accent) 100%
+	);
+	border-color: color-mix(in oklch, var(--accent) 70%, black);
+}
+
+/* Mode row — buttons live inside a subtle inset container so the row
+   reads as "pick one of three" rather than three loose buttons. */
+.mode-button-group {
+	display: flex;
+	gap: 0.4rem;
+	padding: 0.4rem;
+	background: var(--fill-secondary);
+	border: 1px solid var(--stroke-secondary);
+	border-radius: 8px;
+}
+
+.mode-button-group button {
+	flex: 1;
+}
+
+/* Slider — large hit area for fingers. Visible thumb is a small dark dot
+   with a soft halo, rendered via radial-gradient on a 28px transparent thumb
+   so the clickable/draggable area is the full 28px. */
+.plain-range {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 100%;
+	height: 28px;
+	background: transparent;
+	margin: 0;
+	cursor: pointer;
+
+	&::-webkit-slider-runnable-track {
+		height: 4px;
+		background: var(--stroke-secondary);
+		border-radius: 2px;
+	}
+
+	&::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		appearance: none;
+		width: 28px;
+		height: 28px;
+		margin-top: -12px;
+		border: 0;
+		border-radius: 50%;
+		background: radial-gradient(
+			circle at center,
+			var(--ink-primary) 0 6px,
+			color-mix(in oklch, var(--ink-primary) 22%, transparent) 7px 13px,
+			transparent 14px
+		);
+	}
+
+	&::-moz-range-track {
+		height: 4px;
+		background: var(--stroke-secondary);
+		border-radius: 2px;
+	}
+
+	&::-moz-range-thumb {
+		width: 28px;
+		height: 28px;
+		border: 0;
+		border-radius: 50%;
+		background: radial-gradient(
+			circle at center,
+			var(--ink-primary) 0 6px,
+			color-mix(in oklch, var(--ink-primary) 22%, transparent) 7px 13px,
+			transparent 14px
+		);
+	}
+}
+
+.mini-page {
+	display: grid;
+	grid-template-columns: 1fr 60px;
+	gap: 8px;
+	margin: 0.5rem 0 0;
+	align-items: start;
+}
+
+.mini-map {
+	display: grid;
+	gap: 3px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.mini-map li {
+	height: 6px;
+	background: var(--stroke-secondary);
+	border-radius: 1px;
+	transition: background 150ms;
+}
+
+.mini-map li[data-state='in'] {
+	background: var(--ink-secondary);
+}
+
+.mini-rail {
+	aspect-ratio: 3/7;
+	border: 1px solid var(--stroke-secondary);
+	border-radius: 4px;
+}
+
+.filter-count {
+	color: var(--ink-secondary);
+}

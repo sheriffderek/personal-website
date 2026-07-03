@@ -1,0 +1,12 @@
+RewriteEngine On
+
+# If MAMP serves this site from a subfolder, set the base to that folder.
+# RewriteBase /
+
+# Real files and folders (css, js, images) are served as-is.
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Everything else is handled by the front controller.
+RewriteRule ^ index.php [L]

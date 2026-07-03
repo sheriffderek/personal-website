@@ -1,0 +1,142 @@
+[role="list"].timeline {
+	display: grid;
+	gap: 5rem;
+
+	margin-top: 5rem;
+}
+
+.milestone {
+	--poster-fill: var(--fill-primary);
+	--poster-ink: var(--ink-primary);
+	--line-width-primary: 10;
+	--line-width-secondary: 5;
+
+	--corners: 0;
+	--border-width: 0;
+
+	display: grid;
+	gap: 0.75rem;
+	max-width: 720px;
+
+	.setup {
+		.year {
+			color: var(--ink-secondary);
+		}
+
+		.heading {
+			margin-top: 0;
+		}
+	}
+
+	.media {
+		border: var(--border-width) solid var(--ink-primary);
+		border-radius: var(--corners);
+		overflow: clip;
+
+		.padding {
+			/* for positioing the dots away from the edge - based on if media has border-radius etc. */
+		}
+
+		.dot-parent {
+			/* in case we want to style that - with padding and as an overlay control block */
+		}
+
+		.dot-thing {
+			/* might be square in some themes */
+			/* does it need more padding to be tappable / and then a psuedo element for the visual dot */
+		}
+	}
+
+	.poster-art {
+		display: block;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 16 / 9;
+		--fill-primary: var(--poster-fill);
+		--ink-primary: var(--poster-ink);
+		--fill-secondary: color-mix(
+			in oklch,
+			var(--poster-fill) 70%,
+			var(--poster-ink)
+		);
+		--ink-secondary: color-mix(
+			in oklch,
+			var(--poster-ink) 55%,
+			var(--poster-fill)
+		);
+	}
+
+	&:hover {
+		.poster-art {
+			--line-width-secondary: 3;
+			transition: stroke-width 300ms;
+		}
+	}
+
+	.info {
+		.target-note {
+			/* the optional per-milestone sentence injected by ?target=companyname */
+			margin-top: 1em;
+		}
+
+		summary {
+			margin-top: 0.8em;
+		}
+
+		a {
+			color: var(--link-color);
+		}
+
+		a.relaxed {
+			color: inherit;
+		}
+
+		.read-more {
+			color: var(--link-color);
+		}
+
+		.more {
+			summary {
+				cursor: pointer;
+				list-style: none;
+			}
+			summary::-webkit-details-marker {
+				display: none;
+			}
+			&[open] summary {
+				display: none;
+			}
+		}
+
+		.more-body {
+			display: grid;
+			gap: 0.75rem;
+			margin-top: 0.75rem;
+		}
+	}
+}
+
+.carousel {
+	.flickity-page-dots {
+		position: absolute;
+		top: 0.75rem;
+		left: 0.75rem;
+		width: auto;
+		display: flex;
+		gap: 0.5rem;
+		pointer-events: none;
+	}
+
+	.flickity-page-dots .dot {
+		width: 0.5rem;
+		height: 0.5rem;
+		margin: 0;
+		background: var(--poster-ink, white);
+		opacity: 0.4;
+		pointer-events: auto;
+	}
+
+	.flickity-page-dots .dot.is-selected {
+		opacity: 1;
+	}
+}

@@ -1,0 +1,24 @@
+.site-header {
+
+	.read-more {
+
+	}
+
+	.more {
+		summary {
+			cursor: pointer;
+			list-style: none;
+		}
+		summary::-webkit-details-marker {
+			display: none;
+		}
+		&[open] summary {
+			display: none;
+		}
+	}
+
+	.more-body {
+		margin-top: 0.75rem;
+	}
+
+}
