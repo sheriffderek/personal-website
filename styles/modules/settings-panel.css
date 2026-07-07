@@ -113,7 +113,12 @@ button.toolbox-trigger {
 	min-width: min(280px, 100vw - var(--gutter));
 	max-width: min(360px, 100vw - var(--gutter));
 
-	padding: 1.25rem;
+	/* Never taller than the space below the bar - scroll inside if the content
+	   still doesn't fit, so the panel can't run off the bottom of the screen. */
+	max-height: calc(100dvh - 5rem);
+	overflow-y: auto;
+
+	padding: var(--gutter);
 
 	background: var(--fill-primary);
 	color: var(--ink-primary);
@@ -179,7 +184,7 @@ button.settings-trigger {
 }
 
 .settings-panel {
-	> div { margin-bottom: 1.25rem; }
+	> div { margin-bottom: 0.85rem; }
 	> div:last-child { margin-bottom: 0; }
 }
 
@@ -187,14 +192,29 @@ button.settings-trigger {
    reliability — the relaxed-nesting syntax (`button {}` directly inside a
    parent) shipped late and is silently ignored by some still-current
    browser versions. */
+/* Radio pills: a radio dot + label. Compact, but still a comfortable tap
+   target. The dot makes the single-select obvious (matching role=radio), so
+   the row no longer needs an inset container. */
 .settings-panel button {
-	padding: 0.5rem 0.75rem;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.45rem;
+	padding: 0.4rem 0.65rem;
 	border: 1px solid var(--stroke-primary);
 	background: var(--fill-primary);
 	color: var(--ink-primary);
 	border-radius: 6px;
 	font: inherit;
 	cursor: pointer;
+}
+
+.settings-panel button[role='radio']::before {
+	content: '';
+	flex: none;
+	inline-size: 0.85em;
+	block-size: 0.85em;
+	border: 2px solid currentColor;
+	border-radius: 50%;
 }
 
 .settings-panel button:focus-visible {
@@ -213,19 +233,16 @@ button.settings-trigger {
 	border-color: color-mix(in oklch, var(--accent) 70%, black);
 }
 
-/* Mode row — buttons live inside a subtle inset container so the row
-   reads as "pick one of three" rather than three loose buttons. */
-.mode-button-group {
-	display: flex;
-	gap: 0.4rem;
-	padding: 0.4rem;
-	background: var(--fill-secondary);
-	border: 1px solid var(--stroke-secondary);
-	border-radius: 8px;
+.settings-panel button[role='radio'][aria-checked='true']::before {
+	background: currentColor;
 }
 
-.mode-button-group button {
-	flex: 1;
+/* Options sit in a plain wrapping row now that each pill carries its own
+   radio dot. */
+.mode-button-group {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem;
 }
 
 /* Slider — large hit area for fingers. Visible thumb is a small dark dot
@@ -282,24 +299,80 @@ button.settings-trigger {
 	}
 }
 
-.mini-page {
+/* Filter body. Roomy screens: horizontal slider on top, then the mini-page
+   (timeline map + rail) below. Small screens: the slider goes VERTICAL and sits
+   beside the map, saving a row of height. */
+.filter-body {
 	display: grid;
 	grid-template-columns: 1fr 60px;
+	grid-template-areas:
+		'slider slider'
+		'map    rail';
 	gap: 8px;
 	margin: 0.5rem 0 0;
 	align-items: start;
 }
 
+.filter-body .plain-range {
+	grid-area: slider;
+}
+
+.filter-body .mini-map {
+	grid-area: map;
+}
+
+.filter-body .mini-rail {
+	grid-area: rail;
+}
+
+@media (width < 700px) {
+	.filter-body {
+		grid-template-columns: 1fr auto;
+		grid-template-areas: 'map slider';
+		align-items: stretch;
+	}
+
+	/* The vertical slider takes the right slot, so the little rail drops out. */
+	.filter-body .mini-rail {
+		display: none;
+	}
+
+	.filter-body .plain-range {
+		writing-mode: vertical-lr;
+		direction: rtl; /* drag up = show more */
+		width: 28px;
+		height: auto;
+		align-self: stretch;
+
+		/* In vertical mode the thin dimension is the width, not the height. */
+		&::-webkit-slider-runnable-track {
+			width: 4px;
+			height: auto;
+			margin-inline: auto;
+		}
+
+		&::-webkit-slider-thumb {
+			margin-top: 0;
+			margin-left: -12px;
+		}
+
+		&::-moz-range-track {
+			width: 4px;
+			height: auto;
+		}
+	}
+}
+
 .mini-map {
 	display: grid;
-	gap: 3px;
+	gap: 2px;
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
 
 .mini-map li {
-	height: 6px;
+	height: 4px;
 	background: var(--stroke-secondary);
 	border-radius: 1px;
 	transition: background 150ms;
