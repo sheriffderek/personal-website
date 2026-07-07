@@ -31,8 +31,24 @@
 	color: var(--ink-secondary);
 }
 
+/* Kill double-tap-to-zoom across the whole menu chrome. touch-action isn't
+   inherited, so covering only the buttons leaves the gaps (glyph, labels,
+   panel background) able to trigger zoom on a stray double-tap. Scoped to the
+   bar + panels, so the carousel's own touch handling stays untouched. */
+.page-rail,
+.page-rail *,
+.toolbox-panel,
+.toolbox-panel * {
+	touch-action: manipulation;
+}
+
 button.toolbox-trigger {
 	all: unset;
+
+	/* all: unset resets touch-action back to auto, re-enabling double-tap
+	   zoom on the trigger — restore it here. */
+	touch-action: manipulation;
+
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -60,6 +76,10 @@ button.toolbox-trigger {
 	width: var(--glyph-size);
 	height: var(--glyph-size);
 	display: block;
+
+	/* Let taps fall through to the button, so the tap target is the button
+	   (which sets touch-action) and never the raw glyph. */
+	pointer-events: none;
 
 	.glyph-line {
 		fill: currentColor;
@@ -177,7 +197,7 @@ button.settings-trigger {
 	outline-offset: 2px;
 }
 
-.settings-panel button[aria-pressed='true'] {
+.settings-panel button[aria-checked='true'] {
 	color: var(--fill-primary);
 	background: var(--accent);
 	background: linear-gradient(

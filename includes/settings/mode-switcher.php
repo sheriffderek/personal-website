@@ -1,8 +1,9 @@
-<div class='mode-switcher' role='group' aria-labelledby='mode-switcher-label'>
+<div class='mode-switcher'>
 	<p class='app-data-voice' id='mode-switcher-label'>Prefered color scheme</p>
-	<div class='mode-button-group'>
-		<button type='button' data-set-scheme='system'>System</button>
-		<button type='button' data-set-scheme='light'>Light</button>
-		<button type='button' data-set-scheme='dark'>Dark</button>
+
+	<div class='mode-button-group' role='radiogroup' aria-labelledby='mode-switcher-label'>
+		<button type='button' role='radio' aria-checked='false' data-set-scheme='system'>System</button>
+		<button type='button' role='radio' aria-checked='false' data-set-scheme='light'>Light</button>
+		<button type='button' role='radio' aria-checked='false' data-set-scheme='dark'>Dark</button>
 	</div>
 </div>

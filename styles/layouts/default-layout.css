@@ -33,8 +33,11 @@ main {
 .page-rail {
 	position: sticky;
 	top: 0;
-	transition: 0.5;
-	z-index: 50;
+
+	z-index: 5;
+
+	border-bottom: 1px solid transparent;
+	transition: border-color 1s;
 
 	/* The menu popovers anchor to this bar (not their trigger buttons), so
 	   they align to the bar's edges instead of dangling off a small glyph. */
@@ -47,13 +50,20 @@ main {
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
+	gap: 0.5rem;
+}
+
+/* Identity/home link sits at the left; the menu triggers stay right. */
+.site-name {
+	margin-inline-end: auto;
 }
 
 /* Small screens only: once the rail pins to the top, give it a bottom
    border so it reads as a header. sticky-header.js sets .is-stuck. */
 @media (width < 1024px) {
 	.page-rail.is-stuck {
-		border-bottom: 1px solid var(--stroke-secondary);
+		border-color: var(--stroke-secondary);
+		transition: border-color 1s;
 	}
 }
 

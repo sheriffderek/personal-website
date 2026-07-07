@@ -71,6 +71,10 @@
 		{ kind: 'sound',  attr: 'data-sound',  storageKey: 'sound-preference',  defaultValue: 'off' }
 	];
 
+	/* Each switcher is a single-select radiogroup (role=radio buttons). We
+	   reflect the choice with aria-checked and keep exactly one radio tabbable
+	   (roving tabindex) so Tab moves in/out of the group and arrow keys move
+	   between the options — the WAI-ARIA radiogroup pattern. */
 	SWITCHERS.forEach(function (cfg) {
 		var buttons = document.querySelectorAll('[data-set-' + cfg.kind + ']');
 		if (!buttons.length) return;
@@ -84,45 +88,66 @@
 		}
 		var current = saved || cfg.defaultValue;
 
-		/* Apply the saved state to <html> on load — otherwise aria-pressed
-		   shows the correct selection but the attribute selector hooks
-		   (data-sound, data-scheme) aren't actually in effect until the
-		   user clicks. */
+		function valueOf(button) {
+			return button.getAttribute('data-set-' + cfg.kind);
+		}
+
+		/* Show which radio is checked and move the single tab stop to it. */
+		function reflect(selectedValue) {
+			buttons.forEach(function (button) {
+				var isSelected = valueOf(button) === selectedValue;
+				button.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+				button.setAttribute('tabindex', isSelected ? '0' : '-1');
+			});
+		}
+
+		function choose(button, moveFocus) {
+			var value = valueOf(button);
+
+			if (value === cfg.defaultValue) {
+				if (persists) {
+					try { localStorage.removeItem(cfg.storageKey); } catch (error) {}
+				}
+				html.removeAttribute(cfg.attr);
+			} else {
+				if (persists) {
+					try { localStorage.setItem(cfg.storageKey, value); } catch (error) {}
+				}
+				html.setAttribute(cfg.attr, cfg.valuelessAttr ? '' : value);
+			}
+
+			reflect(value);
+			if (moveFocus) button.focus();
+
+			if (cfg.kind === 'sound' && window.ui && window.ui.sound) {
+				/* Plays only when going on (audio.js gates on data-sound='on').
+				   Going off is intentionally silent. */
+				window.ui.sound(value === 'on' ? 'toggle-on' : 'toggle-off');
+			}
+		}
+
+		/* Apply the saved state to <html> on load — otherwise the selection
+		   shows but the attribute-selector hooks (data-sound, data-scheme)
+		   aren't actually in effect until the user clicks. */
 		if (current !== cfg.defaultValue) {
 			html.setAttribute(cfg.attr, cfg.valuelessAttr ? '' : current);
 		}
+		reflect(current);
 
-		buttons.forEach(function (button) {
-			button.setAttribute(
-				'aria-pressed',
-				button.getAttribute('data-set-' + cfg.kind) === current ? 'true' : 'false'
-			);
-		});
-
-		buttons.forEach(function (button) {
+		buttons.forEach(function (button, index) {
 			button.addEventListener('click', function () {
-				var value = button.getAttribute('data-set-' + cfg.kind);
+				choose(button, false);
+			});
 
-				if (value === cfg.defaultValue) {
-					if (persists) {
-						try { localStorage.removeItem(cfg.storageKey); } catch (error) {}
-					}
-					html.removeAttribute(cfg.attr);
-				} else {
-					if (persists) {
-						try { localStorage.setItem(cfg.storageKey, value); } catch (error) {}
-					}
-					html.setAttribute(cfg.attr, cfg.valuelessAttr ? '' : value);
-				}
+			button.addEventListener('keydown', function (event) {
+				var step = 0;
+				if (event.key === 'ArrowRight' || event.key === 'ArrowDown') step = 1;
+				if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') step = -1;
+				if (!step) return;
 
-				buttons.forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
-				button.setAttribute('aria-pressed', 'true');
-
-				if (cfg.kind === 'sound' && window.ui && window.ui.sound) {
-					/* Plays only when going on (audio.js gates on data-sound='on').
-					   Going off is intentionally silent. */
-					window.ui.sound(value === 'on' ? 'toggle-on' : 'toggle-off');
-				}
+				event.preventDefault();
+				var next = (index + step + buttons.length) % buttons.length;
+				choose(buttons[next], true);
 			});
 		});
 	});
@@ -297,10 +322,18 @@
 
 	toolboxPanels.forEach(function (panel) {
 		panel.addEventListener('toggle', function (event) {
-			if (event.newState === 'open') {
+			var isOpen = event.newState === 'open';
+
+			if (isOpen) {
 				openPanel = panel;
 			} else if (openPanel === panel) {
 				openPanel = null;
+			}
+
+			/* Keep the trigger's disclosure state in sync for assistive tech. */
+			var trigger = document.querySelector('[popovertarget="' + panel.id + '"]');
+			if (trigger) {
+				trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
 			}
 		});
 	});

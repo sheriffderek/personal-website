@@ -2,11 +2,15 @@
 
 	<footer class='site-footer'>
 		<nav class='footer-menu' aria-label='Footer'>
-			<?php foreach ($pages as $page_slug => $page): ?>
-				<?php if (empty($page['menu'])) { continue; } ?>
+			<ul role='list'>
+				<?php foreach ($pages as $page_slug => $page): ?>
+					<?php if (empty($page['menu'])) { continue; } ?>
 
-				<a href='<?= $page_slug === 'home' ? '/' : '/' . $page_slug ?>'><?= $page['menu'] ?></a>
-			<?php endforeach; ?>
+					<li>
+						<a href='<?= $page_slug === 'home' ? '/' : '/' . $page_slug ?>'><?= $page['menu'] ?></a>
+					</li>
+				<?php endforeach; ?>
+			</ul>
 		</nav>
 
 		<?php $version = deployed_version(); ?>

@@ -14,6 +14,7 @@
 	type='button'
 	popovertarget='menu-settings'
 	class='toolbox-trigger settings-trigger'
+	aria-expanded='false'
 	aria-label='Display settings'
 >
 	<span aria-hidden='true'>
@@ -24,6 +25,7 @@
 			stroke='currentColor'
 			stroke-width='1.4'
 			stroke-linecap='round'
+			focusable='false'
 		>
 			<line x1='2.5' y1='5' x2='13.5' y2='5' />
 
@@ -56,10 +58,11 @@
 	type='button'
 	popovertarget='menu-pages'
 	class='toolbox-trigger settings-trigger'
+	aria-expanded='false'
 	aria-label='Pages'
 >
 	<span aria-hidden='true'>
-		<svg class='toolbox-glyph' viewBox='0 0 16 16'>
+		<svg class='toolbox-glyph' viewBox='0 0 16 16' focusable='false'>
 			<rect class='glyph-line glyph-line-1' />
 			<rect class='glyph-line glyph-line-2' />
 			<rect class='glyph-line glyph-line-3' />

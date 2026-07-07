@@ -56,6 +56,8 @@
 		<div class='rail-sentinel' aria-hidden='true'></div>
 
 		<header class='page-rail'>
+			<a class='site-name' href='/'>Derek Wood</a>
+
 			<?php include INCLUDES_DIR . '/settings-panel.php'; ?>
 		</header>
 
