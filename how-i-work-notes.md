@@ -377,6 +377,22 @@ Not new principles — existing ones pointed at a client instead of a greenfield
   produces numbers *by design.*" It's the direct answer to the opening rant: results aren't
   opposed to process — the right process is what makes results legible. **Foreground this.**
 
+## Budget & timeline — constraints as early inputs (esp. at a bigger org)
+
+- **Not a separate concern — a situational input that changes which moves apply** ("reads decide
+  the move," pointed at constraints). A scrappy budget + hard deadline is a different project than
+  an open-ended enterprise engagement, and you attack them differently from the first meeting.
+- **Much of the method is *already* a budget/timeline response.** Paper test = a budget move.
+  "Hardest parts first" = timeline-risk management. "Cheapest fidelity that can teach you" =
+  spending discipline. Name it: these aren't rituals, they're how you protect the client's money
+  and calendar.
+- **Bigger org = surface the real numbers early or the project dies.** Procurement, quarterly
+  planning, headcount, stakeholders with their own budgets — the fastest way to kill a good
+  project is discovering the real budget/timeline *late.* Naming them up front is the mature move.
+- **Belongs in the transparent goal system** — budget and timeline are constraints that live in
+  the open, visible and adjustable like the goals, so nobody's designing a Ferrari on a Civic
+  budget in silence.
+
 ## Examples to attach (the part that makes it land)
 
 The principles are the skeleton; **real project examples are what make a recruiter want to

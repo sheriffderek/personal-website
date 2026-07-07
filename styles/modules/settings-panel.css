@@ -74,9 +74,11 @@ button.toolbox-trigger {
 }
 
 .toolbox-panel {
-	/* Direct anchor positioning. Using top + right (not position-area) means
-	   only one end of each axis is pinned, so the panel sizes to its content
-	   instead of stretching to fill an inset region. */
+	/* Anchor to the menu bar (.page-rail), not the trigger button, so both
+	   menus align to the bar's edges. Using top + right (not position-area)
+	   means only one end of each axis is pinned, so the panel sizes to its
+	   content instead of stretching to fill an inset region. */
+	position-anchor: --menu-bar;
 	inset: auto;
 	top: anchor(bottom);
 	right: anchor(right);

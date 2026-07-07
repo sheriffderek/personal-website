@@ -6,8 +6,12 @@
 		"weight": 3,
 		"tags": ["job", "consulting"],
 		"flavor": "stone",
-		"format": "static",
-		"media": ["/content/placeholder/poster-wide.png"],
+		"format": "carousel",
+		"media": [
+			{ "type": "photo", "src": "/content/milestones/2026-job-search/01.jpg" },
+			{ "type": "loop", "src": "/content/milestones/2026-job-search/video-wide.mp4" },
+			{ "type": "play", "src": "/content/milestones/2026-job-search/video-wide.mp4" }
+		],
 		"description": "I'm being discerning about my next full-time role - I want the right company to go all-in with, not just the next thing that lands on my plate. If you're reading this, there's a good chance you're on my list. While I've been exploring and talking with different companies, I took on some light consulting and rounded out a few side projects - but now I'm fully ready to join a new team.",
 		"details": "<p>People don't always know what to make of me. My path has gone in a lot of directions - breadth and depth, as you'll see below. I can write full-stack code, lead design at a startup, plan and build an app end to end - but what I want most right now is to be on a team doing something that matters.</p>"
 	},
@@ -421,13 +425,13 @@
 		"flavor": "stone",
 		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
-		"description": "School Loop (since acquired) built a platform that powers high school websites across the country. Each school needs its own theme: mascot, colors, typography. Their team was mostly Java and JavaScript developers, and they wanted a CSS expert to come in and audit their entire component architecture. I built a full themable design system as a standalone proof of concept in CodePen.",
-		"details": "<p>The platform is essentially a web app that generates and maintains school websites from behind the scenes. Teachers put up work, students access projects, tons of data flows through it. My job was to look at the front-facing visual system and tell them if they were building their CSS right. Responsive design had arrived, Sass and Less were changing how people wrote stylesheets, and their team needed someone to evaluate whether their component architecture was keeping up.</p><p>Instead of getting into their giant Java system and scaring everyone, I used CodePen's ability to link pens within other pens and built the entire component architecture as a standalone, themable system. Same primitives, same components, same styles, but overridable per school. I met with every team member, mapped out who was writing what, and explained how it could all work.</p><p>I don't remember calling it a \"design system\" because I don't think people were using that term much in 2016. But that's what it was: a system of themable websites sharing the same primitives with per-school overrides. Whether or not I knew the word, I'd been doing this work for a long time.</p>"
+		"description": "School Loop (since acquired) built a platform that powers high school websites across the country. Each school needs its own theme: mascot, colors, typography. The core application that generated the sites was Java, and they wanted a CSS expert to come in and audit their entire component architecture. I came in, broke everything down, and worked with everyone on the team to make sure their system was declarative and maintainable.",
+		"details": "<p>Instead of getting into their giant Java system and scaring everyone, I started in CodePen to show what was possible in a sandbox. That worked great, so I used the platform's ability to link pens within other pens and built an entire component architecture as a standalone, themable system they could explore and adopt at their own pace.</p><p>I don't remember calling it a \"design system\" ... but that's what it was: themable websites sharing the same primitives with per-school overrides. This was real scale with a lot more edge cases than your average system. It taught me a lot technically - and even more about teamwork and governance: how a group actually agrees on a shared system and keeps it maintained.</p>"
 	},
 	{
 		"slug": "agency-work",
 		"date": "2013 – 2017",
-		"title": "Front-End Developer across LA agencies and startups",
+		"title": "Front-End Developer across LA agencies",
 		"weight": 3,
 		"tags": ["job", "agency", "dev"],
 		"flavor": "warm",

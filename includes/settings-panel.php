@@ -1,22 +1,62 @@
 <?php /*
-	Display settings toolbox.
-	Trigger + popover panel. Each row inside the panel is its own partial
-	in includes/settings/ — comment out an include to remove that row from
-	the panel; uncomment to bring it back.
+	Two menus, two triggers, two popovers (native <popover>, CSS anchor-positioned):
 
-	Switcher rows follow the rigid shape from toolbox-brief.md §4:
-		.{kind}-switcher > p#{kind}-switcher-label + buttons[data-set-{kind}]
+	  Settings (sliders glyph) — theme/scheme/sound + per-page contextual controls
+	    (the timeline filter rides here on the home page).
+	  Pages (hamburger glyph) — site navigation + (future) per-page contextual links.
 
-	Theme is a bundle — it sets the palette AND the type families.
-	Typography is not a separate user-facing concept.
+	Split out of one panel because page links + settings + filter together got too
+	tall. Each row inside a menu is its own partial in includes/settings/.
 */ ?>
 
+<?php /* ---- Settings menu ---- */ ?>
 <button
 	type='button'
-	popovertarget='toolbox-1'
+	popovertarget='menu-settings'
 	class='toolbox-trigger settings-trigger'
-	style='anchor-name: --toolbox-1;'
 	aria-label='Display settings'
+>
+	<span aria-hidden='true'>
+		<svg
+			class='toolbox-glyph'
+			viewBox='0 0 16 16'
+			fill='none'
+			stroke='currentColor'
+			stroke-width='1.4'
+			stroke-linecap='round'
+		>
+			<line x1='2.5' y1='5' x2='13.5' y2='5' />
+
+			<circle cx='10' cy='5' r='1.9' fill='currentColor' stroke='none' />
+
+			<line x1='2.5' y1='11' x2='13.5' y2='11' />
+
+			<circle cx='6' cy='11' r='1.9' fill='currentColor' stroke='none' />
+		</svg>
+	</span>
+</button>
+
+<div
+	id='menu-settings'
+	popover
+	class='toolbox-panel settings-panel'
+	data-ui='app'
+	aria-label='Display settings'
+>
+	<?= partial('settings/mode-switcher') ?>
+	<?= partial('settings/theme-switcher') ?>
+	<?= partial('settings/sound-switcher') ?>
+	<?php if (!empty($page_controls)): ?>
+		<?= partial('settings/' . $page_controls) ?>
+	<?php endif; ?>
+</div>
+
+<?php /* ---- Pages menu ---- */ ?>
+<button
+	type='button'
+	popovertarget='menu-pages'
+	class='toolbox-trigger settings-trigger'
+	aria-label='Pages'
 >
 	<span aria-hidden='true'>
 		<svg class='toolbox-glyph' viewBox='0 0 16 16'>
@@ -28,18 +68,11 @@
 </button>
 
 <div
-	id='toolbox-1'
+	id='menu-pages'
 	popover
 	class='toolbox-panel settings-panel'
 	data-ui='app'
-	style='position-anchor: --toolbox-1;'
-	aria-label='Display settings'
+	aria-label='Pages'
 >
 	<?= partial('settings/page-menu', ['pages' => $pages, 'slug' => $slug]) ?>
-	<?= partial('settings/mode-switcher') ?>
-	<?= partial('settings/theme-switcher') ?>
-	<?= partial('settings/sound-switcher') ?>
-	<?php if (!empty($page_controls)): ?>
-		<?= partial('settings/' . $page_controls) ?>
-	<?php endif; ?>
 </div>

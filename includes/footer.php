@@ -1,7 +1,7 @@
 	</main>
 
 	<footer class='site-footer'>
-		<nav class='footer-menu' aria-label='Pages'>
+		<nav class='footer-menu' aria-label='Footer'>
 			<?php foreach ($pages as $page_slug => $page): ?>
 				<?php if (empty($page['menu'])) { continue; } ?>
 

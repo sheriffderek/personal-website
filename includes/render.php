@@ -54,6 +54,27 @@ function square_variant($path) {
 	return str_replace('-wide.', '-square.', $path);
 }
 
+/* Whether a milestone has a real, made poster (vs the shared placeholder art).
+   Posters are optional and built top-down, so a card renders media only when it
+   points at a real asset — placeholder paths and empty media stay text-only.
+   Which renderer (photo/video/carousel) is still chosen by 'format'. */
+function has_real_poster($milestone) {
+	if (!empty($milestone['vimeo'])) {
+		return true;
+	}
+
+	foreach ($milestone['media'] ?? [] as $item) {
+		/* photo/video media are strings; carousel slides are {type, src}. */
+		$src = is_array($item) ? ($item['src'] ?? '') : $item;
+
+		if (!empty($src) && strpos($src, '/content/placeholder/') === false) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 /* Cache-busting: append a file's mtime to its URL so a changed file gets a new
    URL (forces a fresh fetch) while an unchanged file still caches. $path is
    web-absolute (/scripts/x.js). */

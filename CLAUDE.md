@@ -68,7 +68,7 @@ For CSS-specific conventions (no BEM, no underscores/double-dashes, nesting scop
 
 ### The bar
 
-The site-header intro (`includes/header.php`) is the signed-off calibration example. Hold every other section to its standard:
+The home page-header intro (`templates/pages/home.php`, `.page-header`) is the signed-off calibration example. Hold every other section to its standard:
 - Every list item carries a claim. Pairs like "design systems and cross-team collaboration" encode how things connect. They are not padding.
 - Breadth framed as method, not menu. "That's how I attack problems," never "I can do anything."
 - Each paragraph does one job (what / where and how long). Three jobs in a paragraph is the ceiling.
@@ -152,7 +152,7 @@ Uses `<details>` for inline unfold. Both `description` and `details` render raw 
 - Free-form prose inside a quoted attribute (quotes could end the attribute early) → `quote_safe()` (the meta description in `includes/header.php` is the one current case).
 - User-generated or otherwise untrusted content → doesn't exist on this site today. If it ever does, add a helper named for that threat at that time (don't pre-build it), and convert at output, per context.
 
-Locked-in markup pattern (same in `includes/header.php` and `templates/milestone.php`, keep them matching):
+Locked-in markup pattern (same in the home page-header `templates/pages/home.php` and `templates/milestone.php`, keep them matching):
 - `<summary class='read-more'>` wraps `<span class='calm-voice link'>Read more</span> →` — underline on the span only, arrow outside it.
 - Body is `<text-content class='styled more-body'>` (paragraph rhythm comes from `text-content.styled` in typography.css).
 - Body opens with `<p>→</p>` — the arrow persists as an anchor after `[open] summary` hides.

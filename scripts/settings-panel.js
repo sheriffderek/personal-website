@@ -281,60 +281,70 @@
 
 	if (entries.length) applyFilter(initialFilter);
 
-	/* Outside-tap dismiss. Native popover light-dismiss is unreliable on iOS
-	   Safari (a styled ::backdrop swallows the tap, and support only landed in
-	   18.3), so we close it ourselves. We track open state from the `toggle`
+	/* Outside-tap dismiss, for BOTH menus (Settings + Pages). Native popover
+	   light-dismiss is unreliable on iOS Safari (a styled ::backdrop swallows
+	   the tap, and support only landed in 18.3), so we close it ourselves.
+	   Only one auto-popover is open at a time; we track which from the `toggle`
 	   event (rather than :popover-open, which can throw on older Safari) and
 	   listen for both pointerdown and touchstart - touchstart is the raw touch
 	   event iOS always fires. We compare the tap point to the panel's box, not
 	   the event target (a ::backdrop tap reports the popover itself as target,
-	   so a contains() check would wrongly keep it open). The trigger is skipped
+	   so a contains() check would wrongly keep it open). Any trigger is skipped
 	   so its own tap toggles natively without a close-then-reopen race. */
-	var toolboxTrigger = document.querySelector('.toolbox-trigger');
-	var toolboxPanel = document.getElementById('toolbox-1');
+	var toolboxTriggers = document.querySelectorAll('.toolbox-trigger');
+	var toolboxPanels = document.querySelectorAll('.toolbox-panel');
+	var openPanel = null;
 
-	if (toolboxTrigger && toolboxPanel) {
-		var panelOpen = false;
-
-		toolboxPanel.addEventListener('toggle', function (event) {
-			panelOpen = event.newState === 'open';
+	toolboxPanels.forEach(function (panel) {
+		panel.addEventListener('toggle', function (event) {
+			if (event.newState === 'open') {
+				openPanel = panel;
+			} else if (openPanel === panel) {
+				openPanel = null;
+			}
 		});
+	});
 
-		function dismissIfOutside(clientX, clientY, target) {
-			if (!panelOpen) {
-				return;
-			}
-			if (toolboxTrigger.contains(target)) {
-				return;
-			}
-
-			var box = toolboxPanel.getBoundingClientRect();
-			var insidePanel =
-				clientX >= box.left &&
-				clientX <= box.right &&
-				clientY >= box.top &&
-				clientY <= box.bottom;
-
-			if (!insidePanel && toolboxPanel.hidePopover) {
-				toolboxPanel.hidePopover();
-
-				/* A softer click than the trigger's — half volume (gated by
-				   data-sound like every other UI sound). */
-				if (window.ui && window.ui.sound) {
-					window.ui.sound('click-soft');
-				}
+	function tapIsOnTrigger(target) {
+		for (var i = 0; i < toolboxTriggers.length; i++) {
+			if (toolboxTriggers[i].contains(target)) {
+				return true;
 			}
 		}
-
-		document.addEventListener('pointerdown', function (event) {
-			dismissIfOutside(event.clientX, event.clientY, event.target);
-		});
-
-		document.addEventListener('touchstart', function (event) {
-			var touch = event.touches[0];
-			if (touch) {
-				dismissIfOutside(touch.clientX, touch.clientY, event.target);
-			}
-		}, { passive: true });
+		return false;
 	}
+
+	function dismissIfOutside(clientX, clientY, target) {
+		if (!openPanel || tapIsOnTrigger(target)) {
+			return;
+		}
+
+		var box = openPanel.getBoundingClientRect();
+		var insidePanel =
+			clientX >= box.left &&
+			clientX <= box.right &&
+			clientY >= box.top &&
+			clientY <= box.bottom;
+
+		if (!insidePanel && openPanel.hidePopover) {
+			openPanel.hidePopover();
+
+			/* A softer click than the trigger's — half volume (gated by
+			   data-sound like every other UI sound). */
+			if (window.ui && window.ui.sound) {
+				window.ui.sound('click-soft');
+			}
+		}
+	}
+
+	document.addEventListener('pointerdown', function (event) {
+		dismissIfOutside(event.clientX, event.clientY, event.target);
+	});
+
+	document.addEventListener('touchstart', function (event) {
+		var touch = event.touches[0];
+		if (touch) {
+			dismissIfOutside(touch.clientX, touch.clientY, event.target);
+		}
+	}, { passive: true });
 })();

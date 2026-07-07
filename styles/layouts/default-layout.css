@@ -12,25 +12,15 @@ body {
 	flex-direction: column;
 	min-height: 100dvh;
 }
-.site-header,
 main {
 	padding: 1rem;
-}
 
-/* The first content block sits at the same top offset on every page: on
-   home that block is the page-header (.site-header); on every other page
-   it's main itself. When the home intro is present, main comes after it
-   and only needs normal spacing (reset just below). */
-.site-header,
-main {
+	/* Every page's content starts at the same top offset. The first thing
+	   inside main is the page-header (home's intro, other pages' heading). */
 	padding-top: 80px;
 }
 
-.site-header ~ main {
-	padding-top: 1rem;
-}
-
-.site-header {
+.page-header {
 	details {
 		margin-top: 1em;
 	}
@@ -45,6 +35,10 @@ main {
 	top: 0;
 	transition: 0.5;
 	z-index: 50;
+
+	/* The menu popovers anchor to this bar (not their trigger buttons), so
+	   they align to the bar's edges instead of dangling off a small glyph. */
+	anchor-name: --menu-bar;
 
 	background-color: var(--fill-primary);
 
@@ -67,23 +61,18 @@ main {
 	.page-wrapper {
 		display: grid;
 		grid-template-columns: 1fr minmax(0, 720px) 300px 1fr;
-		grid-template-rows: auto 1fr auto;
+		grid-template-rows: 1fr auto;
 		column-gap: 1.5rem;
-	}
-
-	.site-header {
-		grid-column: 2;
-		grid-row: 1;
 	}
 
 	main {
 		grid-column: 2;
-		grid-row: 2;
+		grid-row: 1;
 	}
 
 	.site-footer {
 		grid-column: 2;
-		grid-row: 3;
+		grid-row: 2;
 	}
 
 	.page-wrapper > .page-rail {

@@ -9,16 +9,13 @@
 
 	<?php
 		/* Posters are optional and built top-down (weight 3 first). A card shows
-		   one only when it has real media; otherwise it's text-only. That makes
-		   poster-presence itself a visual hierarchy cue. To give a milestone a
-		   poster, set its format to photo/video (and add the asset) - a plain
-		   'static' entry stays text-only. */
-		$carousels_enabled = false;
+		   one only when it points at a real asset (not the shared placeholder),
+		   so poster-presence itself is a visual hierarchy cue. To give a milestone
+		   a poster: set its format (photo/video/carousel) and point media at a
+		   real file - until then it stays text-only. */
+		$carousels_enabled = true;
 
-		$has_poster =
-			($milestone['format'] === 'photo' && !empty($milestone['media'][0])) ||
-			($milestone['format'] === 'video' && (!empty($milestone['media'][0]) || !empty($milestone['vimeo']))) ||
-			($carousels_enabled && $milestone['format'] === 'carousel' && !empty($milestone['media']));
+		$has_poster = has_real_poster($milestone);
 	?>
 	<?php if ($has_poster): ?>
 	<div class='media'>
