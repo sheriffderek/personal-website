@@ -1,0 +1,7 @@
+:root {
+	/* The reusable edge margin / gutter — the default breathing room that keeps
+	   content and chrome off the screen edges. Reach for this instead of a raw
+	   1rem so spacing stays consistent everywhere. A fuller scale can grow here
+	   later (--gutter-tight, --gutter-loose, etc.) when it's needed. */
+	--gutter: 1rem;
+}

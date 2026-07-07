@@ -1,6 +1,7 @@
 {
 	"name": "GoFundMe",
 	"hero": "TBD: A note for the GoFundMe team. I've been circling crowdfunding UX for over a decade, and a lot of the work below maps directly to what a Senior Product Designer on Heart would be doing day to day. Each entry has a short note on how it connects.",
+	"now": "TBD: A note for the GoFundMe team about what I'm focused on right now and how it lines up with the Senior Product Designer role on Heart.",
 	"milestones": {
 		"2026-job-search": "<strong>GoFundMe</strong> has actually shown up for people I love - it helped my wife after a neighbor burned down their apartment building, and it's raised money for a bunch of my friends when they needed it. So this one's personal. And the role is a real fit: I've spent years being the person who can design the system, build the product, and help a team raise its bar, all at once.",
 		"world-ia-day-2026": "<strong>GoFundMe</strong> wants someone who can lead, run workshops, and represent the company out loud. That's exactly what chairing this conference was, and it's work I'm genuinely good at and enjoy.",
@@ -13,6 +14,7 @@
 		"pe-founded": "<strong>GoFundMe</strong> runs on triads and cross-functional teams - which only click when designers, engineers, and PMs actually share a language. Getting people from totally different backgrounds to communicate and build together is the whole thing I spent six years figuring out.",
 		"mentoring": "<strong>GoFundMe</strong> is exactly the kind of place I've helped people land. I've mentored a lot of designers and developers in SF into their first role - or helped them hold onto one through a rocky start.",
 		"school-loop": "<strong>GoFundMe</strong> already has a team and a system that work. I'm good at coming in and making things better from the inside - working with people, not around them, without disrupting what's already good.",
+		"agency-work": "<strong>GoFundMe</strong> is likely a more established product machine, but I got my experience in the fast-paced world of agencies - so I can work with any setting and set of constraints.",
 		"shoutq": "<strong>GoFundMe</strong> ships consumer product across web and native, and this is where I first learned to think like a product person instead of a site builder - owning UI, responsive behavior, and user testing on something that had to actually function. That instinct to sit between design and engineering and translate one to the other is exactly what I bring to a triad.",
 		"nouveau-studios": "<strong>GoFundMe</strong> first landed on my desk here, in a way. One of my early UX projects at Nouveau was mapping out a crowdfunding competitor - campaign pages, donation flows, share mechanics - over a decade before I read this posting. I was breaking down the same problem space you live in, just from the outside looking in."
 	}

@@ -13,7 +13,7 @@ body {
 	min-height: 100dvh;
 }
 main {
-	padding: 1rem;
+	padding: var(--gutter);
 
 	/* Every page's content starts at the same top offset. The first thing
 	   inside main is the page-header (home's intro, other pages' heading). */
@@ -45,7 +45,7 @@ main {
 
 	background-color: var(--fill-primary);
 
-	padding: 0.5rem 1rem;
+	padding: 0.5rem var(--gutter);
 
 	display: flex;
 	justify-content: flex-end;
