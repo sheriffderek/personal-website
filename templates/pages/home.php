@@ -4,13 +4,15 @@
 
 $all_milestones = load_json('milestones.json');
 
-// Which slice of the timeline? Defaults to job-relevant, weight-3 entries.
+// Which lane of the timeline? Defaults to job-relevant entries. We render ALL
+// weights (not just the top tier) so the filter slider has lower tiers to
+// reveal — the slider's default (tier 1) hides everything below weight 3 on
+// load, so the initial view is unchanged.
 $filter_tag = isset($_GET['filter']) ? $_GET['filter'] : 'job';
 
 $milestones = array_filter($all_milestones, function ($m) use ($filter_tag) {
 	$tags = isset($m['tags']) ? $m['tags'] : [];
-	$weight = isset($m['weight']) ? $m['weight'] : 1;
-	return in_array($filter_tag, $tags) && $weight >= 3;
+	return in_array($filter_tag, $tags);
 });
 
 // A ?target=companyname loads tailored notes for specific milestones.

@@ -1,0 +1,24 @@
+.rotate-notice {
+	display: none;
+}
+
+/* Short + landscape + touch = a phone held sideways. Tablets are taller than
+   500px in landscape, and a resized desktop window is pointer: fine — so this
+   targets phones and (almost) only phones. */
+@media (orientation: landscape) and (max-height: 500px) and (pointer: coarse) {
+	.rotate-notice {
+		display: grid;
+		place-content: center;
+		gap: 1rem;
+		text-align: center;
+
+		position: fixed;
+		inset: 0;
+		z-index: 1000;
+
+		padding: 2rem;
+
+		background: var(--fill-primary);
+		color: var(--ink-primary);
+	}
+}

@@ -50,6 +50,15 @@
 </head>
 
 <body>
+	<?php /* Phone-in-landscape scold. CSS shows it only on short landscape touch
+		screens; it leaves the real content in the DOM (visual gag only, so AT
+		users are unaffected). */ ?>
+	<div class='rotate-notice'>
+		<p class='loud-voice'>Are you kidding me right now?</p>
+
+		<p>This isn't television. Sit up straight. Turn that phone around.</p>
+	</div>
+
 	<div class='page-wrapper'>
 		<?php /* Zero-height marker: once it scrolls out the top, the rail is
 			stuck. sticky-header.js watches it and toggles .is-stuck. */ ?>

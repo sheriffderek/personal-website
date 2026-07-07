@@ -105,8 +105,13 @@ button.toolbox-trigger {
 	margin: 0.5rem 0 0 0;
 
 	width: max-content;
-	min-width: 280px;
-	max-width: 360px;
+
+	/* Never wider than the screen. Right-anchored to the bar, so the cap keeps
+	   the LEFT edge from running off a narrow viewport - 360px on roomy screens,
+	   viewport-minus-a-gutter on small ones. min() also caps the min-width so a
+	   very narrow screen can't force an overflow. */
+	min-width: min(280px, 100vw - 1.5rem);
+	max-width: min(360px, 100vw - 1.5rem);
 
 	padding: 1.25rem;
 
