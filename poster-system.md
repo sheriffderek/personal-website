@@ -58,7 +58,11 @@ Two knobs, different jobs - don't mix them:
 - **Flavor owns the palette** - which colors fill *this* poster (`warm`, `cool`, `night`, ...). Gradient stops live here. Per-poster, set via `data-flavor` on the article.
 - **Theme owns the shape language** - sharp vs round corners, thin vs thick lines, gradient on vs flat. Set via `data-theme` on `<html>`.
 
-So: the gradient's **stops are a flavor**, the gradient's **on/off is a theme**. Invert (dark surface, light marks) is just a flavor that sets `--poster-fill` dark and `--poster-ink` light - never `filter: invert()`.
+So a gradient is entirely a flavor call: define `--poster-gradient-from` / `-to`
+to turn one on, leave them out to stay flat (they fall back to `--poster-fill`).
+Theme still owns the shape language - corners, line widths. Invert (dark surface,
+light marks) is just a flavor that sets `--poster-fill` dark and `--poster-ink`
+light - never `filter: invert()`.
 
 ## Gradient background
 

@@ -249,23 +249,23 @@
 		"slug": "pe-study-hall",
 		"date": "June – July 2021",
 		"weight": 2,
-		"title": "PE Study Hall",
+		"title": "Early PE study hall experiments",
 		"tags": ["job", "dev", "education", "design"],
 		"flavor": "moss",
 		"media": ["/content/placeholder/poster-wide.png"],
-		"description": "Added the Study Hall module - interactive tracking, activity feed, learner-side progress. The first time the platform actually responded to what a student was doing instead of just serving content.",
-		"details": "<p>Pre-Study-Hall, the platform was a publisher. Post-Study-Hall, it became a participant. Students had a sense that their work was being noticed and counted. That subtle shift changed how seriously they took the lessons.</p>"
+		"description": "In DFTW (and any PE program), your progress is shown by your ability to complete your projects. You can either do it - or you can't. This cuts out the \"Well, am I good enough yet\" mentality. Can you make a website - or not? No mystery here. Building that sense of what it means to actually understand something is core to our pedagogy. But we wanted to try building a data-driven Anki-type system and see how people used it.",
+		"details": "<p>The goal was to help students see how much they were learning - just an added reminder - but it also served as a conversation starter. Students often avoid just meeting up and chatting if they don't have something specific to talk about, so we created \"Study Hall\" as a companion layer that feeds off the material introduced in each workshop. Use it as a conversation guide, to practice interviews, as a recap, or not at all! The truth is, almost no one used it - but the gears are in place, one student even used the API endpoint to build their own Anki system, and it's becoming more useful now with the self-paced model.</p>"
 	},
 	{
 		"slug": "pssst-css",
 		"date": "2021 – ongoing",
-		"title": "PSSST (CSS) methodology",
+		"title": "PSSST (CSS): a methodology for CSS structure",
 		"weight": 2,
 		"tags": ["job", "design-systems", "dev"],
 		"flavor": "cool",
 		"media": ["/content/placeholder/poster-wide.png"],
-		"description": "A named CSS methodology that grew out of the CSS-Tricks type-patterns thinking. Modules, layout patterns, voice classes. The shared design spine across all my projects - PE, this site, List at Ease, the consulting work.",
-		"details": "<p>Less a framework, more a vocabulary. Voice classes for type, modules for repeating structures, layouts as their own layer. Currently being reworked into a sharable package. Bumps to weight 3 when that ships.</p>"
+		"description": "As a developer, there are usually two roads: you pick something you like and stick with it forever, or you're like me and constantly on the hunt for better ways to organize things. It's important not to rehash things in your practical work, but this is where I've kept my view on CSS documented as a starter for new projects. It's changed a lot over the years, but the core ideas are still the same. If you actually think it all through in layers, you can write clean, clear CSS you understand - instead of consciously trying to avoid it.",
+		"details": ""
 	},
 	{
 		"slug": "css-tricks-article",
@@ -282,12 +282,12 @@
 		"slug": "pe-page-modules",
 		"date": "2020",
 		"weight": 2,
-		"title": "PE Content Module System",
+		"title": "Building PE's initial page module system",
 		"tags": ["job", "dev", "education", "design"],
 		"flavor": "warm",
 		"media": ["/content/placeholder/poster-wide.png"],
-		"description": "Built out the full content module system for PE. Picture and figure modules, goal/challenge/key-concept modules, the bulletin system, a flexible rich-page template, lazy-loaded video embeds. The lesson page goes from a long scroll to a composable surface.",
-		"details": "<p>Each module type encodes a pedagogical pattern. A goal module looks different from a challenge module because the learner is supposed to do something different with each. The whole module library is a teaching theory expressed in components.</p>"
+		"description": "If your curriculum is solid, it really doesn't matter if it's in a fancy LMS or a Google doc or a PDF - the philosophy is what matters. But as things grew, a system started forming. Patterns emerged, and we needed something that could house cross-use resources like key concepts that might be revisited across many workshops or programs. If you're just going to have one big long white page, things are simple - we could have used Markdown/MDX - but we also wanted our site to be a teaching tool. It mattered that everything we taught in DFTW showed up in the actual LMS they were using - the kind of product they'd eventually be building themselves.",
+		"details": "<p>How do you compose pages that stay accessible, visually appealing, and themeable - with relational data that can make something more than an article and a video? You need big areas of text that handle whatever you throw at them. There's reason for some more specifically styled standalone lists, a variety of figure types, videos, mid-page key concepts, shortcuts, and related resources. A whole little system of drag-and-drop page modules to compose pages with no code in the CMS.</p>"
 	},
 	{
 		"slug": "freelancing-2019",
@@ -297,8 +297,8 @@
 		"tags": ["job", "consulting", "ecommerce"],
 		"flavor": "stone",
 		"media": ["/content/placeholder/poster-wide.png"],
-		"description": "A long consulting engagement that turned into an ecommerce deep-dive. Research and design across the full purchase journey - catalog, cart, checkout, post-purchase, returns, retention. Ran alongside the early days of building Perpetual Education.",
-		"details": "<p>The kind of work that doesn't show up on a portfolio later but informs every product instinct after it. By the end I had spent enough time inside the ecommerce problem space to know how the patterns connect - what makes someone trust a cart enough to fill it out, what makes them come back, where the design and the business model are actually the same conversation.</p>"
+		"description": "While I was creating the first rounds of curriculum for PE, I also needed some work to pay the bills. I ended up on a bunch of Shopify projects with local agencies. I hadn't used Shopify before - but it's basically a CMS for products, right? What it really entailed was learning all the quirks and weird problems. There are a lot! I had to research and design across the full purchase journey - catalog, cart, checkout, post-purchase, returns, retention, coupons, inventory, plugins, and <em>yeah</em>. The forums were full of drop-shipping noise and nothing for developers, so I found the Shopify Discord (for developers), which is still going strong today. I learned a bunch about Vue, integrating it, building configurators, and helping teams work out new workflows.",
+		"details": ""
 	},
 	{
 		"slug": "pe-founded",
