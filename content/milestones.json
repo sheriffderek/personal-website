@@ -474,8 +474,8 @@
 		"flavor": "warm",
 		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
-		"description": "Nouveau Studios hired me as a front-end developer, but they trusted me to take on more responsibility than my experience probably warranted. I got pulled into research, strategy, project planning, content auditing, client relationships, and business development. Not just implementation. Built custom WordPress themes for small and medium businesses and publishers, some with complex JavaScript and interactive features.",
-		"details": "<p>Great team. Learned a ton. The projects were full visual environments: Cam and Benny (an illustrated shelf-UI for animation creators), Murder Doll House (a dark theatrical world for a production company), Jamie Palumbo (a bold musician site). Each one was custom, responsive, and built to match a specific visual world.</p><p>I taught the team Git, introduced modern development practices, and started thinking systematically about components and reusable patterns before anyone was calling it \"design systems.\" The agency eventually collapsed and offered me a partner role on the way down. I declined.</p>"
+		"description": "I'd been freelancing and learning as I went, but the goal was always to work at a real design shop. Nouveau Studios was in downtown LA and I got to ride my bike to work. They hired me for my responsive CSS skills, but pretty quickly they started trusting me with more responsibility than my experience probably warranted - research, strategy, project planning, content auditing, client relationships, and business development.",
+		"details": "<p>Great team, and I learned a ton. Over time I introduced modern development practices - Bower, Sass, Git - and started thinking systematically about components and reusable patterns before anyone was calling it \"design systems.\"</p>"
 	},
 	{
 		"slug": "fundamonium",
@@ -495,8 +495,8 @@
 				"src": "/content/placeholder/poster-wide.png"
 			}
 		],
-		"description": "Learned in the real world, not sandboxes or YouTube tutorials. Client needs a photo gallery? Figure it out. Video integration? CMS? Figure it out. Started building websites for real clients right away and got passionate about responsive design early on, which put me at the edge of that curve and made me notably useful.",
-		"details": "<p>Fundamonium was the business name. Lucky to have had challenging early projects that forced me to dig deep. Time No Place (a record label site) was the \"all was revealed\" moment, where CMS, databases, and content relationships clicked into place as a design problem, not just a technical one. That project had artists, releases, shows, a blog, all connected. It was my first real WordPress custom theme and it changed how I thought about data.</p><p>Got really into responsive design right as Ethan Marcotte published the idea. Most designers were still building for desktop only. I was building for every screen from the start, and that early commitment to responsive thinking shaped everything that came after.</p>"
+		"description": "There weren't YouTube tutorials for everything back then. If a client needed a photo gallery, I'd have to figure it out. Video integration? A CMS? Figure it out. It was tough - no flexbox yet, still plenty of cross-browser issues - but I'm really glad I had to just dive in. I got passionate about responsive design right when @media rules started being used, which put me at the edge of that curve and made me notably useful.",
+		"details": "<p>I built a lot of things, but the website for Time No Place was where all the relational data and CMS stuff really came together, and I finally felt like a real web designer.</p>"
 	},
 	{
 		"slug": "holloys",
@@ -523,12 +523,12 @@
 	{
 		"slug": "cca-bfa",
 		"date": "2001 – 2005",
-		"title": "BFA, California College of the Arts",
-		"weight": 1,
-		"tags": ["art", "education"],
+		"title": "Art college, Flash, and MySpace",
+		"weight": 3,
+		"tags": ["job", "art", "education"],
 		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
-		"description": "Individualized major: Printmaking, Painting, Sculpture, Installation, Performance. Learned Flash, built first websites, MIDI sequencing, Max/MSP.",
-		"details": "<p>Started with illustration, moved to loose painting, then printmaking. Built websites for friends in Flash. Programmed lighting for live performances. Tried to convince everyone to get a website.</p>"
+		"description": "After an art-specific magnet school, art college seemed like the next step. I went to <a class='relaxed' href='https://www.cca.edu' target='_blank' rel='noopener'>CCA (California College of the Arts)</a> assuming I'd become an illustrator - I wanted to work with <a class='relaxed' href='https://en.wikipedia.org/wiki/Barron_Storey' target='_blank' rel='noopener'>Barron Storey</a>. But I drifted toward printmaking and painting instead, and ended up with an individualized major. I can't say I was the best student, but I was busy: a lot of Flash, customizing MySpace pages, and interdisciplinary computer classes where I learned <a class='relaxed' href='https://cycling74.com/' target='_blank' rel='noopener'>Max/MSP and Jitter</a> from some of the guys from <a class='relaxed' href='https://www.srl.org/' target='_blank' rel='noopener'>Survival Research Laboratories</a>. I was also making a lot of music with synthesizers. So I got to spend five years thinking about composition, typography, and interactivity - and really, what is worth making. All the things that happen to be my job today.",
+		"details": ""
 	}
 ]

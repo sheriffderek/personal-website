@@ -17,31 +17,39 @@
 	   frame nudge the scroll by however much that same top moved. The card
 	   stays put under the reader's eye; the rest of the page reflows around
 	   it. */
-	/* Optional `willSurvive(card)` lets a caller anchor only to cards that
-	   will still exist after the change. A theme swap keeps every card, so it
-	   passes nothing. A narrowing filter can delete the card under the reader's
-	   eye - so it passes a test, and we anchor to the nearest card that stays
-	   rather than pinning to one about to vanish (which would break the math). */
-	function centeredMilestone(willSurvive) {
+	/* Anchor candidates are the page header plus every milestone - any major
+	   section the reader might be sitting on. Anchoring only to milestones
+	   broke near the top: with the header filling the viewport middle, there's
+	   no centered milestone, so we'd pin to the first card below the fold and
+	   the header would jump by that card's reflow delta.
+
+	   Optional `willSurvive(card)` lets a caller anchor only to sections that
+	   will still exist after the change. A theme swap keeps everything, so it
+	   passes nothing. A narrowing filter can delete the milestone under the
+	   reader's eye - so it passes a test, and we anchor to the nearest section
+	   that stays rather than pinning to one about to vanish (which would break
+	   the math). The header never filters away, so the test only gates
+	   milestones. */
+	function centeredSection(willSurvive) {
 		var middle = window.innerHeight / 2;
-		var cards = document.querySelectorAll('.milestone');
+		var sections = document.querySelectorAll('.page-header, .milestone');
 		var closest = null;
 		var closestDistance = Infinity;
 
-		cards.forEach(function (card) {
-			var box = card.getBoundingClientRect();
+		sections.forEach(function (section) {
+			var box = section.getBoundingClientRect();
 
 			/* Filtered-out cards collapse to zero height - skip them. */
 			if (box.height === 0) return;
 
-			if (willSurvive && !willSurvive(card)) return;
+			if (willSurvive && section.matches('.milestone') && !willSurvive(section)) return;
 
-			var cardCenter = box.top + box.height / 2;
-			var distance = Math.abs(cardCenter - middle);
+			var sectionCenter = box.top + box.height / 2;
+			var distance = Math.abs(sectionCenter - middle);
 
 			if (distance < closestDistance) {
 				closestDistance = distance;
-				closest = card;
+				closest = section;
 			}
 		});
 
@@ -49,7 +57,7 @@
 	}
 
 	function syncScroll(applyChange, willSurvive) {
-		var anchor = centeredMilestone(willSurvive);
+		var anchor = centeredSection(willSurvive);
 		var topBefore = anchor ? anchor.getBoundingClientRect().top : 0;
 
 		applyChange();

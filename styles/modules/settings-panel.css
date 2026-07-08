@@ -162,6 +162,18 @@ button.toolbox-trigger {
 		/* Fallback repeats the light value in case a browser doesn't inherit
 		   custom properties onto the top-layer ::backdrop. */
 		background: var(--scrim, rgb(0 0 0 / 0.15));
+
+		/* Smooth the switch between menus. The incoming backdrop appears at full
+		   dim instantly, while the OUTGOING one fades out underneath it (overlay+
+		   display allow-discrete keep it painting through the fade). So the dim
+		   never dips off and back on - no flash. (No entry fade on purpose: an
+		   instant incoming dim is what keeps the overlap seamless.) */
+		opacity: 1;
+		transition: opacity 150ms ease, overlay 150ms allow-discrete, display 150ms allow-discrete;
+	}
+
+	.toolbox-panel:not(:popover-open)::backdrop {
+		opacity: 0;
 	}
 }
 
