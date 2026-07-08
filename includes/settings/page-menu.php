@@ -4,7 +4,7 @@
 			<?php if (empty($page['menu'])) { continue; } ?>
 
 			<li>
-				<a href='<?= $page_slug === 'home' ? '/' : '/' . $page_slug ?>'<?= $page_slug === $slug ? " aria-current='page'" : '' ?>><?= $page['menu'] ?></a>
+				<a href='<?= ($page_slug === 'home' ? '/' : '/' . $page_slug) . ($target_query ?? '') ?>'<?= $page_slug === $slug ? " aria-current='page'" : '' ?>><?= $page['menu'] ?></a>
 			</li>
 		<?php endforeach; ?>
 	</ul>

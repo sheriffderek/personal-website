@@ -16,10 +16,10 @@ if (isset($_GET['target'])) {
 	<h1 class='loud-voice'>Now</h1>
 
 	<p>Placeholder. What I'm focused on at the moment.</p>
-</text-content>
 
-<?php if (!empty($target['now'])): ?>
-	<p class='target-note'>
-		<?= $target['now'] ?>
-	</p>
-<?php endif; ?>
+	<?php if (!empty($target['now'])): ?>
+		<p class='target-note'>
+			<?= $target['now'] ?>
+		</p>
+	<?php endif; ?>
+</text-content>

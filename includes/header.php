@@ -5,8 +5,32 @@
 <head>
 	<meta charset='utf-8'>
 	<meta name='viewport' content='width=device-width, initial-scale=1'>
-	<title><?= $page_title ?? SITE_TITLE ?></title>
-	<meta name='description' content='<?= quote_safe($page_description ?? SITE_DESCRIPTION) ?>'>
+
+	<?php
+		/* One source for the page's title/description, reused by the <title>,
+		   the meta description, and the share cards below so they never drift.
+		   The share image is site-wide for now; a page can override by setting
+		   $page_image (web-absolute path) before including this header. */
+		$meta_title = $page_title ?? SITE_TITLE;
+		$meta_description = $page_description ?? SITE_DESCRIPTION;
+		$meta_image = SITE_URL . ($page_image ?? SITE_SHARE_IMAGE);
+		$meta_url = SITE_URL . strtok($_SERVER['REQUEST_URI'], '?');
+	?>
+	<title><?= $meta_title ?></title>
+	<meta name='description' content='<?= quote_safe($meta_description) ?>'>
+
+	<?php /* Share cards: Open Graph (Facebook/LinkedIn/iMessage) + Twitter. */ ?>
+	<meta property='og:type' content='website'>
+	<meta property='og:site_name' content='<?= SITE_TITLE ?>'>
+	<meta property='og:title' content='<?= quote_safe($meta_title) ?>'>
+	<meta property='og:description' content='<?= quote_safe($meta_description) ?>'>
+	<meta property='og:url' content='<?= $meta_url ?>'>
+	<meta property='og:image' content='<?= $meta_image ?>'>
+
+	<meta name='twitter:card' content='summary_large_image'>
+	<meta name='twitter:title' content='<?= quote_safe($meta_title) ?>'>
+	<meta name='twitter:description' content='<?= quote_safe($meta_description) ?>'>
+	<meta name='twitter:image' content='<?= $meta_image ?>'>
 	<script>
 		(function () {
 			var html = document.documentElement;
@@ -66,7 +90,7 @@
 		<div class='rail-sentinel' aria-hidden='true'></div>
 
 		<header class='page-rail'>
-			<a class='site-name' href='/'>Derek Wood</a>
+			<!--<a class='site-name' href='<?= '/' . ($target_query ?? '') ?>'>Derek Wood</a>-->
 
 			<?php include INCLUDES_DIR . '/settings-panel.php'; ?>
 		</header>

@@ -113,7 +113,7 @@
 				</summary>
 
 				<text-content class='styled more-body'>
-					<p>→</p>
+					<div>→</div>
 					<?= $milestone['details'] ?>
 				</text-content>
 			</details>

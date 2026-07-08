@@ -10,6 +10,14 @@ if ($slug === '') {
 	$slug = 'home';
 }
 
+// A ?target=companyname tailors content for a specific visitor (see the pages
+// in templates/pages/). It's a whole-visit context, so every internal link we
+// render carries it forward - otherwise the first click drops them back to the
+// generic site. We sanitize once here and hand the ready-made query suffix to
+// the header, menu, and footer. Same character rule the pages use.
+$target_slug = isset($_GET['target']) ? preg_replace('/[^a-z0-9-]/', '', strtolower($_GET['target'])) : '';
+$target_query = $target_slug !== '' ? '?target=' . $target_slug : '';
+
 // The pages this site has. Each one is a body file in templates/pages/,
 // plus the <title> and meta description that go in its <head>.
 // 'menu' is the short label shown in the menu + footer (pages without it,

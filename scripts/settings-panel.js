@@ -206,7 +206,7 @@
 	   1 = top tier only, 3 = all. */
 	var FILTER_NAMES = { 1: 'Top', 2: 'More', 3: 'All' };
 	var filterSlider = document.querySelector('[data-set-filter]');
-	var miniMap      = document.querySelector('.mini-map');
+	var miniMap      = document.querySelector('.mini-map-bars');
 	var filterName   = document.querySelector('[data-filter-name]');
 	var filterCount  = document.querySelector('[data-filter-count]');
 	var entries      = document.querySelectorAll('.timeline > li');

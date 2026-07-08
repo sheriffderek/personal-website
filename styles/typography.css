@@ -1,23 +1,6 @@
-:root {
-	/* --font-heading and --font-body live in the theme bundle (settings.css).
-	   --font-ui and --font-code are scheme/theme-invariant role tokens. */
-	--font-ui: var(--font-sans);
-	--font-code: var(--font-mono);
-}
-
-:root {
-	/* One weight per voice - the single place to tune how heavy each voice
-	   speaks. Variable fonts allow off-step values (330, 530) for fine-tuning;
-	   every voice below reads its token instead of a hard-coded number. */
-	--calm-voice-font-weight: 330;
-	--strong-voice-font-weight: 500;
-	--attention-voice-font-weight: 530;
-	--loud-voice-font-weight: 500;
-	--quiet-voice-font-weight: 300;
-	--label-voice-font-weight: 500;
-	--high-voice-font-weight: 400;
-	--data-voice-font-weight: 400;
-}
+/* All type tokens (voice properties + font roles) live in the theme API in
+   settings.css :root, next to the color tokens - the full brand in one place.
+   This file is only the voice RULES; each reads its --<voice>-* tokens. */
 
 body {
 	font-family: var(--font-body);
@@ -32,11 +15,14 @@ h2,
 h3,
 h4 {
 	font-family: var(--font-heading);
-	font-weight: var(--font-heading-weight, 600);
+	font-weight: var(--font-heading-weight, 600); /* why? */
 }
 
 h1,
-h2,
+h2 {
+	text-wrap: balance;
+}
+
 h3,
 h4,
 p {
@@ -45,12 +31,11 @@ p {
 
 .calm-voice,
 p {
-	font-family: var(--font-body);
-	font-size: 1.1rem;
+	font-family: var(--calm-voice-font-family);
+	font-size: var(--calm-voice-font-size);
 	font-weight: var(--calm-voice-font-weight);
-	line-height: 1.5;
+	line-height: var(--calm-voice-line-height);
 	max-width: 72ch;
-	text-wrap: pretty;
 
 	a {
 		&.relaxed {
@@ -61,24 +46,26 @@ p {
 
 .calm-voice em,
 p em {
-	font-style: italic;
+	font-style: var(--calm-voice-em-font-style);
 }
 .calm-voice strong,
 p strong {
-	font-weight: 700;
+	font-weight: var(--calm-voice-strong-font-weight);
+}
+
+.quiet-voice {
+	/* for microcopy type things */
+	font-family: var(--quiet-voice-font-family);
+	font-size: var(--quiet-voice-font-size);
+	font-weight: var(--quiet-voice-font-weight);
+	line-height: var(--quiet-voice-line-height);
 }
 
 .strong-voice {
-	font-family: var(--font-heading);
-	font-size: var(--step-up-1);
-	line-height: 1.2;
+	font-family: var(--strong-voice-font-family);
+	font-size: var(--strong-voice-font-size);
 	font-weight: var(--strong-voice-font-weight);
-}
-
-:root {
-	--attention-voice-font-family: var(--font-heading);
-	--attention-voice-font-size: var(--step-up-3);
-	--attention-voice-line-height: 1.2;
+	line-height: var(--strong-voice-line-height);
 }
 
 .attention-voice {
@@ -89,43 +76,39 @@ p strong {
 }
 
 .loud-voice {
-	font-family: var(--font-heading);
-	font-size: var(--step-up-4);
+	font-family: var(--loud-voice-font-family);
+	font-size: var(--loud-voice-font-size);
 	font-weight: var(--loud-voice-font-weight);
-	line-height: 1.2;
+	line-height: var(--loud-voice-line-height);
 	max-width: 28ch;
 }
 
-.quiet-voice {
-	font-family: var(--font-ui);
-	font-size: var(--step-down-1);
-	font-weight: var(--quiet-voice-font-weight);
-	line-height: 1.3;
-}
-
 .data-voice {
-	font-family: var(--font-code);
-	font-size: calc(var(--step-0) * 0.85);
+	/* for numbers and dates and things */
+	font-family: var(--data-voice-font-family);
+	font-size: var(--data-voice-font-size);
 	font-weight: var(--data-voice-font-weight);
-	line-height: 1.4;
-	letter-spacing: 0.01em;
+	line-height: var(--data-voice-line-height);
+	letter-spacing: var(--data-voice-letter-spacing);
 	font-feature-settings: "tnum" 1;
 }
 
 .label-voice {
-	font-family: var(--font-ui);
-	font-size: var(--step-down-1);
-	line-height: 1.3;
+	font-family: var(--label-voice-font-family);
+	font-size: var(--label-voice-font-size);
 	font-weight: var(--label-voice-font-weight);
+	line-height: var(--label-voice-line-height);
 }
 
 .high-voice {
-	font-family: var(--font-ui);
-	font-size: var(--step-down-1);
-	line-height: 1.2;
+	/* I don't love this name! */
+	/* currently using it for loose support  for headings / way finding etc */
+	font-family: var(--high-voice-font-family);
+	font-size: var(--high-voice-font-size);
 	font-weight: var(--high-voice-font-weight);
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
+	line-height: var(--high-voice-line-height);
+	letter-spacing: var(--high-voice-letter-spacing);
+	text-transform: var(--high-voice-text-transform);
 }
 
 :where(article.styled, text-content.styled) {
@@ -144,6 +127,10 @@ p strong {
 	p + h2,
 	p + h3 {
 		margin-top: 1.3em;
+	}
+
+	div + p {
+		margin-top: 0.6em;
 	}
 }
 

@@ -129,6 +129,12 @@ Took a few iterations to settle on. Code lives in `includes/footer.php` and `tem
 - `loop` — muted video, no native controls, plays as ambient motion
 - `play` — video with native controls, user-initiated
 
+**Media file convention.** One folder per milestone (`content/milestones/<slug>/`), files named `<order>-<type>.<ext>` — the folder listing IS the storyboard, top to bottom.
+- Order is the load-bearing fact and must be visible: `01-loop.mp4`, `02-photo.jpg`, `03-play.mp4`. Don't split assets into per-type subfolders — that scatters the sequence and hides what plays first.
+- The `<type>` in the filename is a human hint that should agree with the slide's `"type"` in the JSON, but the JSON is the source of truth (the template keys off `data-type`, not the path).
+- No slug prefix on filenames — the folder already scopes them (`01-loop.mp4`, not `lae-01.mp4`).
+- When a slide has a phone crop it's a wide/square pair: `01-loop-wide.mp4` + `01-loop-square.mp4`. `square_variant($src)` swaps the `-wide.` token to `-square.`, so the wide file must carry `-wide` for the swap to fire. A slide with no crop yet is just `01-loop.mp4` (served at every width). `2026-job-search/` is the reference.
+
 **Playback rules:**
 - Only one video plays across the entire page at a time
 - On carousel `settle` (slide animation finishes): pause everything in that carousel; if arriving slide is a `loop`, autoplay it
@@ -183,6 +189,20 @@ The theming behavior is a load-bearing artifact of this site — it's part of th
 2. Move flavor baselines to `:root` so themes optionally *override* rather than being the only source. Fixes silent-flatten regression.
 3. Split settings.css into orthogonal token layers when the next non-color axis lands.
 4. Pull FOUC restoration list into one PHP-side config that both the inline script and JS SWITCHERS read from.
+
+## Filter / minimap (locked-in rules)
+
+**The minimap is load-bearing - do not arbitrarily remove it.** It has been removed by accident more than once; treat it like the video and theme rules above. If a change seems to require dropping it, stop and ask.
+
+The timeline filter (`includes/settings/filter-control.php`) is a slider plus a **minimap that is a scaled schematic of the page itself** - not a generic bar chart. It mirrors the real responsive layout:
+
+- **Phones** - one column of bars (the milestone list), `max-width` so it stays a small diagram, never full-bleed. It should read like the list of milestones.
+- **Large screens** - it gains a **fake settings panel** to the right and becomes **two columns**, because the real layout gains the rail there. The fake panel is the diagram's way of showing "the page is two-column now."
+- It flips at the **same 1024px breakpoint as the page grid** (`styles/layouts/default-layout.css`). Keep the two breakpoints in sync - the minimap's whole job is to match the layout it depicts.
+
+Structure: `.mini-map` wraps `.mini-map-bars` (an `<ol>`, one `<li>` per milestone, filled by `scripts/settings-panel.js`) and `.mini-map-panel` (the fake panel, `display: none` until 1024px). Bars: `data-state='in'` = dark (surfaced by filter), else faint. The `(n)` count beside `Filter: Top` (`data-filter-count`) is always shown.
+
+The failure mode to avoid: it renders as full-width, blown-out bars instead of a small faithful diagram. If you see that, the `max-width` / two-column rules got lost - restore them, don't delete the map.
 
 ## Fonts (Fontshare)
 

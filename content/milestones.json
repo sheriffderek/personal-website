@@ -30,14 +30,14 @@
 	{
 		"slug": "pe-self-paced",
 		"date": "2024 alphas – May 2026 launch",
-		"title": "Transitioning the cohort system at PE to self paced",
+		"title": "Transitioning the PE LMS from cohort to self-paced",
 		"weight": 2,
 		"tags": ["job", "education", "product"],
 		"flavor": "moss",
 		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
-		"description": "Major pivot from cohort-based to self-paced subscription. Years of test runs (Alpha 1 through 7) refined the model before the official launch in May 2026. A complete business-model + product redesign.",
-		"details": "<p>Each alpha taught us what self-paced actually needed - pacing, milestones, community rhythm, payment cadence. Cohort-based served us well for four years but capped how many people could enter at once and how flexibly anyone could move through. Self-paced reopens the program to whoever's ready, whenever they're ready, without losing the structure.</p>"
+		"description": "After years of running cohorts in parallel, I decided to take a break. But enough students were still asking to go through the course that I decided to try an experiment: what would happen if it were self-paced? Would people speed up? Get lost? I'm a big fan of cohort-style learning, but self-paced turned out to open up a lot of interesting angles. After enough successful trials, I committed to redesigning how the whole PE site worked, with a monthly membership.",
+		"details": "<p>Moving off the daily drip meant major changes, but it also inspired a host of new features that are turning out to be really exciting. The final polish isn't everywhere yet, but it was a full rewrite with a ton of database changes - and now the system is themeable at every level.</p>"
 	},
 	{
 		"slug": "pe-figure-cms-options",
@@ -74,7 +74,7 @@
 			}
 		],
 		"description": "PE students live in real code and real projects - that's core to how DFTW works. But <em>some</em> ideas are best explored right on the workshop page. I researched everything under the sun, prototyped a base editor, tested it with real students, refined it, and put it into practice across the curriculum - fully themeable to be incorporated into any system.",
-		"details": "<p>CodePen embeds did that job well for years. But when we finally decided to build a robust internal replacement, we wanted it to tick <em>all our boxes</em> - including running server-side code (PHP, Python), which almost no browser editor does. We even added touches like CSS grid guides, and we keep improving it as we run across interesting situations. It's built as a standalone system that can be hooked up to any language runner.</p>"
+		"details": "<p>CodePen embeds did that job well for years. But when we finally decided to build a robust internal replacement, we wanted it to tick <em>all our boxes</em> - including running server-side code (PHP, Python), which almost no browser editor does. We even added touches like CSS grid guides, and we keep improving it as we run across interesting situations. It's built as a standalone system that can be hooked up to any language runner. The name: a \"study\" is the resource - a small, self-contained unit for exploring one idea - and &lt;code-study&gt; is the standalone app that runs it. So, CodeStudy.</p>"
 	},
 	{
 		"slug": "world-ia-day-2026",
@@ -119,13 +119,13 @@
 		"slug": "midi-sequencing",
 		"date": "2025 – ongoing",
 		"weight": 2,
-		"title": "R&D for a new type of music sequencing software",
+		"title": "A new take on DAW and MIDI sequencing",
 		"tags": ["job", "dev", "music", "design"],
 		"flavor": "night",
 		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
-		"description": "A long-running side project. A modular MIDI sequencer designed around how musicians actually think about performance - phrases, layers, sequences, sections, songs, sets - instead of how DAWs lay out grids. Cross-disciplinary work: instrument design, software architecture, and live performance ergonomics.",
-		"details": "<p>The hierarchy is the design: Action → Phrase → Layer → Sequence → Section → Song → Set. Sections can loop indefinitely. Layers can be reused across songs. A fill phrase can be queued before transitioning. The whole thing is built so a single performer can run a full set live without losing their place.</p><p>Lives in three parts: a research and architecture doc, a software prototype (Nuxt), and hardware sketches. Has been simmering for years in different forms.</p>"
+		"description": "I've been sequencing MIDI instruments in software since 2001, when I was gifted a stack of synths. I started on Digital Performer and have used all the DAWs, then moved to hardware with the MPC1000. I've had a great time with all of it, but something always irked me. It wasn't until I started thinking in terms of \"components\" in code and Figma that I began investigating a <em>different</em> way to think about music design.",
+		"details": "<p>DAWs (digital audio workstations - the software we use to record music) are built around the concept of \"tracks.\" But what if a sequence were a more abstract, reusable structure - something you could use anywhere, in any way, with its own connections to its outputs, without being tied to a track? What started as an exploration into \"a better MPC\" ended up becoming more of a universal protocol. I'll happily tell you all about it, but I decided it was something to pull some experts in on. The prototype and proofs of concept are exciting - but I did something a little strange: instead of pushing forward, I went back to document the journey to this point as a YouTube series. Do we really need a new way of sequencing? We'll find out.</p>"
 	},
 	{
 		"slug": "outside-insights-turing",
@@ -149,16 +149,8 @@
 		"format": "carousel",
 		"media": [
 			{
-				"type": "photo",
-				"src": "/content/placeholder/poster-wide.png"
-			},
-			{
 				"type": "loop",
-				"src": "/content/placeholder/video-wide.mp4"
-			},
-			{
-				"type": "play",
-				"src": "/content/placeholder/video-wide.mp4"
+				"src": "/content/milestones/list-at-ease/01-loop.mp4"
 			}
 		],
 		"description": "People traditionally pay six percent in realtor fees to sell a house, mostly because the process is complicated and gated behind a license. List at Ease came to us with a whiteboard sketch and an ambitious plan: let a homeowner do it themselves, legally, with a licensed realtor handling compliance behind the scenes. I led the research and discovery, then the end-to-end design and build for what would usually cost millions and require a large, focused team.",
@@ -233,8 +225,8 @@
 		"flavor": "night",
 		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
-		"description": "Built a proper syntax highlighting system for PE, growing out of the features-list and milestones work. The early days-passed version proved the idea; this was the real implementation. The precursor to CodeStudy years later.",
-		"details": "<p>Started life as a small feature inside the calendar/milestones era - turning syntax highlighting on as learners passed days in the program. The full v2 system came right after, then sat as the foundation that everything code-related at PE got built on top of.</p>"
+		"description": "When I was learning to code, I was surprised there weren't better tools to show exactly how a variable was used across a longer program. The original idea was already in place at PE, but it was a pain to mark up and maintain. So with the redesign underway, it was the right time to build our ideal tool for authoring our own snippets. It's core to how our \"feature\" system works - our very targeted, pared-down internal MDN.",
+		"details": ""
 	},
 	{
 		"slug": "equivalent-design",
@@ -252,12 +244,12 @@
 		"slug": "pe-calendar-milestones",
 		"date": "May – August 2022",
 		"weight": 2,
-		"title": "Designing PE's calendar views",
+		"title": "Designing PE's calendar and milestones system",
 		"tags": ["job", "dev", "education", "design"],
 		"flavor": "cool",
 		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
-		"description": "Built the calendar view for the curriculum and the milestones system. Plus an early syntax-highlighting feature that turned on as learners passed days in the program - vocabulary that grows with the learner.",
+		"description": "When PE started, it ran on a very simple drip mechanic. Your goal was to spend 2-3 hours a day on one clearly scoped workshop - no more, no less. Sometimes that shifted a day based on life, but from your cohort's start date, you'd see a new workshop show up in your list each day. It worked. But students and teachers also need to plan around holidays, breaks, and think a little more long-term. So I designed a calendar view that showed each cohort's progress and let us shift things around based on the time of year and how far along a cohort was.",
 		"details": "<p>The calendar gave instructors a teaching surface. The milestones system gave learners signposts. The days-passed syntax highlighting was a small idea with big implications - what if every UI element knew where the learner was in their journey and adapted accordingly?</p>"
 	},
 	{

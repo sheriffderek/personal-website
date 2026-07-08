@@ -335,23 +335,56 @@ button.settings-trigger {
 	margin: 0.5rem 0 0;
 }
 
+/* The minimap is a scaled schematic of the page itself. One column of bars
+   (the milestone list) on phones; on large screens it gains a fake settings
+   panel on the right, mirroring the real layout's rail. It flips at the SAME
+   1024px breakpoint as the page grid (default-layout.css), so the diagram
+   always matches the layout it depicts - keep the two breakpoints in sync. */
 .mini-map {
 	display: grid;
-	gap: 2px;
+	gap: 8px;
+	max-width: 200px;
 	margin: 0;
-	padding: 0;
-	list-style: none;
+
+	.mini-map-bars {
+		display: grid;
+		gap: 2px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.mini-map-bars li {
+		height: 4px;
+		background: var(--stroke-secondary);
+		border-radius: 1px;
+		transition: background 150ms;
+	}
+
+	.mini-map-bars li[data-state='in'] {
+		background: var(--ink-secondary);
+	}
+
+	/* The fake panel exists only where the real layout grows its rail. */
+	.mini-map-panel {
+		display: none;
+		border: 1px solid var(--stroke-secondary);
+		border-radius: 4px;
+	}
 }
 
-.mini-map li {
-	height: 4px;
-	background: var(--stroke-secondary);
-	border-radius: 1px;
-	transition: background 150ms;
-}
+@media (width >= 1024px) {
+	.mini-map {
+		grid-template-columns: 1fr auto;
+		align-items: start;
+		max-width: none;
 
-.mini-map li[data-state='in'] {
-	background: var(--ink-secondary);
+		.mini-map-panel {
+			display: block;
+			width: 40px;
+			height: 60px;
+		}
+	}
 }
 
 .filter-count {

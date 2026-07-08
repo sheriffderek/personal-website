@@ -77,5 +77,5 @@
 	data-ui='app'
 	aria-label='Pages'
 >
-	<?= partial('settings/page-menu', ['pages' => $pages, 'slug' => $slug]) ?>
+	<?= partial('settings/page-menu', ['pages' => $pages, 'slug' => $slug, 'target_query' => $target_query ?? '']) ?>
 </div>

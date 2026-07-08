@@ -30,6 +30,14 @@ main {
 	height: 0;
 }
 
+/* $refactor: "rail" is a look-name for the desktop shape only. This element's
+   role is the site nav - a right column on large screens, a sticky top bar on
+   small. The tag is already <header> and sticky-header.js already calls it
+   "header", so the name has drifted. Better: it doesn't need a positional class
+   at all - make it <nav>, let the grid place it (grid-template-areas), and
+   delete .page-rail / .rail-sentinel / .is-stuck. A component shouldn't name or
+   set its own placement. Do it in passing next time we're in this layout, not a
+   dedicated pass. */
 .page-rail {
 	position: sticky;
 	top: 0;
