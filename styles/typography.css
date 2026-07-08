@@ -16,6 +16,7 @@ h3,
 h4 {
 	font-family: var(--font-heading);
 	font-weight: var(--font-heading-weight, 600); /* why? */
+	margin-left: -0.05em;
 }
 
 h1,

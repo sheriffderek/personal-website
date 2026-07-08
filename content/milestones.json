@@ -17,13 +17,13 @@
 	{
 		"slug": "2026-portfolio-site",
 		"date": "June 2026",
-		"title": "2026 Portfolio site",
-		"weight": 1,
+		"title": "2026 Fresh thoughts on the \"Portfolio\"",
+		"weight": 2,
 		"tags": ["job", "dev", "design"],
 		"flavor": "stone",
 		"media": ["/content/placeholder/poster-wide.png"],
-		"description": "The site you're reading right now. Hand-rolled PHP, custom CSS, no framework, no build step. Also an excuse to think out loud about what a portfolio site is for.",
-		"details": "<p>Case study coming. The short version: most designer portfolios solve the wrong problem. They optimize for looking like a portfolio instead of telling someone who's hiring whether they should keep reading. This site is an attempt at the second thing. Reverse-chronological timeline, one card per piece of work, an optional tailored paragraph per viewer when the URL says who they are.</p><p>Tech-wise: PHP for the templating because it's the simplest tool for the job, a custom CSS system (PSSST), JSON files for content, no JS framework. Easy to maintain, easy to read, hard to break.</p>"
+		"description": "This is the site you're looking at right now. It had been a long time since I relied on a classic portfolio of work. I have a lot of thoughts on the <a class='relaxed' href='https://perpetual.education/stories/is-your-portfolio-doing-its-job-with-don-the-developer/' target='_blank' rel='noopener'>failures of the common dev portfolio</a> and the way bootcamps teach cookie-cutter case studies - but now that I'm back on the market, I needed a way to tell my less-than-linear story. I took the opportunity to show off my ideas on multi-brand design systems while housing my history in a small but impactful format. If it's doing its job, you'll say: \"Woah - Derek's worked across a big range and gone deep in all of it. We want to talk to him.\"",
+		"details": ""
 	},
 	{
 		"slug": "pe-self-paced",
@@ -40,12 +40,12 @@
 		"slug": "pe-figure-cms-options",
 		"date": "April – June 2026",
 		"weight": 1,
-		"title": "Building a themable housing for the wide variety of figures used in PE's LMS",
+		"title": "A themeable frame system for figures and diagrams",
 		"tags": ["job", "dev", "education", "design"],
 		"flavor": "warm",
 		"media": ["/content/placeholder/poster-wide.png"],
-		"description": "Added a 'frame' system to PE's figure module - browser and app chrome rendered in CSS instead of baked into PNGs with shadows. Lighter images, themeable chrome, and figures that stay sharp at any size. Paired with an admin dashboard rebuild and a service-layer reorganization across the codebase.",
-		"details": "<p>The trigger was practical - every screenshot in the curriculum was shipping with a heavy drop-shadow baked in, which got ugly across themes and resolutions. The fix turned into a small system: a frame component that wraps any figure, with browser-chrome and app-chrome variants. The admin rebuild and service-layer reorg followed naturally - once you commit to cleaner figures, the cracks in the surrounding system get harder to ignore.</p>"
+		"description": "PE's LMS has many types of figures and diagrams making up the workshop pages. When we first started, we'd often use macOS screenshots to show the UI, drop shadow and all - but those files are big, and it's rough to calculate the shadow size and align everything. There are semantic concerns, plus real-world ones - like a light image sitting on a light background, and how colors hold up across themes. So I designed a more programmatic approach that lets you show an image inside a UI we have full control over. This keeps our images sized down and more maintainable, and it's more fun.",
+		"details": ""
 	},
 	{
 		"slug": "pe-code-editor",
@@ -105,8 +105,8 @@
 		"media": [
 			{ "type": "photo", "src": "/content/milestones/smart-text-editor/spacial-code-editor.jpg" }
 		],
-		"description": "Thinking out loud about what a text editor should be in the AI era. The more I use agents, the less I'm looking at the code. That's not inherently bad, but I don't want to lose the structural understanding that made me a good developer in the first place. Prototype + essay, ongoing.",
-		"details": "<p>The impetus: VS Code is a claustrophobic Adobe-like box, Sublime is fine but doesn't help with modern frameworks. Vue SFCs touch controllers, models, composables, configs. Laravel components scatter across five conventions. Agents make it worse - they generate so many files, so fast, that newer developers (and older ones) can't form a mental model anymore.</p><p>One idea inside it: opening a file spawns a cluster of related editors. A depth slider controls how far the graph traversal goes. Scope by kind (just styles, just types, just tests). It's less an editor and more a reading tool.</p><p>The bigger goal: keep humans sharp. Code review with coworkers and students. Pattern recognition. Coming away from the work as better thinkers, not just people manning the machine.</p>"
+		"description": "I've been using AI in every way you can think of. It's part of my job to try everything and transfer that back to my students. People keep adding chatbots to everything, bolting things onto the same text editor we've always had. And who knows, maybe we won't write code in the future. But I think we <em>will</em>. The thing that would actually help people become better developers - keep them honing their skills, create more long-term value for a company, and still make good use of AI - is a different way to view code. Being able to pull up a feature and automatically pull up all the related code, so you can see exactly how it connects and work on it as a visualized system? That sure seems like a good idea. So I prototyped it.",
+		"details": ""
 	},
 	{
 		"slug": "midi-sequencing",
@@ -123,12 +123,12 @@
 		"slug": "outside-insights-turing",
 		"date": "April 2025",
 		"weight": 1,
-		"title": "Talking with Jeff from Turing School of Software and Design",
+		"title": "Outside Insights: Turing School of Software and Design",
 		"tags": ["job", "speaking", "education"],
 		"flavor": "night",
 		"media": ["/content/placeholder/poster-wide.png"],
-		"description": "Long-form interview with Jeff Casimir (founder of Turing School) on products, education, and the future of tech. Two people who've actually built and run schools, comparing notes.",
-		"details": "<p>Episode: \"Outside Insights: Derek Wood\" - <a href='https://www.youtube.com/watch?v=UNEjOi7ouSc' target='_blank' rel='noopener'>watch on YouTube</a>. Topics ranged across artist origins, front-end and design, building Perpetual Education, the state of bootcamp education, and what it takes to bridge the gap between learning to code and working as a designer-developer.</p>"
+		"description": "I met up with Jeff Casimir to talk shop and share insights with Turing's students. I talked about my background, how I learned, mistakes I made, the importance of the fundamentals and a core problem-solving attitude, pedagogy, how AI changes things in ways people aren't seeing yet, finding a niche, what employers actually need, and more. It's <a class='relaxed' href='https://youtu.be/UNEjOi7ouSc?si=_Qt94tnWdrUnIgqJ&amp;t=106' target='_blank' rel='noopener'>on YouTube</a>.",
+		"details": ""
 	},
 	{
 		"slug": "list-at-ease",
@@ -172,12 +172,12 @@
 		"slug": "don-podcast-gap",
 		"date": "May 2024",
 		"weight": 1,
-		"title": "There's a MASSIVE Skill Gap Among New Developers",
+		"title": "Getting honest with new devs about the massive skill gap",
 		"tags": ["job", "speaking", "education", "community"],
 		"flavor": "warm",
 		"media": ["/content/placeholder/poster-wide.png"],
-		"description": "Guest on the DonTheDeveloper Podcast talking about the skill gap among new developers. We got into what bootcamps miss and what self-taught developers tend to skip. The real question is what closes the gap between knowing syntax and being employable.",
-		"details": "<p>Episode: \"There's a MASSIVE Skill Gap Among New Developers\" - <a href='https://www.youtube.com/watch?v=EHmqZkC3LqU' target='_blank' rel='noopener'>watch on YouTube</a>. Around 50,000 views and counting. The skill-gap conversation is the exact problem PE was built to solve, so it's the kind of public conversation where I get to articulate the underlying argument rather than just teach inside it.</p>"
+		"description": "I met up with DonTheDeveloper for a frank discussion about the uncomfortable gap between what junior devs have and what they actually need to be hirable. Between Don and me, we've probably talked to more coding bootcamp students than just about anyone. Is it a teaching issue? Or a change in our culture? Well, it got 50k+ views, so apparently people were curious. It's <a class='relaxed' href='https://www.youtube.com/watch?v=EHmqZkC3LqU' target='_blank' rel='noopener'>on YouTube</a>.",
+		"details": ""
 	},
 	{
 		"slug": "pe-redesign-dashboard",

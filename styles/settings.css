@@ -19,7 +19,7 @@
 	--stroke-secondary: var(--color-stone-300);
 	--stroke-auxiliary: var(--color-stone-200);
 
-	--accent: var(--color-blue-600);
+	--accent: var(--color-blue-900);
 	--link-color: var(--accent);
 	/* Underline color, independent of the link text. Defaults to the link color
 	   (tracks per theme since it reads --link-color); change this one line to

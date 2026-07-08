@@ -24,11 +24,11 @@
 
 	.setup {
 		.year {
-			color: var(--ink-secondary);
+			color: var(--ink-auxiliary);
 		}
 
 		.heading {
-			margin-top: 0;
+			margin-top: 0.14em;
 		}
 	}
 
@@ -287,7 +287,8 @@
 	   so a tap near one doesn't read as a swipe. Two knobs, tune them here. */
 	.flickity-page-dots .dot {
 		--dot-size: 0.6rem;
-		--dot-hit: 1.75rem;
+		--dot-hit: 1.3rem;
+		border-radius: 0%;
 
 		width: var(--dot-hit);
 		height: var(--dot-hit);
