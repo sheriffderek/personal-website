@@ -62,11 +62,24 @@ So: the gradient's **stops are a flavor**, the gradient's **on/off is a theme**.
 
 ## Gradient background
 
-Use a CSS `background` on the poster element, not SVG `<stop>` elements. A custom
-property can hold an entire `linear-gradient(135deg, ...)` as one value, so a
-flavor repaints the whole gradient in one line; SVG stops would have to be
-templated per flavor. When `--poster-gradient` is set, the SVG's base `<rect>`
-goes transparent and the CSS gradient shows through.
+Use a CSS `background` on the poster element, not SVG `<stop>` elements (SVG stops
+can't fall back to a flat color cleanly). The gradient is composed once in
+milestone.css from stop tokens a flavor fills in:
+
+```css
+background: linear-gradient(
+	var(--poster-gradient-angle, 135deg),
+	var(--poster-gradient-from, var(--poster-fill)),
+	var(--poster-gradient-to, var(--poster-fill))
+);
+```
+
+A flavor opts into a gradient just by defining `--poster-gradient-from` /
+`--poster-gradient-to`. Leave them out and both stops fall back to `--poster-fill`
+- two identical stops render flat - so **"unset = flat" needs no separate on/off
+flag.** `--poster-gradient-angle` defaults to 135deg; a flavor can override the
+rake. When a gradient is showing, the SVG's base `<rect>` goes transparent so the
+CSS background shows through.
 
 ## SVG authoring checklist
 
