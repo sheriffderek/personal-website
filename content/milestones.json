@@ -6,7 +6,6 @@
 		"weight": 3,
 		"tags": ["job", "consulting"],
 		"flavor": "stone",
-		"format": "carousel",
 		"media": [
 			{ "type": "photo", "src": "/content/milestones/2026-job-search/01.jpg" },
 			{ "type": "loop", "src": "/content/milestones/2026-job-search/video-wide.mp4" },
@@ -22,7 +21,6 @@
 		"weight": 1,
 		"tags": ["job", "dev", "design"],
 		"flavor": "stone",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "The site you're reading right now. Hand-rolled PHP, custom CSS, no framework, no build step. Also an excuse to think out loud about what a portfolio site is for.",
 		"details": "<p>Case study coming. The short version: most designer portfolios solve the wrong problem. They optimize for looking like a portfolio instead of telling someone who's hiring whether they should keep reading. This site is an attempt at the second thing. Reverse-chronological timeline, one card per piece of work, an optional tailored paragraph per viewer when the URL says who they are.</p><p>Tech-wise: PHP for the templating because it's the simplest tool for the job, a custom CSS system (PSSST), JSON files for content, no JS framework. Easy to maintain, easy to read, hard to break.</p>"
@@ -34,7 +32,6 @@
 		"weight": 2,
 		"tags": ["job", "education", "product"],
 		"flavor": "moss",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "After years of running cohorts in parallel, I decided to take a break. But enough students were still asking to go through the course that I decided to try an experiment: what would happen if it were self-paced? Would people speed up? Get lost? I'm a big fan of cohort-style learning, but self-paced turned out to open up a lot of interesting angles. After enough successful trials, I committed to redesigning how the whole PE site worked, with a monthly membership.",
 		"details": "<p>Moving off the daily drip meant major changes, but it also inspired a host of new features that are turning out to be really exciting. The final polish isn't everywhere yet, but it was a full rewrite with a ton of database changes - and now the system is themeable at every level.</p>"
@@ -46,7 +43,6 @@
 		"title": "Building a themable housing for the wide variety of figures used in PE's LMS",
 		"tags": ["job", "dev", "education", "design"],
 		"flavor": "warm",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "Added a 'frame' system to PE's figure module - browser and app chrome rendered in CSS instead of baked into PNGs with shadows. Lighter images, themeable chrome, and figures that stay sharp at any size. Paired with an admin dashboard rebuild and a service-layer reorganization across the codebase.",
 		"details": "<p>The trigger was practical - every screenshot in the curriculum was shipping with a heavy drop-shadow baked in, which got ugly across themes and resolutions. The fix turned into a small system: a frame component that wraps any figure, with browser-chrome and app-chrome variants. The admin rebuild and service-layer reorg followed naturally - once you commit to cleaner figures, the cracks in the surrounding system get harder to ignore.</p>"
@@ -58,7 +54,6 @@
 		"weight": 3,
 		"tags": ["job", "education", "dev"],
 		"flavor": "cool",
-		"format": "carousel",
 		"media": [
 			{
 				"type": "photo",
@@ -83,7 +78,6 @@
 		"weight": 3,
 		"tags": ["job", "community", "leadership"],
 		"flavor": "warm",
-		"format": "carousel",
 		"media": [
 			{
 				"type": "photo",
@@ -108,9 +102,8 @@
 		"title": "R&D for a new take on text-editor interfaces",
 		"tags": ["job", "dev", "design"],
 		"flavor": "cool",
-		"format": "photo",
 		"media": [
-			"/content/milestones/smart-text-editor/spacial-code-editor.jpg"
+			{ "type": "photo", "src": "/content/milestones/smart-text-editor/spacial-code-editor.jpg" }
 		],
 		"description": "Thinking out loud about what a text editor should be in the AI era. The more I use agents, the less I'm looking at the code. That's not inherently bad, but I don't want to lose the structural understanding that made me a good developer in the first place. Prototype + essay, ongoing.",
 		"details": "<p>The impetus: VS Code is a claustrophobic Adobe-like box, Sublime is fine but doesn't help with modern frameworks. Vue SFCs touch controllers, models, composables, configs. Laravel components scatter across five conventions. Agents make it worse - they generate so many files, so fast, that newer developers (and older ones) can't form a mental model anymore.</p><p>One idea inside it: opening a file spawns a cluster of related editors. A depth slider controls how far the graph traversal goes. Scope by kind (just styles, just types, just tests). It's less an editor and more a reading tool.</p><p>The bigger goal: keep humans sharp. Code review with coworkers and students. Pattern recognition. Coming away from the work as better thinkers, not just people manning the machine.</p>"
@@ -122,7 +115,6 @@
 		"title": "A new take on DAW and MIDI sequencing",
 		"tags": ["job", "dev", "music", "design"],
 		"flavor": "night",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "I've been sequencing MIDI instruments in software since 2001, when I was gifted a stack of synths. I started on Digital Performer and have used all the DAWs, then moved to hardware with the MPC1000. I've had a great time with all of it, but something always irked me. It wasn't until I started thinking in terms of \"components\" in code and Figma that I began investigating a <em>different</em> way to think about music design.",
 		"details": "<p>DAWs (digital audio workstations - the software we use to record music) are built around the concept of \"tracks.\" But what if a sequence were a more abstract, reusable structure - something you could use anywhere, in any way, with its own connections to its outputs, without being tied to a track? What started as an exploration into \"a better MPC\" ended up becoming more of a universal protocol. I'll happily tell you all about it, but I decided it was something to pull some experts in on. The prototype and proofs of concept are exciting - but I did something a little strange: instead of pushing forward, I went back to document the journey to this point as a YouTube series. Do we really need a new way of sequencing? We'll find out.</p>"
@@ -134,7 +126,6 @@
 		"title": "Talking with Jeff from Turing School of Software and Design",
 		"tags": ["job", "speaking", "education"],
 		"flavor": "night",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "Long-form interview with Jeff Casimir (founder of Turing School) on products, education, and the future of tech. Two people who've actually built and run schools, comparing notes.",
 		"details": "<p>Episode: \"Outside Insights: Derek Wood\" - <a href='https://www.youtube.com/watch?v=UNEjOi7ouSc' target='_blank' rel='noopener'>watch on YouTube</a>. Topics ranged across artist origins, front-end and design, building Perpetual Education, the state of bootcamp education, and what it takes to bridge the gap between learning to code and working as a designer-developer.</p>"
@@ -146,7 +137,6 @@
 		"weight": 3,
 		"tags": ["job", "product"],
 		"flavor": "moss",
-		"format": "carousel",
 		"media": [
 			{
 				"type": "loop",
@@ -163,7 +153,6 @@
 		"weight": 3,
 		"tags": ["job", "education", "speaking"],
 		"flavor": "night",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "The Association of Independent Colleges of Art and Design (AICAD) is the consortium of the top art and design schools in the country. Each year they hold a symposium to address what's changing in education. I was invited to speak, and my talk, \"Untangling Web Design Education,\" argued that most programs teach tools instead of core universal design and communication foundations - and offered a fresh perspective based on my unique path across design and dev education.",
 		"details": "<p>Being part of it was genuinely powerful. I spent days across the beautiful ArtCenter campuses, sitting among educators and provosts from the top design schools in the country - including CCA, where I did my undergrad. Two highlights: Safiya Noble's keynote (she wrote <em>Algorithms of Oppression</em>), and the Data Vandals, a data-viz art collective out of NYC. It was also eye-opening. Some of them were strangely out of touch about AI - one asked, in earnest, whether it means we could get students through a degree in two years instead of four. No. That's not how art school works, at all.</p>"
@@ -175,7 +164,6 @@
 		"weight": 3,
 		"tags": ["job", "education", "community", "mentoring"],
 		"flavor": "rose",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "I meet a lot of designers and developers. I'm active in local meetups, I get asked to guest critique, I keep up with the sentiment across forums - so I hear it when people need help. But if you really want to help, you have to talk with the actual human. It might be someone just starting out, or a veteran who's lost in how to present themselves. So I decided to take a proactive approach and just <em>be there</em> for anyone who needed it.",
 		"details": "<p>I'm not sure if it was COVID or something larger in society - but so many designers and developers were hiding out, not being human, not connecting. Part of the point was to get them to come out of their shell and meet someone who'd actually look at their work with them. People building robots. People with a bootcamp plus a CS degree plus a master's who still couldn't figure out how to do anything. Designers who felt down on themselves but turned out to be really talented once they learned how to talk about their work. Every conversation is different. It's not just about helping people, either - selfishly, I learn from every session. I've seen the inside of hundreds of people's ecommerce stores, visual design portfolios, and design system problems at work. That kind of exposure is its own education.</p>"
@@ -187,7 +175,6 @@
 		"title": "There's a MASSIVE Skill Gap Among New Developers",
 		"tags": ["job", "speaking", "education", "community"],
 		"flavor": "warm",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "Guest on the DonTheDeveloper Podcast talking about the skill gap among new developers. We got into what bootcamps miss and what self-taught developers tend to skip. The real question is what closes the gap between knowing syntax and being employable.",
 		"details": "<p>Episode: \"There's a MASSIVE Skill Gap Among New Developers\" - <a href='https://www.youtube.com/watch?v=EHmqZkC3LqU' target='_blank' rel='noopener'>watch on YouTube</a>. Around 50,000 views and counting. The skill-gap conversation is the exact problem PE was built to solve, so it's the kind of public conversation where I get to articulate the underlying argument rather than just teach inside it.</p>"
@@ -199,7 +186,6 @@
 		"title": "PE Redesign + Student Dashboard",
 		"tags": ["job", "dev", "education", "design"],
 		"flavor": "rose",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "Comprehensive PE redesign. New landing page with GSAP scroll animations, refreshed CSS architecture, the first real student dashboard with progress visualization, and admin views for instructors. The platform finally looked like the school it had become.",
 		"details": "<p>By 2023 the visual surface hadn't kept up with the depth of what was inside. The redesign brought everything back into one voice and made the dashboard a daily place for students to land - not just a content browser to click through.</p>"
@@ -211,7 +197,6 @@
 		"weight": 3,
 		"tags": ["job", "product"],
 		"flavor": "rose",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "A real estate mastermind community had grown from simple group calls to seven patched-together third-party services. They'd proven people wanted it, but it was a mess - separate logins everywhere, no clear sense of what lived where. I worked across the whole product to pull it into one unified social network: research, UX flows, prototyping and testing with users, leading front-end, and handling some unexpected evolution of the visual branding.",
 		"details": "<p>I came on as \"the UI designer\" - a title I'd never held on its own. I was honestly excited to see what it'd be like to work <em>only</em> in Figma, not as UX or dev. That lasted about a minute. They needed me on UX almost immediately, and from there I got pulled into every aspect of it.</p><p>The project had a little of everything: a unique stepped, data-driven onboarding flow, discovery for finding and joining your group, heavy API integration for video and meetings, and a hefty bit of data science for collecting the right data and matching people into pods. We also did a pretty deep R&amp;D pass on a companion habit-tracking app.</p><p>They'd hired a brand designer to rework the identity. Interesting on paper - but the moment we put it on real screens, everything felt like Home Depot. I ended up redirecting the color system, rethinking the visual strategy, and rebuilding the brand guidelines so they held up in the product.</p>"
@@ -223,7 +208,6 @@
 		"weight": 2,
 		"tags": ["job", "education", "dev"],
 		"flavor": "night",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "When I was learning to code, I was surprised there weren't better tools to show exactly how a variable was used across a longer program. The original idea was already in place at PE, but it was a pain to mark up and maintain. So with the redesign underway, it was the right time to build our ideal tool for authoring our own snippets. It's core to how our \"feature\" system works - our very targeted, pared-down internal MDN.",
 		"details": ""
@@ -235,7 +219,6 @@
 		"weight": 3,
 		"tags": ["job", "consulting", "education", "accessibility"],
 		"flavor": "cool",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "Light mode, dark mode, forced-colors, contrast, and animation preferences - can you build SVGs that behave no matter the context? You know those logos in your email that show up broken, black on black. I came on to consult and audit what they had, then helped build out the education: client-facing material so target companies could understand the technology by interacting with it, plus internal explainers and checklists for the teams we'd be working with.",
 		"details": "<p>I ended up creating examples in every combination we could discover, documenting each one and making friends with blind testers along the way. We explored a bunch of ways to show the technology - scrolling storytelling, interactive demos - and I represented the work at the <a href='https://www.csun.edu/cod/conference'>CSUN Assistive Technology Conference</a> that year, where I met a lot of amazing people and got real feedback.</p><p>This kind of work goes deep - it's not a graphic you fix once and hand back. It's embedding with a company's internal team, shifting how they think about it, and working out how all of these pieces fit into their design and theming system at large.</p>"
@@ -247,10 +230,9 @@
 		"title": "Designing PE's calendar and milestones system",
 		"tags": ["job", "dev", "education", "design"],
 		"flavor": "cool",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "When PE started, it ran on a very simple drip mechanic. Your goal was to spend 2-3 hours a day on one clearly scoped workshop - no more, no less. Sometimes that shifted a day based on life, but from your cohort's start date, you'd see a new workshop show up in your list each day. It worked. But students and teachers also need to plan around holidays, breaks, and think a little more long-term. So I designed a calendar view that showed each cohort's progress and let us shift things around based on the time of year and how far along a cohort was.",
-		"details": "<p>The calendar gave instructors a teaching surface. The milestones system gave learners signposts. The days-passed syntax highlighting was a small idea with big implications - what if every UI element knew where the learner was in their journey and adapted accordingly?</p>"
+		"details": "<p>Just like any college course, you develop it over years - adjusting as you learn from the students. We'd float a bunch of links and resources in Slack, but they'd get lost in the mix. Which things are ephemeral conversations, and which are gems worth holding onto and pinning to the timeline? We needed a place where everyone could see everything we deemed worthy. That led to the \"gem\" content type, and to more standalone resource types that make up \"milestones\" - which open up along with course progression and are tied to workshops, so people see exactly what they need without having to track anything down.</p>"
 	},
 	{
 		"slug": "dondev-podcast-2021",
@@ -259,7 +241,6 @@
 		"title": "DonTheDeveloper: PE Launch",
 		"tags": ["job", "speaking", "education", "community"],
 		"flavor": "moss",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "First podcast appearance just after PE's first official cohort. Talking about why we built a bootcamp that combines coding and design instead of treating them as separate disciplines, and how the program was structured to actually produce designer-developers.",
 		"details": "<p>Episode: \"Coding Bootcamp That Combines Coding And Design (Perpetual Education)\" - <a href='https://www.youtube.com/watch?v=Djmiqd-S13Q' target='_blank' rel='noopener'>watch on YouTube</a>. This was the first time I got to articulate publicly what PE was for - three years before the follow-up conversation about the skill gap. The argument hasn't changed.</p>"
@@ -271,7 +252,6 @@
 		"title": "PE Study Hall",
 		"tags": ["job", "dev", "education", "design"],
 		"flavor": "moss",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "Added the Study Hall module - interactive tracking, activity feed, learner-side progress. The first time the platform actually responded to what a student was doing instead of just serving content.",
 		"details": "<p>Pre-Study-Hall, the platform was a publisher. Post-Study-Hall, it became a participant. Students had a sense that their work was being noticed and counted. That subtle shift changed how seriously they took the lessons.</p>"
@@ -283,7 +263,6 @@
 		"weight": 2,
 		"tags": ["job", "design-systems", "dev"],
 		"flavor": "cool",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "A named CSS methodology that grew out of the CSS-Tricks type-patterns thinking. Modules, layout patterns, voice classes. The shared design spine across all my projects - PE, this site, List at Ease, the consulting work.",
 		"details": "<p>Less a framework, more a vocabulary. Voice classes for type, modules for repeating structures, layouts as their own layer. Currently being reworked into a sharable package. Bumps to weight 3 when that ships.</p>"
@@ -295,7 +274,6 @@
 		"weight": 3,
 		"tags": ["job", "writing", "design-systems"],
 		"flavor": "warm",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "Between brand guidelines, the various graphics programs, and the code, there's a gap in naming that everyone just accepts. I thought it was time we talked about it - with very little effort, a whole team can work from clear, semantic type patterns everyone can actually name. It was great working with <a class='relaxed' href='https://geoffgraham.me/' target='_blank' rel='noopener'>Geoff Graham</a> and <a class='relaxed' href='https://chriscoyier.net/' target='_blank' rel='noopener'>Chris Coyier</a> (a big influence back when I was learning to code) on this piece for CSS-Tricks.",
 		"details": "<p>Most font lists in style guides aren't helpful for developers - they're documenting something brittle. An h2 is a data-structure hierarchy, not a size. But since no one talks about it, you find things like &lt;p class='h2'&gt; to smooth over the incomplete thought. Type patterns are reusable text styles named by purpose instead of size - not \"h2\" or \"extra-large\" but \"attention-voice\" or \"calm-voice.\" A shared language designers, developers, marketing, copywriters, and the boss can all use without needing to feel technical or <em>creative</em>.</p><p><a class='link' href='https://css-tricks.com/on-type-patterns-and-style-guides/' target='_blank' rel='noopener'>Read the article</a></p>"
@@ -307,7 +285,6 @@
 		"title": "PE Content Module System",
 		"tags": ["job", "dev", "education", "design"],
 		"flavor": "warm",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "Built out the full content module system for PE. Picture and figure modules, goal/challenge/key-concept modules, the bulletin system, a flexible rich-page template, lazy-loaded video embeds. The lesson page goes from a long scroll to a composable surface.",
 		"details": "<p>Each module type encodes a pedagogical pattern. A goal module looks different from a challenge module because the learner is supposed to do something different with each. The whole module library is a teaching theory expressed in components.</p>"
@@ -319,7 +296,6 @@
 		"weight": 2,
 		"tags": ["job", "consulting", "ecommerce"],
 		"flavor": "stone",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "A long consulting engagement that turned into an ecommerce deep-dive. Research and design across the full purchase journey - catalog, cart, checkout, post-purchase, returns, retention. Ran alongside the early days of building Perpetual Education.",
 		"details": "<p>The kind of work that doesn't show up on a portfolio later but informs every product instinct after it. By the end I had spent enough time inside the ecommerce problem space to know how the patterns connect - what makes someone trust a cart enough to fill it out, what makes them come back, where the design and the business model are actually the same conversation.</p>"
@@ -331,7 +307,6 @@
 		"weight": 3,
 		"tags": ["job", "education", "product"],
 		"flavor": "moss",
-		"format": "carousel",
 		"media": [
 			{
 				"type": "photo",
@@ -356,7 +331,6 @@
 		"weight": 3,
 		"tags": ["job", "dev", "agency"],
 		"flavor": "night",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "PXL was an award-winning creative agency (acquired by Studio City in 2020) with big accounts like Universal Pictures and Fox Films, doing tons of fun creative microsites and ad campaigns. I'd known their creative technologist through the Ember meetup, and when she moved up, they needed a senior front-end developer. The first project on my plate was <a class='relaxed' href='https://www.dreamworks.com' target='_blank' rel='noopener'>DreamWorks.com</a> - open the dev tools and you'll still see my 2018 code.",
 		"details": "<p>Behind the scenes of these big movie companies is a ton of data. PXL had built custom content management systems and had all of that locked in. My job was to get DreamWorks in place and handle whatever else popped up - when the Bumblebee movie came out, we made a fun trivia game for it. There were always new projects and long-term contracts to balance.</p><p>Naturally I wanted to be on the fun stuff, so when I was put in charge of mentoring the others - a CS intern, a bootcamp grad, and someone who came over from marketing - I happily (and effectively) taught them how to do my job so I could focus on R&amp;D. It was great to be back in a creative tech role after so much C-suite at the previous job. And it's what got me more excited about teaching than about climbing the developer ladder.</p>"
@@ -367,7 +341,6 @@
 		"title": "Rehabbing a laundromat with Ivy",
 		"weight": 1,
 		"tags": ["life", "art"],
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "Wife bought a laundromat. Rebranding, rehabbing, taking apart and rebuilding machines.",
 		"details": "<p>Brand and visual identity for a neighborhood laundromat. A different kind of design project.</p>"
@@ -379,7 +352,6 @@
 		"weight": 3,
 		"tags": ["job", "education", "community", "mentoring"],
 		"flavor": "rose",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "After I'd done what I could at Niagen - hired a designer to take over and set the team up - I took a little time off. I did some casual mentoring, and it picked up fast. Next thing I knew, I was a teacher. My wife had just bought a laundromat, so I'd mentor designers and developers from all over the world while helping rehab the washing machines (and learning way too much about laundromats and my own neighborhood). That's where I started building the reusable lesson plans that eventually became Perpetual Education.",
 		"details": ""
@@ -391,7 +363,6 @@
 		"weight": 3,
 		"tags": ["job", "product", "design-systems"],
 		"flavor": "cool",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "Niagen Bioscience (formerly ChromaDex) had a startup-within-a-company building consumer products around NAD+ and cellular health. I was the founding product designer on a tiny design team, working closely with the product owner, the CMO, and the CEO. The science was promising but the clinical trials weren't finished yet, so we couldn't make health claims. I worked with the scientists, doctors, and copywriters on creative ways to tell our story.",
 		"details": "<p>I designed self-tracking tools that let users monitor how they felt over time and draw their own conclusions. If people are feeling better and healthier, that's what matters.</p><p>I established the design surface for the company: their web presence, how they were being perceived, the component systems, the brand voice. I ran user testing through UserTesting.com, did competitive research, worked with the head of development, and hired the designers who eventually took over. Long before Charlie from Always Sunny, I had a wall-sized flow map of the entire business like I was tracking a killer.</p>"
@@ -403,7 +374,6 @@
 		"weight": 3,
 		"tags": ["job", "consulting"],
 		"flavor": "stone",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "My clients so far had all hired me to \"build them a website.\" They weighed the cost like they were buying code - but I was really doing the strategy, the design, the consulting, and the code. In their minds, they'd bring the idea and I'd just build it. In reality, they usually didn't know what they wanted. They had no mental model for how a website actually leads to a measurable change or a clearer goal. So I had to change the relationship, and to do that I had to change how I talked about my job: consulting first, with code as a byproduct.",
 		"details": "<p>So, I started calling myself a consultant. My friends smirked. I made a bright pink website and gave it the name \"Sheriffderek Consulting\" (leveraging my online handle, and admittedly a bit silly). This scared off the people I wouldn't want to work with, but quickly accomplished exactly what I was hoping for. I had changed my role and my place in the design process. I was being brought in as an expert who could help them get to their goal, and understanding the web side of things was just one of the tools to get there.</p>"
@@ -415,7 +385,6 @@
 		"weight": 3,
 		"tags": ["job", "design-systems", "education"],
 		"flavor": "stone",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "School Loop (since acquired) built a platform that powers high school websites across the country. Each school needs its own theme: mascot, colors, typography. The core application that generated the sites was Java, and they wanted a CSS expert to come in and audit their entire component architecture. I came in, broke everything down, and worked with everyone on the team to make sure their system was declarative and maintainable.",
 		"details": "<p>Instead of getting into their giant Java system and scaring everyone, I started in CodePen to show what was possible in a sandbox. That worked great, so I used the platform's ability to link pens within other pens and built an entire component architecture as a standalone, themable system they could explore and adopt at their own pace.</p><p>I don't remember calling it a \"design system\" ... but that's what it was: themable websites sharing the same primitives with per-school overrides. This was real scale with a lot more edge cases than your average system. It taught me a lot technically - and even more about teamwork and governance: how a group actually agrees on a shared system and keeps it maintained.</p>"
@@ -427,7 +396,6 @@
 		"weight": 3,
 		"tags": ["job", "agency", "dev"],
 		"flavor": "warm",
-		"format": "carousel",
 		"media": [
 			{
 				"type": "photo",
@@ -452,7 +420,6 @@
 		"weight": 3,
 		"tags": ["job", "product", "dev"],
 		"flavor": "cool",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "ShoutQ's goal was to create the first social media influencer marketplace. I built an Angular prototype so we'd have a live, usable example for investors to play with. This was my first time building a real <em>application</em>, and it was exciting to watch everything I'd learned come together into interactive user interfaces for the first time.",
 		"details": "<p>Up to this point, most of my work had been brochure pages, content-driven projects, and custom WordPress sites with some interaction. This was a startup with investor money, building everything from scratch: user accounts, matching influencers with brands, image recognition to verify what they posted, pricing, campaign management. I think the final product ended up built with Django. I handled responsive design and UI polish, and ran user testing. It opened my eyes to more ambitious software projects.</p>"
@@ -464,7 +431,6 @@
 		"weight": 3,
 		"tags": ["job", "agency", "dev"],
 		"flavor": "warm",
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "I'd been freelancing and learning as I went, but the goal was always to work at a real design shop. Nouveau Studios was in downtown LA and I got to ride my bike to work. They hired me for my responsive CSS skills, but pretty quickly they started trusting me with more responsibility than my experience probably warranted - research, strategy, project planning, content auditing, client relationships, and business development.",
 		"details": "<p>Great team, and I learned a ton. Over time I introduced modern development practices - Bower, Sass, Git - and started thinking systematically about components and reusable patterns before anyone was calling it \"design systems.\"</p>"
@@ -476,7 +442,6 @@
 		"weight": 3,
 		"tags": ["job", "freelance"],
 		"flavor": "warm",
-		"format": "carousel",
 		"media": [
 			{
 				"type": "photo",
@@ -496,7 +461,6 @@
 		"title": "Playing guitar and synth in the Holloys",
 		"weight": 1,
 		"tags": ["music", "art"],
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "Played in Holloys. Designed posters, logos, and built multiple websites for the band. Toured Europe twice, performed in 11+ countries.",
 		"details": "<p>Band sites in Dreamweaver, poster and logo design, album art. Also hanging art at residences, galleries, and museums.</p>"
@@ -507,7 +471,6 @@
 		"title": "Learning about food and running restaurants",
 		"weight": 1,
 		"tags": ["life"],
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "Server, interim manager. Service, food and wine, economy of motion. A deep education in how service works.",
 		"details": "<p>Before any design career. Learning how a restaurant operates, how to read a room, how to move efficiently. The service design origin story.</p>"
@@ -518,7 +481,6 @@
 		"title": "Art college, Flash, and MySpace",
 		"weight": 3,
 		"tags": ["job", "art", "education"],
-		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "After an art-specific magnet school, art college seemed like the next step. I went to <a class='relaxed' href='https://www.cca.edu' target='_blank' rel='noopener'>CCA (California College of the Arts)</a> assuming I'd become an illustrator - I wanted to work with <a class='relaxed' href='https://en.wikipedia.org/wiki/Barron_Storey' target='_blank' rel='noopener'>Barron Storey</a>. But I drifted toward printmaking and painting instead, and ended up with an individualized major. I can't say I was the best student, but I was busy: a lot of Flash, customizing MySpace pages, and interdisciplinary computer classes where I learned <a class='relaxed' href='https://cycling74.com/' target='_blank' rel='noopener'>Max/MSP and Jitter</a> from some of the guys from <a class='relaxed' href='https://www.srl.org/' target='_blank' rel='noopener'>Survival Research Laboratories</a>. I was also making a lot of music with synthesizers. So I got to spend five years thinking about composition, typography, and interactivity - and really, what is worth making. All the things that happen to be my job today.",
 		"details": ""

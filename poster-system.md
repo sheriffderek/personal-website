@@ -22,13 +22,26 @@ No `mix-blend-mode`, no `filter`, no SVG `<feColorMatrix>` anywhere. Every theme
 
 ### Poster color - repainted per flavor
 
-| Token | Paints | Mechanism |
+Same vocabulary as the site (`--fill-*` / `--ink-*`), scoped to the poster.
+Surfaces are `fill`, marks drawn on them are `ink`. There is no "shape" or "line"
+slot - a solid shape and a stroke are both `ink`; a quieter box is `fill-secondary`.
+
+| Token | What it is | Mechanism |
 | --- | --- | --- |
-| `--poster-bg` | background field | SVG `fill` (or transparent when a gradient is set) |
-| `--poster-bg-gradient` | gradient background; unset = flat | CSS `background` on the poster element (a full `linear-gradient(...)` value) |
-| `--poster-shape` | solid decorative shapes (circle, filled rect) | SVG `fill` |
-| `--poster-line` | outlines, frames, arrow | SVG `stroke` |
-| `--poster-texture` | hatch fill | SVG `stroke` (or a `<pattern>`) |
+| `--poster-fill` | background surface | SVG `fill` (transparent when a gradient is set) |
+| `--poster-fill-secondary` | a second surface (the lighter box) | SVG `fill` |
+| `--poster-ink` | everything drawn on the surface - solid shapes, outlines, arrow | SVG `fill` / `stroke` |
+| `--poster-ink-secondary` | quieter marks (the texture hatch) | SVG `stroke` (or a `<pattern>`) |
+| `--poster-gradient-from` | first gradient stop; unset = flat | CSS `background` (composed in milestone.css) |
+| `--poster-gradient-to` | second gradient stop; unset = flat | CSS `background` |
+| `--poster-gradient-angle` | gradient direction; has a default | CSS `background` |
+
+A pop color, if ever wanted, is the site's existing `--accent` - not a new slot.
+
+**How it wires:** a flavor sets `--poster-fill` / `--poster-ink`. Inside
+`.poster-art`, milestone.css maps those onto the universal `--fill-primary` /
+`--ink-primary` and derives the `-secondary` pair, so the SVG just reads the
+same `--fill-*` / `--ink-*` names the whole site uses.
 
 ### Geometry - varied per theme (applies to poster AND media frame)
 
@@ -45,14 +58,14 @@ Two knobs, different jobs - don't mix them:
 - **Flavor owns the palette** - which colors fill *this* poster (`warm`, `cool`, `night`, ...). Gradient stops live here. Per-poster, set via `data-flavor` on the article.
 - **Theme owns the shape language** - sharp vs round corners, thin vs thick lines, gradient on vs flat. Set via `data-theme` on `<html>`.
 
-So: the gradient's **stops are a flavor**, the gradient's **on/off is a theme**. Invert (black bg, white lines) is just a flavor that sets `--poster-bg` dark and `--poster-line` light - never `filter: invert()`.
+So: the gradient's **stops are a flavor**, the gradient's **on/off is a theme**. Invert (dark surface, light marks) is just a flavor that sets `--poster-fill` dark and `--poster-ink` light - never `filter: invert()`.
 
 ## Gradient background
 
 Use a CSS `background` on the poster element, not SVG `<stop>` elements. A custom
 property can hold an entire `linear-gradient(135deg, ...)` as one value, so a
 flavor repaints the whole gradient in one line; SVG stops would have to be
-templated per flavor. When `--poster-bg-gradient` is set, the SVG's base `<rect>`
+templated per flavor. When `--poster-gradient` is set, the SVG's base `<rect>`
 goes transparent and the CSS gradient shows through.
 
 ## SVG authoring checklist
@@ -69,8 +82,8 @@ inline on the page.
 
 **Color for the swap**
 
-- [ ] Use a **tiny, distinct placeholder palette** - one unmistakable color per slot (pure magenta = bg, pure cyan = line, pure yellow = shape...). Makes the find-replace to `var()` unambiguous.
-- [ ] A shape is filled **or** stroked by role. The one combo: filled shape + outline = `--poster-shape` fill + `--poster-line` stroke.
+- [ ] Use a **tiny, distinct placeholder palette** - one unmistakable color per slot (pure magenta = fill, pure cyan = ink, a third for fill-secondary...). Makes the find-replace to `var()` unambiguous.
+- [ ] Surfaces use a `fill` token, marks use `ink`. A filled shape with an outline is `ink` fill + `ink` stroke (or `fill-secondary` fill + `ink` stroke for the lighter box).
 
 **Layer structure**
 
@@ -90,5 +103,5 @@ inline on the page.
 
 **Techniques to reuse**
 
-- [ ] `fill='context-stroke'` on marker defs (arrowheads) so they inherit the arrow's `--poster-line` automatically.
+- [ ] `fill='context-stroke'` on marker defs (arrowheads) so they inherit the arrow's `--ink-primary` automatically.
 - [ ] Mark the whole SVG decorative: `role='img'` + `aria-hidden='true'`.

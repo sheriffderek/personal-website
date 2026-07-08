@@ -122,12 +122,20 @@ Buzzwords are fine when earned. Concrete > generic. "Hired my replacement before
 
 ## Video / carousel behavior (locked-in rules)
 
-Took a few iterations to settle on. Code lives in `includes/footer.php` and `templates/milestone.php`.
+Code lives in `includes/footer.php`, `templates/milestone.php`, and the shared per-item renderer `includes/posters/media-item.php`.
 
-**Slide types** (set via `data-type` on each slide):
-- `photo` — still image
-- `loop` — muted video, no native controls, plays as ambient motion
-- `play` — video with native controls, user-initiated
+**Media shape is count-driven — never a hand-set flag** (there is no `format` field; it was retired). Shape follows `count(real_media_items($milestone))` (`includes/render.php`, which drops `/content/placeholder/` items):
+- **0** → text-only card, no media.
+- **1** → a single standalone poster (the one item, no carousel).
+- **2+** → a carousel, always with the poster-shapes cover slide first.
+
+One partial (`posters/media-item`) renders every item, so a `photo`/`loop`/`play`/`vimeo` looks and behaves identically standalone or as a carousel slide — the only difference between shape 2 and 3 is the `.carousel` wrapper (⇒ Flickity). Placeholder entries (`["/content/placeholder/…"]`) are the "no real poster yet" marker and stay text-only until real media replaces them.
+
+**Item types** (`type` on each media object; becomes `data-type` on the slide):
+- `photo` — still image (`<picture>`, responsive)
+- `loop` — muted video, no controls, ambient motion; autoplays on scroll (and, in a carousel, on settle/hover)
+- `play` — video with our own custom controls (below), user-initiated; never autoplays
+- `vimeo` — responsive `<iframe>` embed (`src` is the Vimeo id)
 
 **Media file convention.** One folder per milestone (`content/milestones/<slug>/`), files named `<order>-<type>.<ext>` — the folder listing IS the storyboard, top to bottom.
 - Order is the load-bearing fact and must be visible: `01-loop.mp4`, `02-photo.jpg`, `03-play.mp4`. Don't split assets into per-type subfolders — that scatters the sequence and hides what plays first.
@@ -136,19 +144,20 @@ Took a few iterations to settle on. Code lives in `includes/footer.php` and `tem
 - When a slide has a phone crop it's a wide/square pair: `01-loop-wide.mp4` + `01-loop-square.mp4`. `square_variant($src)` swaps the `-wide.` token to `-square.`, so the wide file must carry `-wide` for the swap to fire. A slide with no crop yet is just `01-loop.mp4` (served at every width). `2026-job-search/` is the reference.
 
 **Playback rules:**
-- Only one video plays across the entire page at a time
-- On carousel `settle` (slide animation finishes): pause everything in that carousel; if arriving slide is a `loop`, autoplay it
-- Hover on a `loop` slide plays it (desktop); mouseleave pauses unless it's the selected slide
-- `play` slides never autoplay — user clicks the native play button
+- Only one video plays across the entire page at a time (a shared `current`).
+- On carousel `settle` (slide animation finishes): pause everything in that carousel; if the arriving slide is a `loop`, autoplay it.
+- Hover on a carousel `loop` slide plays it (desktop); mouseleave pauses unless it's the selected slide.
+- A **standalone** `loop` (single-item card) autoplays on scroll exactly like a carousel's selected loop — same one-at-a-time rule.
+- `loop` autoplay respects `prefers-reduced-motion`: those users get the still frame, no autoplay.
+- `play` never autoplays — the user presses play.
 
 **Scroll trigger for `loop` autoplay:**
 - Start: figure's top scrolls above 50% of the viewport
 - Stop: figure is fully off-screen (either fully above or fully below)
 - Once playing, keeps playing while any pixel of the figure is visible — never re-stops mid-scroll
-- At load, check every carousel and start any that already qualify
+- One shared scroll listener drives all loop units (carousels + standalone loops); at load each checks itself and starts if it already qualifies.
 
-**Native control stripping (on `play` videos):**
-`controlslist='nodownload nofullscreen noremoteplayback noplaybackrate'` + `disablepictureinpicture`. Leaves play, scrubber, time, volume. Chrome fully honors; Safari respects `disablepictureinpicture` but ignores `controlslist`.
+**Custom player (on `play` items):** native controls are all-or-nothing on iOS (`controlslist` is ignored there), so `play` ships none — instead a bottom `.controls` bar: a play/pause button (icon swaps on `.is-playing`) and a seek `.scrubber` (rAF-driven fill via `--progress`, auto-sync frozen while dragging). Wiring keys off `.slide[data-type='play']`, so it works standalone or in a carousel; tapping the video also toggles.
 
 **Read more:**
 Uses `<details>` for inline unfold. Both `description` and `details` render raw HTML — links, `<em>`, etc. work in either.

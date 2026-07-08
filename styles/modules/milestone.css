@@ -33,12 +33,15 @@
 	}
 
 	.media {
+		margin: 0;
 		border: var(--border-width) solid var(--ink-primary);
 		border-radius: var(--corners);
 		overflow: clip;
 
-		/* Each slide is a locked frame; its one visual child fills it (cover).
-		   Same ratio on every slide = the carousel never changes height. */
+		/* Every media shape is built from .slide, so single posters and carousel
+		   slides render identically. Each slide is a locked frame; its one visual
+		   child fills it (cover). Same ratio on every slide = a carousel never
+		   changes height, and a single poster matches a carousel slide exactly. */
 		.slide {
 			position: relative;
 			display: block;
@@ -56,10 +59,13 @@
 			object-fit: cover;
 		}
 
-		/* Standalone (non-carousel) video gets the same locked frame. */
-		> video {
-			aspect-ratio: var(--media-ratio);
-			object-fit: cover;
+		/* Vimeo: an iframe can't object-fit, but filling the locked frame is
+		   enough since the embed is already the right ratio. */
+		.slide > iframe {
+			display: block;
+			width: 100%;
+			height: 100%;
+			border: 0;
 		}
 
 		/* Custom player for 'play' slides — native controls can't be trimmed
@@ -195,11 +201,10 @@
 		}
 	}
 
+	/* The generated poster-shapes SVG (carousel cover slide). It fills its
+	   .slide via the shared rule above; here it just re-points the semantic
+	   tokens at the per-flavor poster palette so the art recolors per theme. */
 	.poster-art {
-		display: block;
-		width: 100%;
-		height: auto;
-		aspect-ratio: var(--media-ratio);
 		--fill-primary: var(--poster-fill);
 		--ink-primary: var(--poster-ink);
 		--fill-secondary: color-mix(
@@ -212,14 +217,6 @@
 			var(--poster-ink) 55%,
 			var(--poster-fill)
 		);
-	}
-
-	/* Photo-format poster: the image fills the locked frame. */
-	.poster-art > img {
-		display: block;
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
 	}
 
 	&:hover {

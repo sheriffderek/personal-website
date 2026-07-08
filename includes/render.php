@@ -54,25 +54,28 @@ function square_variant($path) {
 	return str_replace('-wide.', '-square.', $path);
 }
 
-/* Whether a milestone has a real, made poster (vs the shared placeholder art).
-   Posters are optional and built top-down, so a card renders media only when it
-   points at a real asset — placeholder paths and empty media stay text-only.
-   Which renderer (photo/video/carousel) is still chosen by 'format'. */
-function has_real_poster($milestone) {
-	if (!empty($milestone['vimeo'])) {
-		return true;
-	}
+/* A milestone's real media items — the typed {type, src} entries that point at
+   a made asset (not the shared placeholder). This is the single source the
+   template counts to pick the media shape:
+     0 items  → text-only card (no poster)
+     1 item   → a single standalone poster
+     2+ items → a carousel, poster-shapes cover first
+   Placeholder paths and empty entries are dropped, so the count reflects real
+   media only. A bare string is treated as a photo (tolerant of old data). */
+function real_media_items($milestone) {
+	$items = [];
 
 	foreach ($milestone['media'] ?? [] as $item) {
-		/* photo/video media are strings; carousel slides are {type, src}. */
 		$src = is_array($item) ? ($item['src'] ?? '') : $item;
 
-		if (!empty($src) && strpos($src, '/content/placeholder/') === false) {
-			return true;
+		if (empty($src) || strpos($src, '/content/placeholder/') !== false) {
+			continue;
 		}
+
+		$items[] = is_array($item) ? $item : ['type' => 'photo', 'src' => $item];
 	}
 
-	return false;
+	return $items;
 }
 
 /* Cache-busting: append a file's mtime to its URL so a changed file gets a new

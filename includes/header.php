@@ -7,11 +7,13 @@
 	<meta name='viewport' content='width=device-width, initial-scale=1'>
 
 	<?php
-		/* One source for the page's title/description, reused by the <title>,
-		   the meta description, and the share cards below so they never drift.
-		   The share image is site-wide for now; a page can override by setting
-		   $page_image (web-absolute path) before including this header. */
+		/* Two title lanes (see config.php): $meta_title is the plain browser
+		   <title> (page name, or the site name on the home page); $share_title
+		   is the punchier SITE_META_TITLE used only on the share cards. Description
+		   and image are shared across both so they never drift; a page can override
+		   the image with $page_image (web-absolute path) before including this header. */
 		$meta_title = $page_title ?? SITE_TITLE;
+		$share_title = SITE_META_TITLE;
 		$meta_description = $page_description ?? SITE_DESCRIPTION;
 		$meta_image = SITE_URL . ($page_image ?? SITE_SHARE_IMAGE);
 		$meta_url = SITE_URL . strtok($_SERVER['REQUEST_URI'], '?');
@@ -22,13 +24,13 @@
 	<?php /* Share cards: Open Graph (Facebook/LinkedIn/iMessage) + Twitter. */ ?>
 	<meta property='og:type' content='website'>
 	<meta property='og:site_name' content='<?= SITE_TITLE ?>'>
-	<meta property='og:title' content='<?= quote_safe($meta_title) ?>'>
+	<meta property='og:title' content='<?= quote_safe($share_title) ?>'>
 	<meta property='og:description' content='<?= quote_safe($meta_description) ?>'>
 	<meta property='og:url' content='<?= $meta_url ?>'>
 	<meta property='og:image' content='<?= $meta_image ?>'>
 
 	<meta name='twitter:card' content='summary_large_image'>
-	<meta name='twitter:title' content='<?= quote_safe($meta_title) ?>'>
+	<meta name='twitter:title' content='<?= quote_safe($share_title) ?>'>
 	<meta name='twitter:description' content='<?= quote_safe($meta_description) ?>'>
 	<meta name='twitter:image' content='<?= $meta_image ?>'>
 	<script>

@@ -140,21 +140,50 @@
 				});
 			});
 
+			// Autoplay for 'loop' videos respects reduced-motion: those users get
+			// the still first frame, never an auto-playing clip.
+			const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+			// Shared scroll test:
+			//   pastStartLine - the figure's top has crossed above 50% of viewport
+			//   fullyOff      - the figure is entirely above or below the viewport
+			// Once playing, a loop keeps playing while any part stays visible.
+			function visibility(el) {
+				const r = el.getBoundingClientRect();
+				const vh = window.innerHeight;
+				return { fullyOff: r.bottom <= 0 || r.top >= vh, pastStartLine: r.top < vh * 0.5 };
+			}
+
+			// One scroll listener drives every registered check (carousels and
+			// standalone loops both push into here) instead of one listener each.
+			const checks = [];
+			function runChecks() { checks.forEach(fn => fn()); }
+
+			let scrollRaf = null;
+			window.addEventListener('scroll', () => {
+				if (scrollRaf) return;
+				scrollRaf = requestAnimationFrame(() => { scrollRaf = null; runChecks(); });
+			}, { passive: true });
+
+			// Carousels (2+ items): Flickity, with the selected slide's loop
+			// autoplaying on scroll/settle.
 			document.querySelectorAll('.carousel').forEach(el => {
 				const flkty = Flickity.data(el);
 				if (!flkty) return;
 
 				const pauseAll = () => {
-					el.querySelectorAll('video').forEach(v => { if (!v.paused) v.pause(); });
-					current = null;
+					el.querySelectorAll('video').forEach(v => {
+						if (!v.paused) v.pause();
+						if (current === v) current = null;
+					});
 				};
 
-				// Settle = animation finished. Old slide fully out, new slide fully in.
-				// Pause everything, then autoplay if the arriving slide is a loop.
+				// Settle = animation finished. Pause everything, then autoplay the
+				// arriving slide if it's a loop.
 				flkty.on('settle', i => {
 					pauseAll();
 					const arriving = flkty.cells[i].element;
-					if (arriving.dataset.type === 'loop') {
+					if (!reduceMotion && arriving.dataset.type === 'loop') {
 						play(arriving.querySelector('video'));
 					}
 				});
@@ -168,31 +197,19 @@
 					});
 				});
 
-				// Scroll trigger:
-				//   - start: figure's top crosses above 50% of viewport
-				//   - stop:  figure is fully off-screen (top or bottom)
-				// Once started, keeps playing as long as any part is visible.
 				const check = () => {
-					const r = el.getBoundingClientRect();
-					const vh = window.innerHeight;
-					const fullyOff = r.bottom <= 0 || r.top >= vh;
-					const pastStartLine = r.top < vh * 0.5;
+					const view = visibility(el);
 					const selected = flkty.selectedElement;
 					const video = selected && selected.dataset.type === 'loop'
 						? selected.querySelector('video')
 						: null;
-					if (fullyOff) {
+					if (view.fullyOff) {
 						pauseAll();
-					} else if (pastStartLine && video && video.paused) {
+					} else if (!reduceMotion && view.pastStartLine && video && video.paused) {
 						play(video);
 					}
 				};
-
-				let raf = null;
-				window.addEventListener('scroll', () => {
-					if (raf) return;
-					raf = requestAnimationFrame(() => { raf = null; check(); });
-				}, { passive: true });
+				checks.push(check);
 
 				// Flickity caches cell geometry once. When the frame ratio and
 				// full-bleed flip at the breakpoint it must re-measure, or slides
@@ -201,9 +218,27 @@
 				let resizeTimer = null;
 				window.addEventListener('resize', () => {
 					if (resizeTimer) clearTimeout(resizeTimer);
-					resizeTimer = setTimeout(() => { flkty.resize(); check(); }, 150);
+					resizeTimer = setTimeout(() => { flkty.resize(); runChecks(); }, 150);
 				});
 
+				check();
+			});
+
+			// Standalone loops (single-item cards): a .slide[data-type='loop'] with
+			// no carousel around it. Same scroll-autoplay, same one-video-at-a-time.
+			document.querySelectorAll('.media > .slide[data-type="loop"]').forEach(slide => {
+				const video = slide.querySelector('video');
+				if (!video) return;
+
+				const check = () => {
+					const view = visibility(slide);
+					if (view.fullyOff) {
+						pause(video);
+					} else if (!reduceMotion && view.pastStartLine && video.paused) {
+						play(video);
+					}
+				};
+				checks.push(check);
 				check();
 			});
 		});
