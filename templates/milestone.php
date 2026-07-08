@@ -21,7 +21,7 @@
 	<div class='media'>
 		<?php if ($carousels_enabled && $milestone['format'] === 'carousel'): ?>
 			<div class='carousel' data-flickity='{ "wrapAround": true, "imagesLoaded": true, "prevNextButtons": false }'>
-				<div class='slide' style='width: 100%' data-type='poster'>
+				<div class='slide' data-type='poster'>
 					<?php include INCLUDES_DIR . '/posters/poster-shapes.php'; ?>
 				</div>
 				<?php foreach ($milestone['media'] as $slide):
@@ -30,25 +30,38 @@
 					$sq = square_variant($src);
 				?>
 					<?php if ($type === 'photo'): ?>
-						<picture class='slide' style='width: 100%' data-type='photo'>
+						<picture class='slide' data-type='photo'>
 							<source media='(max-width: 600px)' srcset='<?= $sq ?>'>
 							<img src='<?= $src ?>' alt=''>
 						</picture>
 
 					<?php elseif ($type === 'loop'): ?>
-						<div class='slide' style='width: 100%' data-type='loop'>
-							<video muted loop playsinline preload='metadata'>
-								<source src='<?= $sq ?>' media='(max-width: 600px)' type='video/mp4'>
+						<div class='slide' data-type='loop'>
+							<?php /* No <source media>: browsers ignore it inside <video>. The right
+							         file per breakpoint is chosen by JS from data-src-* (see footer.php). */ ?>
+							<video muted loop playsinline preload='metadata' data-src-wide='<?= $src ?>' data-src-square='<?= $sq ?>'>
 								<source src='<?= $src ?>' type='video/mp4'>
 							</video>
 						</div>
 
 					<?php elseif ($type === 'play'): ?>
-						<div class='slide' style='width: 100%' data-type='play'>
-							<video controls playsinline preload='metadata' controlslist='nodownload nofullscreen noremoteplayback noplaybackrate' disablepictureinpicture>
-								<source src='<?= $sq ?>' media='(max-width: 600px)' type='video/mp4'>
+						<div class='slide' data-type='play'>
+							<?php /* Native controls are all-or-nothing on iOS (controlslist is ignored),
+							         so we ship our own: a play/pause button and a seek scrubber in a
+							         bottom control bar. Tapping the video toggles too. */ ?>
+							<video playsinline preload='metadata' data-src-wide='<?= $src ?>' data-src-square='<?= $sq ?>'>
 								<source src='<?= $src ?>' type='video/mp4'>
 							</video>
+
+							<div class='controls'>
+								<button type='button' class='play-pause' aria-label='Play'>
+									<span class='icon icon-play'></span>
+
+									<span class='icon icon-pause'></span>
+								</button>
+
+								<input class='scrubber' type='range' min='0' max='100' step='0.1' value='0' aria-label='Seek'>
+							</div>
 						</div>
 					<?php endif; ?>
 				<?php endforeach; ?>
@@ -57,8 +70,7 @@
 		<?php elseif ($milestone['format'] === 'video' && !empty($milestone['media'][0])):
 			$src = $milestone['media'][0];
 		?>
-			<video autoplay muted loop playsinline>
-				<source src='<?= square_variant($src) ?>' media='(max-width: 600px)' type='video/mp4'>
+			<video autoplay muted loop playsinline data-src-wide='<?= $src ?>' data-src-square='<?= square_variant($src) ?>'>
 				<source src='<?= $src ?>' type='video/mp4'>
 			</video>
 

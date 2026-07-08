@@ -14,6 +14,10 @@
 	--corners: 0;
 	--border-width: 0;
 
+	/* The media frame's shape. Every slide fills this, so height never jumps
+	   between carousel slides. Phones override it to a square below. */
+	--media-ratio: 16 / 9;
+
 	display: grid;
 	gap: 0.75rem;
 	max-width: 720px;
@@ -33,6 +37,150 @@
 		border-radius: var(--corners);
 		overflow: clip;
 
+		/* Each slide is a locked frame; its one visual child fills it (cover).
+		   Same ratio on every slide = the carousel never changes height. */
+		.slide {
+			position: relative;
+			display: block;
+			width: 100%;
+			aspect-ratio: var(--media-ratio);
+			overflow: hidden;
+		}
+
+		.slide > img,
+		.slide > video,
+		.slide > svg {
+			display: block;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+
+		/* Standalone (non-carousel) video gets the same locked frame. */
+		> video {
+			aspect-ratio: var(--media-ratio);
+			object-fit: cover;
+		}
+
+		/* Custom player for 'play' slides — native controls can't be trimmed
+		   on iOS, so we paint our own over the video. */
+		.slide[data-type='play'] {
+			--control-ink: white;
+
+			> video {
+				cursor: pointer;
+			}
+
+			.controls {
+				position: absolute;
+				inset-inline: 0;
+				inset-block-end: 0;
+				z-index: 1;
+				display: flex;
+				align-items: center;
+				gap: 0.6rem;
+				padding: 0.75rem;
+				/* A soft scrim so the white controls stay legible over bright video. */
+				background: linear-gradient(to top, rgb(0 0 0 / 0.4), transparent);
+			}
+
+			.play-pause {
+				flex: none;
+				display: grid;
+				place-items: center;
+				width: 1.75rem;
+				height: 1.75rem;
+				padding: 0;
+				border: 0;
+				background: transparent;
+				cursor: pointer;
+			}
+
+			.play-pause .icon {
+				filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.45));
+			}
+
+			/* Play triangle (default) and pause bars - is-playing swaps which shows. */
+			.icon-play {
+				width: 0;
+				height: 0;
+				border-style: solid;
+				border-width: 0.55rem 0 0.55rem 0.9rem;
+				border-color: transparent transparent transparent var(--control-ink);
+			}
+
+			.icon-pause {
+				display: none;
+				box-sizing: border-box;
+				width: 0.85rem;
+				height: 1.05rem;
+				border-inline: 0.3rem solid var(--control-ink);
+			}
+
+			&.is-playing .icon-play {
+				display: none;
+			}
+
+			&.is-playing .icon-pause {
+				display: block;
+			}
+
+			.scrubber {
+				--progress: 0%;
+
+				flex: 1;
+				height: 1rem;
+				margin: 0;
+				appearance: none;
+				background: transparent;
+				cursor: pointer;
+			}
+
+			/* The played portion is solid, the rest is faint. WebKit has no native
+			   fill pseudo, so the track paints its own two-stop gradient at
+			   --progress; Firefox uses ::-moz-range-progress. */
+			.scrubber::-webkit-slider-runnable-track {
+				height: 0.25rem;
+				border-radius: 0.25rem;
+				background: linear-gradient(
+					to right,
+					var(--control-ink) var(--progress),
+					rgb(255 255 255 / 0.35) var(--progress)
+				);
+			}
+
+			.scrubber::-moz-range-track {
+				height: 0.25rem;
+				border-radius: 0.25rem;
+				background: rgb(255 255 255 / 0.35);
+			}
+
+			.scrubber::-moz-range-progress {
+				height: 0.25rem;
+				border-radius: 0.25rem;
+				background: var(--control-ink);
+			}
+
+			.scrubber::-webkit-slider-thumb {
+				appearance: none;
+				width: 0.9rem;
+				height: 0.9rem;
+				margin-top: -0.325rem;
+				border-radius: 50%;
+				background: var(--control-ink);
+				box-shadow: 0 1px 3px rgb(0 0 0 / 0.45);
+			}
+
+			.scrubber::-moz-range-thumb {
+				width: 0.9rem;
+				height: 0.9rem;
+				border: 0;
+				border-radius: 50%;
+				background: var(--control-ink);
+				box-shadow: 0 1px 3px rgb(0 0 0 / 0.45);
+			}
+		}
+
 		.padding {
 			/* for positioing the dots away from the edge - based on if media has border-radius etc. */
 		}
@@ -51,7 +199,7 @@
 		display: block;
 		width: 100%;
 		height: auto;
-		aspect-ratio: 16 / 9;
+		aspect-ratio: var(--media-ratio);
 		--fill-primary: var(--poster-fill);
 		--ink-primary: var(--poster-ink);
 		--fill-secondary: color-mix(
@@ -64,6 +212,14 @@
 			var(--poster-ink) 55%,
 			var(--poster-fill)
 		);
+	}
+
+	/* Photo-format poster: the image fills the locked frame. */
+	.poster-art > img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 
 	&:hover {
@@ -123,20 +279,48 @@
 		left: 0.75rem;
 		width: auto;
 		display: flex;
-		gap: 0.5rem;
+		gap: 0;
 		pointer-events: none;
 	}
 
+	/* Small visible dot, large invisible tap target. The box is --dot-hit wide
+	   and clickable edge-to-edge (pointer-events: auto), but only the centered
+	   --dot-size circle is painted, via a radial-gradient. This keeps a
+	   finger-friendly target without a fat dot, and gives each dot its own zone
+	   so a tap near one doesn't read as a swipe. Two knobs, tune them here. */
 	.flickity-page-dots .dot {
-		width: 0.5rem;
-		height: 0.5rem;
+		--dot-size: 0.6rem;
+		--dot-hit: 1.75rem;
+
+		width: var(--dot-hit);
+		height: var(--dot-hit);
 		margin: 0;
-		background: var(--poster-ink, white);
+		background: radial-gradient(
+			circle at center,
+			var(--poster-ink, white) 0 calc(var(--dot-size) / 2),
+			transparent calc(var(--dot-size) / 2)
+		);
 		opacity: 0.4;
 		pointer-events: auto;
 	}
 
 	.flickity-page-dots .dot.is-selected {
 		opacity: 1;
+	}
+}
+
+/* Phones: the media squares up and breaks out to both screen edges for a more
+   immersive frame, while the text blocks stay in their column. The negative
+   inline margin pulls the frame exactly to the viewport edges (50% of the
+   column minus 50% of the viewport), so there's no horizontal scroll. */
+@media (width <= 600px) {
+	.milestone {
+		--media-ratio: 1 / 1;
+	}
+
+	.milestone .media {
+		margin-inline: calc(50% - 50vw);
+		border-width: 0;
+		border-radius: 0;
 	}
 }

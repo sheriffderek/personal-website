@@ -393,6 +393,73 @@ Not new principles — existing ones pointed at a client instead of a greenfield
   the open, visible and adjustable like the goals, so nobody's designing a Ferrari on a Civic
   budget in silence.
 
+## Gaps to weave in (flagged, with Derek's answers where he gave them)
+
+Framing that governs several of these: **this is Derek's mindset and what to expect working with
+him, told loosely** — not a rigid deliverables list. Some of it is really "how my agency works";
+some is "how I am on your team." Sort per surface as we weave.
+
+1. **Receipts / real outcomes.** Still the #1. Every principle is true assertion until a real
+   project + a real number sits under it. (The video plan below is the vehicle — see it.)
+
+2. **"What do you actually design?"** — Derek's own answer, keep close to his words:
+   > "I talk and listen and sketch and prototype and test and implement and — all the things /
+   > helping everyone else on the team — letting them own what they need to and ensuring that
+   > everything is meeting its goal in clear ways we can measure and — since everyone is involved
+   > — there's no big reveal. **We will be designing paths to a goal. Not screens in Figma / that's
+   > just a part of the discovery process.**"
+   "Designing paths to a goal, not screens in Figma" is the keeper line — it *is* the answer to the
+   IC-vs-conductor worry. Foreground it.
+
+3. **Accessibility & ethics.** Not bolted on — **baked in from the very beginning, into how we
+   build the core.** (Same shape as the whole method: right from the start, not a late polish
+   pass.) Was the most conspicuous absence; this resolves it — just needs to be *said* on the page.
+
+4. **What happens after launch.** Client-specific, and honestly framed: if it's a client, they get
+   all the documentation and code and Derek helps move it over — depends on the situation. **There
+   is no "after launch" when he's a salaried product owner** — he's still there. So this belongs in
+   the *agency* telling, not the IC one.
+
+5. **When it goes wrong / recovery.** Still open — "I've seen it go all the wrong ways" needs a
+   recovery story, not just the happy path.
+
+6. **Persuasion & politics — selling the work.** Still open — moving a resistant stakeholder,
+   saying no to Ferrari-on-a-Civic-budget, managing up.
+
+## Production plan (how this gets shown, not just written)
+
+- **A little video for each phase.** The phases become short videos — Derek's actual voice and
+  face, not a wall of text (dodges the "nobody reads long process" trap the section is *about*).
+- **Examples across 4 projects.** Each phase shown through the same ~4 projects, so a viewer sees
+  the *same move* play out across different work — which is exactly how you prove "reads decide the
+  move" instead of asserting it. This is also the **receipts vehicle** (gap #1): pick the 4, and
+  the outcomes come with them.
+
+## GoFundMe alignment — the David Murray article (strategic, for Round 1)
+
+GoFundMe's Head of Design **David Murray** wrote "Helpful and empathetic design for when people
+need us most" (Apr 8, 2022). It is a near-mirror of Derek's whole method — which means Derek can
+walk into the application already speaking their exact language. The parallels:
+
+- **Goals + principles FIRST, before screens.** Week one of their three-week sprint: "we set
+  goals, defined principles, and identified potential features." = Derek's transparent-goals +
+  anti-goals + "designing paths to a goal, not screens."
+- **The full triad and then some** — "product designers, product managers, content designers,
+  researchers, and engineers." = Derek's cross-functional, everyone-owns-their-part, no-silos.
+- **Narrow the focus / hardest-first** — "narrowed our focus to the fundraiser creation
+  experience, our very first touchpoint." = converge to the highest-leverage slice.
+- **Empathy + accessibility baked into the core** — "more accessible typestyles, softer shapes,
+  warmer colors," language from commands → questions. = Derek's accessibility-from-the-start (gap
+  #3) is *literally their published value.*
+- **Measurable results** — "60% preferred the redesign vs 40%," "68% preferred alphabetical." =
+  the receipts-by-design bridge; proof GoFundMe decides by measurement, exactly as Derek does.
+- Emotional stakes: organizers grieving while fundraising — the "users are often at their most
+  vulnerable" point isn't a nicety here, it's the whole product.
+
+> Operational home: this belongs in the **GoFundMe application prep** (timeline `?target=gofundme`
+> + resume-exploration job materials), not just here. Captured here because it *validates the whole
+> method* — Derek didn't reverse-engineer their process; he already works this way.
+
 ## Examples to attach (the part that makes it land)
 
 The principles are the skeleton; **real project examples are what make a recruiter want to

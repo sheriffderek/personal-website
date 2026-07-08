@@ -24,6 +24,8 @@ a.link {
 	display: inline;
 	color: var(--link-color, blue);
 	text-decoration: underline;
+	text-decoration-color: var(--link-underline-color);
+	text-underline-offset: 0.15em;
 }
 
 /*a.relaxed {

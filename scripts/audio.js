@@ -191,11 +191,13 @@
 	});
 	document.addEventListener('input', function () { if (isOn()) ensureContext(); });
 
-	/* Generic click for any <button> or "Read more" disclosure.
+	/* Generic click for any <button>, "Read more" disclosure, or Flickity page
+	   dot. The dots are injected per-carousel by Flickity after load, so we
+	   catch them by delegation here rather than binding each one.
 	   Sound switcher buttons play their toggle sound from settings-panel.js,
 	   so we exclude them here to avoid doubling up. */
 	document.addEventListener('click', function (e) {
-		var hit = e.target.closest('button, .read-more');
+		var hit = e.target.closest('button, .read-more, .flickity-page-dots .dot');
 		if (!hit) return;
 		if (hit.matches('[data-set-sound]')) return;
 		window.ui.sound('click');

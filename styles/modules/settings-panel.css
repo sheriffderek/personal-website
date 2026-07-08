@@ -260,14 +260,27 @@ button.settings-trigger {
 	gap: 0.4rem;
 }
 
-/* Slider — large hit area for fingers. Visible thumb is a small dark dot
-   with a soft halo, rendered via radial-gradient on a 28px transparent thumb
-   so the clickable/draggable area is the full 28px. */
+/* Slider — large hit area for fingers, small visible dot inside it.
+   Three knobs control the thumb; change them here and both the WebKit and
+   Firefox thumbs follow (their pseudo-elements can't be grouped, so the
+   declarations are duplicated but read from the same variables):
+
+     --range-hit  the full transparent thumb box — the clickable/draggable
+                  area. Keep this comfortably tappable even when the dot is
+                  small (WCAG target size is 24px).
+     --range-dot  the solid visible dot's diameter.
+     --range-halo the soft ring's outer diameter; fades to transparent.
+
+   The gradient stops are radii, so each is half its diameter via calc. */
 .plain-range {
+	--range-hit: 36px;
+	--range-dot: 18px;
+	--range-halo: 30px;
+
 	-webkit-appearance: none;
 	appearance: none;
 	width: 100%;
-	height: 28px;
+	height: var(--range-hit);
 	background: transparent;
 	margin: 0;
 	cursor: pointer;
@@ -281,16 +294,17 @@ button.settings-trigger {
 	&::-webkit-slider-thumb {
 		-webkit-appearance: none;
 		appearance: none;
-		width: 28px;
-		height: 28px;
-		margin-top: -12px;
+		width: var(--range-hit);
+		height: var(--range-hit);
+		/* Center the thumb box on the 4px track. */
+		margin-top: calc((var(--range-hit) - 4px) / -2);
 		border: 0;
 		border-radius: 50%;
 		background: radial-gradient(
 			circle at center,
-			var(--ink-primary) 0 6px,
-			color-mix(in oklch, var(--ink-primary) 22%, transparent) 7px 13px,
-			transparent 14px
+			var(--ink-primary) 0 calc(var(--range-dot) / 2),
+			color-mix(in oklch, var(--ink-primary) 22%, transparent) calc(var(--range-dot) / 2 + 1px) calc(var(--range-halo) / 2),
+			transparent calc(var(--range-halo) / 2)
 		);
 	}
 
@@ -301,15 +315,15 @@ button.settings-trigger {
 	}
 
 	&::-moz-range-thumb {
-		width: 28px;
-		height: 28px;
+		width: var(--range-hit);
+		height: var(--range-hit);
 		border: 0;
 		border-radius: 50%;
 		background: radial-gradient(
 			circle at center,
-			var(--ink-primary) 0 6px,
-			color-mix(in oklch, var(--ink-primary) 22%, transparent) 7px 13px,
-			transparent 14px
+			var(--ink-primary) 0 calc(var(--range-dot) / 2),
+			color-mix(in oklch, var(--ink-primary) 22%, transparent) calc(var(--range-dot) / 2 + 1px) calc(var(--range-halo) / 2),
+			transparent calc(var(--range-halo) / 2)
 		);
 	}
 }

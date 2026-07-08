@@ -1,4 +1,4 @@
-<svg class='poster-art' viewBox='0 0 1600 900' xmlns='http://www.w3.org/2000/svg'
+<svg class='poster-art' viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
 	style='fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round'>
 
 	<defs>

@@ -18,15 +18,22 @@
 
 	--accent: var(--color-blue-600);
 	--link-color: var(--accent);
+	/* Underline color, independent of the link text. Defaults to the link color
+	   (tracks per theme since it reads --link-color); change this one line to
+	   any token for a differently-colored underline. */
+	--link-underline-color: var(--link-color);
 
 	/* Scrim behind the mobile menu. Scheme-dependent only (not per theme),
 	   so it's set at the scheme level and not restated in each theme block. */
 	--scrim: rgb(0 0 0 / 0.15);
 
 	/* Pair convention: heading = the display font (left), body = the reading
-	   font (right). Default pair: Boska (display, --font-serif) / General Sans. */
-	--font-heading: var(--font-serif);
-	--font-body: var(--font-sans);
+	   font (right). Default pair: Quicksand SemiBold / Spline Sans. Both are
+	   sans, so they're named directly rather than routed through the
+	   sans/serif audition stacks. --font-heading-weight carries the "SemiBold". */
+	--font-heading: 'Quicksand', system-ui, sans-serif;
+	--font-body: 'Spline Sans', system-ui, sans-serif;
+	--font-heading-weight: 600;
 }
 
 [data-theme='default'] {

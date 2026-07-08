@@ -30,7 +30,6 @@
 
 	<script>
 		window.addEventListener('load', () => {
-			console.log('carousel init: found', document.querySelectorAll('.carousel').length);
 			let current = null;
 
 			function play(video) {
@@ -44,9 +43,105 @@
 				if (current === video) current = null;
 			}
 
+			// Which cut to load. <source media> is ignored inside <video>, so we
+			// choose the file ourselves - wide normally, square on phones - and
+			// re-choose if the viewport later crosses the breakpoint.
+			const phone = window.matchMedia('(max-width: 600px)');
+
+			function pickSource(video) {
+				const wanted = phone.matches ? video.dataset.srcSquare : video.dataset.srcWide;
+				if (!wanted) return;
+
+				const loaded = video.currentSrc || video.src;
+				if (loaded.indexOf(wanted) !== -1) return;
+
+				const resumeAt = video.currentTime;
+				const wasPlaying = !video.paused;
+
+				video.src = wanted;
+				video.load();
+
+				video.addEventListener('loadedmetadata', function restore() {
+					video.removeEventListener('loadedmetadata', restore);
+					try { video.currentTime = resumeAt; } catch (e) {}
+					if (wasPlaying) video.play();
+				});
+			}
+
+			const sourced = document.querySelectorAll('video[data-src-wide]');
+			sourced.forEach(pickSource);
+
+			phone.addEventListener('change', () => sourced.forEach(pickSource));
+
+			// Custom player for 'play' slides - tap toggles play/pause, the
+			// scrubber seeks. Replaces the native controls we can't trim on iOS.
+			document.querySelectorAll('.slide[data-type="play"]').forEach(slide => {
+				const video = slide.querySelector('video');
+				const playPause = slide.querySelector('.play-pause');
+				const scrubber = slide.querySelector('.scrubber');
+
+				// While the user is dragging, the video's own time updates must not
+				// write back to the scrubber - that fight is what makes it jitter.
+				let scrubbing = false;
+
+				// Paint the thumb position and the filled (played) portion. --progress
+				// drives the track fill in CSS.
+				function paint() {
+					const percent = video.duration ? (video.currentTime / video.duration) * 100 : 0;
+					scrubber.value = percent;
+					scrubber.style.setProperty('--progress', percent + '%');
+				}
+
+				// timeupdate only fires ~4x/sec, which looks steppy. While playing we
+				// repaint every animation frame instead for a smooth playhead.
+				let frame = null;
+				function follow() {
+					if (!scrubbing) paint();
+					frame = video.paused ? null : requestAnimationFrame(follow);
+				}
+
+				video.addEventListener('loadedmetadata', paint);
+
+				video.addEventListener('play', () => {
+					slide.classList.add('is-playing');
+					playPause.setAttribute('aria-label', 'Pause');
+					if (!frame) follow();
+				});
+
+				video.addEventListener('pause', () => {
+					slide.classList.remove('is-playing');
+					playPause.setAttribute('aria-label', 'Play');
+					paint();
+				});
+
+				function togglePlay() {
+					if (video.paused) play(video); else pause(video);
+				}
+
+				playPause.addEventListener('click', togglePlay);
+				video.addEventListener('click', togglePlay);
+
+				// Seek live as the user drags; the video follows the thumb, not vice versa.
+				scrubber.addEventListener('input', () => {
+					scrubbing = true;
+					if (video.duration) video.currentTime = (scrubber.value / 100) * video.duration;
+					scrubber.style.setProperty('--progress', scrubber.value + '%');
+				});
+
+				// Hand control back once the drag ends.
+				function endScrub() { scrubbing = false; }
+				scrubber.addEventListener('change', endScrub);
+				window.addEventListener('pointerup', endScrub);
+
+				// Keep a control-bar gesture from turning into a carousel swipe.
+				// (The video itself stays swipeable - only the controls stop it.)
+				[playPause, scrubber].forEach(control => {
+					control.addEventListener('pointerdown', event => event.stopPropagation());
+				});
+			});
+
 			document.querySelectorAll('.carousel').forEach(el => {
 				const flkty = Flickity.data(el);
-				console.log('flickity instance?', !!flkty, el);
 				if (!flkty) return;
 
 				const pauseAll = () => {
@@ -59,7 +154,6 @@
 				flkty.on('settle', i => {
 					pauseAll();
 					const arriving = flkty.cells[i].element;
-					console.log('settled on', i, arriving.dataset.type);
 					if (arriving.dataset.type === 'loop') {
 						play(arriving.querySelector('video'));
 					}
@@ -71,17 +165,6 @@
 					slide.addEventListener('mouseenter', () => play(video));
 					slide.addEventListener('mouseleave', () => {
 						if (flkty.selectedElement !== slide) pause(video);
-					});
-				});
-
-				// Click on play slides — user invokes native controls; pause anything else.
-				el.querySelectorAll('.slide[data-type="play"] video').forEach(video => {
-					video.addEventListener('play', () => {
-						if (current && current !== video) current.pause();
-						current = video;
-					});
-					video.addEventListener('pause', () => {
-						if (current === video) current = null;
 					});
 				});
 
@@ -110,6 +193,17 @@
 					if (raf) return;
 					raf = requestAnimationFrame(() => { raf = null; check(); });
 				}, { passive: true });
+
+				// Flickity caches cell geometry once. When the frame ratio and
+				// full-bleed flip at the breakpoint it must re-measure, or slides
+				// land off-center at the wrong height. Debounced so a window drag
+				// doesn't thrash it.
+				let resizeTimer = null;
+				window.addEventListener('resize', () => {
+					if (resizeTimer) clearTimeout(resizeTimer);
+					resizeTimer = setTimeout(() => { flkty.resize(); check(); }, 150);
+				});
+
 				check();
 			});
 		});
