@@ -456,14 +456,14 @@
 	{
 		"slug": "shoutq",
 		"date": "May 2014 – January 2015",
-		"title": "Front-End Developer + UX Designer for an influencer marketplace startup",
+		"title": "Web app dev for an early influencer marketplace startup",
 		"weight": 3,
 		"tags": ["job", "product", "dev"],
 		"flavor": "cool",
 		"format": "static",
 		"media": ["/content/placeholder/poster-wide.png"],
-		"description": "ShoutQ was building a social media influence marketplace years before Instagram had an influencer economy. I built the full Angular prototype we used to show investors and decide whether to actually build the app. This was my first time building a real application, not a content site, and it changed how I thought about everything.",
-		"details": "<p>Up to this point, most of my work had been custom WordPress sites, brochure pages, content-driven projects. ShoutQ was different. It was a startup with investor money and a product that needed to work as an app: user accounts, matching influencers with brands, pricing, campaign management. I built the frontend prototype in Angular, handled responsive design and UI polish, and ran user testing.</p><p>The company was way ahead of its time. The influencer economy didn't exist yet the way it does now. They got overvalued, had investor issues, and eventually collapsed. But the experience of building a real app prototype, bridging design and engineering on a product team, was the turning point. After ShoutQ I knew I wasn't just a web developer who made websites. I was someone who could build products.</p>"
+		"description": "ShoutQ's goal was to create the first social media influencer marketplace. I built an Angular prototype so we'd have a live, usable example for investors to play with. This was my first time building a real <em>application</em>, and it was exciting to watch everything I'd learned come together into interactive user interfaces for the first time.",
+		"details": "<p>Up to this point, most of my work had been brochure pages, content-driven projects, and custom WordPress sites with some interaction. This was a startup with investor money, building everything from scratch: user accounts, matching influencers with brands, image recognition to verify what they posted, pricing, campaign management. I think the final product ended up built with Django. I handled responsive design and UI polish, and ran user testing. It opened my eyes to more ambitious software projects.</p>"
 	},
 	{
 		"slug": "nouveau-studios",

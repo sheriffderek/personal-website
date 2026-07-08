@@ -101,17 +101,20 @@ button.toolbox-trigger {
 	position-anchor: --menu-bar;
 	inset: auto;
 	top: anchor(bottom);
-	right: anchor(right);
+
+	/* Line the panel's right edge up with the header's right PADDING (where the
+	   trigger buttons sit), not the header's border edge — so it reads as tucked
+	   under the buttons rather than flush to the screen. */
+	right: calc(anchor(right) + var(--gutter));
 	margin: 0.5rem 0 0 0;
 
 	width: max-content;
 
-	/* Never wider than the screen. Right-anchored to the bar, so the cap keeps
-	   the LEFT edge from running off a narrow viewport - 360px on roomy screens,
-	   viewport-minus-a-gutter on small ones. min() also caps the min-width so a
-	   very narrow screen can't force an overflow. */
-	min-width: min(280px, 100vw - var(--gutter));
-	max-width: min(360px, 100vw - var(--gutter));
+	/* Never wider than the screen. Right-inset by a gutter, so the cap leaves a
+	   matching gutter on the LEFT - 360px on roomy screens, viewport-minus-two-
+	   gutters on small ones. min() also caps the min-width against overflow. */
+	min-width: min(280px, 100vw - var(--gutter) * 2);
+	max-width: min(360px, 100vw - var(--gutter) * 2);
 
 	/* Never taller than the space below the bar - scroll inside if the content
 	   still doesn't fit, so the panel can't run off the bottom of the screen. */
@@ -299,68 +302,11 @@ button.settings-trigger {
 	}
 }
 
-/* Filter body. Roomy screens: horizontal slider on top, then the mini-page
-   (timeline map + rail) below. Small screens: the slider goes VERTICAL and sits
-   beside the map, saving a row of height. */
+/* Filter body: horizontal slider on top, the timeline map below. */
 .filter-body {
 	display: grid;
-	grid-template-columns: 1fr 60px;
-	grid-template-areas:
-		'slider slider'
-		'map    rail';
 	gap: 8px;
 	margin: 0.5rem 0 0;
-	align-items: start;
-}
-
-.filter-body .plain-range {
-	grid-area: slider;
-}
-
-.filter-body .mini-map {
-	grid-area: map;
-}
-
-.filter-body .mini-rail {
-	grid-area: rail;
-}
-
-@media (width < 700px) {
-	.filter-body {
-		grid-template-columns: 1fr auto;
-		grid-template-areas: 'map slider';
-		align-items: stretch;
-	}
-
-	/* The vertical slider takes the right slot, so the little rail drops out. */
-	.filter-body .mini-rail {
-		display: none;
-	}
-
-	.filter-body .plain-range {
-		writing-mode: vertical-lr;
-		direction: rtl; /* drag up = show more */
-		width: 28px;
-		height: auto;
-		align-self: stretch;
-
-		/* In vertical mode the thin dimension is the width, not the height. */
-		&::-webkit-slider-runnable-track {
-			width: 4px;
-			height: auto;
-			margin-inline: auto;
-		}
-
-		&::-webkit-slider-thumb {
-			margin-top: 0;
-			margin-left: -12px;
-		}
-
-		&::-moz-range-track {
-			width: 4px;
-			height: auto;
-		}
-	}
 }
 
 .mini-map {
@@ -380,12 +326,6 @@ button.settings-trigger {
 
 .mini-map li[data-state='in'] {
 	background: var(--ink-secondary);
-}
-
-.mini-rail {
-	aspect-ratio: 3/7;
-	border: 1px solid var(--stroke-secondary);
-	border-radius: 4px;
 }
 
 .filter-count {
