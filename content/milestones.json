@@ -238,12 +238,12 @@
 		"slug": "dondev-podcast-2021",
 		"date": "April 2021",
 		"weight": 1,
-		"title": "DonTheDeveloper: PE Launch",
+		"title": "A coding bootcamp that also teaches visual design?",
 		"tags": ["job", "speaking", "education", "community"],
 		"flavor": "moss",
 		"media": ["/content/placeholder/poster-wide.png"],
-		"description": "First podcast appearance just after PE's first official cohort. Talking about why we built a bootcamp that combines coding and design instead of treating them as separate disciplines, and how the program was structured to actually produce designer-developers.",
-		"details": "<p>Episode: \"Coding Bootcamp That Combines Coding And Design (Perpetual Education)\" - <a href='https://www.youtube.com/watch?v=Djmiqd-S13Q' target='_blank' rel='noopener'>watch on YouTube</a>. This was the first time I got to articulate publicly what PE was for - three years before the follow-up conversation about the skill gap. The argument hasn't changed.</p>"
+		"description": "Right after PE's first cohort launched, Don (who's interviewed students from pretty much every coding bootcamp) had me on to explain the idea behind <em>Design for the Web</em>. How are we going to teach coding and visual design together? Is Derek crazy? It was the first time I got to lay out publicly why the two belong in the same curriculum - and I got to make a new friend. <a class='relaxed' href='https://www.youtube.com/watch?v=Djmiqd-S13Q' target='_blank' rel='noopener'>Watch on YouTube</a>.",
+		"details": ""
 	},
 	{
 		"slug": "pe-study-hall",
@@ -334,16 +334,6 @@
 		"media": ["/content/placeholder/poster-wide.png"],
 		"description": "PXL was an award-winning creative agency (acquired by Studio City in 2020) with big accounts like Universal Pictures and Fox Films, doing tons of fun creative microsites and ad campaigns. I'd known their creative technologist through the Ember meetup, and when she moved up, they needed a senior front-end developer. The first project on my plate was <a class='relaxed' href='https://www.dreamworks.com' target='_blank' rel='noopener'>DreamWorks.com</a> - open the dev tools and you'll still see my 2018 code.",
 		"details": "<p>Behind the scenes of these big movie companies is a ton of data. PXL had built custom content management systems and had all of that locked in. My job was to get DreamWorks in place and handle whatever else popped up - when the Bumblebee movie came out, we made a fun trivia game for it. There were always new projects and long-term contracts to balance.</p><p>Naturally I wanted to be on the fun stuff, so when I was put in charge of mentoring the others - a CS intern, a bootcamp grad, and someone who came over from marketing - I happily (and effectively) taught them how to do my job so I could focus on R&amp;D. It was great to be back in a creative tech role after so much C-suite at the previous job. And it's what got me more excited about teaching than about climbing the developer ladder.</p>"
-	},
-	{
-		"slug": "echo-park-laundry",
-		"date": "2018",
-		"title": "Rehabbing a laundromat with Ivy",
-		"weight": 1,
-		"tags": ["life", "art"],
-		"media": ["/content/placeholder/poster-wide.png"],
-		"description": "Wife bought a laundromat. Rebranding, rehabbing, taking apart and rebuilding machines.",
-		"details": "<p>Brand and visual identity for a neighborhood laundromat. A different kind of design project.</p>"
 	},
 	{
 		"slug": "mentoring",
@@ -458,12 +448,12 @@
 	{
 		"slug": "holloys",
 		"date": "2009 – 2011",
-		"title": "Playing guitar and synth in the Holloys",
+		"title": "Playing guitar and synth in Holloys",
 		"weight": 1,
 		"tags": ["music", "art"],
 		"media": ["/content/placeholder/poster-wide.png"],
-		"description": "Played in Holloys. Designed posters, logos, and built multiple websites for the band. Toured Europe twice, performed in 11+ countries.",
-		"details": "<p>Band sites in Dreamweaver, poster and logo design, album art. Also hanging art at residences, galleries, and museums.</p>"
+		"description": "I don't really think of myself as a guitar player, but Jim Brown needed to replace Jon Gonnelli when he moved, and the record was so good that I went for it. I ended up programming drum beats and playing synths, gigging all around LA and touring twice. And now that I'm thinking about it - I did a lot of the graphic design for the posters, and built the websites too. I learned a ton and got a lot of experience in front of an audience.",
+		"details": ""
 	},
 	{
 		"slug": "pizzaiolo",
@@ -472,8 +462,8 @@
 		"weight": 1,
 		"tags": ["life"],
 		"media": ["/content/placeholder/poster-wide.png"],
-		"description": "Server, interim manager. Service, food and wine, economy of motion. A deep education in how service works.",
-		"details": "<p>Before any design career. Learning how a restaurant operates, how to read a room, how to move efficiently. The service design origin story.</p>"
+		"description": "There was an odd hardware store down the street from my house in Oakland, and when it closed, the space became a new restaurant: Pizzaiolo. I got a job as a busser and ended up learning a lot more about slow food, wine, and hospitality than I expected. Over the years I took on different roles, and even acted as interim manager for a bit. It was an exciting time - and a lot of those details of service and operations are still things I think about and bring into my work today.",
+		"details": ""
 	},
 	{
 		"slug": "cca-bfa",
