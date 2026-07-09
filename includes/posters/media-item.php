@@ -10,6 +10,16 @@
 	$type = $item['type'];
 	$src = $item['src'];
 	$sq = square_variant($src);
+
+	/* Cache-bust media by mtime (same as CSS/JS via asset()) so a re-encoded or
+	   replaced file gets a fresh URL. Without this a browser can serve a stale
+	   copy - e.g. the pre-fast-start video Safari couldn't play would keep coming
+	   back from cache even after the file is fixed. Vimeo is an external id, not
+	   a local file, so it's left alone. */
+	if ($type !== 'vimeo') {
+		$src = asset($src);
+		$sq = asset($sq);
+	}
 ?>
 <?php if ($type === 'photo'): ?>
 	<picture class='slide' data-type='photo'>
