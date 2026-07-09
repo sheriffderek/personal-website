@@ -34,7 +34,7 @@
 
 	.media {
 		margin: 0;
-		border: var(--border-width) solid var(--ink-primary);
+		border: var(--border-width) solid var(--ink-secondary);
 		border-radius: var(--corners);
 		overflow: clip;
 
@@ -140,7 +140,7 @@
 
 			.scrubber {
 				--progress: 0; /* 0–100, unitless so the fill calc below can use it */
-					
+
 				flex: 1;
 				height: 1rem;
 				margin: 0;
@@ -157,8 +157,10 @@
 				border-radius: 0.25rem;
 				background: linear-gradient(
 					to right,
-					var(--control-ink) calc(0.45rem + var(--progress) * (100% - 0.9rem) / 100),
-					rgb(255 255 255 / 0.35) calc(0.45rem + var(--progress) * (100% - 0.9rem) / 100)
+					var(--control-ink)
+						calc(0.45rem + var(--progress) * (100% - 0.9rem) / 100),
+					rgb(255 255 255 / 0.35)
+						calc(0.45rem + var(--progress) * (100% - 0.9rem) / 100)
 				);
 			}
 
@@ -336,5 +338,8 @@
 		margin-inline: calc(50% - 50vw);
 		border-width: 0;
 		border-radius: 0;
+
+		border-top: var(--border-width) solid var(--ink-secondary);
+		border-bottom: var(--border-width) solid var(--ink-secondary);
 	}
 }
