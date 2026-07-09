@@ -33,7 +33,7 @@ $target_notes = $target['milestones'] ?? [];
 
 		<p>I help teams do their best work, whether that's big-picture vision and strategy, research and user testing, interfaces and code, design systems and cross-team collaboration, or auditing and maintaining what's already shipped.</p>
 
-		<p>I've done it across agencies, startups, and product teams. And for the last 6+ years, I've been teaching full-stack product design all while leading lean end-to-end projects and folding the learnings back into PE's curriculum.</p>
+		<p>I've done it across agencies, startups, and product teams. And for the last 6+ years, I've been teaching full-stack product design all while leading lean end-to-end projects in parallel.</p>
 	</text-content>
 
 	<details class='more'>

@@ -232,10 +232,11 @@
 			var(--poster-ink) 55%,
 			var(--poster-fill)
 		);
-	}
 
-	&:hover {
-		.poster-art {
+		/* Hovering the poster art itself (not the whole milestone) thins the
+		   texture stroke. Scoped to .poster-art so hovering the card's text
+		   never triggers it. */
+		&:hover {
 			--line-width-secondary: 3;
 			transition: stroke-width 300ms;
 		}
