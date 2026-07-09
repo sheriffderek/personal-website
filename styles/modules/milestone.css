@@ -140,9 +140,7 @@
 
 			.scrubber {
 				--progress: 0; /* 0–100, unitless so the fill calc below can use it */
-					--thumb-size: 0.9rem;
-					--track-height: 0.25rem;
-
+					
 				flex: 1;
 				height: 1rem;
 				margin: 0;
@@ -155,40 +153,40 @@
 			   fill pseudo, so the track paints a two-stop gradient whose stop is offset by half the thumb so the fill edge sits under the thumb's center (WebKit keeps the thumb inside the track, so a raw percent would lead/trail it near the ends).
 			   Firefox's ::-moz-range-progress tracks the thumb natively. */
 			.scrubber::-webkit-slider-runnable-track {
-				height: var(--track-height);
+				height: 0.25rem;
 				border-radius: 0.25rem;
 				background: linear-gradient(
 					to right,
-					var(--control-ink) calc(var(--thumb-size) / 2 + var(--progress) * (100% - var(--thumb-size)) / 100),
-					rgb(255 255 255 / 0.35) calc(var(--thumb-size) / 2 + var(--progress) * (100% - var(--thumb-size)) / 100)
+					var(--control-ink) calc(0.45rem + var(--progress) * (100% - 0.9rem) / 100),
+					rgb(255 255 255 / 0.35) calc(0.45rem + var(--progress) * (100% - 0.9rem) / 100)
 				);
 			}
 
 			.scrubber::-moz-range-track {
-				height: var(--track-height);
+				height: 0.25rem;
 				border-radius: 0.25rem;
 				background: rgb(255 255 255 / 0.35);
 			}
 
 			.scrubber::-moz-range-progress {
-				height: var(--track-height);
+				height: 0.25rem;
 				border-radius: 0.25rem;
 				background: var(--control-ink);
 			}
 
 			.scrubber::-webkit-slider-thumb {
 				appearance: none;
-				width: var(--thumb-size);
-				height: var(--thumb-size);
-				margin-top: calc((var(--track-height) - var(--thumb-size)) / 2);
+				width: 0.9rem;
+				height: 0.9rem;
+				margin-top: -0.325rem; /* (0.25rem track − 0.9rem thumb) / 2 — centers the thumb on the line. Literal, not a calc: iOS Safari drops custom-prop calcs in ::-webkit-slider-thumb. */
 				border-radius: 50%;
 				background: var(--control-ink);
 				box-shadow: 0 1px 3px rgb(0 0 0 / 0.45);
 			}
 
 			.scrubber::-moz-range-thumb {
-				width: var(--thumb-size);
-				height: var(--thumb-size);
+				width: 0.9rem;
+				height: 0.9rem;
 				border: 0;
 				border-radius: 50%;
 				background: var(--control-ink);
