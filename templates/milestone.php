@@ -50,8 +50,8 @@
 	<?php endif; ?>
 
 
-	<div class='info'>
-		<p><?=$milestone['description']?></p>
+	<text-content class='styled info'>
+		<?= $milestone['description'] ?>
 
 		<?php if (!empty($target_note)): ?>
 			<p class='target-note'><?= $target_note ?></p>
@@ -74,5 +74,5 @@
 		?>
 			<a class='read-more link' href='<?= $milestone['link'] ?>'<?= $is_external ? " target='_blank' rel='noopener'" : '' ?>><?= $label ?> →</a>
 		<?php endif; ?>
-	</div>
+	</text-content>
 </article>
