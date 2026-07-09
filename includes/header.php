@@ -97,4 +97,10 @@
 			<?php include INCLUDES_DIR . '/settings-panel.php'; ?>
 		</header>
 
+		<?php /* One dim behind an open menu (phones/tablets). Root-level so it
+			isn't trapped in the rail's stacking context. Shown/hidden by
+			settings-panel.js; see .menu-scrim in modules/settings-panel.css for
+			why it's one shared element and not a per-popover ::backdrop. */ ?>
+		<div class='menu-scrim' aria-hidden='true'></div>
+
 		<main>

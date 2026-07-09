@@ -45,9 +45,11 @@
 button.toolbox-trigger {
 	all: unset;
 
-	/* all: unset resets touch-action back to auto, re-enabling double-tap
-	   zoom on the trigger — restore it here. */
+	/* all: unset wipes the setup.css defaults on button too, so restore the
+	   two that matter here: touch-action (else double-tap zoom comes back) and
+	   the tap-highlight kill (else iOS paints its gray flash on tap). */
 	touch-action: manipulation;
+	-webkit-tap-highlight-color: transparent;
 
 	display: inline-flex;
 	align-items: center;
@@ -153,27 +155,45 @@ button.toolbox-trigger {
 	}
 }
 
-/* Small screens: the panel reads as a modal over live content, so dim the
-   page behind it for focus and legibility. Tapping the backdrop dismisses it
-   (native where supported, plus the JS fallback in settings-panel.js). Desktop
-   keeps the anchored dropdown with no backdrop. */
-@media (width < 1024px) {
-	.toolbox-panel::backdrop {
-		/* Fallback repeats the light value in case a browser doesn't inherit
-		   custom properties onto the top-layer ::backdrop. */
-		background: var(--scrim, rgb(0 0 0 / 0.15));
+/* Small screens: an open menu reads as a modal over live content, so dim the
+   page behind it for focus and legibility. Desktop keeps the anchored dropdown
+   with no dim.
 
-		/* Smooth the switch between menus. The incoming backdrop appears at full
-		   dim instantly, while the OUTGOING one fades out underneath it (overlay+
-		   display allow-discrete keep it painting through the fade). So the dim
-		   never dips off and back on - no flash. (No entry fade on purpose: an
-		   instant incoming dim is what keeps the overlap seamless.) */
-		opacity: 1;
-		transition: opacity 150ms ease, overlay 150ms allow-discrete, display 150ms allow-discrete;
-	}
+   ONE scrim for BOTH menus - deliberately NOT a per-popover `::backdrop`. A
+   `::backdrop` belongs to a single popover, so switching Settings <-> Pages
+   hands one popover's backdrop off to the other's, and that handoff always
+   flashes (a gap or a double-dim, depending how you tune it - you can't make
+   two independent backdrops behave as one continuous dim). This single element
+   belongs to neither menu: settings-panel.js shows it when ANY menu opens and
+   hides it when ALL close, so a switch never touches it and there's nothing to
+   flash. Tapping it dismisses via the document-level handler in that same file. */
+.menu-scrim {
+	position: fixed;
+	inset: 0;
 
-	.toolbox-panel:not(:popover-open)::backdrop {
-		opacity: 0;
+	/* Above the page and the sticky rail. The menu panels are popovers (top
+	   layer), so they always paint above this regardless of z-index. */
+	z-index: 900;
+
+	background: var(--scrim, rgb(0 0 0 / 0.15));
+
+	opacity: 0;
+
+	/* Inert itself - the outside-tap dismiss in settings-panel.js listens on the
+	   document, so a tap on the dimmed area still closes the open menu. */
+	pointer-events: none;
+
+	transition: opacity 150ms ease;
+}
+
+.menu-scrim.is-visible {
+	opacity: 1;
+}
+
+@media (width >= 1024px) {
+	.menu-scrim {
+		/* Desktop shows an anchored dropdown, never a modal dim. */
+		display: none;
 	}
 }
 

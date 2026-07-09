@@ -55,13 +55,15 @@ function square_variant($path) {
 }
 
 /* A milestone's real media items — the typed {type, src} entries that point at
-   a made asset (not the shared placeholder). This is the single source the
-   template counts to pick the media shape:
-     0 items  → text-only card (no poster)
-     1 item   → a single standalone poster
-     2+ items → a carousel, poster-shapes cover first
-   Placeholder paths and empty entries are dropped, so the count reflects real
-   media only. A bare string is treated as a photo (tolerant of old data). */
+   a made asset (not the shared placeholder). The template (templates/milestone.php)
+   uses this to pick the media shape:
+     any real media       → the poster-shapes cover FIRST, then the items, in a carousel
+     none + "poster": true → the poster-shapes alone
+     none                  → text-only
+   The poster is never optional when there's media: a slide/video is NEVER
+   rendered without the poster-shapes cover in front of it. There is no
+   bare-media shape. Placeholder paths and empty entries are dropped, so the
+   count reflects real media only. A bare string is treated as a photo. */
 function real_media_items($milestone) {
 	$items = [];
 

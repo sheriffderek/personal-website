@@ -124,16 +124,18 @@ Buzzwords are fine when earned. Concrete > generic. "Hired my replacement before
 
 Code lives in `includes/footer.php`, `templates/milestone.php`, and the shared per-item renderer `includes/posters/media-item.php`.
 
-**Media shape is count-driven — never a hand-set flag** (there is no `format` field; it was retired). Shape follows `count(real_media_items($milestone))` (`includes/render.php`, which drops `/content/placeholder/` items):
-- **0** → text-only card, no media.
-- **1** → a single standalone poster (the one item, no carousel).
-- **2+** → a carousel, always with the poster-shapes cover slide first.
+**Three media shapes, all built on the themable poster-shapes cover** (there is no `format` field; it was retired). The poster-shapes is ALWAYS the cover — slides and videos are *additional*, never a replacement for it:
+- **no poster** → text-only card.
+- **poster only** → the poster-shapes alone (a card wants a visual but has no slides/videos yet). Opt in with `"poster": true`.
+- **poster + media** → the poster-shapes cover slide first, then every real slide/video, in a carousel.
 
-One partial (`posters/media-item`) renders every item, so a `photo`/`loop`/`play`/`vimeo` looks and behaves identically standalone or as a carousel slide — the only difference between shape 2 and 3 is the `.carousel` wrapper (⇒ Flickity). Placeholder entries (`["/content/placeholder/…"]`) are the "no real poster yet" marker and stay text-only until real media replaces them.
+Shape is derived, never hand-set: a card with any `real_media_items()` (drops `/content/placeholder/`, see `render.php`) is **poster + media**; else `"poster": true` gives **poster only**; else text-only. So a single slide/video is still **poster + media** — the poster, then that one item (never the item by itself). One partial (`posters/media-item`) renders every item (`photo`/`loop`/`play`/`vimeo`). Placeholder entries (`["/content/placeholder/…"]`) are the "no real media yet" marker and stay text-only until real media replaces them.
+
+**Locked — do not add a "bare media" shape.** There is no path that renders a slide or video without the poster-shapes cover in front of it. This was built the wrong way once (single media rendered as the item alone); if you find yourself "simplifying" a single-media card to skip the poster, stop — poster-first is the whole rule. The one knob is `"poster": true` to give a *media-less* card the poster (shape 2); media never removes the poster.
 
 **Item types** (`type` on each media object; becomes `data-type` on the slide):
 - `photo` — still image (`<picture>`, responsive)
-- `loop` — muted video, no controls, ambient motion; autoplays on scroll (and, in a carousel, on settle/hover)
+- `loop` — muted video, no controls, ambient motion; autoplays on scroll into view (and on carousel settle/hover)
 - `play` — video with our own custom controls (below), user-initiated; never autoplays
 - `vimeo` — responsive `<iframe>` embed (`src` is the Vimeo id)
 
@@ -146,8 +148,7 @@ One partial (`posters/media-item`) renders every item, so a `photo`/`loop`/`play
 **Playback rules:**
 - Only one video plays across the entire page at a time (a shared `current`).
 - On carousel `settle` (slide animation finishes): pause everything in that carousel; if the arriving slide is a `loop`, autoplay it.
-- Hover on a carousel `loop` slide plays it (desktop); mouseleave pauses unless it's the selected slide.
-- A **standalone** `loop` (single-item card) autoplays on scroll exactly like a carousel's selected loop — same one-at-a-time rule.
+- Hover on a `loop` slide plays it (desktop); mouseleave pauses unless it's the selected slide.
 - `loop` autoplay respects `prefers-reduced-motion`: those users get the still frame, no autoplay.
 - `play` never autoplays — the user presses play.
 
@@ -155,9 +156,9 @@ One partial (`posters/media-item`) renders every item, so a `photo`/`loop`/`play
 - Start: figure's top scrolls above 50% of the viewport
 - Stop: figure is fully off-screen (either fully above or fully below)
 - Once playing, keeps playing while any pixel of the figure is visible — never re-stops mid-scroll
-- One shared scroll listener drives all loop units (carousels + standalone loops); at load each checks itself and starts if it already qualifies.
+- One shared scroll listener drives every carousel's check; at load each checks itself and starts if it already qualifies.
 
-**Custom player (on `play` items):** native controls are all-or-nothing on iOS (`controlslist` is ignored there), so `play` ships none — instead a bottom `.controls` bar: a play/pause button (icon swaps on `.is-playing`) and a seek `.scrubber` (rAF-driven fill via `--progress`, auto-sync frozen while dragging). Wiring keys off `.slide[data-type='play']`, so it works standalone or in a carousel; tapping the video also toggles.
+**Custom player (on `play` items):** native controls are all-or-nothing on iOS (`controlslist` is ignored there), so `play` ships none — instead a bottom `.controls` bar: a play/pause button (icon swaps on `.is-playing`) and a seek `.scrubber` (rAF-driven fill via `--progress`, auto-sync frozen while dragging). Wiring keys off `.slide[data-type='play']` (any play slide). **Only the button toggles — a tap on the video does not**, because a video-tap handler also fires on a Flickity swipe and would start the clip mid-drag; the video body stays free to swipe the carousel.
 
 **Read more:**
 Uses `<details>` for inline unfold. Both `description` and `details` render raw HTML — links, `<em>`, etc. work in either.

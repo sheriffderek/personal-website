@@ -232,7 +232,9 @@
 		   one loud burst. Only listen for real user-initiated settles. */
 		setTimeout(function () {
 			flkty.on('settle', function () {
-				if (window.ui && window.ui.sound) window.ui.sound('settle');
+				/* $todo: settle sound disabled for now — the idea seemed good but it
+				   wasn't landing, felt off. Re-enable by uncommenting the line below. */
+				// if (window.ui && window.ui.sound) window.ui.sound('settle');
 			});
 		}, 300);
 	}
@@ -328,15 +330,51 @@
 	var toolboxPanels = document.querySelectorAll('.toolbox-panel');
 	var openPanel = null;
 
+	/* One shared dim behind whichever menu is open (see .menu-scrim in
+	   modules/settings-panel.css for why it's one element, not per-popover
+	   ::backdrop). We track the set of open panels rather than a single flag so a
+	   SWITCH reconciles correctly.
+
+	   The switch is the whole reason for the rAF: tapping the other menu fires
+	   two toggle events - the open one closes, the new one opens. If we set the
+	   scrim on each event it would blink off then on. Instead each toggle just
+	   marks the set and queues one reconcile for the next frame; by then the set
+	   holds the final state, so a switch (still one panel open) leaves the scrim
+	   on and untouched. Only a real full-close empties the set and fades it out. */
+	var scrim = document.querySelector('.menu-scrim');
+	var openPanels = new Set();
+	var scrimSyncQueued = false;
+
+	function syncScrim() {
+		scrimSyncQueued = false;
+		if (scrim) {
+			scrim.classList.toggle('is-visible', openPanels.size > 0);
+		}
+	}
+
+	function queueScrimSync() {
+		if (scrimSyncQueued) {
+			return;
+		}
+		scrimSyncQueued = true;
+		requestAnimationFrame(syncScrim);
+	}
+
 	toolboxPanels.forEach(function (panel) {
 		panel.addEventListener('toggle', function (event) {
 			var isOpen = event.newState === 'open';
 
 			if (isOpen) {
 				openPanel = panel;
-			} else if (openPanel === panel) {
-				openPanel = null;
+				openPanels.add(panel);
+			} else {
+				openPanels.delete(panel);
+				if (openPanel === panel) {
+					openPanel = null;
+				}
 			}
+
+			queueScrimSync();
 
 			/* Keep the trigger's disclosure state in sync for assistive tech. */
 			var trigger = document.querySelector('[popovertarget="' + panel.id + '"]');

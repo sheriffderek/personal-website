@@ -7,7 +7,7 @@
    and the rest falls through (safe - type has no such inheritance pathology). */
 
 :root {
-	--fill-primary: var(--color-stone-50);
+	--fill-primary: white;
 	--fill-secondary: var(--color-stone-100);
 	--fill-auxiliary: var(--color-stone-200);
 

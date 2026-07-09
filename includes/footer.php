@@ -73,7 +73,7 @@
 
 			phone.addEventListener('change', () => sourced.forEach(pickSource));
 
-			// Custom player for 'play' slides - tap toggles play/pause, the
+			// Custom player for 'play' slides - the button toggles play/pause, the
 			// scrubber seeks. Replaces the native controls we can't trim on iOS.
 			document.querySelectorAll('.slide[data-type="play"]').forEach(slide => {
 				const video = slide.querySelector('video');
@@ -89,7 +89,7 @@
 				function paint() {
 					const percent = video.duration ? (video.currentTime / video.duration) * 100 : 0;
 					scrubber.value = percent;
-					scrubber.style.setProperty('--progress', percent + '%');
+					scrubber.style.setProperty('--progress', percent);
 				}
 
 				// timeupdate only fires ~4x/sec, which looks steppy. While playing we
@@ -114,18 +114,20 @@
 					paint();
 				});
 
-				function togglePlay() {
+				// Only the play/pause button toggles — never a tap on the video.
+				// A tap-on-video handler also fires when Flickity treats the press
+				// as a swipe, so the clip would start playing mid-drag. The button
+				// (with its own pointerdown stopPropagation below) is the only play
+				// affordance, leaving the video body free to swipe the carousel.
+				playPause.addEventListener('click', () => {
 					if (video.paused) play(video); else pause(video);
-				}
-
-				playPause.addEventListener('click', togglePlay);
-				video.addEventListener('click', togglePlay);
+				});
 
 				// Seek live as the user drags; the video follows the thumb, not vice versa.
 				scrubber.addEventListener('input', () => {
 					scrubbing = true;
 					if (video.duration) video.currentTime = (scrubber.value / 100) * video.duration;
-					scrubber.style.setProperty('--progress', scrubber.value + '%');
+					scrubber.style.setProperty('--progress', scrubber.value);
 				});
 
 				// Hand control back once the drag ends.
@@ -154,8 +156,8 @@
 				return { fullyOff: r.bottom <= 0 || r.top >= vh, pastStartLine: r.top < vh * 0.5 };
 			}
 
-			// One scroll listener drives every registered check (carousels and
-			// standalone loops both push into here) instead of one listener each.
+			// One scroll listener drives every registered carousel check, instead
+			// of each carousel adding its own listener.
 			const checks = [];
 			function runChecks() { checks.forEach(fn => fn()); }
 
@@ -221,24 +223,6 @@
 					resizeTimer = setTimeout(() => { flkty.resize(); runChecks(); }, 150);
 				});
 
-				check();
-			});
-
-			// Standalone loops (single-item cards): a .slide[data-type='loop'] with
-			// no carousel around it. Same scroll-autoplay, same one-video-at-a-time.
-			document.querySelectorAll('.media > .slide[data-type="loop"]').forEach(slide => {
-				const video = slide.querySelector('video');
-				if (!video) return;
-
-				const check = () => {
-					const view = visibility(slide);
-					if (view.fullyOff) {
-						pause(video);
-					} else if (!reduceMotion && view.pastStartLine && video.paused) {
-						play(video);
-					}
-				};
-				checks.push(check);
 				check();
 			});
 		});

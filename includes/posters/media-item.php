@@ -1,7 +1,7 @@
 <?php
-	/* Renders ONE media item ({type, src}) as a .slide[data-type]. Used
-	   identically for a single standalone poster and for each slide inside a
-	   carousel — same markup, same behavior in either shape.
+	/* Renders ONE media item ({type, src}) as a .slide[data-type], for each
+	   slide inside a carousel. Media always lives in a carousel behind the
+	   poster-shapes cover — there is no bare, poster-less slide/video.
 
 	   Responsive: photos swap via <picture> (native); videos carry
 	   data-src-wide / data-src-square and JS (footer.php) picks the file per

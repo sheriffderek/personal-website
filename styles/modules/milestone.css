@@ -12,7 +12,7 @@
 	--line-width-secondary: 5;
 
 	--corners: 0;
-	--border-width: 0;
+	--border-width: 1px;
 
 	/* The media frame's shape. Every slide fills this, so height never jumps
 	   between carousel slides. Phones override it to a square below. */
@@ -59,6 +59,17 @@
 			object-fit: cover;
 		}
 
+		/* Raster media (video/photo) fills via object-fit: cover, but at a
+		   fractional column width on a hi-dpi screen the scaled content's edge
+		   and the overflow-clip boundary can land on different device pixels,
+		   leaving a ~1px seam on one side. A hair of overfill pushes the true
+		   edges just outside the clip so nothing bleeds. The SVG poster is
+		   excluded - its composition is drawn to the exact frame. */
+		.slide > img,
+		.slide > video {
+			transform: scale(1.01);
+		}
+
 		/* Vimeo: an iframe can't object-fit, but filling the locked frame is
 		   enough since the embed is already the right ratio. */
 		.slide > iframe {
@@ -72,10 +83,6 @@
 		   on iOS, so we paint our own over the video. */
 		.slide[data-type="play"] {
 			--control-ink: white;
-
-			> video {
-				cursor: pointer;
-			}
 
 			.controls {
 				position: absolute;
@@ -132,7 +139,9 @@
 			}
 
 			.scrubber {
-				--progress: 0%;
+				--progress: 0; /* 0–100, unitless so the fill calc below can use it */
+					--thumb-size: 0.9rem;
+					--track-height: 0.25rem;
 
 				flex: 1;
 				height: 1rem;
@@ -143,43 +152,43 @@
 			}
 
 			/* The played portion is solid, the rest is faint. WebKit has no native
-			   fill pseudo, so the track paints its own two-stop gradient at
-			   --progress; Firefox uses ::-moz-range-progress. */
+			   fill pseudo, so the track paints a two-stop gradient whose stop is offset by half the thumb so the fill edge sits under the thumb's center (WebKit keeps the thumb inside the track, so a raw percent would lead/trail it near the ends).
+			   Firefox's ::-moz-range-progress tracks the thumb natively. */
 			.scrubber::-webkit-slider-runnable-track {
-				height: 0.25rem;
+				height: var(--track-height);
 				border-radius: 0.25rem;
 				background: linear-gradient(
 					to right,
-					var(--control-ink) var(--progress),
-					rgb(255 255 255 / 0.35) var(--progress)
+					var(--control-ink) calc(var(--thumb-size) / 2 + var(--progress) * (100% - var(--thumb-size)) / 100),
+					rgb(255 255 255 / 0.35) calc(var(--thumb-size) / 2 + var(--progress) * (100% - var(--thumb-size)) / 100)
 				);
 			}
 
 			.scrubber::-moz-range-track {
-				height: 0.25rem;
+				height: var(--track-height);
 				border-radius: 0.25rem;
 				background: rgb(255 255 255 / 0.35);
 			}
 
 			.scrubber::-moz-range-progress {
-				height: 0.25rem;
+				height: var(--track-height);
 				border-radius: 0.25rem;
 				background: var(--control-ink);
 			}
 
 			.scrubber::-webkit-slider-thumb {
 				appearance: none;
-				width: 0.9rem;
-				height: 0.9rem;
-				margin-top: -0.325rem;
+				width: var(--thumb-size);
+				height: var(--thumb-size);
+				margin-top: calc((var(--track-height) - var(--thumb-size)) / 2);
 				border-radius: 50%;
 				background: var(--control-ink);
 				box-shadow: 0 1px 3px rgb(0 0 0 / 0.45);
 			}
 
 			.scrubber::-moz-range-thumb {
-				width: 0.9rem;
-				height: 0.9rem;
+				width: var(--thumb-size);
+				height: var(--thumb-size);
 				border: 0;
 				border-radius: 50%;
 				background: var(--control-ink);
@@ -270,6 +279,10 @@
 }
 
 .carousel {
+	/* Fences the dots' mix-blend-mode: difference to the media - the blend
+	   resolves against the slide behind the dots, never the page. */
+	isolation: isolate;
+
 	.flickity-page-dots {
 		position: absolute;
 		top: 0.75rem;
@@ -293,11 +306,16 @@
 		width: var(--dot-hit);
 		height: var(--dot-hit);
 		margin: 0;
+		/* White dot + difference so it inverts against whatever slide is behind
+		   it - it stays visible over a light photo, a dark video, or any flavor's
+		   poster cover, without knowing the backdrop. The .carousel isolates the
+		   blend so it can't punch through the media to the page. */
 		background: radial-gradient(
 			circle at center,
-			var(--poster-ink, white) 0 calc(var(--dot-size) / 2),
+			white 0 calc(var(--dot-size) / 2),
 			transparent calc(var(--dot-size) / 2)
 		);
+		mix-blend-mode: difference;
 		opacity: 0.4;
 		pointer-events: auto;
 	}

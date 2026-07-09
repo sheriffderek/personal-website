@@ -8,25 +8,29 @@
 
 
 	<?php
-		/* Media shape follows the count of real items — never a hand-set flag,
-		   so it can't drift. real_media_items() drops placeholders (render.php).
-		     0  → text-only card (nothing rendered here)
-		     1  → a single standalone poster (no carousel)
-		     2+ → a carousel, poster-shapes cover slide first
-		   Every item is rendered by the one shared partial (posters/media-item),
-		   so a photo/loop/play/vimeo looks and behaves the same in either shape.
-		   Responsive wide/square swap + the ratio-lock frame apply in all cases. */
+		/* Three media shapes, all built on the themable poster-shapes cover:
+		     1) no poster       → text-only (nothing rendered here)
+		     2) poster only      → the poster-shapes alone (a card wants a visual
+		                          but has no slides/videos yet; opt in with
+		                          "poster": true in the JSON)
+		     3) poster + media   → the poster-shapes cover first, then every real
+		                          slide/video, in a carousel
+		   The poster is ALWAYS the cover — slides and videos are additional, never
+		   a replacement for it. real_media_items() drops placeholders (render.php);
+		   the one shared partial (posters/media-item) renders each item, so the
+		   responsive swap + ratio-lock frame apply throughout. */
 		$media_items = real_media_items($milestone);
-		$media_count = count($media_items);
+		$poster_only = empty($media_items) && !empty($milestone['poster']);
 	?>
-	<?php if ($media_count === 1): ?>
+	<?php if ($media_items): ?>
+		<?php
+			/* wrapAround only loops cleanly with 3+ cells; with 2 (poster + one
+			   item) Flickity clones and can leave a 1px seam at the edge. Cell
+			   count = 1 poster + the media items. */
+			$wrap_around = (count($media_items) + 1) >= 3 ? 'true' : 'false';
+		?>
 		<figure class='media'>
-			<?= partial('posters/media-item', ['item' => $media_items[0]]) ?>
-		</figure>
-
-	<?php elseif ($media_count >= 2): ?>
-		<figure class='media'>
-			<div class='carousel' data-flickity='{ "wrapAround": true, "imagesLoaded": true, "prevNextButtons": false }'>
+			<div class='carousel' data-flickity='{ "wrapAround": <?= $wrap_around ?>, "imagesLoaded": true, "prevNextButtons": false }'>
 				<div class='slide' data-type='poster'>
 					<?php include INCLUDES_DIR . '/posters/poster-shapes.php'; ?>
 				</div>
@@ -34,6 +38,13 @@
 				<?php foreach ($media_items as $item): ?>
 					<?= partial('posters/media-item', ['item' => $item]) ?>
 				<?php endforeach; ?>
+			</div>
+		</figure>
+
+	<?php elseif ($poster_only): ?>
+		<figure class='media'>
+			<div class='slide' data-type='poster'>
+				<?php include INCLUDES_DIR . '/posters/poster-shapes.php'; ?>
 			</div>
 		</figure>
 	<?php endif; ?>
