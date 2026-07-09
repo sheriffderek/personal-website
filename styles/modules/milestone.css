@@ -156,49 +156,49 @@
 				/* Track is the FULL thumb height so the thumb centers with
 				   margin-top: 0 — Safari and Chrome both do that reliably, whereas
 				   the margin-offset trick dropped the thumb below the line in Safari.
-				   The thin visible line is a 0.25rem band painted as a vertically
+				   The thin visible line is a 4px band painted as a vertically
 				   centered background; the fill offset (half a thumb) keeps the
 				   filled edge under the thumb's center horizontally. */
-				height: 0.9rem;
+				height: 14px;
 				background: linear-gradient(
 						to right,
 						var(--control-ink)
-							calc(0.45rem + var(--progress) * (100% - 0.9rem) / 100),
+							calc(7px + var(--progress) * (100% - 14px) / 100),
 						rgb(255 255 255 / 0.35)
-							calc(0.45rem + var(--progress) * (100% - 0.9rem) / 100)
+							calc(7px + var(--progress) * (100% - 14px) / 100)
 					)
-					left center / 100% 0.25rem no-repeat;
+					left center / 100% 4px no-repeat;
 			}
 
 			.scrubber::-moz-range-track {
-				height: 0.25rem;
-				border-radius: 0.25rem;
+				height: 4px;
+				border-radius: 4px;
 				background: rgb(255 255 255 / 0.35);
 			}
 
 			.scrubber::-moz-range-progress {
-				height: 0.25rem;
-				border-radius: 0.25rem;
+				height: 4px;
+				border-radius: 4px;
 				background: var(--control-ink);
 			}
 
 			.scrubber::-webkit-slider-thumb {
 				appearance: none;
-				width: 0.9rem;
-				height: 0.9rem;
+				width: 14px;
+				height: 14px;
 				margin-top: 0; /* track above is the full thumb height, so the thumb centers with no offset — works in Safari + Chrome (the old negative margin dropped it below the line in Safari). */
 				border-radius: 50%;
 				background: var(--control-ink);
-				box-shadow: 0 1px 3px rgb(0 0 0 / 0.45);
+				box-shadow: 0 0 3px rgb(0 0 0 / 0.5);
 			}
 
 			.scrubber::-moz-range-thumb {
-				width: 0.9rem;
-				height: 0.9rem;
+				width: 14px;
+				height: 14px;
 				border: 0;
 				border-radius: 50%;
 				background: var(--control-ink);
-				box-shadow: 0 1px 3px rgb(0 0 0 / 0.45);
+				box-shadow: 0 0 3px rgb(0 0 0 / 0.5);
 			}
 		}
 
