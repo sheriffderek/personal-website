@@ -142,9 +142,10 @@
 				--progress: 0; /* 0–100, unitless so the fill calc below can use it */
 
 				flex: 1;
-				height: 1rem;
+				height: 14px; /* input = track = thumb (all 14px, flush) so a browser can't place the track off-center inside a taller input; px to match the control geometry (units rule) */
 				margin: 0;
-				appearance: none;
+				-webkit-appearance: none; /* Safari needs the prefixed reset to accept custom thumb dimensions; without it the thumb stays its 17px default and sits low. */
+					appearance: none;
 				background: transparent;
 				cursor: pointer;
 			}
@@ -183,7 +184,8 @@
 			}
 
 			.scrubber::-webkit-slider-thumb {
-				appearance: none;
+				-webkit-appearance: none; /* Safari needs the prefixed reset to accept custom thumb dimensions; without it the thumb stays its 17px default and sits low. */
+					appearance: none;
 				width: 14px;
 				height: 14px;
 				margin-top: 0; /* track above is the full thumb height, so the thumb centers with no offset — works in Safari + Chrome (the old negative margin dropped it below the line in Safari). */

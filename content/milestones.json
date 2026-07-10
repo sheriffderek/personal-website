@@ -11,16 +11,16 @@
 		"flavor": "stone",
 		"media": [
 			{
+				"type": "play",
+				"src": "/content/milestones/2026-job-search/01-play-wide-intro.mp4"
+			},
+			{
 				"type": "photo",
-				"src": "/content/milestones/2026-job-search/01.jpg"
+				"src": "/content/milestones/2026-job-search/02-photo-wide.jpg"
 			},
 			{
 				"type": "loop",
-				"src": "/content/milestones/2026-job-search/video-wide.mp4"
-			},
-			{
-				"type": "play",
-				"src": "/content/milestones/2026-job-search/video-wide.mp4"
+				"src": "/content/milestones/2026-job-search/03-loop-wide.mp4"
 			}
 		],
 		"poster_plan": {
@@ -214,7 +214,7 @@
 		"media": [
 			{
 				"type": "loop",
-				"src": "/content/milestones/list-at-ease/01-loop.mp4"
+				"src": "/content/milestones/list-at-ease/01-loop-wide.mp4"
 			}
 		],
 		"poster_plan": {

@@ -34,6 +34,12 @@ $target_notes = $target['milestones'] ?? [];
 		<p>I help teams do their best work, whether that's big-picture vision and strategy, research and user testing, interfaces and code, design systems and cross-team collaboration, or auditing and maintaining what's already shipped.</p>
 
 		<p>I've done it across agencies, startups, and product teams. And for the last 6+ years, I've been teaching full-stack product design while keeping a hand in a range of design roles the whole time.</p>
+
+		<?php if (!empty($target['hero'])): ?>
+			<p class='target-note'>
+				<?= $target['hero'] ?>
+			</p>
+		<?php endif; ?>
 	</text-content>
 
 	<details class='more'>
@@ -46,16 +52,10 @@ $target_notes = $target['milestones'] ?? [];
 
 			<p>I never considered being a designer. I certainly used Photoshop a lot in the 90s... but I actually went to school for painting.</p><p>I got into the web by building sites with early Flash and MySpace for my friends and bands. Since then, I've built almost everything a website can be: business cards, landing pages, brochure sites, e-commerce, immersive microsites, educational games, dashboards, and full web applications.</p>
 
-			<p>My title kept changing along the way: front-end developer, UX engineer, design systems consultant, founding product designer, teacher, UI designer - all because that's what the job demanded of me. That's how I attack problems. I'm also comfortable out front: leading teams, giving talks, running workshops, teaching live and in person.</p><p>The timeline below is a longer version, and there are plenty of interviews and blog posts going through my whole life story - but if you've read this far, <a class='relaxed' href='https://calendly.com/perpetual-education/priority-meeting'>let's just get on a call!</a> I'm excited to start the next adventure.</p>
+			<p>My title kept changing along the way: front-end developer, UX engineer, design systems consultant, founding product designer, teacher, UI designer - all because that's what the job demanded of me. That's how I attack problems. I'm also comfortable out front: leading teams, giving talks, running workshops, teaching live and in person.</p><p>The timeline below is a longer version, and there are plenty of interviews and blog posts going through my whole life story - but if you've read this far, <a class='relaxed' target='calendar' href='https://calendly.com/perpetual-education/priority-meeting'>let's just get on a call!</a> I'm excited to start the next adventure.</p>
 		</text-content>
 	</details>
 </header>
-
-<?php if (!empty($target['hero'])): ?>
-	<p class='target-note'>
-		<?= $target['hero'] ?>
-	</p>
-<?php endif; ?>
 
 <ul class='timeline' role='list'>
 	<?php foreach ($milestones as $milestone):

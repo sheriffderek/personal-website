@@ -1,6 +1,10 @@
 	</main>
 
 	<footer class='site-footer'>
+		<?php /* ---- Footer nav - disabled alongside the Pages menu in settings-panel.php ----
+			How I work / Now / Contact are still placeholders, leaving home as the only
+			link. Routes and templates untouched - uncomment when those pages are real.
+
 		<nav class='footer-menu' aria-label='Footer'>
 			<ul role='list'>
 				<?php foreach ($pages as $page_slug => $page): ?>
@@ -12,6 +16,8 @@
 				<?php endforeach; ?>
 			</ul>
 		</nav>
+
+		---- end footer nav ---- */ ?>
 
 		<?php $version = deployed_version(); ?>
 		<p class='quiet-voice'>
@@ -43,6 +49,19 @@
 				if (current === video) current = null;
 			}
 
+			function isPlayVideo(video) {
+				return video.closest('.slide').dataset.type === 'play';
+			}
+
+			// A 'play' video is something the visitor pressed; a 'loop' is ambient
+			// motion nobody asked for. So loops yield: they never take the audio
+			// away from a running 'play'. Loops autoplay through here, while the
+			// play/pause button calls play() directly and always wins.
+			function autoplay(video) {
+				if (current && !current.paused && isPlayVideo(current)) return;
+				play(video);
+			}
+
 			// Which cut to load. <source media> is ignored inside <video>, so we
 			// choose the file ourselves - wide normally, square on phones - and
 			// re-choose if the viewport later crosses the breakpoint.
@@ -51,6 +70,14 @@
 			function pickSource(video) {
 				const wanted = phone.matches ? video.dataset.srcSquare : video.dataset.srcWide;
 				if (!wanted) return;
+
+				// Keep the freeze-frame poster on the same cut as the source. Done
+				// above the early return, so the poster still swaps at the breakpoint
+				// even when the source itself doesn't need reloading.
+				const wantedPoster = phone.matches ? video.dataset.posterSquare : video.dataset.posterWide;
+				if (wantedPoster && video.poster.indexOf(wantedPoster) === -1) {
+					video.poster = wantedPoster;
+				}
 
 				const loaded = video.currentSrc || video.src;
 				if (loaded.indexOf(wanted) !== -1) return;
@@ -63,7 +90,15 @@
 
 				video.addEventListener('loadedmetadata', function restore() {
 					video.removeEventListener('loadedmetadata', restore);
-					try { video.currentTime = resumeAt; } catch (e) {}
+					// Only seek when there's actually a position to restore. Seeking
+					// clears the element's "show poster" flag, so an unconditional
+					// currentTime = 0 here would throw the poster away and paint
+					// frame zero instead - which is what happened on phones, where
+					// this is the only path that reloads the source.
+					if (resumeAt > 0) {
+						try { video.currentTime = resumeAt; } catch (e) {}
+					}
+
 					if (wasPlaying) video.play();
 				});
 			}
@@ -173,11 +208,17 @@
 				const flkty = Flickity.data(el);
 				if (!flkty) return;
 
+				// Swiping away from a slide is a direct gesture at that video, so
+				// settle stops everything here, a pressed 'play' included.
 				const pauseAll = () => {
-					el.querySelectorAll('video').forEach(v => {
-						if (!v.paused) v.pause();
-						if (current === v) current = null;
-					});
+					el.querySelectorAll('video').forEach(video => pause(video));
+				};
+
+				// Scrolling away is not. It only ends the ambient loops - a 'play'
+				// keeps talking until the visitor stops it, scrolls back to it, or
+				// presses a different one.
+				const pauseLoops = () => {
+					el.querySelectorAll('.slide[data-type="loop"] video').forEach(video => pause(video));
 				};
 
 				// Settle = animation finished. Pause everything, then autoplay the
@@ -186,14 +227,14 @@
 					pauseAll();
 					const arriving = flkty.cells[i].element;
 					if (!reduceMotion && arriving.dataset.type === 'loop') {
-						play(arriving.querySelector('video'));
+						autoplay(arriving.querySelector('video'));
 					}
 				});
 
 				// Hover on loop slides — desktop only by virtue of mouseenter/leave.
 				el.querySelectorAll('.slide[data-type="loop"]').forEach(slide => {
 					const video = slide.querySelector('video');
-					slide.addEventListener('mouseenter', () => play(video));
+					slide.addEventListener('mouseenter', () => autoplay(video));
 					slide.addEventListener('mouseleave', () => {
 						if (flkty.selectedElement !== slide) pause(video);
 					});
@@ -206,9 +247,9 @@
 						? selected.querySelector('video')
 						: null;
 					if (view.fullyOff) {
-						pauseAll();
+						pauseLoops();
 					} else if (!reduceMotion && view.pastStartLine && video && video.paused) {
-						play(video);
+						autoplay(video);
 					}
 				};
 				checks.push(check);

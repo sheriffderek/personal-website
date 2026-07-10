@@ -50,8 +50,40 @@ function quote_safe($text) {
 	return htmlspecialchars($text ?? '', ENT_QUOTES);
 }
 
+/* The phone crop for a media file. Files are named
+   <order>-<type>-<size>[-<slug>].<ext>, so the size token is 'wide' followed by
+   either a slug ('-wide-intro.mp4') or the extension ('-wide.jpg'). Swap it for
+   'square'. When no square cut has been made yet, fall back to the wide file so
+   it simply serves at every width instead of 404-ing on a phone. */
 function square_variant($path) {
-	return str_replace('-wide.', '-square.', $path);
+	$square = str_replace(['-wide-', '-wide.'], ['-square-', '-square.'], $path);
+
+	return is_file(SITE_ROOT . $square) ? $square : $path;
+}
+
+/* The freeze-frame poster for a video: the same basename with an image extension
+   (01-play-wide-intro.mp4 -> 01-play-wide-intro.jpg). Deriving it from the video's
+   own name means the square cut gets the square poster for free — no extra naming
+   rule. Returns '' when no still has been made, and the <video> simply ships
+   without a poster attribute. */
+function poster_variant($path) {
+	$dot = strrpos($path, '.');
+
+	if ($dot === false) {
+		return '';
+	}
+
+	$base = substr($path, 0, $dot);
+
+	foreach (['jpg', 'jpeg', 'png', 'webp'] as $extension) {
+		$still = $base . '.' . $extension;
+
+		if (is_file(SITE_ROOT . $still)) {
+			return $still;
+		}
+	}
+
+	return '';
 }
 
 /* A milestone's real media items — the typed {type, src} entries that point at

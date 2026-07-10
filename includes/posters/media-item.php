@@ -11,6 +11,16 @@
 	$src = $item['src'];
 	$sq = square_variant($src);
 
+	/* Freeze-frame poster, videos only. Derived from the video's own filename, so
+	   each cut gets its matching still. Empty when none has been made yet. */
+	$poster = '';
+	$poster_square = '';
+
+	if ($type === 'loop' || $type === 'play') {
+		$poster = poster_variant($src);
+		$poster_square = poster_variant($sq);
+	}
+
 	/* Cache-bust media by mtime (same as CSS/JS via asset()) so a re-encoded or
 	   replaced file gets a fresh URL. Without this a browser can serve a stale
 	   copy - e.g. the pre-fast-start video Safari couldn't play would keep coming
@@ -19,6 +29,21 @@
 	if ($type !== 'vimeo') {
 		$src = asset($src);
 		$sq = asset($sq);
+		$poster = $poster ? asset($poster) : '';
+		$poster_square = $poster_square ? asset($poster_square) : '';
+	}
+
+	/* The <video>'s poster attributes. JS swaps data-poster-* alongside the
+	   source at the phone breakpoint, so the still always matches the cut.
+	   Nothing is emitted when there's no still. */
+	$poster_attributes = '';
+
+	if ($poster) {
+		$poster_attributes = " poster='{$poster}' data-poster-wide='{$poster}'";
+
+		if ($poster_square) {
+			$poster_attributes .= " data-poster-square='{$poster_square}'";
+		}
 	}
 ?>
 <?php if ($type === 'photo'): ?>
@@ -30,14 +55,14 @@
 
 <?php elseif ($type === 'loop'): ?>
 	<div class='slide' data-type='loop'>
-		<video muted loop playsinline preload='metadata' data-src-wide='<?= $src ?>' data-src-square='<?= $sq ?>'>
+		<video muted loop playsinline preload='metadata'<?= $poster_attributes ?> data-src-wide='<?= $src ?>' data-src-square='<?= $sq ?>'>
 			<source src='<?= $src ?>' type='video/mp4'>
 		</video>
 	</div>
 
 <?php elseif ($type === 'play'): ?>
 	<div class='slide' data-type='play'>
-		<video playsinline preload='metadata' data-src-wide='<?= $src ?>' data-src-square='<?= $sq ?>'>
+		<video playsinline preload='metadata'<?= $poster_attributes ?> data-src-wide='<?= $src ?>' data-src-square='<?= $sq ?>'>
 			<source src='<?= $src ?>' type='video/mp4'>
 		</video>
 

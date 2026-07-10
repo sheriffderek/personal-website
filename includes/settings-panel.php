@@ -7,6 +7,10 @@
 
 	Split out of one panel because page links + settings + filter together got too
 	tall. Each row inside a menu is its own partial in includes/settings/.
+
+	The Pages menu is commented out for now: How I work / Now / Contact are still
+	placeholders, so home is the only finished page and a nav to it is noise. The
+	routes and templates are untouched - uncomment when those pages are real.
 */ ?>
 
 <?php /* ---- Settings menu ---- */ ?>
@@ -53,7 +57,8 @@
 	<?php endif; ?>
 </div>
 
-<?php /* ---- Pages menu ---- */ ?>
+<?php /* ---- Pages menu - disabled until the sub-pages are real ----
+
 <button
 	type='button'
 	popovertarget='menu-pages'
@@ -79,3 +84,5 @@
 >
 	<?= partial('settings/page-menu', ['pages' => $pages, 'slug' => $slug, 'target_query' => $target_query ?? '']) ?>
 </div>
+
+---- end Pages menu ---- */ ?>
