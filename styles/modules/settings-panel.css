@@ -355,6 +355,25 @@ button.settings-trigger {
 	margin: 0.5rem 0 0;
 }
 
+/* The tier's descriptive name, under the slider. Only where there's room:
+   shown from the SAME 1024px breakpoint as the minimap's two-column mode,
+   hidden on the narrow popover where it would wrap. */
+.filter-level-name {
+	display: none;
+	margin: 0;
+
+	/* Subtle support, not real info: smaller than the count label and faded,
+	   so it reads as a quiet aside under the slider rather than a headline. */
+	font-size: calc(var(--app-data-voice-font-size) * 0.85);
+	color: color-mix(in oklch, var(--ink-secondary) 65%, transparent);
+}
+
+@media (width >= 1024px) {
+	.filter-level-name {
+		display: block;
+	}
+}
+
 /* The minimap is a scaled schematic of the page itself. One column of bars
    (the milestone list) on phones; on large screens it gains a fake settings
    panel on the right, mirroring the real layout's rail. It flips at the SAME

@@ -42,6 +42,11 @@ to figure out why Derek's experience is relevant - the note hands them the
 connection in one breath, in Derek's voice, so it reads like a person who
 actually thought about their team.
 
+The best notes are a little **clever**: they draw a connection the reader
+wouldn't have made on their own. The value lives in *the connection*, not in the
+match existing. A note that just parks a true fact next to a matching keyword has
+done nothing the timeline card didn't already do - see the win gate below.
+
 - Aim for: *"Huh - they really looked at what we do and thought about how their experience fits."*
 - Avoid: the transactional "You want X, and I have X" template, and the polished-tragic
   cadence of AI marketing copy.
@@ -96,8 +101,19 @@ cut it. Ask of each sentence: did this save the reader time or cost them time?
 
 ## Selection doctrine
 
+**Is it a win? (the first gate.)** Before truth, coverage, or craft, ask the one
+question that decides whether a note exists at all: does tying *this* milestone to
+*this* job create clear value - a connection that earns its place - or is it just a
+true statement sitting next to a matching keyword? "Founding Product Designer"
+against their "design systems" bullet is true, on-topic, and dead flat. **Adequate
+is not a win.** If the note only restates the card beside a requirement, blank it.
+The bar is the reader thinking "nice connection," not "yes, that word appears in
+both places." Most milestones will fail this gate for a given posting - that's
+correct, and it's what makes the ones that pass hit.
+
 **Match, don't stretch.** Only claim what the milestone genuinely demonstrates.
-A forced match is worse than no note.
+A forced match is worse than no note. (This is the truth test, *after* the win
+gate - a note has to be both a real win and genuinely true.)
 
 **Some get nothing.** Deliberate blanks (a pure-dev role, an off-topic entry, a
 PE-internal task) make the matched notes hit harder and keep the page honest.
@@ -132,15 +148,19 @@ scannable.
    description), cross-checked against
    `resume-exploration/source-materials/dereks-history.md` for real detail.
 
-3. **Build a coverage grid.** For each milestone worth a note, mark the single
-   posting bullet it proves best. This turns a vague "write notes" into a
-   matching task and surfaces: which milestones are noteless, which high-value
-   bullets aren't covered, which bullets are piling up. Present the grid before
-   writing prose - it's the cheapest place to catch a bad plan.
+3. **Build a coverage grid.** Run *every* milestone through the win gate here -
+   not just the ones you already like. For each, mark the single posting bullet it
+   proves best, then make the win call out loud in its own column with a one-line
+   why. This is where include/omit is decided on purpose: a milestone with a real
+   bullet match but only a flat, keyword-adjacent connection gets **win? = no →
+   none**, and that's the point of the grid. It also surfaces which high-value
+   bullets aren't covered and which are piling up. Present the grid before writing
+   prose - it's the cheapest place to catch a bad plan, and the honest omissions
+   should be visible in it, not silently missing.
 
-   | Milestone | Best-matched posting bullet | Note type |
-   |---|---|---|
-   | <slug> | "<their fragment>" | quote / belief / personal / none |
+   | Milestone | Best-matched posting bullet | Win? (why) | Note type |
+   |---|---|---|---|
+   | <slug> | "<their fragment>" | yes - <the non-obvious connection> / no - flat restatement | quote / belief / personal / none |
 
 4. **Write each note** in the voice doctrine above. Reflection-forward, quote
    woven, growth mindset present.
@@ -158,6 +178,7 @@ scannable.
 
 ## Per-note quality test
 
+- **Is it a win, or just true-and-adequate?** If the connection only restates the card beside a keyword, blank it. (The first gate - apply it before the rest.)
 - Does it lead with a thought, not a recited requirement?
 - Is the proof a specific, un-fakeable detail from something Derek really did?
 - Could a busy recruiter get the connection in about three seconds?

@@ -1,4 +1,4 @@
-# Session Handoff (July 3, 2026)
+# Session Handoff (July 3, 2026, updated July 10)
 
 **Read this before doing anything. The previous session failed badly; this file exists so you don't repeat it.**
 
@@ -7,7 +7,7 @@
 Bring every visible timeline card to the standard of the site-header intro, working with Derek card by card.
 
 - The bar: the intro in `includes/header.php` is the ONLY signed-off text on the site. Do not edit it for any reason. Writing rules + "The bar" live in CLAUDE.md.
-- The list: the entries in `content/milestones.json` with `weight: 3` and the `job` tag, in file order. 18 items; the first is `2026-job-search`. That is the whole list. Weight 1 and 2 entries are NOT in it.
+- The list: the entries in `content/milestones.json` with `weight: 1` and the `job` tag, in file order; the first is `2026-job-search`. That is the whole list - lower-tier entries are NOT in it. (Weight 1 is the TOP tier: the scale flipped to 1-high on 2026-07-10, and before that this doc said `weight: 3` on the old 1-3 scale. Same set of cards, the default view.)
 
 ## Status: NOTHING IS APPROVED
 

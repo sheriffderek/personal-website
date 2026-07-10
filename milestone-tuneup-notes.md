@@ -1,5 +1,7 @@
 # Milestone tune-up notes (autonomous pass while you were out)
 
+> Weight numbering below is the OLD pre-2026-07-10 scale (3 = top). The scale flipped: weight 1 is now the top tier, 1-6 in `content/milestones.json`. Read "weight 3" here as the top tier and "weight 1/2" as the lower tiers.
+
 Everything below was produced by review agents against our rules (voice, no-AI-tells, the bar, serve-Murray, no invented facts). I APPLIED only the safe/grounded wins and left every judgment call here for your verdict. Source of truth for facts remains `resume-exploration/source-materials/dereks-history.md`.
 
 ## What I already applied (live in the files now)

@@ -73,6 +73,17 @@
 	<script src='https://player.vimeo.com/api/player.js' defer></script>
 	<script src='<?= asset('/scripts/audio.js') ?>' defer></script>
 	<script src='<?= asset('/scripts/settings-panel.js') ?>' defer></script>
+
+	<?php /* The tour experiment ships dark: its stylesheet AND scripts only load
+		when the flag is on, honoring the "no weight when off" contract in
+		config.php (which is why welcome-video.css is not in components.css). */ ?>
+	<?php if (TOUR_ENABLED): ?>
+		<link rel='stylesheet' href='<?= asset('/styles/components/welcome-video.css') ?>'>
+		<script src='<?= asset('/scripts/welcome-video.js') ?>' defer></script>
+		<script src='<?= asset('/scripts/choreo.js') ?>' defer></script>
+		<script src='<?= asset('/scripts/tour.js') ?>' defer></script>
+	<?php endif; ?>
+
 	<script src='<?= asset('/scripts/sticky-header.js') ?>' defer></script>
 </head>
 

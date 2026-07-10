@@ -38,6 +38,10 @@
 	   Nothing is emitted when there's no still. */
 	$poster_attributes = '';
 
+	/* One video per page may opt in as the guided-tour driver ("tour": true on
+	   its media item). The tour dispatcher (scripts/tour.js) keys off this. */
+	$tour_attribute = !empty($item['tour']) ? ' data-tour-video' : '';
+
 	if ($poster) {
 		$poster_attributes = " poster='{$poster}' data-poster-wide='{$poster}'";
 
@@ -62,7 +66,7 @@
 
 <?php elseif ($type === 'play'): ?>
 	<div class='slide' data-type='play'>
-		<video playsinline preload='metadata'<?= $poster_attributes ?> data-src-wide='<?= $src ?>' data-src-square='<?= $sq ?>'>
+		<video playsinline preload='metadata'<?= $poster_attributes ?><?= $tour_attribute ?> data-src-wide='<?= $src ?>' data-src-square='<?= $sq ?>'>
 			<source src='<?= $src ?>' type='video/mp4'>
 		</video>
 

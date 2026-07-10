@@ -22,6 +22,10 @@
 	gap: 0.75rem;
 	max-width: 720px;
 
+	/* Breathing room above a milestone when it's the hash-link target, so the
+	   heading isn't jammed against the top of the viewport on landing. */
+	scroll-margin-top: 80px;
+
 	.setup {
 		.year {
 			color: var(--ink-auxiliary);
@@ -29,6 +33,13 @@
 
 		.heading {
 			margin-top: 0.14em;
+
+			/* The title is a bare hash-link (deep-link to this milestone), so it
+			   reads as plain heading text - no link color or underline. */
+			a {
+				color: inherit;
+				text-decoration: none;
+			}
 		}
 	}
 
@@ -145,7 +156,7 @@
 				height: 14px; /* input = track = thumb (all 14px, flush) so a browser can't place the track off-center inside a taller input; px to match the control geometry (units rule) */
 				margin: 0;
 				-webkit-appearance: none; /* Safari needs the prefixed reset to accept custom thumb dimensions; without it the thumb stays its 17px default and sits low. */
-					appearance: none;
+				appearance: none;
 				background: transparent;
 				cursor: pointer;
 			}
@@ -185,7 +196,7 @@
 
 			.scrubber::-webkit-slider-thumb {
 				-webkit-appearance: none; /* Safari needs the prefixed reset to accept custom thumb dimensions; without it the thumb stays its 17px default and sits low. */
-					appearance: none;
+				appearance: none;
 				width: 14px;
 				height: 14px;
 				margin-top: 0; /* track above is the full thumb height, so the thumb centers with no offset — works in Safari + Chrome (the old negative margin dropped it below the line in Safari). */

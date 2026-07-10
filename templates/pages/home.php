@@ -6,8 +6,8 @@ $all_milestones = load_json('milestones.json');
 
 // Which lane of the timeline? Defaults to job-relevant entries. We render ALL
 // weights (not just the top tier) so the filter slider has lower tiers to
-// reveal — the slider's default (tier 1) hides everything below weight 3 on
-// load, so the initial view is unchanged.
+// reveal — the slider's default (tier 1) shows only weight-1 entries on load,
+// so the initial view is unchanged.
 $filter_tag = isset($_GET['filter']) ? $_GET['filter'] : 'job';
 
 $milestones = array_filter($all_milestones, function ($m) use ($filter_tag) {
@@ -28,9 +28,34 @@ $target_notes = $target['milestones'] ?? [];
 ?>
 
 <header class='page-header'>
-	<text-content class='styled'>
-		<h1 class='loud-voice'>Derek Wood: Designer</h1>
+	<h1 class='loud-voice'>
+		<span class='name'>Derek Wood</span>
+		<span class='role'>Goal-driven Designer</span>
+		<?php // specific role text could be target-based too ?>
+	</h1>
 
+	<?php
+		/* The talking-head welcome video - its own standalone component, separate
+		   from the milestone slider (different job: the site's spoken intro, and
+		   the clip that drives the guided tour). Resting state is a still image;
+		   see includes/welcome-video.php + styles/components/welcome-video.css.
+		   Gated with the tour behind TOUR_ENABLED (config.php) - work in progress,
+		   flip that one flag on to bring it back. */
+	?>
+	<?php /* Scroll-sync note: when this video is live, the theme-swap anchor should
+	         pin it instead of the intro paragraph below (it's fixed-ratio, so
+	         theme-stable). Teach anchorPoint() in scripts/settings-panel.js to
+	         prefer .welcome-video - see the .page-header branch there. */ ?>
+	<?php if (TOUR_ENABLED): ?>
+		<?= partial('welcome-video', [
+			'src' => '/content/milestones/2026-job-search/01-play-wide-intro.mp4',
+			'src_square' => '/content/milestones/2026-job-search/01-play-square-intro.mp4',
+			'poster' => '/content/milestones/2026-job-search/01-play-wide-intro.jpg',
+			'poster_square' => '/content/milestones/2026-job-search/01-play-square-intro.jpg',
+		]) ?>
+	<?php endif; ?>
+
+	<text-content class='styled'>
 		<p>I help teams do their best work, whether that's big-picture vision and strategy, research and user testing, interfaces and code, design systems and cross-team collaboration, or auditing and maintaining what's already shipped.</p>
 
 		<p>I've done it across agencies, startups, and product teams. And for the last 6+ years, I've been teaching full-stack product design while keeping a hand in a range of design roles the whole time.</p>

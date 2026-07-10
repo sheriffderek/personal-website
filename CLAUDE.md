@@ -22,6 +22,8 @@ Three layers, top to bottom:
 
 Always update layer 1 first. Layers 2 and 3 pull from it.
 
+The per-company `?target=` notes (`content/targets/<company>.json`) have their own skill: `.claude/skills/target-notes/`. It auto-triggers when you're matching a posting to milestones; it's the source of truth for voice, the growth-mindset spine, and the coverage-grid process. (`target-notes-recipe.md` in the root is its historical origin, superseded by the skill.)
+
 ## Current status
 
 Round 1 target: GoFundMe Senior Product Designer application. Five entries needed. See `timeline-content-plan.md` for the full plan and `SESSION-HANDOFF.md` for latest state.
@@ -31,7 +33,7 @@ Round 1 target: GoFundMe Senior Product Designer application. Five entries neede
 - 16:9 poster cards for each entry
 - Entries can be: static image, slider (3-5 slides), or short local video (under 1 min)
 - `?target=companyname` inserts tailored paragraphs connecting work to that company's needs
-- Future: weighted timeline (slider reveals more/fewer entries), theme switcher (type patterns, font pairs, color)
+- Weighted timeline (filter slider reveals more/fewer entries) and theme switcher (type patterns, font pairs, color) - both built; see the Timeline weights and Theme system sections below
 - Videos are local files, not YouTube/Vimeo embeds
 - Video behavior: muted, playsinline, autoplay on scroll into view (IntersectionObserver), loop. Always have a poster frame fallback. Use preload="none" on off-screen videos.
 
@@ -210,6 +212,24 @@ The theming behavior is a load-bearing artifact of this site — it's part of th
 3. Split settings.css into orthogonal token layers when the next non-color axis lands.
 4. Pull FOUC restoration list into one PHP-side config that both the inline script and JS SWITCHERS read from.
 
+## Timeline weights (locked-in rules)
+
+Every milestone carries a `weight` (1-6) in `content/milestones.json` - **that file is the source of truth; never duplicate the per-entry assignments anywhere else.** **Weight 1 is the TOP tier** (like "priority 1"), counting down in importance to 6. The slider value = the deepest weight shown, so its default (leftmost, value 1) shows weight 1 only and each notch adds the next tier. (The scale was flipped 2026-07-10 - it briefly ran 6-high. If old notes say "weight 6 = flagship," they predate the flip.)
+
+**The ladder (what earns each weight):**
+- **1 - Flagship / the pitch.** End-to-end product ownership, founding roles, and the major credentials (design systems at scale, accessibility depth, published authority, leadership). This tier IS the default view, so it also carries the **gap rule** below. The "Now interviewing" opener always rides here.
+- **2 - Major supporting credentials.** Substantive product/design work a notch below the flagship.
+- **3 - Solid supporting work.** Real product/design/dev projects that show range and depth.
+- **4 - Range & methodology.** Breadth pieces, positioning moves, early product/startup work, R&D.
+- **5 - Craft detail.** Internal tooling and feature-level work (mostly the PE LMS internals).
+- **6 - Texture & color.** Podcasts and talks, music, food, art school - the human layer.
+
+**The gap rule.** Weight 1 doubles as the timeline's spine: it must cover the years with no visible multi-year gaps, so the default view reads as a continuous career, not a highlight reel with holes. When two entries tie on merit, the one that fills a year-gap takes the higher (numerically lower) weight. This is why weight 1 is a larger bucket (~14) than the tiers below it.
+
+**The balance rule (Shape A - pitch-floored).** Weight 1 is the fixed ~14-entry pitch; the rest split into evenly-sized tiers below it so each slider notch reveals a comparable chunk - never a big jump then a trickle. Current tier sizes are **14 / 4 / 4 / 4 / 5 / 6** (= 37) for weights 1→6, so the slider reveals cumulatively **14 → 18 → 22 → 26 → 31 → 37**. (What the visitor actually sees is per-lane: the default `job` lane's tag filter drops two un-tagged weight-6 entries - Holloys, Pizzaiolo - so its slider tops out at **35**, not 37. The label's total reflects the live lane count, not the full 37.) When adding entries, keep the lower tiers within a couple of each other. (If the slider ever needs to *narrow below* the pitch to a smaller flagship view, that's "Shape B" - a different default-position design we chose against; revisit deliberately, don't drift into it.)
+
+**Wiring.** Three places must agree: the slider's `max` in `includes/settings/filter-control.php`, and `MAX_WEIGHT` + `FILTER_NAMES` in `scripts/settings-panel.js`. Adding or removing a tier means touching all three.
+
 ## Filter / minimap (locked-in rules)
 
 **The minimap is load-bearing - do not arbitrarily remove it.** It has been removed by accident more than once; treat it like the video and theme rules above. If a change seems to require dropping it, stop and ask.
@@ -220,7 +240,9 @@ The timeline filter (`includes/settings/filter-control.php`) is a slider plus a 
 - **Large screens** - it gains a **fake settings panel** to the right and becomes **two columns**, because the real layout gains the rail there. The fake panel is the diagram's way of showing "the page is two-column now."
 - It flips at the **same 1024px breakpoint as the page grid** (`styles/layouts/default-layout.css`). Keep the two breakpoints in sync - the minimap's whole job is to match the layout it depicts.
 
-Structure: `.mini-map` wraps `.mini-map-bars` (an `<ol>`, one `<li>` per milestone, filled by `scripts/settings-panel.js`) and `.mini-map-panel` (the fake panel, `display: none` until 1024px). Bars: `data-state='in'` = dark (surfaced by filter), else faint. The `(n)` count beside `Filter: Top` (`data-filter-count`) is always shown.
+Structure: `.mini-map` wraps `.mini-map-bars` (an `<ol>`, one `<li>` per milestone, filled by `scripts/settings-panel.js`) and `.mini-map-panel` (the fake panel, `display: none` until 1024px). Bars: `data-state='in'` = dark (surfaced by filter), else faint.
+
+The label above the slider reads `Filter: <count> / <total>` (`data-filter-count` / `data-filter-total`, the total set from the live lane count) and is always shown. The tier's descriptive name (`data-filter-name`, from `FILTER_NAMES` in the JS) sits *below* the slider as `.filter-level-name` - deliberately small and faded (subtle support, not real info), and shown only from the 1024px breakpoint where there's room; hidden on the narrow popover where it would wrap.
 
 The failure mode to avoid: it renders as full-width, blown-out bars instead of a small faithful diagram. If you see that, the `max-width` / two-column rules got lost - restore them, don't delete the map.
 

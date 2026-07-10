@@ -1,0 +1,47 @@
+/* Welcome video - the standalone talking-head at the top of home. Its own
+   component (not the milestone .media), so it carries its own frame + resting
+   still + play affordance. Geometry only: the frame ratio, the cover fit, and
+   the centered play button. Color/theming come from the scope above. */
+.welcome-video {
+	position: relative;
+	margin: 0;
+	aspect-ratio: 16 / 9;
+	overflow: clip;
+
+	video {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	/* The whole frame is the play/pause toggle. It stays put while playing
+	   (keyboard users need it to pause) - only the icon hides. */
+	.play-trigger {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		place-items: center;
+		width: 100%;
+		height: 100%;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		cursor: pointer;
+	}
+
+	/* Play triangle, drawn with borders (same technique as the milestone player)
+	   so there's no icon asset. Sits on a soft shadow to stay legible on any still. */
+	.play-icon {
+		width: 0;
+		height: 0;
+		border-style: solid;
+		border-width: 1.1rem 0 1.1rem 1.8rem;
+		border-color: transparent transparent transparent white;
+		filter: drop-shadow(0 1px 3px rgb(0 0 0 / 0.5));
+	}
+
+	&.is-playing .play-icon {
+		display: none;
+	}
+}

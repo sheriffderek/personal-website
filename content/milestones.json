@@ -3,7 +3,7 @@
 		"slug": "2026-job-search",
 		"date": "July 2026",
 		"title": "Now interviewing: Senior Product Designer/Founding Designer",
-		"weight": 3,
+		"weight": 1,
 		"tags": [
 			"job",
 			"consulting"
@@ -34,7 +34,7 @@
 		"slug": "2026-portfolio-site",
 		"date": "June 2026",
 		"title": "2026 Fresh thoughts on the \"Portfolio\"",
-		"weight": 2,
+		"weight": 3,
 		"tags": [
 			"job",
 			"dev",
@@ -67,7 +67,7 @@
 	{
 		"slug": "pe-figure-cms-options",
 		"date": "April – June 2026",
-		"weight": 2,
+		"weight": 5,
 		"title": "A themeable frame system for figures and diagrams",
 		"tags": [
 			"job",
@@ -86,7 +86,7 @@
 		"slug": "pe-code-editor",
 		"date": "April 2026",
 		"title": "Design + dev for PE's in-browser code editor",
-		"weight": 3,
+		"weight": 1,
 		"tags": [
 			"job",
 			"education",
@@ -118,7 +118,7 @@
 		"slug": "world-ia-day-2026",
 		"date": "March 2026",
 		"title": "Leading World IA Day LA 2026",
-		"weight": 3,
+		"weight": 1,
 		"tags": [
 			"job",
 			"community",
@@ -149,7 +149,7 @@
 	{
 		"slug": "smart-text-editor",
 		"date": "January 2026",
-		"weight": 2,
+		"weight": 4,
 		"title": "R&D for a new take on text-editor interfaces",
 		"tags": [
 			"job",
@@ -169,7 +169,7 @@
 	{
 		"slug": "midi-sequencing",
 		"date": "2025 – ongoing",
-		"weight": 2,
+		"weight": 4,
 		"title": "A new take on DAW and MIDI sequencing",
 		"tags": [
 			"job",
@@ -187,7 +187,7 @@
 	{
 		"slug": "outside-insights-turing",
 		"date": "April 2025",
-		"weight": 1,
+		"weight": 6,
 		"title": "Outside Insights: Turing School of Software and Design",
 		"tags": [
 			"job",
@@ -205,7 +205,7 @@
 		"slug": "list-at-ease",
 		"date": "September 2024 – June 2025",
 		"title": "Research, strategy, product design, dev lead: QuickBooks for selling your house",
-		"weight": 3,
+		"weight": 1,
 		"tags": [
 			"job",
 			"product"
@@ -228,7 +228,7 @@
 		"slug": "aicad-2024",
 		"date": "November 2024",
 		"title": "Teach for Tomorrow: Re-Designing the Future 2024 AICAD Symposium",
-		"weight": 3,
+		"weight": 1,
 		"tags": [
 			"job",
 			"education",
@@ -249,7 +249,7 @@
 		"slug": "open-office-hours",
 		"date": "March 2024 – ongoing",
 		"title": "Open office hours for designers and developers",
-		"weight": 3,
+		"weight": 1,
 		"tags": [
 			"job",
 			"education",
@@ -270,7 +270,7 @@
 	{
 		"slug": "don-podcast-gap",
 		"date": "May 2024",
-		"weight": 1,
+		"weight": 6,
 		"title": "Getting honest with new devs about the massive skill gap",
 		"tags": [
 			"job",
@@ -307,7 +307,7 @@
 		"slug": "better-life",
 		"date": "April 2023 – March 2024",
 		"title": "Product design: real estate mastermind social network + habit tracking R&D",
-		"weight": 3,
+		"weight": 1,
 		"tags": [
 			"job",
 			"product"
@@ -327,7 +327,7 @@
 		"slug": "pe-syntax-highlighting",
 		"date": "September – December 2022",
 		"title": "Updating PE's custom syntax highlighting system",
-		"weight": 2,
+		"weight": 5,
 		"tags": [
 			"job",
 			"education",
@@ -344,7 +344,7 @@
 		"slug": "equivalent-design",
 		"date": "February – August 2022",
 		"title": "Accessibility and SVG animation consulting",
-		"weight": 3,
+		"weight": 1,
 		"tags": [
 			"job",
 			"consulting",
@@ -365,7 +365,7 @@
 	{
 		"slug": "pe-calendar-milestones",
 		"date": "May – August 2022",
-		"weight": 2,
+		"weight": 5,
 		"title": "Designing PE's calendar and milestones system",
 		"tags": [
 			"job",
@@ -383,7 +383,7 @@
 	{
 		"slug": "dondev-podcast-2021",
 		"date": "April 2021",
-		"weight": 1,
+		"weight": 6,
 		"title": "A coding bootcamp that also teaches visual design?",
 		"tags": [
 			"job",
@@ -401,7 +401,7 @@
 	{
 		"slug": "pe-study-hall",
 		"date": "June – July 2021",
-		"weight": 2,
+		"weight": 5,
 		"title": "Early PE study hall experiments",
 		"tags": [
 			"job",
@@ -437,7 +437,7 @@
 		"slug": "css-tricks-article",
 		"date": "January 2021",
 		"title": "CSS-Tricks: On Type Patterns and Style Guides",
-		"weight": 3,
+		"weight": 1,
 		"tags": [
 			"job",
 			"writing",
@@ -457,7 +457,7 @@
 	{
 		"slug": "pe-page-modules",
 		"date": "2020",
-		"weight": 2,
+		"weight": 5,
 		"title": "Building PE's initial page module system",
 		"tags": [
 			"job",
@@ -493,7 +493,7 @@
 		"slug": "pe-founded",
 		"date": "December 2019",
 		"title": "Designing a digital product design school",
-		"weight": 3,
+		"weight": 1,
 		"tags": [
 			"job",
 			"education",
@@ -525,7 +525,7 @@
 		"slug": "pxl",
 		"date": "November 2018 – April 2019",
 		"title": "Senior front-end dev at PXL agency",
-		"weight": 3,
+		"weight": 1,
 		"tags": [
 			"job",
 			"dev",
@@ -546,7 +546,7 @@
 		"slug": "mentoring",
 		"date": "2018 – 2020+",
 		"title": "Some time off, mentoring, and rehabbing a laundromat",
-		"weight": 2,
+		"weight": 4,
 		"tags": [
 			"job",
 			"education",
@@ -564,7 +564,7 @@
 		"slug": "niagen-bioscience",
 		"date": "October 2017 – May 2018",
 		"title": "Founding Product Designer for a longevity science startup",
-		"weight": 3,
+		"weight": 1,
 		"tags": [
 			"job",
 			"product",
@@ -585,7 +585,7 @@
 		"slug": "sheriffderek-consulting",
 		"date": "2016",
 		"title": "Moving from coder for hire to bigger-picture design consulting",
-		"weight": 2,
+		"weight": 3,
 		"tags": [
 			"job",
 			"consulting"
@@ -601,7 +601,7 @@
 		"slug": "school-loop",
 		"date": "Late 2016",
 		"title": "CSS architecture audit for a national education platform",
-		"weight": 3,
+		"weight": 1,
 		"tags": [
 			"job",
 			"design-systems",
@@ -622,7 +622,7 @@
 		"slug": "agency-work",
 		"date": "2013 – 2017",
 		"title": "Front-End Developer across LA agencies",
-		"weight": 3,
+		"weight": 1,
 		"tags": [
 			"job",
 			"agency",
@@ -654,7 +654,7 @@
 		"slug": "shoutq",
 		"date": "May 2014 – January 2015",
 		"title": "Web app dev for an early influencer marketplace startup",
-		"weight": 2,
+		"weight": 3,
 		"tags": [
 			"job",
 			"product",
@@ -671,7 +671,7 @@
 		"slug": "nouveau-studios",
 		"date": "March 2013 – May 2014",
 		"title": "Front-End Developer at my first real agency",
-		"weight": 2,
+		"weight": 3,
 		"tags": [
 			"job",
 			"agency",
@@ -688,7 +688,7 @@
 		"slug": "fundamonium",
 		"date": "2011 – 2013",
 		"title": "Freelance designer + developer, early responsive web",
-		"weight": 2,
+		"weight": 4,
 		"tags": [
 			"job",
 			"freelance"
@@ -711,7 +711,7 @@
 		"slug": "holloys",
 		"date": "2009 – 2011",
 		"title": "Playing guitar and synth in Holloys",
-		"weight": 1,
+		"weight": 6,
 		"tags": [
 			"music",
 			"art"
@@ -726,7 +726,7 @@
 		"slug": "pizzaiolo",
 		"date": "2005 – 2009",
 		"title": "Learning about food and running restaurants",
-		"weight": 1,
+		"weight": 6,
 		"tags": [
 			"life"
 		],
@@ -740,7 +740,7 @@
 		"slug": "cca-bfa",
 		"date": "2001 – 2005",
 		"title": "Art college, Flash, and MySpace",
-		"weight": 1,
+		"weight": 6,
 		"tags": [
 			"job",
 			"art",

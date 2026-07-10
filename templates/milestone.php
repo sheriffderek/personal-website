@@ -1,11 +1,18 @@
-<article class='milestone' data-flavor='<?= $milestone['flavor'] ?? 'default' ?>' data-weight='<?= $milestone['weight'] ?? 1 ?>'>
+<?php
+	/*
+		<span class='weight quiet-voice'>(<?= $milestone['weight'] ?? '?' ?>)</span>
+	*/
+?>
+
+<article id='<?= $milestone['slug'] ?>' class='milestone' data-flavor='<?= $milestone['flavor'] ?? 'default' ?>' data-weight='<?= $milestone['weight'] ?? 6 ?>'>
 
 	<div class='setup'>
-		<p class='year high-voice'><?= $milestone['date'] ?> <span class='weight quiet-voice'>(<?= $milestone['weight'] ?? '?' ?>)</span></p>
+		<p class='year high-voice'><?= $milestone['date'] ?></p>
 
-		<h2 class='heading attention-voice'><?= $milestone['title'] ?></h2>
+		<h2 class='heading attention-voice'>
+			<a href='#<?= $milestone['slug'] ?>'><?= $milestone['title'] ?></a>
+		</h2>
 	</div>
-
 
 	<?php
 		/* Three media shapes, all built on the themable poster-shapes cover:
@@ -18,17 +25,22 @@
 		   The poster is ALWAYS the cover — slides and videos are additional, never
 		   a replacement for it. real_media_items() drops placeholders (render.php);
 		   the one shared partial (posters/media-item) renders each item, so the
-		   responsive swap + ratio-lock frame apply throughout. */
+		   responsive swap + ratio-lock frame apply throughout.
+		   Authoring the poster cover art itself (the SVG in poster-shapes.php:
+		   tokens, stroke widths, texture rules) is specced in poster-tech-brief.md. */
 		$media_items = real_media_items($milestone);
 		$poster_only = empty($media_items) && !empty($milestone['poster']);
 	?>
+
 	<?php if ($media_items): ?>
+
 		<?php
 			/* wrapAround only loops cleanly with 3+ cells; with 2 (poster + one
 			   item) Flickity clones and can leave a 1px seam at the edge. Cell
 			   count = 1 poster + the media items. */
 			$wrap_around = (count($media_items) + 1) >= 3 ? 'true' : 'false';
 		?>
+
 		<figure class='media'>
 			<div class='carousel' data-flickity='{ "wrapAround": <?= $wrap_around ?>, "imagesLoaded": true, "prevNextButtons": false }'>
 				<div class='slide' data-type='poster'>
@@ -42,11 +54,13 @@
 		</figure>
 
 	<?php elseif ($poster_only): ?>
+
 		<figure class='media'>
 			<div class='slide' data-type='poster'>
 				<?php include INCLUDES_DIR . '/posters/poster-shapes.php'; ?>
 			</div>
 		</figure>
+
 	<?php endif; ?>
 
 

@@ -4,6 +4,16 @@
 (function () {
 	var html = document.documentElement;
 
+	/* Public control surface for the guided-tour spike (scripts/tour.js).
+	   The tour drives the REAL controls, but must never touch the visitor's
+	   saved preferences - so every applier takes {persist:false}, and this map
+	   lets the tour reach the per-switcher appliers by kind ('scheme'/'sound'). */
+	var applyByKind = {};
+
+	function shouldPersist(opts) {
+		return !opts || opts.persist !== false;
+	}
+
 	/* Keep-your-place-through-a-reflow.
 
 	   Theme swaps change the type scale and font metrics, so every milestone
@@ -56,22 +66,78 @@
 		return closest;
 	}
 
+	/* Which point of the section we actually pin. We pick the section by its
+	   whole box (centeredSection), but pinning a section's TOP pins its heading,
+	   and a theme swap resizes that heading - most dramatically the Display
+	   theme, which balloons the h1 and shoves everything below it down. You can
+	   hold the heading still OR the body still, never both, because the space
+	   between them is what's changing. The body is what the reader is actually
+	   reading (the heading is a landmark they've already passed), so we pin the
+	   first block BELOW the heading and let the heading grow upward off the top:
+
+	     - milestone with media  -> the media frame (theme-stable: its height is
+	       aspect-ratio locked and width-driven, so font metrics never move it)
+	     - text-only milestone    -> its body copy (.info)
+	     - page header            -> its first paragraph (the year/setup isn't in
+	       the header, so the first <p> is the intro - the first thing to hold)
+
+	   One rule everywhere: pin the first thing below the heading. Anything with
+	   no such block falls back to its own top. */
+	function anchorPoint(section) {
+		if (section.matches('.page-header')) {
+			/* The header pins its intro paragraph today. When the welcome video is
+			   live (<figure class='welcome-video'>, gated by TOUR_ENABLED in
+			   config.php - see templates/pages/home.php), the anchor should pin
+			   THAT instead: it sits above the intro and, being a fixed-ratio video,
+			   is theme-stable like a milestone's media. So prefer it here -
+			   `section.querySelector('.welcome-video, p')` - and it wins whenever
+			   it's rendered, falling through to the paragraph when the tour is off. */
+			return section.querySelector('p') || section;
+		}
+
+		return section.querySelector('.media, .info') || section;
+	}
+
+	/* One correction can be owed at a time. A fast slider drag fires several
+	   `input` events before the browser paints, so the frame-delayed shift from
+	   the previous event may not have run yet. If we measure the next `topBefore`
+	   now, we're reading a layout we disturbed but never put back, and the two
+	   shifts fight over where the card belongs - it lands at the displaced spot.
+	   So each syncScroll pays off any pending correction first, then measures. */
+	var pendingFrame = null;
+	var pendingShift = null;
+
+	function settlePending() {
+		if (!pendingShift) return;
+
+		cancelAnimationFrame(pendingFrame);
+		var shiftNow = pendingShift;
+		pendingFrame = null;
+		pendingShift = null;
+		shiftNow();
+	}
+
 	function syncScroll(applyChange, willSurvive) {
+		settlePending();
+
 		var anchor = centeredSection(willSurvive);
-		var topBefore = anchor ? anchor.getBoundingClientRect().top : 0;
+		var pin = anchor ? anchorPoint(anchor) : null;
+		var topBefore = pin ? pin.getBoundingClientRect().top : 0;
 
 		applyChange();
 
-		if (!anchor) return;
+		if (!pin) return;
 
 		/* Wait one frame so the browser has recalculated layout with the new
-		   type scale before we measure where the anchor landed. */
-		requestAnimationFrame(function () {
-			var topAfter = anchor.getBoundingClientRect().top;
+		   type scale before we measure where the pin landed. */
+		pendingShift = function () {
+			var topAfter = pin.getBoundingClientRect().top;
 			var shift = topAfter - topBefore;
 
 			if (shift) window.scrollBy(0, shift);
-		});
+		};
+
+		pendingFrame = requestAnimationFrame(settlePending);
 	}
 
 	var SWITCHERS = [
@@ -109,22 +175,31 @@
 			});
 		}
 
-		function choose(button, moveFocus) {
-			var value = valueOf(button);
-
+		/* Apply the value to <html> and reflect the radios. Persistence is a
+		   separate concern: real user actions persist; the tour passes
+		   {persist:false} so the demo never overwrites saved preferences. */
+		function apply(value, opts) {
 			if (value === cfg.defaultValue) {
-				if (persists) {
+				html.removeAttribute(cfg.attr);
+				if (persists && shouldPersist(opts)) {
 					try { localStorage.removeItem(cfg.storageKey); } catch (error) {}
 				}
-				html.removeAttribute(cfg.attr);
 			} else {
-				if (persists) {
+				html.setAttribute(cfg.attr, cfg.valuelessAttr ? '' : value);
+				if (persists && shouldPersist(opts)) {
 					try { localStorage.setItem(cfg.storageKey, value); } catch (error) {}
 				}
-				html.setAttribute(cfg.attr, cfg.valuelessAttr ? '' : value);
 			}
 
 			reflect(value);
+		}
+
+		applyByKind[cfg.kind] = apply;
+
+		function choose(button, moveFocus) {
+			var value = valueOf(button);
+
+			apply(value);
 			if (moveFocus) button.focus();
 
 			if (cfg.kind === 'sound' && window.ui && window.ui.sound) {
@@ -170,17 +245,19 @@
 	var themeSlider = document.querySelector('[data-set-theme-slider]');
 	var themeName   = document.querySelector('[data-theme-name]');
 
-	function applyTheme(idx) {
+	function applyTheme(idx, opts) {
 		var clamped = Math.max(0, Math.min(THEMES.length - 1, idx));
 		var theme = THEMES[clamped];
 		html.setAttribute('data-theme', theme);
-		try {
-			if (theme === 'default') {
-				localStorage.removeItem('theme-preference');
-			} else {
-				localStorage.setItem('theme-preference', theme);
-			}
-		} catch (error) {}
+		if (shouldPersist(opts)) {
+			try {
+				if (theme === 'default') {
+					localStorage.removeItem('theme-preference');
+				} else {
+					localStorage.setItem('theme-preference', theme);
+				}
+			} catch (error) {}
+		}
 		if (themeName) themeName.textContent = THEME_NAMES[clamped];
 		if (themeSlider) themeSlider.value = String(clamped);
 	}
@@ -202,20 +279,37 @@
 		});
 	}
 
-	/* Timeline filter — slider sets number of weight tiers shown.
-	   1 = top tier only, 3 = all. */
-	var FILTER_NAMES = { 1: 'Top', 2: 'More', 3: 'All' };
+	/* Timeline filter — slider sets number of weight tiers shown, cumulative.
+	   1 = weight-1 entries only (the gap-covered product-design pitch),
+	   6 = everything. Weight 1 is the HIGHEST tier — the slider value is also
+	   the deepest weight shown, so "show tiers 1..n" is just weight <= n.
+	   Six tiers per the weight rubric in CLAUDE.md. Names read cumulatively —
+	   each step ADDS to the view above it. 2–5 are working phrasings; reword
+	   freely (the label also shows the live count / total). */
+	var FILTER_NAMES = {
+		1: 'Core product work',
+		2: '+ major support',
+		3: '+ broader projects',
+		4: '+ range & R&D',
+		5: '+ craft & tooling',
+		6: '+ other influences'
+	};
 	var filterSlider = document.querySelector('[data-set-filter]');
 	var miniMap      = document.querySelector('.mini-map-bars');
 	var filterName   = document.querySelector('[data-filter-name]');
 	var filterCount  = document.querySelector('[data-filter-count]');
+	var filterTotal  = document.querySelector('[data-filter-total]');
 	var entries      = document.querySelectorAll('.timeline > li');
-	var MAX_WEIGHT   = 3;
+	var MAX_WEIGHT   = 6;
+
+	/* Total is the count in this tag lane (what actually rendered), so the
+	   label reads e.g. "14 / 35" and tops out at "35 / 35". */
+	if (filterTotal) { filterTotal.textContent = String(entries.length); }
 
 	if (miniMap && entries.length) {
 		entries.forEach(function (li) {
 			var article = li.querySelector('[data-weight]');
-			var weight = article ? parseInt(article.getAttribute('data-weight'), 10) : 1;
+			var weight = article ? parseInt(article.getAttribute('data-weight'), 10) : MAX_WEIGHT;
 			var bar = document.createElement('li');
 			bar.setAttribute('data-weight', String(weight));
 			miniMap.appendChild(bar);
@@ -258,14 +352,13 @@
 		});
 	}
 
-	function applyFilter(tiersShown) {
-		var minWeight = MAX_WEIGHT - tiersShown + 1;
+	function applyFilter(tiersShown, opts) {
 		var bars = miniMap ? miniMap.children : [];
 		var inCount = 0;
 		entries.forEach(function (li, i) {
 			var article = li.querySelector('[data-weight]');
-			var weight = article ? parseInt(article.getAttribute('data-weight'), 10) : 1;
-			var isIn = weight >= minWeight;
+			var weight = article ? parseInt(article.getAttribute('data-weight'), 10) : MAX_WEIGHT;
+			var isIn = weight <= tiersShown;
 			if (isIn) inCount++;
 			li.style.display = isIn ? '' : 'none';
 			if (bars[i]) bars[i].setAttribute('data-state', isIn ? 'in' : 'out');
@@ -273,13 +366,20 @@
 		});
 		if (filterName) filterName.textContent = FILTER_NAMES[tiersShown] || '';
 		if (filterCount) filterCount.textContent = String(inCount);
-		try {
-			if (tiersShown === FILTER_DEFAULT) {
-				localStorage.removeItem('filter-preference');
-			} else {
-				localStorage.setItem('filter-preference', String(tiersShown));
-			}
-		} catch (error) {}
+		/* The visible tier name is decorative (small, hidden on narrow screens),
+		   so the slider itself announces the tier for assistive tech. */
+		if (filterSlider) {
+			filterSlider.setAttribute('aria-valuetext', (FILTER_NAMES[tiersShown] || String(tiersShown)) + ', ' + inCount + ' entries shown');
+		}
+		if (shouldPersist(opts)) {
+			try {
+				if (tiersShown === FILTER_DEFAULT) {
+					localStorage.removeItem('filter-preference');
+				} else {
+					localStorage.setItem('filter-preference', String(tiersShown));
+				}
+			} catch (error) {}
+		}
 		if (filterSlider) filterSlider.value = String(tiersShown);
 	}
 
@@ -290,20 +390,19 @@
 
 	function cardWeight(card) {
 		var article = card.matches('[data-weight]') ? card : card.querySelector('[data-weight]');
-		return article ? parseInt(article.getAttribute('data-weight'), 10) : 1;
+		return article ? parseInt(article.getAttribute('data-weight'), 10) : MAX_WEIGHT;
 	}
 
 	if (filterSlider) {
 		filterSlider.addEventListener('input', function () {
 			var tiersShown = parseInt(filterSlider.value, 10);
-			var minWeight = MAX_WEIGHT - tiersShown + 1;
 
 			syncScroll(
 				function () {
 					applyFilter(tiersShown);
 				},
 				function willSurvive(card) {
-					return cardWeight(card) >= minWeight;
+					return cardWeight(card) <= tiersShown;
 				}
 			);
 
@@ -314,7 +413,55 @@
 		});
 	}
 
+	/* Deep-link vs. filter: a shared link like /#pe-figure-cms-options can point
+	   at a milestone the default filter (weight 1 only) hides. At load that
+	   target is display:none, so the browser's native hash-scroll lands on a
+	   collapsed element - the link looks broken. So before the first applyFilter,
+	   if the hash names a milestone, widen the initial filter just enough to
+	   reveal that milestone's weight, then scroll it in ourselves (the native
+	   scroll already ran against the hidden element and missed). The slider ends
+	   up reading the widened tier, honestly reflecting what's on screen.
+	   With weight 1 as the top tier, a card's weight IS the tier count that
+	   reveals it. */
+	function tiersToReveal(weight) {
+		return weight;
+	}
+
+	var hashTarget = null;
+	if (window.location.hash.length > 1) {
+		var slug = decodeURIComponent(window.location.hash.slice(1));
+		hashTarget = document.getElementById(slug);
+		if (hashTarget && hashTarget.matches('.milestone')) {
+			var needed = tiersToReveal(cardWeight(hashTarget));
+			if (needed > initialFilter) initialFilter = needed;
+		} else {
+			hashTarget = null;
+		}
+	}
+
 	if (entries.length) applyFilter(initialFilter);
+
+	if (hashTarget) {
+		/* Park the revealed card (scroll-margin-top keeps the heading off the
+		   viewport top). We scroll on the next frame for an immediate landing,
+		   then again on load: this script is deferred, so at first it runs before
+		   the carousels above the target initialize and images decode - that
+		   reflow moves the target out from under us. The load pass corrects for
+		   it, unless the reader has already taken over and scrolled themselves. */
+		var parkTarget = function () {
+			hashTarget.scrollIntoView();
+		};
+
+		requestAnimationFrame(parkTarget);
+
+		var userTookOver = false;
+		window.addEventListener('wheel', function () { userTookOver = true; }, { passive: true, once: true });
+		window.addEventListener('touchmove', function () { userTookOver = true; }, { passive: true, once: true });
+
+		window.addEventListener('load', function () {
+			if (!userTookOver) parkTarget();
+		});
+	}
 
 	/* Outside-tap dismiss, for BOTH menus (Settings + Pages). Native popover
 	   light-dismiss is unreliable on iOS Safari (a styled ::backdrop swallows
@@ -426,4 +573,45 @@
 			dismissIfOutside(touch.clientX, touch.clientY, event.target);
 		}
 	}, { passive: true });
+
+	/* --- Guided-tour control surface (spike, see scripts/tour.js) ---
+	   The tour drives the real UI with {persist:false}, then calls restore()
+	   to snap the view back to the visitor's saved prefs. Because the tour
+	   never wrote localStorage, restore is just a re-read of what was already
+	   there - any real choice the visitor made mid-tour DID persist, so it
+	   survives; only the tour's own persist:false changes get undone. */
+	function restore() {
+		var savedTheme = null;
+		var savedFilter = null;
+		try { savedTheme = localStorage.getItem('theme-preference'); } catch (error) {}
+		try { savedFilter = localStorage.getItem('filter-preference'); } catch (error) {}
+
+		var themeIdx = savedTheme ? THEMES.indexOf(savedTheme) : 0;
+		if (themeIdx < 0) themeIdx = 0;
+		applyTheme(themeIdx, { persist: false });
+
+		SWITCHERS.forEach(function (cfg) {
+			var apply = applyByKind[cfg.kind];
+			if (!apply) return;
+			var saved = null;
+			try { saved = localStorage.getItem(cfg.storageKey); } catch (error) {}
+			apply(saved || cfg.defaultValue, { persist: false });
+		});
+
+		if (entries.length) {
+			var tiers = savedFilter ? parseInt(savedFilter, 10) : FILTER_DEFAULT;
+			if (isNaN(tiers) || tiers < 1 || tiers > MAX_WEIGHT) tiers = FILTER_DEFAULT;
+			applyFilter(tiers, { persist: false });
+		}
+	}
+
+	window.settings = {
+		applyTheme: applyTheme,
+		applyFilter: applyFilter,
+		set: function (kind, value, opts) {
+			if (applyByKind[kind]) applyByKind[kind](value, opts);
+		},
+		restore: restore,
+		panel: document.getElementById('menu-settings')
+	};
 })();

@@ -403,13 +403,13 @@ Opt-in escape hatch: any entry can graduate to a full standalone case-study page
 
 ## Weighted entry list
 
-Weight 3 = must be on the site for GoFundMe application. Weight 2 = strong addition, next wave. Weight 1 = fills out the timeline later.
+Live weights (1-6, weight 1 = flagship) are assigned per entry in `content/milestones.json` - that file is the source of truth, never this one (rubric in CLAUDE.md). The groupings below are the original Round-1 triage that decided build order: must-haves for the GoFundMe application, then the next wave, then the rest.
 
-With `?target=gofundme`, weight-3 entries get a tailored paragraph connecting to GoFundMe's needs. Each entry needs a 16:9 poster image and a one-liner (plus expandable detail via "Read more" that disappears after opening).
+With `?target=gofundme`, must-have entries get a tailored paragraph connecting to GoFundMe's needs. Each entry needs a 16:9 poster image and a one-liner (plus expandable detail via "Read more" that disappears after opening).
 
-### Weight 3 (must-haves, the "ok this person is serious" set)
+### Must-haves (Round 1, the "ok this person is serious" set)
 
-**Default Mode** (2026) — WEIGHT 3
+**Default Mode** (2026)
 - Frame: "Whenever I don't have a primary work focus, I naturally take on short-term consulting and design/dev projects, and use the rest of my time to learn new things and fold them back into the PE curriculum."
 - This is the natural state, not a gap. Full-time roles are the exception.
 - Includes Fulcrum Insights (design), ETERNL Health (design/dev), and any others
@@ -417,95 +417,95 @@ With `?target=gofundme`, weight-3 entries get a tailored paragraph connecting to
 - Proves: always building, always learning, self-directed
 - GoFundMe angle: "I literally used your product as a case study with my students." Domain engagement you can't fake. PE students regularly build crowdfunding apps as projects. Derek has watched many people reason through donation flows, campaign pages, and share mechanics.
 
-**PE Code Editor / CodeStudy** (March 2026) — WEIGHT 3
+**PE Code Editor / CodeStudy** (March 2026)
 - End-to-end build of in-browser code editor and learning environment
 - Proves: end-to-end execution, high craft, consumer-facing UX
 - GoFundMe angle: designing for users in high-stakes moments (learning = vulnerable, same as fundraising)
 - Artifact status: needs screenshots
 
-**World IA Day LA** (March 2026, organized Nov 2025 - Mar 2026) — WEIGHT 3
+**World IA Day LA** (March 2026, organized Nov 2025 - Mar 2026)
 - Co-chair. 4 months organizing.
 - Proves: cross-functional leadership, workshop facilitation, community building
 - GoFundMe angle: leading cross-functional alignment for a whole community, not just one product team
 - Artifact status: needs event photos, program materials
 
-**List at Ease** (Sept 2024 - June 2025) — WEIGHT 3
+**List at Ease** (Sept 2024 - June 2025)
 - Product design, product management, led dev team, strategy
 - Proves: product strategy, triad collaboration, experience vision
 - GoFundMe angle: closest match to the role. Triad model, end-to-end ownership, strategy.
 - Artifact status: needs designs/flows. HIGH PRIORITY.
 
-**AICAD Symposium** (Nov 13-15, 2024) — WEIGHT 3
+**AICAD Symposium** (Nov 13-15, 2024)
 - Speaker: "Untangling Web Design Education" at ArtCenter College of Design
 - Proves: thought leadership, articulating design decisions, mentorship
 - GoFundMe angle: raising the bar for an entire professional community
 - Artifact status: needs recording, slides, or photos
 
-**Weekly Open Office Hours** (March 2024 - ongoing) — WEIGHT 3
+**Weekly Open Office Hours** (March 2024 - ongoing)
 - Free portfolio review and career advice, Saturdays 11am PST
 - Talked with hundreds of designers and developers
 - Reddit: https://www.reddit.com/r/codingbootcamp/comments/1b4ubr7/
 - Proves: mentorship at scale, community, generosity
 - GoFundMe angle: empathy, user-centered, raising the bar
 
-**Better Life** (April 2023 - March 2024) — WEIGHT 3
+**Better Life** (April 2023 - March 2024)
 - UX/UI/front-end for a consumer product (site is gone)
 - Proves: consumer-facing product design, empathy-driven UX
 - GoFundMe angle: designing for people trying to improve their lives, same emotional register
 - Artifact status: needs screenshot hunt. Site gone.
 
-**Equivalent Design** (Feb - Aug 2022) — WEIGHT 3
+**Equivalent Design** (Feb - Aug 2022)
 - SVG and accessibility R&D consulting
 - Frame toward education and accessibility narrative (don't need to use their name)
 - Proves: accessibility expertise, consulting, education-adjacent
 - GoFundMe angle: accessibility, inclusive design, WCAG compliance
 - Artifact status: needs details and artifacts
 
-**CSS-Tricks Article: "On Type Patterns and Style Guides"** (January 19, 2021) — WEIGHT 3
+**CSS-Tricks Article: "On Type Patterns and Style Guides"** (January 19, 2021)
 - Published on one of the most-read front-end publications
 - https://css-tricks.com/on-type-patterns-and-style-guides/
 - Proves: published thinker, type systems expertise, design systems thinking
 - GoFundMe angle: "expert understanding of formal elements of design, including typography"
 
-**PE Founded** (Dec 2019 research, first cohort March 2021) — WEIGHT 3
+**PE Founded** (Dec 2019 research, first cohort March 2021)
 - Built entire education product from scratch: curriculum, platform, brand, business model
 - Hundreds of workshops, 200+ interactive modules, progression systems
 - Proves: end-to-end product ownership, building from zero, logistics, strategy
 - GoFundMe angle: built and ran an entire product for real users with real outcomes
 
-**Mentoring** (~2018-2020+, spread across years) — WEIGHT 3
+**Mentoring** (~2018-2020+, spread across years)
 - Codementor, MentorCruise, ADPList, Quora, Reddit, Slacks, Discords, word of mouth
 - Pattern recognition from hundreds of mentoring sessions informed PE curriculum
 - Proves: empathy, user research (informal), community, raising the bar
 - GoFundMe angle: deep pattern recognition across hundreds of people's career journeys
 
-**PXL / DreamWorks** (Nov 2018 - Apr 2019) — WEIGHT 3
+**PXL / DreamWorks** (Nov 2018 - Apr 2019)
 - Senior Front-End Developer. Built dreamworks.com.
 - Game-like web experiences, complex animations, mentored junior devs
 - Proves: recognizable name, high craft, team collaboration
 - GoFundMe angle: shipping polished consumer experiences at scale
 
-**Niagen Bioscience (formerly ChromaDex)** (Oct 2017 - May 2018) — WEIGHT 3
+**Niagen Bioscience (formerly ChromaDex)** (Oct 2017 - May 2018)
 - Senior Product Designer
 - Interactive infographics, data viz, mobile-first, user testing, component libraries
 - Made $135k + bonuses. Managed external teams.
 - Proves: senior IC at a real company, formal product design process
 - GoFundMe angle: translating complex information for general audiences, design systems stewardship
 
-**School Loop** (late 2016) — WEIGHT 3
+**School Loop** (late 2016)
 - Design system audit for education platform
 - Built entire component system in CodePen, themable by school
 - They never implemented it (walked away)
 - Proves: design system stewardship, education domain, systematic thinking
 - GoFundMe angle: directly proves Heart design system stewardship ability
 
-**Agency work** (2013-2017, lumped) — WEIGHT 3
+**Agency work** (2013-2017, lumped)
 - Nouveau Studios, SEW Digital, ShoutQ, freelance contracts
 - Includes: White House social/jail education game, AAA Auto Insurance games, Fox Films dashboards, Gap/Shell microsites, Ticketfly venue sites
 - Proves: range, volume, shipping under pressure, multiple clients/contexts
 - GoFundMe angle: breadth of experience across industries and problem types
 
-**Crowdfunding Competitor (at Nouveau)** (~2013-2014) — WEIGHT 3
+**Crowdfunding Competitor (at Nouveau)** (~2013-2014)
 - Mapped out a GoFundMe/Kickstarter competitor at Nouveau Studios
 - One of Derek's first real UX planning projects
 - GoFundMe started May 10, 2010. Derek was already thinking about this space.
@@ -513,34 +513,34 @@ With `?target=gofundme`, weight-3 entries get a tailored paragraph connecting to
 - GoFundMe angle: "I've been thinking about crowdfunding UX since before your platform was established"
 - [NEEDS INFO] Exact scope. Was it GoFundMe or Kickstarter competitor? How far did it get?
 
-### Weight 2 (next wave)
+### Next wave
 
-**PE Syntax Highlighting v2** (late 2024 / early 2025?) — WEIGHT 2
+**PE Syntax Highlighting v2** (late 2024 / early 2025?)
 - Precursor to CodeStudy. Shows progression.
 - [NEEDS INFO] exact dates
 
-**PSSST CSS / Design Systems** (ongoing) — WEIGHT 2
+**PSSST CSS / Design Systems** (ongoing)
 - Design systems methodology, Figma work, PSSST CSS framework
-- Bumps to 3 when rework is ready
+- Moves up to must-have when rework is ready
 
-**PE Self-Paced Transition** (2024) — WEIGHT 2
+**PE Self-Paced Transition** (2024)
 - Major pivot from cohort-based to self-paced
 - Business model + product redesign
 
-### Weight 1 (fills out timeline later)
+### Fills out the timeline later
 
-**Conspire** (dates?) — WEIGHT 1. No name publicly.
-**Echo Park Laundry** (2018) — WEIGHT 1. Fun personality piece.
-**Fundamonium** (2011-2013) — WEIGHT 1. Cam & Benny, Murder Doll House, Time No Place, Jamie Palumbo. HAVE screenshots.
-**Holloys** (~2009-2011) — WEIGHT 1. Band, posters, logos, websites.
-**Pizzaiolo** (2005-2009) — WEIGHT 1. Service design origin story.
-**CCA / BFA** (graduated 2005) — WEIGHT 1. Art school roots.
+**Conspire** (dates?). No name publicly.
+**Echo Park Laundry** (2018). Fun personality piece.
+**Fundamonium** (2011-2013). Cam & Benny, Murder Doll House, Time No Place, Jamie Palumbo. HAVE screenshots.
+**Holloys** (~2009-2011). Band, posters, logos, websites.
+**Pizzaiolo** (2005-2009). Service design origin story.
+**CCA / BFA** (graduated 2005). Art school roots.
 
 ---
 
 ## Artifact hunt checklist
 
-### Weight 3 entries (immediate)
+### Must-have entries (immediate)
 - [ ] Screenshot PE CodeStudy
 - [ ] Gather World IA Day LA photos, program, attendance
 - [ ] Gather List at Ease designs/flows (HIGH PRIORITY)
@@ -556,12 +556,12 @@ With `?target=gofundme`, weight-3 entries get a tailored paragraph connecting to
 - [ ] Crowdfunding competitor artifacts from Nouveau (if any exist)
 - [ ] Office hours: have the Reddit link, maybe a screenshot of the post
 
-### Weight 2 entries (next wave)
+### Next-wave entries
 - [ ] PE Syntax Highlighting v2 screenshots
 - [ ] PSSST CSS / Figma design system captures (when rework is ready)
 - [ ] PE Self-Paced Transition before/after
 
-### Weight 1 entries (future)
+### Later entries (future)
 - [ ] Fundamonium projects (HAVE some screenshots already)
 - [ ] Holloys band photos, posters, logos, websites
 - [ ] Ask friend for CCA senior show photos
