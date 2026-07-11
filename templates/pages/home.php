@@ -16,14 +16,7 @@ $milestones = array_filter($all_milestones, function ($m) use ($filter_tag) {
 });
 
 // A ?target=companyname loads tailored notes for specific milestones.
-$target = null;
-if (isset($_GET['target'])) {
-	$target_slug = preg_replace('/[^a-z0-9-]/', '', strtolower($_GET['target']));
-	if ($target_slug !== '') {
-		$candidate = load_json('targets/' . $target_slug . '.json');
-		if (!empty($candidate)) $target = $candidate;
-	}
-}
+$target = isset($_GET['target']) ? load_target($_GET['target']) : null;
 $target_notes = $target['milestones'] ?? [];
 ?>
 
@@ -64,6 +57,39 @@ $target_notes = $target['milestones'] ?? [];
 			<p class='target-note'>
 				<?= $target['hero'] ?>
 			</p>
+
+			<?php
+				/* Application documents for this target. Drop the PDFs into
+				   content/targets/<slug>/ and each link appears on its own;
+				   a file that isn't there just doesn't render. */
+				$documents = [
+					'cover-letter.pdf' => 'Cover letter',
+					'resume.pdf' => 'Résumé',
+					'questions.pdf' => 'Additional questions',
+				];
+
+				$document_links = [];
+
+				foreach ($documents as $file => $label) {
+					$web_path = '/content/targets/' . $target['slug'] . '/' . $file;
+
+					if (is_file(SITE_ROOT . $web_path)) {
+						$document_links[$label] = asset($web_path);
+					}
+				}
+			?>
+
+			<?php if ($document_links): ?>
+				<ul class='documents' role='list'>
+
+					<?php foreach ($document_links as $label => $href): ?>
+						<li>
+							<a class='link' href='<?= $href ?>' target='_blank' rel='noopener'><?= $label ?></a>
+						</li>
+					<?php endforeach; ?>
+
+				</ul>
+			<?php endif; ?>
 		<?php endif; ?>
 	</text-content>
 
@@ -84,7 +110,12 @@ $target_notes = $target['milestones'] ?? [];
 
 <ul class='timeline' role='list'>
 	<?php foreach ($milestones as $milestone):
-		$target_note = $target_notes[$milestone['slug']] ?? null;
+		/* A target's entry for a milestone is either a plain note string, or an
+		   object holding a "note" and/or field overrides ("role" swaps the
+		   swappable tail of the title - see templates/milestone.php). */
+		$target_entry = $target_notes[$milestone['slug']] ?? null;
+		$target_note = is_array($target_entry) ? ($target_entry['note'] ?? null) : $target_entry;
+		$target_role = is_array($target_entry) ? ($target_entry['role'] ?? null) : null;
 	?>
 		<li>
 			<?php require TEMPLATES_DIR . '/milestone.php'; ?>

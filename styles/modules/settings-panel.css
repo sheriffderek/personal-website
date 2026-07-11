@@ -8,9 +8,19 @@
    don't leak into the panel chrome. Token names map to the project's
    existing semantic tokens (--fill-primary, --ink-primary, --accent,
    --stroke-secondary) rather than re-introducing --bg/--fg parallel set.
-*/
 
-[data-ui='app'] {
+   Sections follow the DOM, outside in:
+     1. App chrome scope ([data-ui='app'] tokens + .app-data-voice)
+     2. Toolbox primitive (.toolbox-trigger, .toolbox-glyph, .toolbox-panel)
+     3. Menu scrim (.menu-scrim)
+     4. Settings menu (.settings-trigger, .settings-panel rows and pills)
+     5. Slider primitive (.plain-range)
+     6. Timeline filter (.filter-control, .mini-map) */
+
+/* ----------------------------------------------------------------------------
+   1. App chrome scope */
+
+[data-ui="app"] {
 	/* Pin type families inside the panel so the theme switcher doesn't
 	   restyle its own chrome (mono theme would otherwise hit panel labels). */
 	--font-body: var(--font-sans);
@@ -24,9 +34,9 @@
 
 .app-data-voice {
 	margin: 0 0 0.4rem;
-	font-family:    var(--app-data-voice-font-family);
-	font-size:      var(--app-data-voice-font-size);
-	line-height:    var(--app-data-voice-line-height);
+	font-family: var(--app-data-voice-font-family);
+	font-size: var(--app-data-voice-font-size);
+	line-height: var(--app-data-voice-line-height);
 	letter-spacing: var(--app-data-voice-letter-spacing);
 	color: var(--ink-secondary);
 }
@@ -41,6 +51,9 @@
 .toolbox-panel * {
 	touch-action: manipulation;
 }
+
+/* ----------------------------------------------------------------------------
+   2. Toolbox primitive — trigger, glyph, popover panel */
 
 button.toolbox-trigger {
 	all: unset;
@@ -90,9 +103,16 @@ button.toolbox-trigger {
 		rx: var(--glyph-line-radius);
 		x: calc((16px - var(--glyph-line-width)) / 2);
 	}
-	.glyph-line-1 { y: calc(8px - var(--glyph-line-gap) - var(--glyph-line-height) / 2); }
-	.glyph-line-2 { y: calc(8px - var(--glyph-line-height) / 2); }
-	.glyph-line-3 { y: calc(8px + var(--glyph-line-gap) - var(--glyph-line-height) / 2); }
+
+	.glyph-line-1 {
+		y: calc(8px - var(--glyph-line-gap) - var(--glyph-line-height) / 2);
+	}
+	.glyph-line-2 {
+		y: calc(8px - var(--glyph-line-height) / 2);
+	}
+	.glyph-line-3 {
+		y: calc(8px + var(--glyph-line-gap) - var(--glyph-line-height) / 2);
+	}
 }
 
 .toolbox-panel {
@@ -131,29 +151,36 @@ button.toolbox-trigger {
 	border-radius: 8px;
 	box-shadow: var(--panel-shadow, 0 4px 12px rgb(0 0 0 / 0.12));
 
-	font-family:    var(--app-data-voice-font-family);
-	font-size:      var(--app-data-voice-font-size);
-	line-height:    var(--app-data-voice-line-height);
+	font-family: var(--app-data-voice-font-family);
+	font-size: var(--app-data-voice-font-size);
+	line-height: var(--app-data-voice-line-height);
 	letter-spacing: var(--app-data-voice-letter-spacing);
 
 	opacity: 1;
-	transition: opacity 120ms ease, display 120ms allow-discrete;
+	transition:
+		opacity 120ms ease,
+		display 120ms allow-discrete;
 
-	&:not(:popover-open) { opacity: 0; }
-}
+	&:not(:popover-open) {
+		opacity: 0;
+	}
 
-@starting-style {
-	.toolbox-panel:popover-open { opacity: 0; }
-}
+	@starting-style {
+		&:popover-open {
+			opacity: 0;
+		}
+	}
 
-@supports not (anchor-name: --x) {
 	/* Fallback for browsers without anchor positioning: drop the popover
 	   into the viewport's top-right and let the rail's stacking pin it. */
-	.toolbox-panel {
+	@supports not (anchor-name: --x) {
 		top: 4rem;
 		right: 1rem;
 	}
 }
+
+/* ----------------------------------------------------------------------------
+   3. Menu scrim */
 
 /* Small screens: an open menu reads as a modal over live content, so dim the
    page behind it for focus and legibility. Desktop keeps the anchored dropdown
@@ -184,15 +211,13 @@ button.toolbox-trigger {
 	pointer-events: none;
 
 	transition: opacity 150ms ease;
-}
 
-.menu-scrim.is-visible {
-	opacity: 1;
-}
+	&.is-visible {
+		opacity: 1;
+	}
 
-@media (width >= 1024px) {
-	.menu-scrim {
-		/* Desktop shows an anchored dropdown, never a modal dim. */
+	/* Desktop shows an anchored dropdown, never a modal dim. */
+	@media (width >= 1024px) {
 		display: none;
 	}
 }
@@ -207,8 +232,10 @@ button.toolbox-trigger {
 	}
 }
 
-/* Settings-specific: visible chrome on the trigger (project override of the
-   intentionally-minimal toolbox primitive), row spacing, selected state. */
+/* ----------------------------------------------------------------------------
+   4. Settings menu — visible chrome on the trigger (project override of the
+   intentionally-minimal toolbox primitive), row spacing, radio pills */
+
 button.settings-trigger {
 	width: 2.25rem;
 	height: 2.25rem;
@@ -219,57 +246,55 @@ button.settings-trigger {
 }
 
 .settings-panel {
-	> div { margin-bottom: 0.85rem; }
-	> div:last-child { margin-bottom: 0; }
-}
+	display: grid;
+	gap: 1.5rem;
 
-/* Nested type-selectors are written with explicit & for cross-browser
-   reliability — the relaxed-nesting syntax (`button {}` directly inside a
-   parent) shipped late and is silently ignored by some still-current
-   browser versions. */
-/* Radio pills: a radio dot + label. Compact, but still a comfortable tap
-   target. The dot makes the single-select obvious (matching role=radio), so
-   the row no longer needs an inset container. */
-.settings-panel button {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.45rem;
-	padding: 0.4rem 0.65rem;
-	border: 1px solid var(--stroke-primary);
-	background: var(--fill-primary);
-	color: var(--ink-primary);
-	border-radius: 6px;
-	font: inherit;
-	cursor: pointer;
-}
+	/* Radio pills: a radio dot + label. Compact, but still a comfortable tap
+	   target. The dot makes the single-select obvious (matching role=radio), so
+	   the row no longer needs an inset container. */
+	button {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45rem;
+		padding: 0.4rem 0.65rem;
+		border: 1px solid var(--stroke-primary);
+		background: var(--fill-primary);
+		color: var(--ink-primary);
+		border-radius: 6px;
+		font: inherit;
+		cursor: pointer;
 
-.settings-panel button[role='radio']::before {
-	content: '';
-	flex: none;
-	inline-size: 0.85em;
-	block-size: 0.85em;
-	border: 2px solid currentColor;
-	border-radius: 50%;
-}
+		&:focus-visible {
+			outline: 2px solid var(--accent);
+			outline-offset: 2px;
+		}
 
-.settings-panel button:focus-visible {
-	outline: 2px solid var(--accent);
-	outline-offset: 2px;
-}
+		&[aria-checked="true"] {
+			color: var(--fill-primary);
+			background: var(--accent);
+			background: linear-gradient(
+				to bottom,
+				color-mix(in oklch, var(--accent) 80%, white) 0%,
+				var(--accent) 100%
+			);
+			border-color: color-mix(in oklch, var(--accent) 70%, black);
+		}
+	}
 
-.settings-panel button[aria-checked='true'] {
-	color: var(--fill-primary);
-	background: var(--accent);
-	background: linear-gradient(
-		to bottom,
-		color-mix(in oklch, var(--accent) 80%, white) 0%,
-		var(--accent) 100%
-	);
-	border-color: color-mix(in oklch, var(--accent) 70%, black);
-}
+	button[role="radio"] {
+		&::before {
+			content: "";
+			flex: none;
+			inline-size: 0.85em;
+			block-size: 0.85em;
+			border: 2px solid currentColor;
+			border-radius: 50%;
+		}
 
-.settings-panel button[role='radio'][aria-checked='true']::before {
-	background: currentColor;
+		&[aria-checked="true"]::before {
+			background: var(--accent);
+		}
+	}
 }
 
 /* Options sit in a plain wrapping row now that each pill carries its own
@@ -279,6 +304,9 @@ button.settings-trigger {
 	flex-wrap: wrap;
 	gap: 0.4rem;
 }
+
+/* ----------------------------------------------------------------------------
+   5. Slider primitive */
 
 /* Slider — large hit area for fingers, small visible dot inside it.
    Three knobs control the thumb; change them here and both the WebKit and
@@ -323,7 +351,8 @@ button.settings-trigger {
 		background: radial-gradient(
 			circle at center,
 			var(--ink-primary) 0 calc(var(--range-dot) / 2),
-			color-mix(in oklch, var(--ink-primary) 22%, transparent) calc(var(--range-dot) / 2 + 1px) calc(var(--range-halo) / 2),
+			color-mix(in oklch, var(--ink-primary) 22%, transparent)
+				calc(var(--range-dot) / 2 + 1px) calc(var(--range-halo) / 2),
 			transparent calc(var(--range-halo) / 2)
 		);
 	}
@@ -342,35 +371,44 @@ button.settings-trigger {
 		background: radial-gradient(
 			circle at center,
 			var(--ink-primary) 0 calc(var(--range-dot) / 2),
-			color-mix(in oklch, var(--ink-primary) 22%, transparent) calc(var(--range-dot) / 2 + 1px) calc(var(--range-halo) / 2),
+			color-mix(in oklch, var(--ink-primary) 22%, transparent)
+				calc(var(--range-dot) / 2 + 1px) calc(var(--range-halo) / 2),
 			transparent calc(var(--range-halo) / 2)
 		);
 	}
 }
 
-/* Filter body: horizontal slider on top, the timeline map below. */
-.filter-body {
-	display: grid;
-	gap: 8px;
-	margin: 0.5rem 0 0;
-}
+/* ----------------------------------------------------------------------------
+   6. Timeline filter — the label + slider + minimap group (markup in
+   includes/settings/filter-control.php) */
 
-/* The tier's descriptive name, under the slider. Only where there's room:
-   shown from the SAME 1024px breakpoint as the minimap's two-column mode,
-   hidden on the narrow popover where it would wrap. */
-.filter-level-name {
-	display: none;
-	margin: 0;
+.filter-control {
+	.filter-count {
+		color: var(--ink-secondary);
+	}
 
-	/* Subtle support, not real info: smaller than the count label and faded,
-	   so it reads as a quiet aside under the slider rather than a headline. */
-	font-size: calc(var(--app-data-voice-font-size) * 0.85);
-	color: color-mix(in oklch, var(--ink-secondary) 65%, transparent);
-}
+	/* Filter body: horizontal slider on top, the timeline map below. */
+	.filter-body {
+		display: grid;
+		gap: 8px;
+		margin: 0.5rem 0 0;
+	}
 
-@media (width >= 1024px) {
+	/* The tier's descriptive name, under the slider. Only where there's room:
+	   shown from the SAME 1024px breakpoint as the minimap's two-column mode,
+	   hidden on the narrow popover where it would wrap. */
 	.filter-level-name {
-		display: block;
+		display: none;
+		margin: 0;
+
+		/* Subtle support, not real info: smaller than the count label and faded,
+		   so it reads as a quiet aside under the slider rather than a headline. */
+		font-size: calc(var(--app-data-voice-font-size) * 0.85);
+		color: color-mix(in oklch, var(--ink-secondary) 65%, transparent);
+
+		@media (width >= 1024px) {
+			display: block;
+		}
 	}
 }
 
@@ -378,7 +416,9 @@ button.settings-trigger {
    (the milestone list) on phones; on large screens it gains a fake settings
    panel on the right, mirroring the real layout's rail. It flips at the SAME
    1024px breakpoint as the page grid (default-layout.css), so the diagram
-   always matches the layout it depicts - keep the two breakpoints in sync. */
+   always matches the layout it depicts - keep the two breakpoints in sync.
+   Its own root (not nested under .filter-control) to keep the bars within
+   the nesting-depth budget. */
 .mini-map {
 	display: grid;
 	gap: 8px;
@@ -391,17 +431,17 @@ button.settings-trigger {
 		margin: 0;
 		padding: 0;
 		list-style: none;
-	}
 
-	.mini-map-bars li {
-		height: 4px;
-		background: var(--stroke-secondary);
-		border-radius: 1px;
-		transition: background 150ms;
-	}
+		li {
+			height: 4px;
+			background: var(--stroke-secondary);
+			border-radius: 1px;
+			transition: background 0.5s;
 
-	.mini-map-bars li[data-state='in'] {
-		background: var(--ink-secondary);
+			&[data-state="in"] {
+				background: var(--ink-secondary);
+			}
+		}
 	}
 
 	/* The fake panel exists only where the real layout grows its rail. */
@@ -410,22 +450,24 @@ button.settings-trigger {
 		border: 1px solid var(--stroke-secondary);
 		border-radius: 4px;
 	}
-}
 
-@media (width >= 1024px) {
-	.mini-map {
-		grid-template-columns: 1fr auto;
+	@media (width >= 1024px) {
+		grid-template-columns: 2.5fr 1fr;
 		align-items: start;
 		max-width: none;
 
 		.mini-map-panel {
 			display: block;
-			width: 40px;
-			height: 60px;
+			aspect-ratio: 1 / 2;
+		}
+
+		@media (height >= 800px) {
+			.mini-map-bars {
+				gap: 3px;
+				li {
+					height: 6px;
+				}
+			}
 		}
 	}
-}
-
-.filter-count {
-	color: var(--ink-secondary);
 }

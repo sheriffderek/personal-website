@@ -2,5 +2,7 @@
 	"name": "GoFundMe",
 	"hero": "Hello, <strong>GoFundMe</strong>. I built this page to <em>also</em> hold job-specific notes on how each milestone in my career connects to the <a href=\"https://job-boards.greenhouse.io/gofundme/jobs/7398239\">Senior Product Designer</a> role. I'm still adding work examples, so there'll be more here over the next few days.",
 	"now": "TBD: A note for the GoFundMe team about what I'm focused on right now and how it lines up with the Senior Product Designer role on Heart.",
-	"milestones": {}
+	"milestones": {
+		"2026-job-search": { "role": "Senior Product Designer" }
+	}
 }

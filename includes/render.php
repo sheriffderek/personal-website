@@ -6,6 +6,30 @@ function load_json($path) {
 	return json_decode(file_get_contents($full), true) ?? [];
 }
 
+/* The ?target= file. Everything tailored to one company lives in one folder -
+   content/targets/<slug>/ - holding target.json (the words) beside the
+   application PDFs (the files). Scrubbing the slug to a-z 0-9 dash keeps a
+   crafted URL from walking the filesystem. Returns the decoded JSON with the
+   clean slug added under 'slug' (pages need it to build the PDF paths), or
+   null when there's no such target. */
+function load_target($requested) {
+	$slug = preg_replace('/[^a-z0-9-]/', '', strtolower($requested));
+
+	if ($slug === '') {
+		return null;
+	}
+
+	$target = load_json('targets/' . $slug . '/target.json');
+
+	if (empty($target)) {
+		return null;
+	}
+
+	$target['slug'] = $slug;
+
+	return $target;
+}
+
 function load_markdown($path) {
 	$full = CONTENT_DIR . '/' . $path;
 	if (!file_exists($full)) return ['meta' => [], 'body' => ''];

@@ -2,7 +2,7 @@
 name: target-notes
 description: >-
   Write or rebuild the per-company "target notes" for Derek's job sites - the
-  short annotations in content/targets/<company>.json that render under the
+  short annotations in content/targets/<company>/target.json that render under the
   timeline when a visitor hits ?target=<company>. Use this whenever the task is
   matching a specific job posting to Derek's career milestones: "write the
   GoFundMe notes", "connect my work to this role", "rebuild the target notes for
@@ -23,12 +23,25 @@ Derek's personal site is a reverse-chronological timeline of his work. A
 some (not all) of the timeline cards. The notes are the "I read your posting and
 thought about why *this* work is relevant to *you*" layer.
 
-- File: `content/targets/<company>.json`
+- File: `content/targets/<company>/target.json`
 - Keys under `"milestones"` are milestone **slugs** (must match `content/milestones.json`)
 - Values are the note text, rendered as **raw HTML** (`<strong>`, `<a>`, `<em>` all work)
+- A value can also be an **object** instead of a plain string: `{ "note": "...",
+  "role": "..." }`. `role` overrides the swappable tail of that milestone's title
+  - the one current use is `2026-job-search`, where "Now interviewing:" stays put
+  and the role reads as the posting's exact title (`{ "role": "Senior Product
+  Designer" }`). Falls back to the milestone's own `role` in `milestones.json`.
 - A slug with **no** entry gets **no** note - blanks are a feature, see rule 6
 - The milestone card above the note already describes the project. The note does
   NOT re-describe it - it connects it.
+
+**Application documents** ride alongside the JSON, never inside it: a folder
+`content/targets/<company>/` holding `cover-letter.pdf`, `resume.pdf`, and
+`questions.pdf` (fixed names - the map in `templates/pages/home.php` is the
+one list). Each file that exists gets linked below the hero automatically; a missing
+file just doesn't render, so there is nothing to configure per target. Only
+exported, public-safe PDFs go here - the markdown sources stay in
+`resume-exploration/<company>/`.
 
 The source of truth for what actually happened in each milestone is
 `resume-exploration/source-materials/dereks-history.md` (and the descriptions in
@@ -173,7 +186,7 @@ scannable.
    of them, or does the set sound finished and expert-on-everything? Rebalance.
 
 7. **Get Derek's verdict before writing JSON.** Show the grid and the drafts.
-   Write only the notes he approves into `content/targets/<company>.json`. He is
+   Write only the notes he approves into `content/targets/<company>/target.json`. He is
    the source of truth on voice - do not batch-commit unapproved copy.
 
 ## Per-note quality test
@@ -197,7 +210,7 @@ scannable.
 ## Calibration example
 
 The approved GoFundMe set (once locked) lives in
-`content/targets/gofundme.json` and is the reference for tone. Read it before
+`content/targets/gofundme/target.json` and is the reference for tone. Read it before
 writing notes for a new company - it's the clearest picture of "right" for this
 site. The recipe this skill grew from is `target-notes-recipe.md` in the repo
 root (kept as historical origin; this SKILL.md is now canonical).

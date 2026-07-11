@@ -9,8 +9,17 @@
 	<div class='setup'>
 		<p class='year high-voice'><?= $milestone['date'] ?></p>
 
+		<?php
+			/* The optional swappable tail of the title. The one current use:
+			   "Now interviewing:" stays put while WHAT is being interviewed for
+			   adapts per visitor - the target file's "role" override wins, the
+			   milestone's own "role" is the fallback, most milestones have
+			   neither. Set in home.php's loop from the ?target= file. */
+			$role = $target_role ?? ($milestone['role'] ?? '');
+		?>
+
 		<h2 class='heading attention-voice'>
-			<a href='#<?= $milestone['slug'] ?>'><?= $milestone['title'] ?></a>
+			<a href='#<?= $milestone['slug'] ?>'><?= $milestone['title'] ?><?= $role !== '' ? ' ' . $role : '' ?></a>
 		</h2>
 	</div>
 

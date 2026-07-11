@@ -31,7 +31,8 @@ p {
 }
 
 .calm-voice,
-p {
+p,
+a.link {
 	font-family: var(--calm-voice-font-family);
 	font-size: var(--calm-voice-font-size);
 	font-weight: var(--calm-voice-font-weight);
@@ -45,10 +46,10 @@ p {
 	}
 }
 
-.calm-voice em,
-p em {
+:is(p, .calm-voice) em {
 	font-style: var(--calm-voice-em-font-style);
 }
+/* ^this is better right? */
 .calm-voice strong,
 p strong {
 	font-weight: var(--calm-voice-strong-font-weight);

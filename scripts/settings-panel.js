@@ -85,14 +85,14 @@
 	   no such block falls back to its own top. */
 	function anchorPoint(section) {
 		if (section.matches('.page-header')) {
-			/* The header pins its intro paragraph today. When the welcome video is
+			/* The header pins the top of its h1. When the welcome video is
 			   live (<figure class='welcome-video'>, gated by TOUR_ENABLED in
 			   config.php - see templates/pages/home.php), the anchor should pin
 			   THAT instead: it sits above the intro and, being a fixed-ratio video,
 			   is theme-stable like a milestone's media. So prefer it here -
-			   `section.querySelector('.welcome-video, p')` - and it wins whenever
-			   it's rendered, falling through to the paragraph when the tour is off. */
-			return section.querySelector('p') || section;
+			   `section.querySelector('.welcome-video, h1')` - and it wins whenever
+			   it's rendered, falling through to the h1 when the tour is off. */
+			return section.querySelector('h1') || section;
 		}
 
 		return section.querySelector('.media, .info') || section;
@@ -439,7 +439,11 @@
 		}
 	}
 
-	if (entries.length) applyFilter(initialFilter);
+	/* persist: false - this is restoring (or hash-widening) a view, not the
+	   reader choosing one. Without it, following a #milestone link SAVED the
+	   widened tier as if it were a preference, and every later visit came
+	   back at that spot. Only a real slider input persists. */
+	if (entries.length) applyFilter(initialFilter, { persist: false });
 
 	if (hashTarget) {
 		/* Park the revealed card (scroll-margin-top keeps the heading off the

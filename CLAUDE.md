@@ -22,7 +22,7 @@ Three layers, top to bottom:
 
 Always update layer 1 first. Layers 2 and 3 pull from it.
 
-The per-company `?target=` notes (`content/targets/<company>.json`) have their own skill: `.claude/skills/target-notes/`. It auto-triggers when you're matching a posting to milestones; it's the source of truth for voice, the growth-mindset spine, and the coverage-grid process. (`target-notes-recipe.md` in the root is its historical origin, superseded by the skill.)
+The per-company `?target=` notes (`content/targets/<company>/target.json`) have their own skill: `.claude/skills/target-notes/`. It auto-triggers when you're matching a posting to milestones; it's the source of truth for voice, the growth-mindset spine, and the coverage-grid process. (`target-notes-recipe.md` in the root is its historical origin, superseded by the skill.)
 
 ## Current status
 
@@ -32,7 +32,7 @@ Round 1 target: GoFundMe Senior Product Designer application. Five entries neede
 
 - 16:9 poster cards for each entry
 - Entries can be: static image, slider (3-5 slides), or short local video (under 1 min)
-- `?target=companyname` inserts tailored paragraphs connecting work to that company's needs
+- `?target=companyname` inserts tailored paragraphs connecting work to that company's needs, and auto-links any application PDFs dropped in `content/targets/<company>/` (`cover-letter.pdf` / `resume.pdf` / `questions.pdf` - fixed names, presence = rendered; details in the target-notes skill)
 - Weighted timeline (filter slider reveals more/fewer entries) and theme switcher (type patterns, font pairs, color) - both built; see the Timeline weights and Theme system sections below
 - Videos are local files, not YouTube/Vimeo embeds
 - Video behavior: muted, playsinline, autoplay on scroll into view (IntersectionObserver), loop. Always have a poster frame fallback. Use preload="none" on off-screen videos.
