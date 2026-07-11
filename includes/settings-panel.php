@@ -50,7 +50,11 @@
 	aria-label='Display settings'
 >
 	<?= partial('settings/mode-switcher') ?>
-	<?= partial('settings/theme-switcher') ?>
+	<?= partial('settings/brand-switcher') ?>
+	<?= partial('settings/emphasis-switcher') ?>
+	<?php if (GRID_VIEW_ENABLED): ?>
+		<?= partial('settings/view-switcher') ?>
+	<?php endif; ?>
 	<?= partial('settings/sound-switcher') ?>
 	<?php if (!empty($page_controls)): ?>
 		<?= partial('settings/' . $page_controls) ?>

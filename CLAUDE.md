@@ -22,6 +22,8 @@ Three layers, top to bottom:
 
 Always update layer 1 first. Layers 2 and 3 pull from it.
 
+**Private `backstory` field (working layer).** Each milestone in `content/milestones.json` may carry a `backstory` key - loose, unpolished "what really happened" notes synthesized from the resume-exploration source docs, used for *our* thinking (especially the target-notes win-gate). It is **never client-facing**: the template ignores unknown keys, AND `content/*.json` is walled off from direct HTTP fetch in both `.htaccess` and `.claude/router.php` - **do not remove that block; it is the privacy guarantee.** The field is derived and lossy - resume-exploration stays canonical. Where the source is thin or conflicts with the public card, the backstory says so (the gap is the useful signal). Rolled out on a few milestones first (`list-at-ease`, `better-life`, `aicad-2024`) as a pilot.
+
 The per-company `?target=` notes (`content/targets/<company>/target.json`) have their own skill: `.claude/skills/target-notes/`. It auto-triggers when you're matching a posting to milestones; it's the source of truth for voice, the growth-mindset spine, and the coverage-grid process. (`target-notes-recipe.md` in the root is its historical origin, superseded by the skill.)
 
 ## Current status
@@ -189,28 +191,36 @@ Locked-in markup pattern (same in the home page-header `templates/pages/home.php
 
 The theming behavior is a load-bearing artifact of this site — it's part of the design-system-mastery demo, not just a nicety. Decisions below are pinned; don't re-litigate without a reason.
 
+**The model (decided 2026-07-11): two orthogonal axes replace the old bundled themes.** Brand carries type + corners + rhythm ("who this surface is"); emphasis carries color only ("what mood it's in"). Any brand works under any emphasis under either scheme, because components only ever read the semantic slots. The four brands are *surfaces of one organization* — Personal (this site as itself, the default), Marketing (brochure-facing), Product (the app), Documentation (technical) — which is the pitch: one design system serving a company's real surfaces. The old `data-theme` bundles (`serif | mono | display`) are retired; their palettes live on as emphases (warm/cool/neutral).
+
 **Attribute axes (each lives at a specific level, do not confuse):**
-- `data-theme` on `<html>` — personality bundle (`default | serif | mono | display`). Always set, including `'default'`.
+- `data-brand` on `<html>` — structure: type pair, `--corners`, scale ratio, voice weights (`personal | marketing | product | documentation`). Absent = personal (`:root` IS the personal brand).
+- `data-emphasis` on `<html>` — color palette only (`default | warm | cool | neutral`). Absent = default.
 - `data-scheme` on `<html>` — `system | light | dark`. Absent = system (reads `prefers-color-scheme`).
+- `data-view` on `<html>` — `grid` when the grid view is applied; absent = list. See the Grid view section below.
 - `data-sound` on `<html>` — audio-feedback toggle.
 - `data-flavor` on `<article class='milestone'>` — per-poster color variant (`warm | cool | stone | night | moss | rose`).
 - `data-ui='app'` on the settings panel container — chrome-stays-stable scope.
 
-**Where tokens live.** `styles/settings.css` — every theme/scheme block declares the FULL semantic token set directly (`--fill-primary`, `--ink-primary`, `--stroke-primary`, `--accent`, `--font-heading`, `--font-body`, etc.). No `--t-*` indirection layer. No derived `--ui-*` color-mix. Direct assignment per theme.
+**A brand block never touches color; an emphasis block never touches type or shape.** That one-way split is what makes the axes composable — a `color:` in a brand block or a `--font-*` in an emphasis block is wrong by definition.
 
-**Why direct restatement.** We tried the `--t-*-light` / `--t-*-dark` intermediate layer. It caused inheritance mysteries in top-layer popovers and a "not defined" tooltip on `--stroke-primary` that took hours to unwind. Simpler wins. The tradeoff (adding a new token = editing 8 blocks) is accepted for now. When shape/depth/motion tokens land, split into orthogonal layer files (`settings/colors.css`, `settings/shape.css`, etc.) — don't reintroduce indirection.
+**Font pairings are placeholders** until the Figma audition locks them (Personal = Quicksand/Spline Sans is the current live look; Marketing = Poppins/General Sans, Product = Switzer/Switzer, Documentation = Menlo are working stand-ins). Swap families in the brand blocks in `styles/settings.css`; the render-blocking primary pair `<link>` in `includes/header.php` must stay matched to the Personal pair. After locking, trim the unused audition families from the async font `<link>`.
 
-**Panel chrome invariance (`[data-ui='app']` contract).** The panel must NOT restyle while the user is changing themes. Currently only `--font-body` and `--font-heading` are pinned to sans inside the scope. That's intentional-for-now. The moment themes carry `--radius-md` or `--shadow-md`, add matching `--app-radius` / `--app-shadow` invariants — otherwise the panel will morph mid-interaction.
+**Corners.** `--corners` is brand-owned (declared per brand in settings.css) and consumed by the milestone media frame (`milestone.css`, `var(--corners, 0)`). The settings panel keeps literal radii on purpose, so brand-switching never morphs the panel.
 
-**Flavors are per-theme, not global.** Only the default theme currently defines flavor variants (nested under `[data-theme='default']` in settings.css). Other themes get their own flavor palette IF a flavor suits them. Missing flavor under a theme = milestone renders with the theme's base fill/ink (`milestone.css` fallback). That silent fallback is a known regression risk (see queued item #2 below).
+**Where tokens live.** `styles/settings.css` — every emphasis/scheme block declares the FULL color token set directly (`--fill-primary`, `--ink-primary`, `--stroke-primary`, `--accent`). No `--t-*` indirection layer. No derived `--ui-*` color-mix. Direct assignment per block.
 
-**FOUC pattern.** Inline `<script>` in `<head>` at [includes/header.php](includes/header.php) reads localStorage keys (`theme-preference`, `scheme-preference`, `sound-preference`) and sets `<html>` attrs BEFORE stylesheets load. Adding a new persisted axis = adding a line here AND a `SWITCHERS` entry in [scripts/settings-panel.js](scripts/settings-panel.js) — the two lists can drift silently.
+**Why direct restatement.** We tried the `--t-*-light` / `--t-*-dark` intermediate layer. It caused inheritance mysteries in top-layer popovers and a "not defined" tooltip on `--stroke-primary` that took hours to unwind. Simpler wins. The tradeoff (adding a new color token = editing every emphasis×scheme block) is accepted.
+
+**Panel chrome invariance (`[data-ui='app']` contract).** The panel must NOT restyle while the user is changing brands/emphases. `--font-body` and `--font-heading` are pinned to sans inside the scope; radii are literal (above). If brands ever carry shadow/depth tokens, add matching `--app-*` invariants first.
+
+**Flavors are global baselines** (top level in settings.css, done 2026-07-11 — this was queued item "move flavors to :root"). A brand or emphasis block may override a flavor if its palette wants a different take.
+
+**FOUC pattern.** Inline `<script>` in `<head>` at [includes/header.php](includes/header.php) reads localStorage keys (`brand-preference`, `emphasis-preference`, `scheme-preference`, `sound-preference`, `view-preference` when the grid flag is on) and sets `<html>` attrs BEFORE stylesheets load. Adding a new persisted axis = adding a line there AND its wiring in [scripts/settings-panel.js](scripts/settings-panel.js) (the `BRANDS`/`EMPHASES` arrays, a `SWITCHERS` entry, or the view section) — the lists can drift silently. The brand/emphasis value lists live in three places that must agree: the FOUC script, the JS arrays, and the sliders' `max` in `includes/settings/{brand,emphasis}-switcher.php`.
 
 **Queued structural improvements** (in priority order — none urgent):
-1. Add `--app-stroke` / `--app-radius` / `--app-shadow` invariants inside `[data-ui='app']` before themes carry shape/depth. Three lines, pre-emptive.
-2. Move flavor baselines to `:root` so themes optionally *override* rather than being the only source. Fixes silent-flatten regression.
-3. Split settings.css into orthogonal token layers when the next non-color axis lands.
-4. Pull FOUC restoration list into one PHP-side config that both the inline script and JS SWITCHERS read from.
+1. Split settings.css into orthogonal token layer files (`settings/brands.css`, `settings/emphasis.css`, …) now that the axes exist — file split only, no indirection.
+2. Pull the FOUC restoration list into one PHP-side config that both the inline script and the JS read from.
 
 ## Timeline weights (locked-in rules)
 
@@ -246,9 +256,23 @@ The label above the slider reads `Filter: <count> / <total>` (`data-filter-count
 
 The failure mode to avoid: it renders as full-width, blown-out bars instead of a small faithful diagram. If you see that, the `max-width` / two-column rules got lost - restore them, don't delete the map.
 
-## Fonts (Fontshare)
+In **grid view** the minimap keeps its contract by changing shape with the page: the fake panel becomes a thin strip on TOP (the inline settings bar) and the bars become a grid of 16:9 cells matching the real column count — both read `--grid-columns`, so they can't drift.
 
-Type comes from [Fontshare](https://www.fontshare.com) via its CSS API. The families feed the three stacks in `styles/font-scales.css` (`--font-sans` / `--font-serif` / `--font-mono`), which the theme bundles in `settings.css` pair into `--font-heading` / `--font-body`. So swapping a family is a one-line token edit and every theme re-pairs. **Fontshare has no monospace** — `--font-mono` stays system (`Menlo`).
+## Grid view (built 2026-07-11, behind a kill switch)
+
+List view is the argument (a readable spine); grid view is the evidence (the wall of work at a glance). It's an experiment — **`GRID_VIEW_ENABLED` in `includes/config.php` is the one-line kill switch**: off = the toggle never renders, `styles/layouts/grid-view.css` never loads, the FOUC script never sets `data-view`, and the site is exactly the single-column list (same "no weight when off" contract as the tour).
+
+**The rules:**
+- Grid exists only at **≥ 1600px**. Below that the toggle hides and everyone gets the list — a phone gridding into one column would just be a worse list. A saved grid preference persists but applies only where the grid exists (`data-view='grid'` on `<html>` reflects the APPLIED state, not the preference; the media-query gate lives in the FOUC script, `GRID_MIN` in settings-panel.js, and grid-view.css — keep the three matched).
+- **Columns**: 2 from 1600px, 3 from 1900px, via the shared `--grid-columns` token in grid-view.css (the minimap reads the same token).
+- **Cells are compact**: date + title + media only (`.info` hidden). The description is list-view reading; the wall shows artifacts.
+- **Motion stands down in the grid**: `autoplay()` in `includes/footer.php` returns early under `data-view='grid'`, so loops never autoplay there (scroll, settle, and hover all route through it). A pressed `play` still works — that's a visitor's choice.
+- **The settings panel leaves its popover** and sits inline at the top of the page, at regular scroll (no sticky — at these widths the controls and the first grid rows share the viewport, so the playground moment needs no following chrome). Mechanism: the JS removes/restores the `popover` attribute; all visual rules live in grid-view.css. The trigger button hides.
+- **A milestone title click in the grid lands in LIST view**, scrolled to that milestone — as a navigation aid, not a preference change (`persist: false`, so a saved grid choice survives for the next visit). One reading surface; the grid is for surveying.
+
+**Wiring:** toggle partial `includes/settings/view-switcher.php` (flag-gated in settings-panel.php) · view section + `applyView` in `scripts/settings-panel.js` · layout in `styles/layouts/grid-view.css` (flag-gated `<link>` in header.php) · storage key `view-preference`.
+
+Type comes from [Fontshare](https://www.fontshare.com) via its CSS API. The audition stacks live in `styles/font-scales.css` (`--font-sans` / `--font-serif` / `--font-mono`); the brand blocks in `settings.css` pair families into `--font-heading` / `--font-body` (mostly by direct name now). So swapping a family is a one-line token edit and the brand re-pairs. **Fontshare has no monospace** — `--font-mono` stays system (`Menlo`).
 
 **Where the real code lives** (don't duplicate it — edit it):
 - Loading: `includes/header.php` `<head>` — preconnect + the two `<link>`s + the full family URL.
@@ -263,7 +287,7 @@ Type comes from [Fontshare](https://www.fontshare.com) via its CSS API. The fami
 **Loading strategy** (decided 2026-07-06): the **primary pair** loads as a normal render-blocking `<link>` (stable first paint); **every other family** loads non-blocking via `media='print' onload="this.media='all'"` with a `<noscript>` fallback, so alternate-theme/audition fonts don't hold up render. To add a family: append `&f[]=<slug>@1` to the async `<link>` **and** its `<noscript>` copy, then reference `'Family Name'` in a token.
 
 **Open decisions / deferred:**
-- The **default theme is chosen last**, after each theme's CSS pairing is worked out. `Boska` (display/heading) / `General Sans` (body) is a working placeholder in the default slot until then. **Pair convention: heading = the display font (the left name in a Fontshare pair), body = the reading font (right).**
+- **Brand pairings are being auditioned in Figma** (2026-07-11); the blocks in settings.css carry working placeholders until then. **Pair convention: heading = the display font (the left name in a Fontshare pair), body = the reading font (right).** Once locked, trim the unused families from the async `<link>` (and its `<noscript>` copy).
 - `font-size-adjust: from-font` (anti-CLS on font swap) is **deferred** until the pairings are locked — it rescales metrics, so not worth churning mid-audition.
 - **Self-host the woff2 before final launch** — the CDN `<link>` is fine for auditioning, but there's no reason to ship a personal site with a third-party font dependency.
 

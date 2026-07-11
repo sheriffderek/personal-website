@@ -1,0 +1,145 @@
+/* Grid view - the "wall of work" layout axis (data-view='grid' on <html>).
+   Loaded only when GRID_VIEW_ENABLED (config.php); the toggle lives in
+   includes/settings/view-switcher.php and the wiring in settings-panel.js.
+
+   The whole file is gated to >= 1600px: below that the grid doesn't exist and
+   everyone gets the list, so a phone can never render a one-column "grid"
+   that's just a worse list. Keep the 1600 here, in the FOUC script
+   (includes/header.php), and in GRID_MIN (settings-panel.js) in sync.
+
+   List view is the argument (a readable spine); grid view is the evidence
+   (fifteen years of artifacts at a glance). So grid cells are compact -
+   date + title + media only, no description - and motion stands down: loops
+   don't autoplay in the grid (the guard is in includes/footer.php), stills
+   carry the wall.
+
+   In grid view the settings panel leaves its popover and sits inline at the
+   top of the page, at regular scroll - at these widths the controls and the
+   first grid rows share the viewport, so the playground moment (drag a
+   slider, watch the wall respond) needs no sticky chrome. The JS swaps the
+   popover attribute; everything visual lives here. */
+
+/* Column count is one shared token so the minimap's schematic can mirror the
+   real grid without hand-syncing. Two comfortable columns from 1600, three
+   on genuinely big monitors. */
+@media (width >= 1600px) {
+	:root {
+		--grid-columns: 2;
+	}
+}
+
+@media (width >= 1900px) {
+	:root {
+		--grid-columns: 3;
+	}
+}
+
+/* The toggle only shows where choosing it can do something. */
+.view-switcher {
+	display: none;
+
+	@media (width >= 1600px) {
+		display: block;
+	}
+}
+
+@media (width >= 1600px) {
+	[data-view="grid"] {
+		/* --- Page shell: rail becomes a top bar, main goes full width. --- */
+
+		.page-wrapper {
+			display: block;
+		}
+
+		.page-rail {
+			position: static;
+			display: block;
+			padding: var(--gutter);
+		}
+
+		/* The panel is inline now - its trigger has nothing to do. */
+		.settings-trigger {
+			display: none;
+		}
+
+		/* The panel as a top bar: settings-panel.js removes the popover
+		   attribute in grid view, making it a plain always-visible div. The
+		   popover styling in settings-panel.css still applies (same class), so
+		   un-anchor it, let it fill the bar, and flow the rows horizontally.
+		   opacity must be forced: a non-popover never matches :popover-open,
+		   so the panel's `&:not(:popover-open) { opacity: 0 }` would hide it. */
+		.toolbox-panel {
+			position: static;
+			inset: auto;
+			opacity: 1;
+			width: auto;
+			min-width: 0;
+			max-width: none;
+			max-height: none;
+			margin: 0;
+		}
+
+		.settings-panel {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: start;
+			gap: 1.5rem 3rem;
+		}
+
+		/* The filter (slider + minimap) is the widest row - give it room. */
+		.settings-panel .filter-control {
+			flex: 1 1 320px;
+			max-width: 440px;
+		}
+
+		main {
+			padding-top: 1rem;
+		}
+
+		/* --- The wall itself. --- */
+
+		[role="list"].timeline {
+			grid-template-columns: repeat(var(--grid-columns), 1fr);
+			gap: 4rem 2rem;
+		}
+
+		.milestone {
+			/* Cells fill their column instead of the list's reading measure. */
+			max-width: none;
+
+			/* Compact card state: date + title + media. The description and
+			   read-more are list-view reading; the wall shows artifacts. */
+			.info {
+				display: none;
+			}
+		}
+
+		/* --- Minimap: the faithful schematic follows the layout it depicts
+		   (same contract as its 1024px two-column flip): panel strip on top,
+		   then a grid of cells matching the real column count. --- */
+
+		.mini-map {
+			grid-template-columns: 1fr;
+			max-width: 160px;
+		}
+
+		.mini-map .mini-map-panel {
+			display: block;
+			order: -1;
+			aspect-ratio: auto;
+			height: 10px;
+		}
+
+		/* Cells, not bars - but still diagram-scale (the list mode's bars are
+		   4px tall; these stay in that register, just wider than tall so the
+		   grid reads as a grid without the schematic towering over the bar). */
+		.mini-map .mini-map-bars {
+			grid-template-columns: repeat(var(--grid-columns), 1fr);
+			gap: 3px;
+
+			li {
+				height: 9px;
+			}
+		}
+	}
+}

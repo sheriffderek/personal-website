@@ -4,7 +4,7 @@
    Native HTML popover handles open/close, Esc, and light-dismiss.
    CSS anchor positioning pins the panel to the trigger — no JS measurement.
 
-   Chrome lives inside [data-ui='app'] so the theme bundle's font families
+   Chrome lives inside [data-ui='app'] so a brand's font families
    don't leak into the panel chrome. Token names map to the project's
    existing semantic tokens (--fill-primary, --ink-primary, --accent,
    --stroke-secondary) rather than re-introducing --bg/--fg parallel set.
@@ -21,8 +21,9 @@
    1. App chrome scope */
 
 [data-ui="app"] {
-	/* Pin type families inside the panel so the theme switcher doesn't
-	   restyle its own chrome (mono theme would otherwise hit panel labels). */
+	/* Pin type families inside the panel so the brand switcher doesn't
+	   restyle its own chrome (the Documentation brand's mono would otherwise
+	   hit panel labels). */
 	--font-body: var(--font-sans);
 	--font-heading: var(--font-sans);
 

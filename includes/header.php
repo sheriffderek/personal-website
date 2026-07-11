@@ -40,12 +40,27 @@
 				var scheme = localStorage.getItem('scheme-preference');
 				if (scheme && scheme !== 'system') html.setAttribute('data-scheme', scheme);
 
-				var theme = localStorage.getItem('theme-preference') || 'default';
-				html.setAttribute('data-theme', theme);
+				/* Brand (type + corners) and emphasis (color) are separate axes.
+				   Absent attribute = the default (Personal / Default palette), so
+				   only a non-default saved choice gets written. Unknown values
+				   (e.g. a stale 'theme-preference'-era slug) are ignored. Keep
+				   these lists matched to BRANDS / EMPHASES in settings-panel.js. */
+				var brand = localStorage.getItem('brand-preference');
+				if (['marketing', 'product', 'documentation'].indexOf(brand) !== -1) html.setAttribute('data-brand', brand);
+
+				var emphasis = localStorage.getItem('emphasis-preference');
+				if (['warm', 'cool', 'neutral'].indexOf(emphasis) !== -1) html.setAttribute('data-emphasis', emphasis);
+
+				<?php if (GRID_VIEW_ENABLED): ?>
+					/* Grid only exists from 1600px (the breakpoint in
+					   styles/layouts/grid-view.css - keep the two matched); below
+					   it the preference waits, unapplied, and settings-panel.js
+					   re-checks on resize. */
+					var view = localStorage.getItem('view-preference');
+					if (view === 'grid' && window.matchMedia('(min-width: 1600px)').matches) html.setAttribute('data-view', 'grid');
+				<?php endif; ?>
 			} catch (error) {
-				/* private-mode storage throw — still set the default so
-				   theme-scoped selectors (like flavor variants) match. */
-				html.setAttribute('data-theme', 'default');
+				/* private-mode storage throw — the defaults need no attributes. */
 			}
 		})();
 	</script>
@@ -77,6 +92,13 @@
 	<?php /* The tour experiment ships dark: its stylesheet AND scripts only load
 		when the flag is on, honoring the "no weight when off" contract in
 		config.php (which is why welcome-video.css is not in components.css). */ ?>
+	<?php /* Grid view ships behind its flag with the same "no weight when off"
+		contract as the tour: the stylesheet only loads (and the toggle only
+		renders, see settings-panel.php) when the flag is on. */ ?>
+	<?php if (GRID_VIEW_ENABLED): ?>
+		<link rel='stylesheet' href='<?= asset('/styles/layouts/grid-view.css') ?>'>
+	<?php endif; ?>
+
 	<?php if (TOUR_ENABLED): ?>
 		<link rel='stylesheet' href='<?= asset('/styles/components/welcome-video.css') ?>'>
 		<script src='<?= asset('/scripts/welcome-video.js') ?>' defer></script>

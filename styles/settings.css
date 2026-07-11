@@ -1,10 +1,35 @@
-/* Theme tokens - the full brand API in one place (color + type).
-   :root is the default brand. [data-theme='X'] re-brands. [data-scheme='dark']
-   (and prefers-color-scheme: dark) overrides colors again.
-   Colors: every theme block restates the FULL set - no chaining, no var-of-var
-   (the top-layer inheritance bug in the house notes forced this).
-   Type: defaults live here in :root; a theme overrides only the deltas it needs
-   and the rest falls through (safe - type has no such inheritance pathology). */
+/* Theme tokens - the full design-system API in one place, split into two
+   orthogonal axes (plus the scheme):
+
+     BRAND    [data-brand]    - the structural personality: type pair, corner
+                                radius, scale rhythm. Who this surface is.
+                                :root is the default brand (Personal); a
+                                [data-brand='X'] block re-brands. Absent
+                                attribute = Personal.
+     EMPHASIS [data-emphasis] - the paint: a full color palette repainted onto
+                                the same semantic slots. What mood it's in.
+                                :root is the default palette; a
+                                [data-emphasis='X'] block re-paints.
+     SCHEME   [data-scheme]   - system | light | dark. Absent = system.
+
+   Any brand works under any emphasis under either scheme, because components
+   only ever read the semantic slots (--fill-*, --ink-*, --stroke-*, --accent,
+   --corners, the voice tokens) - never a brand or palette directly.
+
+   Colors: every emphasis block restates the FULL set - no chaining, no
+   var-of-var (the top-layer inheritance bug in the house notes forced this).
+   Type/shape: defaults live in :root; a brand overrides only the deltas it
+   needs and the rest falls through (safe - no such inheritance pathology).
+
+   The four brands are surfaces of one organization - the design-system pitch:
+     Personal      (:root)  - Derek's own defaults; this site as itself.
+     Marketing     - the brochure-facing surface: big rounded display type,
+                     soft corners, dramatic scale.
+     Product       - the app surface: one neutral workhorse family, tight
+                     scale, small corners, denser rhythm.
+     Documentation - the technical surface: mono, hard corners, calm.
+   Font pairings are working placeholders until the Figma audition locks them -
+   swap a family here and the whole brand re-pairs. */
 
 :root {
 	--fill-primary: white;
@@ -22,26 +47,31 @@
 	--accent: var(--color-blue-900);
 	--link-color: var(--accent);
 	/* Underline color, independent of the link text. Defaults to the link color
-	   (tracks per theme since it reads --link-color); change this one line to
+	   (tracks per emphasis since it reads --link-color); change this one line to
 	   any token for a differently-colored underline. */
 	--link-underline-color: var(--link-color);
 	/* we also need the distance from the line/link here too, right? */
 
-	/* Scrim behind the mobile menu. Scheme-dependent only (not per theme),
-	   so it's set at the scheme level and not restated in each theme block. */
+	/* Scrim behind the mobile menu. Scheme-dependent only (not per emphasis),
+	   so it's set at the scheme level and not restated in each palette block. */
 	--scrim: rgb(0 0 0 / 0.15);
 
 	/* Pair convention: heading = the display font (left), body = the reading
-	   font (right). Default pair: Quicksand SemiBold / Spline Sans. Both are
+	   font (right). Personal pair: Quicksand SemiBold / Spline Sans. Both are
 	   sans, so they're named directly rather than routed through the
 	   sans/serif audition stacks. --font-heading-weight carries the "SemiBold". */
 	--font-heading: "Quicksand", system-ui, sans-serif;
 	--font-body: "Spline Sans", system-ui, sans-serif;
 	--font-heading-weight: 600;
 
-	/* Font role aliases: UI chrome + code. Scheme/theme-invariant by default. */
+	/* Font role aliases: UI chrome + code. Scheme/brand-invariant by default. */
 	--font-ui: var(--font-sans);
 	--font-code: var(--font-mono);
+
+	/* Corner radius for the milestone media frames (consumed in milestone.css).
+	   Each brand states its own corner personality; the panel chrome keeps its
+	   own literal radii on purpose, so brand-switching never morphs the panel. */
+	--corners: 0;
 
 	/* Modular scale - base size + step contrast (the ladder is in
 	   font-scales.css). Each brand owns its rhythm; bigger ratio = more
@@ -52,7 +82,7 @@
 	--scale-ratio: 1.25;
 
 	/* Type patterns - every voice's every font property, the default brand.
-	   A [data-theme] block below overrides any of these to re-brand; the voice
+	   A [data-brand] block below overrides any of these to re-brand; the voice
 	   classes in typography.css read these tokens only, never a raw value.
 	   Off-step weights (330, 530) are variable-font fine-tuning. */
 
@@ -110,41 +140,107 @@
 	--high-voice-text-transform: uppercase;
 }
 
-[data-theme="default"] {
-	/* we need this -- so, we can nest these: */
+/* ----------------------------------------------------------------------------
+   Flavors - the per-milestone poster palette (data-flavor on the article).
+   Global baseline: every brand and emphasis inherits these; a brand or
+   emphasis block may override a flavor if its palette wants a different take. */
 
-	[data-flavor="warm"] {
-		--poster-fill: var(--color-amber-100);
-		--poster-ink: var(--color-orange-900);
-	}
-
-	[data-flavor="cool"] {
-		--poster-fill: var(--color-sky-100);
-		--poster-ink: var(--color-blue-900);
-	}
-
-	[data-flavor="stone"] {
-		--poster-fill: #c9c9be;
-		--poster-ink: var(--color-stone-900);
-	}
-
-	[data-flavor="night"] {
-		--poster-fill: var(--color-stone-900);
-		--poster-ink: var(--color-amber-200);
-	}
-
-	[data-flavor="moss"] {
-		--poster-fill: var(--color-green-100);
-		--poster-ink: var(--color-green-900);
-	}
-
-	[data-flavor="rose"] {
-		--poster-fill: var(--color-red-100);
-		--poster-ink: var(--color-red-900);
-	}
+[data-flavor="warm"] {
+	--poster-fill: var(--color-amber-100);
+	--poster-ink: var(--color-orange-900);
 }
 
-[data-theme="serif"] {
+[data-flavor="cool"] {
+	--poster-fill: var(--color-sky-100);
+	--poster-ink: var(--color-blue-900);
+}
+
+[data-flavor="stone"] {
+	--poster-fill: #c9c9be;
+	--poster-ink: var(--color-stone-900);
+}
+
+[data-flavor="night"] {
+	--poster-fill: var(--color-stone-900);
+	--poster-ink: var(--color-amber-200);
+}
+
+[data-flavor="moss"] {
+	--poster-fill: var(--color-green-100);
+	--poster-ink: var(--color-green-900);
+}
+
+[data-flavor="rose"] {
+	--poster-fill: var(--color-red-100);
+	--poster-ink: var(--color-red-900);
+}
+
+/* ----------------------------------------------------------------------------
+   BRANDS - type + corners + rhythm only. Never color: the same brand must
+   work under every emphasis, so color stays the emphasis axis's job. */
+
+[data-brand="marketing"] {
+	/* Brochure-facing: big friendly display headings, soft corners, a
+	   dramatic scale so headings tower over the copy. */
+	--font-heading: "Poppins", system-ui, sans-serif;
+	--font-body: "General Sans", system-ui, sans-serif;
+
+	--corners: 24px;
+
+	--scale-ratio: 1.414;
+	--font-heading-weight: 700;
+	--calm-voice-font-weight: 400;
+	--calm-voice-line-height: 1.6;
+	--strong-voice-font-weight: 600;
+	--attention-voice-font-weight: 700;
+	--attention-voice-line-height: 1.05;
+	--loud-voice-font-weight: 700;
+	--loud-voice-line-height: 1;
+}
+
+[data-brand="product"] {
+	/* The app surface: one neutral workhorse family doing both jobs, tight
+	   near-uniform scale, small corners - calm, dense, UI-shaped. */
+	--font-heading: "Switzer", system-ui, sans-serif;
+	--font-body: "Switzer", system-ui, sans-serif;
+
+	--corners: 6px;
+
+	--scale-ratio: 1.2;
+	--font-heading-weight: 600;
+	--calm-voice-font-weight: 380;
+	--calm-voice-line-height: 1.55;
+	--strong-voice-font-weight: 600;
+	--attention-voice-font-weight: 600;
+	--loud-voice-font-weight: 600;
+}
+
+[data-brand="documentation"] {
+	/* The technical surface: mono throughout, hard corners. Menlo ships fixed
+	   400/700 only - no in-between weights. Body at 400, headings and emphasis
+	   at 700; a tight, near-uniform scale for a calm, technical feel; a touch
+	   more leading for wide glyphs. */
+	--font-heading: var(--font-mono);
+	--font-body: var(--font-mono);
+
+	--corners: 0;
+
+	--scale-ratio: 1.2;
+	--font-heading-weight: 700;
+	--calm-voice-font-weight: 400;
+	--calm-voice-line-height: 1.6;
+	--strong-voice-font-weight: 700;
+	--attention-voice-font-weight: 700;
+	--loud-voice-font-weight: 700;
+}
+
+/* ----------------------------------------------------------------------------
+   EMPHASIS - color palettes only. Never type or shape: the same palette must
+   work under every brand. Light values here; dark counterparts below with the
+   scheme blocks. Palette lineage: Warm and Cool and Neutral carry forward the
+   palettes the retired serif/display/mono theme bundles proved out. */
+
+[data-emphasis="warm"] {
 	--fill-primary: var(--color-taupe-50);
 	--fill-secondary: var(--color-taupe-100);
 	--fill-auxiliary: var(--color-taupe-200);
@@ -158,53 +254,9 @@
 	--stroke-auxiliary: var(--color-taupe-200);
 
 	--accent: var(--color-amber-700);
-
-	--font-heading: var(--font-serif);
-	--font-body: var(--font-serif);
-
-	/* Boska is a high-contrast display serif: body wants more weight and
-	   leading than the sans default; headings stay elegant and light, with a
-	   wider scale for editorial contrast. */
-	--scale-ratio: 1.333;
-	--font-heading-weight: 500;
-	--calm-voice-font-weight: 400;
-	--calm-voice-line-height: 1.6;
-	--strong-voice-font-weight: 500;
-	--attention-voice-font-weight: 500;
-	--loud-voice-font-weight: 400;
 }
 
-[data-theme="mono"] {
-	--fill-primary: var(--color-neutral-50);
-	--fill-secondary: var(--color-neutral-100);
-	--fill-auxiliary: var(--color-neutral-200);
-
-	--ink-primary: var(--color-neutral-900);
-	--ink-secondary: var(--color-neutral-600);
-	--ink-auxiliary: var(--color-neutral-500);
-
-	--stroke-primary: var(--color-neutral-400);
-	--stroke-secondary: var(--color-neutral-300);
-	--stroke-auxiliary: var(--color-neutral-200);
-
-	--accent: var(--color-neutral-700);
-
-	--font-heading: var(--font-mono);
-	--font-body: var(--font-mono);
-
-	/* Menlo ships fixed 400/700 only - no in-between weights. Body at 400,
-	   headings and emphasis at 700; a tight, near-uniform scale for a calm,
-	   technical feel; a touch more leading for wide glyphs. */
-	--scale-ratio: 1.2;
-	--font-heading-weight: 700;
-	--calm-voice-font-weight: 400;
-	--calm-voice-line-height: 1.6;
-	--strong-voice-font-weight: 700;
-	--attention-voice-font-weight: 700;
-	--loud-voice-font-weight: 700;
-}
-
-[data-theme="display"] {
+[data-emphasis="cool"] {
 	--fill-primary: var(--color-slate-50);
 	--fill-secondary: var(--color-slate-100);
 	--fill-auxiliary: var(--color-slate-200);
@@ -218,22 +270,22 @@
 	--stroke-auxiliary: var(--color-slate-200);
 
 	--accent: var(--color-violet-600);
+}
 
-	--font-heading: var(--font-sans);
-	--font-body: var(--font-serif);
+[data-emphasis="neutral"] {
+	--fill-primary: var(--color-neutral-50);
+	--fill-secondary: var(--color-neutral-100);
+	--fill-auxiliary: var(--color-neutral-200);
 
-	/* Punchy sans headings over a Boska serif body: headings go heavy and
-	   tight, the serif body reads at 400, on a dramatic scale so headings
-	   tower over the copy. */
-	--scale-ratio: 1.414;
-	--font-heading-weight: 700;
-	--calm-voice-font-weight: 400;
-	--calm-voice-line-height: 1.6;
-	--strong-voice-font-weight: 600;
-	--attention-voice-font-weight: 700;
-	--attention-voice-line-height: 1.05;
-	--loud-voice-font-weight: 700;
-	--loud-voice-line-height: 1;
+	--ink-primary: var(--color-neutral-900);
+	--ink-secondary: var(--color-neutral-600);
+	--ink-auxiliary: var(--color-neutral-500);
+
+	--stroke-primary: var(--color-neutral-400);
+	--stroke-secondary: var(--color-neutral-300);
+	--stroke-auxiliary: var(--color-neutral-200);
+
+	--accent: var(--color-neutral-700);
 }
 
 html {
@@ -257,7 +309,7 @@ html {
 		--accent: var(--color-blue-300);
 		--scrim: rgb(0 0 0 / 0.45);
 	}
-	[data-theme="serif"]:not([data-scheme="light"]) {
+	[data-emphasis="warm"]:not([data-scheme="light"]) {
 		--fill-primary: var(--color-taupe-900);
 		--fill-secondary: var(--color-taupe-800);
 		--fill-auxiliary: var(--color-taupe-700);
@@ -269,19 +321,7 @@ html {
 		--stroke-auxiliary: var(--color-taupe-800);
 		--accent: var(--color-amber-300);
 	}
-	[data-theme="mono"]:not([data-scheme="light"]) {
-		--fill-primary: var(--color-neutral-900);
-		--fill-secondary: var(--color-neutral-800);
-		--fill-auxiliary: var(--color-neutral-700);
-		--ink-primary: var(--color-neutral-50);
-		--ink-secondary: var(--color-neutral-300);
-		--ink-auxiliary: var(--color-neutral-400);
-		--stroke-primary: var(--color-neutral-600);
-		--stroke-secondary: var(--color-neutral-700);
-		--stroke-auxiliary: var(--color-neutral-800);
-		--accent: var(--color-neutral-300);
-	}
-	[data-theme="display"]:not([data-scheme="light"]) {
+	[data-emphasis="cool"]:not([data-scheme="light"]) {
 		--fill-primary: var(--color-slate-900);
 		--fill-secondary: var(--color-slate-800);
 		--fill-auxiliary: var(--color-slate-700);
@@ -292,6 +332,18 @@ html {
 		--stroke-secondary: var(--color-slate-700);
 		--stroke-auxiliary: var(--color-slate-800);
 		--accent: var(--color-violet-300);
+	}
+	[data-emphasis="neutral"]:not([data-scheme="light"]) {
+		--fill-primary: var(--color-neutral-900);
+		--fill-secondary: var(--color-neutral-800);
+		--fill-auxiliary: var(--color-neutral-700);
+		--ink-primary: var(--color-neutral-50);
+		--ink-secondary: var(--color-neutral-300);
+		--ink-auxiliary: var(--color-neutral-400);
+		--stroke-primary: var(--color-neutral-600);
+		--stroke-secondary: var(--color-neutral-700);
+		--stroke-auxiliary: var(--color-neutral-800);
+		--accent: var(--color-neutral-300);
 	}
 }
 
@@ -309,7 +361,7 @@ html {
 	--scrim: rgb(0 0 0 / 0.45);
 }
 
-[data-theme="serif"][data-scheme="dark"] {
+[data-emphasis="warm"][data-scheme="dark"] {
 	--fill-primary: var(--color-taupe-900);
 	--fill-secondary: var(--color-taupe-800);
 	--fill-auxiliary: var(--color-taupe-700);
@@ -322,20 +374,7 @@ html {
 	--accent: var(--color-amber-300);
 }
 
-[data-theme="mono"][data-scheme="dark"] {
-	--fill-primary: var(--color-neutral-900);
-	--fill-secondary: var(--color-neutral-800);
-	--fill-auxiliary: var(--color-neutral-700);
-	--ink-primary: var(--color-neutral-50);
-	--ink-secondary: var(--color-neutral-300);
-	--ink-auxiliary: var(--color-neutral-400);
-	--stroke-primary: var(--color-neutral-600);
-	--stroke-secondary: var(--color-neutral-700);
-	--stroke-auxiliary: var(--color-neutral-800);
-	--accent: var(--color-neutral-300);
-}
-
-[data-theme="display"][data-scheme="dark"] {
+[data-emphasis="cool"][data-scheme="dark"] {
 	--fill-primary: var(--color-slate-900);
 	--fill-secondary: var(--color-slate-800);
 	--fill-auxiliary: var(--color-slate-700);
@@ -346,4 +385,17 @@ html {
 	--stroke-secondary: var(--color-slate-700);
 	--stroke-auxiliary: var(--color-slate-800);
 	--accent: var(--color-violet-300);
+}
+
+[data-emphasis="neutral"][data-scheme="dark"] {
+	--fill-primary: var(--color-neutral-900);
+	--fill-secondary: var(--color-neutral-800);
+	--fill-auxiliary: var(--color-neutral-700);
+	--ink-primary: var(--color-neutral-50);
+	--ink-secondary: var(--color-neutral-300);
+	--ink-auxiliary: var(--color-neutral-400);
+	--stroke-primary: var(--color-neutral-600);
+	--stroke-secondary: var(--color-neutral-700);
+	--stroke-auxiliary: var(--color-neutral-800);
+	--accent: var(--color-neutral-300);
 }

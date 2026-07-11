@@ -80,10 +80,17 @@
 			}
 		},
 
-		theme: {
+		brand: {
 			def: 0,
 			apply: function (value) {
-				settings.applyTheme(value, { persist: false });
+				settings.applyBrand(value, { persist: false });
+			}
+		},
+
+		emphasis: {
+			def: 0,
+			apply: function (value) {
+				settings.applyEmphasis(value, { persist: false });
 			}
 		},
 
@@ -103,11 +110,13 @@
 	};
 
 	/* --- Author these against the finished video. Placeholder timings. -----
-	   theme values are slider indices (0 default, 1 serif, 2 mono, 3 display);
-	   filter values are tiers shown (1 Top ... 6 All); times are seconds. */
+	   brand/emphasis values are slider indices (brand: 0 personal, 1 marketing,
+	   2 product, 3 documentation; emphasis: 0 default, 1 warm, 2 cool,
+	   3 neutral); filter values are tiers shown (1 Top ... 6 All); times are
+	   seconds. */
 	var spans = [
 		{ channel: 'menu',   value: 'open', from: 3,  to: 15 },
-		{ channel: 'theme',  value: 1,      from: 5,  to: 10 },
+		{ channel: 'brand',  value: 1,      from: 5,  to: 10 },
 		{ channel: 'filter', value: 4,      from: 8,  to: 13 },
 		{ channel: 'scheme', value: 'dark', from: 11, to: 15 }
 	];

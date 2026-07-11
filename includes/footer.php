@@ -58,6 +58,10 @@
 			// away from a running 'play'. Loops autoplay through here, while the
 			// play/pause button calls play() directly and always wins.
 			function autoplay(video) {
+				// Grid view is a wall of stills - ambient motion stands down there
+				// entirely (scroll, settle, and hover all route through here).
+				// A 'play' the visitor presses still works; that's a choice.
+				if (document.documentElement.getAttribute('data-view') === 'grid') return;
 				if (current && !current.paused && isPlayVideo(current)) return;
 				play(video);
 			}

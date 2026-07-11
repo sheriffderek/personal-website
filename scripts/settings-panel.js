@@ -235,49 +235,87 @@
 		});
 	});
 
-	/* Theme — slider (not buttons). Index maps to theme slug.
-	   data-theme is ALWAYS set on <html>, including data-theme='default',
-	   so that selectors like [data-theme='default'] [data-flavor='X']
-	   can target the right combinations. We still skip writing the storage
-	   key for the default so first-load defaults stay clean. */
-	var THEMES      = ['default', 'serif', 'mono', 'display'];
-	var THEME_NAMES = ['Default', 'Serif',  'Mono', 'Display'];
-	var themeSlider = document.querySelector('[data-set-theme-slider]');
-	var themeName   = document.querySelector('[data-theme-name]');
+	/* Brand + emphasis — the two design-system axes, each a slider (not
+	   buttons). Index maps to a slug. The first slug is the default: it means
+	   "no attribute on <html>" (the :root block in settings.css IS the
+	   default), and no storage key is written for it so first-load defaults
+	   stay clean. Both sliders share one wiring, so they can't drift apart.
 
-	function applyTheme(idx, opts) {
-		var clamped = Math.max(0, Math.min(THEMES.length - 1, idx));
-		var theme = THEMES[clamped];
-		html.setAttribute('data-theme', theme);
-		if (shouldPersist(opts)) {
-			try {
-				if (theme === 'default') {
-					localStorage.removeItem('theme-preference');
-				} else {
-					localStorage.setItem('theme-preference', theme);
-				}
-			} catch (error) {}
-		}
-		if (themeName) themeName.textContent = THEME_NAMES[clamped];
-		if (themeSlider) themeSlider.value = String(clamped);
-	}
+	     Brand    (data-brand)    - type pair, corners, scale rhythm.
+	     Emphasis (data-emphasis) - color palette only.
 
-	if (themeSlider) {
-		var saved = null;
-		try { saved = localStorage.getItem('theme-preference'); } catch (error) {}
-		var initialIdx = saved ? THEMES.indexOf(saved) : 0;
-		if (initialIdx < 0) initialIdx = 0;
-		applyTheme(initialIdx);
-		themeSlider.addEventListener('input', function () {
-			syncScroll(function () {
-				applyTheme(parseInt(themeSlider.value, 10) || 0);
-			});
-			if (window.ui && window.ui.sound) {
-				var t = parseFloat(themeSlider.value) / (THEMES.length - 1);
-				window.ui.sound('tick', t);
+	   A brand swap changes the type scale, so both go through syncScroll to
+	   hold the reader's place through the reflow (color-only emphasis swaps
+	   don't strictly need it, but the shared path keeps the story simple). */
+	function sliderSwitcher(cfg) {
+		var slider = document.querySelector('[data-set-' + cfg.kind + '-slider]');
+		var nameEl = document.querySelector('[data-' + cfg.kind + '-name]');
+
+		function apply(idx, opts) {
+			var clamped = Math.max(0, Math.min(cfg.values.length - 1, idx));
+			var value = cfg.values[clamped];
+			if (value === cfg.values[0]) {
+				html.removeAttribute(cfg.attr);
+			} else {
+				html.setAttribute(cfg.attr, value);
 			}
-		});
+			if (shouldPersist(opts)) {
+				try {
+					if (value === cfg.values[0]) {
+						localStorage.removeItem(cfg.storageKey);
+					} else {
+						localStorage.setItem(cfg.storageKey, value);
+					}
+				} catch (error) {}
+			}
+			if (nameEl) nameEl.textContent = cfg.names[clamped];
+			if (slider) slider.value = String(clamped);
+		}
+
+		applyByKind[cfg.kind] = apply;
+
+		if (slider) {
+			var saved = null;
+			try { saved = localStorage.getItem(cfg.storageKey); } catch (error) {}
+			var initialIdx = saved ? cfg.values.indexOf(saved) : 0;
+			if (initialIdx < 0) initialIdx = 0;
+			apply(initialIdx, { persist: false });
+			slider.addEventListener('input', function () {
+				syncScroll(function () {
+					apply(parseInt(slider.value, 10) || 0);
+				});
+				if (window.ui && window.ui.sound) {
+					var t = parseFloat(slider.value) / (cfg.values.length - 1);
+					window.ui.sound('tick', t);
+				}
+			});
+		}
+
+		return apply;
 	}
+
+	/* Keep these lists matched to the FOUC script in includes/header.php and
+	   the sliders' max in includes/settings/{brand,emphasis}-switcher.php. */
+	var BRANDS         = ['personal', 'marketing', 'product', 'documentation'];
+	var BRAND_NAMES    = ['Personal', 'Marketing', 'Product', 'Documentation'];
+	var EMPHASES       = ['default', 'warm', 'cool', 'neutral'];
+	var EMPHASIS_NAMES = ['Default', 'Warm', 'Cool', 'Neutral'];
+
+	var applyBrand = sliderSwitcher({
+		kind: 'brand',
+		attr: 'data-brand',
+		storageKey: 'brand-preference',
+		values: BRANDS,
+		names: BRAND_NAMES
+	});
+
+	var applyEmphasis = sliderSwitcher({
+		kind: 'emphasis',
+		attr: 'data-emphasis',
+		storageKey: 'emphasis-preference',
+		values: EMPHASES,
+		names: EMPHASIS_NAMES
+	});
 
 	/* Timeline filter — slider sets number of weight tiers shown, cumulative.
 	   1 = weight-1 entries only (the gap-covered product-design pitch),
@@ -467,6 +505,149 @@
 		});
 	}
 
+	/* View - List or Grid (the wall of work). Rendered only when
+	   GRID_VIEW_ENABLED (config.php); when the flag is off the buttons don't
+	   exist and this whole section stands down.
+
+	   It looks like the SWITCHERS radios above but earns its own wiring for
+	   two reasons: the saved PREFERENCE and the APPLIED state differ (grid
+	   only exists from 1600px - below that a saved grid choice waits,
+	   unapplied, for the next big screen), and applying it swaps real chrome
+	   (the settings panel leaves its popover and sits inline at the top of
+	   the page). Keep GRID_MIN matched to the breakpoint in
+	   styles/layouts/grid-view.css and the FOUC script in header.php. */
+	var viewButtons = document.querySelectorAll('[data-set-view]');
+	var GRID_MIN = window.matchMedia('(min-width: 1600px)');
+	var currentView = 'list';
+
+	function applyView(value, opts) {
+		currentView = value;
+
+		var applied = value === 'grid' && GRID_MIN.matches ? 'grid' : 'list';
+
+		if (applied === 'grid') {
+			html.setAttribute('data-view', 'grid');
+		} else {
+			html.removeAttribute('data-view');
+		}
+
+		/* The panel is a popover in list view, a plain inline top bar in grid
+		   view. Removing the attribute is what makes it a normal, always-
+		   visible div; grid-view.css handles everything visual. */
+		var panel = document.getElementById('menu-settings');
+		if (panel) {
+			if (applied === 'grid') {
+				panel.removeAttribute('popover');
+			} else if (!panel.hasAttribute('popover')) {
+				panel.setAttribute('popover', '');
+			}
+		}
+
+		if (shouldPersist(opts)) {
+			try {
+				if (value === 'list') {
+					localStorage.removeItem('view-preference');
+				} else {
+					localStorage.setItem('view-preference', value);
+				}
+			} catch (error) {}
+		}
+
+		viewButtons.forEach(function (button) {
+			var isSelected = button.getAttribute('data-set-view') === value;
+			button.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+			button.setAttribute('tabindex', isSelected ? '0' : '-1');
+		});
+
+		/* The columns change every carousel's width, so Flickity must
+		   re-measure; a synthetic scroll re-runs the loop autoplay checks in
+		   footer.php against the new layout (they stand down in grid view). */
+		entries.forEach(function (li) {
+			if (li.style.display !== 'none') ensureCarousels(li);
+		});
+		window.dispatchEvent(new Event('scroll'));
+	}
+
+	if (viewButtons.length) {
+		applyByKind.view = applyView;
+
+		var savedView = null;
+		try { savedView = localStorage.getItem('view-preference'); } catch (error) {}
+		applyView(savedView === 'grid' ? 'grid' : 'list', { persist: false });
+
+		/* Same radiogroup keyboard pattern as the SWITCHERS above: one tab
+		   stop (the checked radio, via the roving tabindex in applyView),
+		   arrow keys move between the options. */
+		/* A deliberate view switch scrolls to the top: the two layouts share no
+		   scroll geometry (the wall is a fraction of the list's height), so
+		   "where I was" means nothing across the change - and in grid view the
+		   top is where the control bar lives. Only real clicks scroll; the
+		   resize/media-query re-applies above never move the reader. */
+		viewButtons.forEach(function (button, index) {
+			button.addEventListener('click', function () {
+				applyView(button.getAttribute('data-set-view'));
+				window.scrollTo(0, 0);
+			});
+
+			button.addEventListener('keydown', function (event) {
+				var step = 0;
+				if (event.key === 'ArrowRight' || event.key === 'ArrowDown') step = 1;
+				if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') step = -1;
+				if (!step) return;
+
+				event.preventDefault();
+				var next = viewButtons[(index + step + viewButtons.length) % viewButtons.length];
+				applyView(next.getAttribute('data-set-view'));
+				next.focus();
+			});
+		});
+
+		/* Crossing 1600px re-resolves the same preference: a saved grid choice
+		   engages on growing past it and falls back to list on shrinking. The
+		   debounced resize listener covers environments where the media-query
+		   change event doesn't fire; re-applying an unchanged state is a no-op
+		   visually, so the redundancy is harmless. */
+		GRID_MIN.addEventListener('change', function () {
+			applyView(currentView, { persist: false });
+		});
+
+		var viewResizeTimer = null;
+		window.addEventListener('resize', function () {
+			if (viewResizeTimer) clearTimeout(viewResizeTimer);
+			viewResizeTimer = setTimeout(function () {
+				applyView(currentView, { persist: false });
+			}, 150);
+		});
+
+		/* In the grid, a milestone title click is "let me read this one" - so
+		   it lands in LIST view, scrolled to that milestone, instead of
+		   hash-jumping around the wall. */
+		document.addEventListener('click', function (event) {
+			if (!html.hasAttribute('data-view')) return;
+
+			var link = event.target.closest('.milestone .heading a');
+			if (!link) return;
+
+			event.preventDefault();
+
+			/* persist: false - this is a navigation aid ("let me read this
+			   one"), not the reader choosing list. Their saved grid choice
+			   survives for the next visit; only the toggle changes a
+			   preference. */
+			applyView('list', { persist: false });
+
+			/* Put the milestone in the URL (shareable, like any title click),
+			   then scroll to it ourselves - a hash assignment alone is a no-op
+			   when that hash was already set, so the explicit scroll is what
+			   guarantees the landing. Layout is already the list's: setting
+			   styles is synchronous, and the scroll forces the reflow. */
+			var hash = link.getAttribute('href');
+			var target = document.getElementById(hash.slice(1));
+			window.location.hash = hash;
+			if (target) target.scrollIntoView();
+		});
+	}
+
 	/* Outside-tap dismiss, for BOTH menus (Settings + Pages). Native popover
 	   light-dismiss is unreliable on iOS Safari (a styled ::backdrop swallows
 	   the tap, and support only landed in 18.3), so we close it ourselves.
@@ -585,14 +766,20 @@
 	   there - any real choice the visitor made mid-tour DID persist, so it
 	   survives; only the tour's own persist:false changes get undone. */
 	function restore() {
-		var savedTheme = null;
+		var savedBrand = null;
+		var savedEmphasis = null;
 		var savedFilter = null;
-		try { savedTheme = localStorage.getItem('theme-preference'); } catch (error) {}
+		try { savedBrand = localStorage.getItem('brand-preference'); } catch (error) {}
+		try { savedEmphasis = localStorage.getItem('emphasis-preference'); } catch (error) {}
 		try { savedFilter = localStorage.getItem('filter-preference'); } catch (error) {}
 
-		var themeIdx = savedTheme ? THEMES.indexOf(savedTheme) : 0;
-		if (themeIdx < 0) themeIdx = 0;
-		applyTheme(themeIdx, { persist: false });
+		var brandIdx = savedBrand ? BRANDS.indexOf(savedBrand) : 0;
+		if (brandIdx < 0) brandIdx = 0;
+		applyBrand(brandIdx, { persist: false });
+
+		var emphasisIdx = savedEmphasis ? EMPHASES.indexOf(savedEmphasis) : 0;
+		if (emphasisIdx < 0) emphasisIdx = 0;
+		applyEmphasis(emphasisIdx, { persist: false });
 
 		SWITCHERS.forEach(function (cfg) {
 			var apply = applyByKind[cfg.kind];
@@ -607,10 +794,17 @@
 			if (isNaN(tiers) || tiers < 1 || tiers > MAX_WEIGHT) tiers = FILTER_DEFAULT;
 			applyFilter(tiers, { persist: false });
 		}
+
+		if (viewButtons.length) {
+			var savedView = null;
+			try { savedView = localStorage.getItem('view-preference'); } catch (error) {}
+			applyView(savedView === 'grid' ? 'grid' : 'list', { persist: false });
+		}
 	}
 
 	window.settings = {
-		applyTheme: applyTheme,
+		applyBrand: applyBrand,
+		applyEmphasis: applyEmphasis,
 		applyFilter: applyFilter,
 		set: function (kind, value, opts) {
 			if (applyByKind[kind]) applyByKind[kind](value, opts);

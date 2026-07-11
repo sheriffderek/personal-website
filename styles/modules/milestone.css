@@ -11,7 +11,6 @@
 	--line-width-primary: 10;
 	--line-width-secondary: 5;
 
-	--corners: 0;
 	--border-width: 1px;
 
 	/* The media frame's shape. Every slide fills this, so height never jumps
@@ -46,7 +45,9 @@
 	.media {
 		margin: 0;
 		border: var(--border-width) solid var(--ink-secondary);
-		border-radius: var(--corners);
+		/* --corners is brand-owned (settings.css): each brand states its corner
+		   personality and every media frame follows. */
+		border-radius: var(--corners, 0);
 		overflow: clip;
 
 		/* Every media shape is built from .slide, so single posters and carousel

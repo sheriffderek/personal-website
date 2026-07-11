@@ -29,3 +29,11 @@ define('SITE_SHARE_IMAGE', '/default-meta.jpg');
    choreography that drives the page from it (scripts/welcome-video.js +
    choreo.js + tour.js). Work in progress - off for now, flip to true to resume. */
 define('TOUR_ENABLED', false);
+
+/* GRID_VIEW_ENABLED - the List/Grid view axis: on big screens (>= 1600px) a
+   Grid option turns the timeline into a multi-column wall of work, with the
+   settings panel inline at the top of the page. Off = the toggle never
+   renders, the grid stylesheet never loads, and the FOUC script never sets
+   data-view - the site is exactly the single-column list. Trying it out -
+   flip to false to pull it. */
+define('GRID_VIEW_ENABLED', true);
