@@ -143,7 +143,20 @@
 /* ----------------------------------------------------------------------------
    Flavors - the per-milestone poster palette (data-flavor on the article).
    Global baseline: every brand and emphasis inherits these; a brand or
-   emphasis block may override a flavor if its palette wants a different take. */
+   emphasis block may override a flavor if its palette wants a different take.
+
+   The bare [data-flavor] block is the safety net - it must come FIRST so the
+   named flavors below beat it by source order (every selector here is one
+   attribute, deliberately equal specificity). It covers data-flavor='default'
+   and any unknown value: those posters paint with the page's own fill/ink.
+   Don't restate these tokens in milestone.css - a same-specificity rule in a
+   later-loading module file would silently flatten every flavor (that
+   regression has happened once already). */
+
+[data-flavor] {
+	--poster-fill: var(--fill-primary);
+	--poster-ink: var(--ink-primary);
+}
 
 [data-flavor="warm"] {
 	--poster-fill: var(--color-amber-100);

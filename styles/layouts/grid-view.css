@@ -110,7 +110,11 @@
 
 		.page-rail {
 			position: absolute;
-			inset-block-start: var(--gutter);
+
+			/* Pinned to the same line the intro starts on (--page-top,
+			   default-layout.css), so intro + controls read as one top
+			   section rather than the panel floating at the viewport edge. */
+			inset-block-start: var(--page-top);
 			inset-inline-end: var(--gutter);
 			z-index: 5;
 			padding: 0;

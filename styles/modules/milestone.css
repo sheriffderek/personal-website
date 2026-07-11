@@ -6,8 +6,9 @@
 }
 
 .milestone {
-	--poster-fill: var(--fill-primary);
-	--poster-ink: var(--ink-primary);
+	/* --poster-fill / --poster-ink come from the flavor blocks in
+	   settings.css (the bare [data-flavor] baseline covers the default) -
+	   never restate them here; see the note there. */
 	--line-width-primary: 10;
 	--line-width-secondary: 5;
 
