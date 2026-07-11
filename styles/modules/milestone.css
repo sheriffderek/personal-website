@@ -80,6 +80,11 @@
 		transition: border-radius 0.2s;
 		overflow: clip;
 
+		/* Fences the media wash (mix-blend on img/video below) inside the
+		   frame, so it resolves against the slide's backdrop and never the
+		   page - same job the isolation on .carousel does for the dots. */
+		isolation: isolate;
+
 		/* Every media shape is built from .slide, so single posters and carousel
 		   slides render identically. Each slide is a locked frame; its one visual
 		   child fills it (cover). Same ratio on every slide = a carousel never
@@ -90,6 +95,9 @@
 			width: 100%;
 			aspect-ratio: var(--media-ratio);
 			overflow: hidden;
+
+			/* The media wash's backdrop (see the blend rule below). */
+			background-color: var(--media-blend-fill, transparent);
 		}
 
 		.slide > img,
@@ -99,6 +107,18 @@
 			width: 100%;
 			height: 100%;
 			object-fit: cover;
+		}
+
+		/* Themable media wash - OFF by default (normal blend over a
+		   transparent backdrop = the photo as shot). An emphasis may opt
+		   real photos/videos into its palette by declaring the pair in
+		   settings.css: --media-blend (the mode) + --media-blend-fill (the
+		   backdrop it resolves against) - e.g. red-light's luminosity over
+		   full red maps brightness to red, iPhone-filter style. The
+		   isolation on .media fences the blend inside the frame. */
+		.slide > img,
+		.slide > video {
+			mix-blend-mode: var(--media-blend, normal);
 		}
 
 		/* Raster media (video/photo) fills via object-fit: cover, but at a
@@ -357,13 +377,16 @@
 		width: var(--dot-hit);
 		height: var(--dot-hit);
 		margin: 0;
-		/* White dot + difference so it inverts against whatever slide is behind
-		   it - it stays visible over a light photo, a dark video, or any flavor's
-		   poster cover, without knowing the backdrop. The .carousel isolates the
-		   blend so it can't punch through the media to the page. */
+		/* Themable dot ink + difference so it inverts against whatever slide
+		   is behind it - visible over a light photo, a dark video, or any
+		   flavor's poster cover, without knowing the backdrop. White by
+		   default; an emphasis may repaint it (red-light sets --dot-ink to
+		   its red, so the inversion stays inside the theme - white there
+		   would flash cyan). The .carousel isolates the blend so it can't
+		   punch through the media to the page. */
 		background: radial-gradient(
 			circle at center,
-			white 0 calc(var(--dot-size) / 2),
+			var(--dot-ink, white) 0 calc(var(--dot-size) / 2),
 			transparent calc(var(--dot-size) / 2)
 		);
 		mix-blend-mode: difference;

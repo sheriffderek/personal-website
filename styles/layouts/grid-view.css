@@ -13,12 +13,12 @@
    stands down: loops don't autoplay in the grid (the guard is in
    includes/footer.php), stills carry the wall.
 
-   In grid view the settings panel leaves its popover and sits as a
-   content-sized card in the page's top-right, at regular scroll, with the
-   intro beside it on the left - so the controls and the first grid rows
-   share the viewport and the playground moment (drag a slider, watch the
-   wall respond) needs no sticky chrome. The JS swaps the popover attribute;
-   everything visual lives here. */
+   In grid view the settings panel leaves its popover and sits UNBOXED on
+   the wall's last lane - same width, same grid line, top shared with the
+   intro in lane one - at regular scroll, so the controls and the first
+   grid rows share the viewport and the playground moment (drag a slider,
+   watch the wall respond) needs no sticky chrome. The JS swaps the popover
+   attribute; everything visual lives here. */
 
 /* The wall's geometry is three shared tokens, so every consumer (lanes,
    intro, minimap) reads the same truth instead of hand-syncing:
@@ -122,10 +122,12 @@ button.grid-invite {
 			position: absolute;
 
 			/* Pinned to the same line the intro starts on (--page-top,
-			   default-layout.css), so intro + controls read as one top
-			   section rather than the panel floating at the viewport edge. */
+			   default-layout.css), and the LEFT edge sits on the wall's last
+			   lane's grid line - the same arithmetic as the wall itself (its
+			   inset start plus the lanes before the last one) - so the
+			   controls are ON the grid, not floating at the viewport edge. */
 			inset-block-start: var(--page-top);
-			inset-inline-end: var(--gutter);
+			inset-inline-start: calc(max(var(--gutter), var(--wall-inset)) + (var(--grid-columns) - 1) * (var(--wall-column) + var(--wall-gap)));
 			z-index: 5;
 			padding: 0;
 			background: none;
@@ -137,30 +139,39 @@ button.grid-invite {
 			display: none;
 		}
 
-		/* The panel card: settings-panel.js removes the popover attribute in
-		   grid view, making it a plain always-visible div. The popover styling
-		   in settings-panel.css still applies (same class), so un-anchor it
-		   and size it to its content. opacity must be forced: a non-popover
-		   never matches :popover-open, so the panel's
+		/* The panel: settings-panel.js removes the popover attribute in grid
+		   view, making it a plain always-visible div. The popover styling in
+		   settings-panel.css still applies (same class), so un-anchor it,
+		   size it to exactly one lane, and UNBOX it - no fill, border, or
+		   shadow; in the grid the controls sit on the page like content, the
+		   lane alignment does the framing. opacity must be forced: a
+		   non-popover never matches :popover-open, so the panel's
 		   `&:not(:popover-open) { opacity: 0 }` would hide it. */
 		.toolbox-panel {
 			position: static;
 			inset: auto;
 			opacity: 1;
-			width: max-content;
+			width: var(--wall-column);
 			min-width: 0;
-			max-width: min(820px, 48vw);
+			max-width: none;
 			max-height: none;
 			margin: 0;
+			padding: 0;
+			background: none;
+			border: 0;
+			border-radius: 0;
+			box-shadow: none;
 		}
 
-		/* Inside the card: the small controls stack in a left column, the
+		/* Inside the panel: the small controls stack in a left column, the
 		   filter (slider + minimap schematic) takes a right column at full
-		   height. The span count = the panel's control rows; a new row in
+		   height. The right column flexes because the panel is now a fixed
+		   lane width - a rigid minmax floor could overflow the lane. The
+		   span count = the panel's control rows; a new row in
 		   settings-panel.php means bumping it. */
 		.settings-panel {
 			display: grid;
-			grid-template-columns: max-content minmax(260px, 340px);
+			grid-template-columns: max-content minmax(0, 1fr);
 			gap: 1.25rem 2.5rem;
 			align-items: start;
 		}
@@ -181,7 +192,7 @@ button.grid-invite {
 		/* The intro reads as lane one: same measure as the wall's columns,
 		   so the top of the page shares the grid's geometry. */
 		.page-header {
-			max-width: var(--wall-column);
+			max-width: 75ch;
 		}
 
 		/* --- The wall itself. Cells keep the full card at column width. ---
@@ -211,12 +222,16 @@ button.grid-invite {
 			   stretching to fill whatever screen this is. */
 			max-width: calc(var(--grid-columns) * var(--wall-column) + (var(--grid-columns) - 1) * var(--wall-gap));
 
-			/* Clearance for the absolute panel card above-right: the first
-			   row must start below it, and the intro alone isn't reliably
-			   taller than the panel (brand scales move both). Heuristic,
-			   sized against the tallest current panel - if the panel grows a
-			   row, re-check this. */
-			margin-top: 10rem;
+			/* Clearance for the absolute panel above-right: the first row
+			   must start below it, and the intro alone isn't reliably
+			   taller than the panel (brand scales move both). HEURISTIC -
+			   the panel is absolute so nothing pushes; this token is sized
+			   against the tallest current panel plus breathing room before
+			   the wall. If the panel grows a row, re-check it. The honest
+			   fix (top section as a real grid row that owns its height) is
+			   sketched in the session notes - do that before this number
+			   bites a third time. */
+			margin-top: var(--wall-clearance, 12rem);
 		}
 
 		/* Packed mode (grid-masonry.js): rows become a 1px ruler for the

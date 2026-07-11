@@ -237,39 +237,16 @@
 	}
 }
 
-/* Red light - one hue, many values. The page goes deep red (recipes with
-   the emphasis blocks below); the posters stay in the red family and vary
-   by value instead of hue, so the wall reads as one room lit one way. */
+/* Red light - the flavors go dark entirely: every poster paints the SAME
+   way, flavored or not. The room is full-on red, so the posters are the
+   near-black pole: black panels with bright red linework glowing in them.
+   The bare [data-flavor] selector already matches every poster, so this
+   one take is the whole story. */
 
 [data-emphasis="red-light"] {
-	[data-flavor="warm"] {
-		--poster-fill: var(--color-red-400);
-		--poster-ink: var(--color-red-950);
-	}
-
-	[data-flavor="cool"] {
-		--poster-fill: var(--color-rose-300);
-		--poster-ink: var(--color-red-950);
-	}
-
-	[data-flavor="stone"] {
-		--poster-fill: var(--color-red-200);
-		--poster-ink: var(--color-red-900);
-	}
-
-	[data-flavor="night"] {
-		--poster-fill: var(--color-red-800);
-		--poster-ink: var(--color-red-200);
-	}
-
-	[data-flavor="moss"] {
-		--poster-fill: var(--color-red-500);
-		--poster-ink: var(--color-red-50);
-	}
-
-	[data-flavor="rose"] {
-		--poster-fill: var(--color-rose-200);
-		--poster-ink: var(--color-rose-900);
+	[data-flavor] {
+		--poster-fill: oklch(20% 0.07 26);
+		--poster-ink: #ff0004;
 	}
 }
 
@@ -359,22 +336,40 @@
 }
 
 [data-emphasis="red-light"] {
-	/* Deep background in BOTH schemes - a red-lit room is dark by nature.
-	   Light scheme is the slightly warmer room; dark goes deeper still. */
-	--fill-primary: var(--color-red-900);
-	--fill-secondary: var(--color-red-950);
-	--fill-auxiliary: var(--color-red-800);
+	/* ONE look in both schemes - the iPhone red-only filter, faithfully:
+	   the filter maps brightness to red, so the white page becomes FULL-ON
+	   red and the dark ink stays near-black. Two poles, nothing in between
+	   but shades of the same red. The scheme toggle changes nothing here
+	   (the dark blocks below restate these exact values purely to out-rank
+	   the generic dark recipes); the near-black is authored oklch since the
+	   scale stops at red-950. The wall is #ff0004 - all the way red, not a
+	   scale stop - with its support fills authored as darker/lighter cuts
+	   of the same red. */
+	--fill-primary: #ff0004;
+	--fill-secondary: #d40003;
+	--fill-auxiliary: #ff3236;
 
-	--ink-primary: var(--color-red-50);
-	--ink-secondary: var(--color-red-200);
-	--ink-auxiliary: var(--color-red-300);
+	--ink-primary: oklch(16% 0.05 26);
+	--ink-secondary: var(--color-red-950);
+	--ink-auxiliary: var(--color-red-900);
 
-	--stroke-primary: var(--color-red-700);
-	--stroke-secondary: var(--color-red-800);
-	--stroke-auxiliary: var(--color-red-800);
+	--stroke-primary: var(--color-red-800);
+	--stroke-secondary: var(--color-red-700);
+	--stroke-auxiliary: var(--color-red-700);
 
-	--accent: var(--color-red-300);
-	--scrim: rgb(0 0 0 / 0.45);
+	--accent: var(--color-red-950);
+	--scrim: rgb(0 0 0 / 0.6);
+
+	/* The media wash (mechanism in milestone.css): real photos/videos render
+	   as luminosity over full red - brightness maps to red, the same math
+	   the iPhone filter does to a photo. And the carousel dots' difference
+	   ink goes red so the inversion stays in-theme (a white dot's difference
+	   against this red flashes cyan). Declared once here - the dark blocks
+	   below don't need to restate them (the generic dark recipes never touch
+	   these tokens, so there's nothing to out-rank). */
+	--media-blend: luminosity;
+	--media-blend-fill: #ff0004;
+	--dot-ink: #ff0004;
 }
 
 html {
@@ -410,17 +405,20 @@ html {
 		--stroke-auxiliary: var(--color-stone-700);
 		--accent: var(--color-stone-400);
 	}
+	/* Red light is ONE look - the room doesn't change with the scheme. This
+	   restates the base recipe only to out-rank the generic dark block above
+	   (which would otherwise win on specificity and repaint the room stone). */
 	[data-emphasis="red-light"]:not([data-scheme="light"]) {
-		--fill-primary: var(--color-red-950);
-		--fill-secondary: var(--color-red-900);
-		--fill-auxiliary: var(--color-red-800);
-		--ink-primary: var(--color-red-100);
-		--ink-secondary: var(--color-red-300);
-		--ink-auxiliary: var(--color-red-400);
+		--fill-primary: #ff0004;
+		--fill-secondary: #d40003;
+		--fill-auxiliary: #ff3236;
+		--ink-primary: oklch(16% 0.05 26);
+		--ink-secondary: var(--color-red-950);
+		--ink-auxiliary: var(--color-red-900);
 		--stroke-primary: var(--color-red-800);
-		--stroke-secondary: var(--color-red-900);
-		--stroke-auxiliary: var(--color-red-900);
-		--accent: var(--color-red-400);
+		--stroke-secondary: var(--color-red-700);
+		--stroke-auxiliary: var(--color-red-700);
+		--accent: var(--color-red-950);
 	}
 }
 
@@ -451,15 +449,17 @@ html {
 	--accent: var(--color-stone-400);
 }
 
+/* Same one-look rule as the prefers-dark counterpart above: restated only
+   to out-rank the generic [data-scheme='dark'] block. */
 [data-emphasis="red-light"][data-scheme="dark"] {
-	--fill-primary: var(--color-red-950);
-	--fill-secondary: var(--color-red-900);
-	--fill-auxiliary: var(--color-red-800);
-	--ink-primary: var(--color-red-100);
-	--ink-secondary: var(--color-red-300);
-	--ink-auxiliary: var(--color-red-400);
+	--fill-primary: #ff0004;
+	--fill-secondary: #d40003;
+	--fill-auxiliary: #ff3236;
+	--ink-primary: oklch(16% 0.05 26);
+	--ink-secondary: var(--color-red-950);
+	--ink-auxiliary: var(--color-red-900);
 	--stroke-primary: var(--color-red-800);
-	--stroke-secondary: var(--color-red-900);
-	--stroke-auxiliary: var(--color-red-900);
-	--accent: var(--color-red-400);
+	--stroke-secondary: var(--color-red-700);
+	--stroke-auxiliary: var(--color-red-700);
+	--accent: var(--color-red-950);
 }

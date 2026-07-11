@@ -13,6 +13,17 @@ label {
 	-webkit-tap-highlight-color: transparent;
 }
 
+/* Selection inverts the scope's own ink and fill, so every emphasis (and
+   any token-repainting scope) gets a matching highlight for free - no
+   per-theme selection colors to maintain. The tokens resolve per element,
+   so text inside a repainted scope inverts THAT scope's pair. The ink is
+   knocked back from full so the page color breathes through the highlight
+   instead of a solid slab. */
+::selection {
+	background-color: color-mix(in oklab, var(--ink-primary) 75%, transparent);
+	color: var(--fill-primary);
+}
+
 a {
 	display: block;
 	text-decoration: none;
