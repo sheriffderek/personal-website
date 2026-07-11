@@ -6,10 +6,10 @@
 
 <?php
 	/* Poster sizes are purpose-made, never derived: the "poster" key is
-	   true for the full 16:9 cover, or a named size ("16x6", "16x3") for a
-	   shorter heading-graphic frame - same poster-shapes tech, authored per
-	   entry in milestones.json. A string value becomes data-poster-size,
-	   which milestone.css maps to the frame ratio. */
+	   true for the full 16:9 cover, or a named size ("large", "medium",
+	   "small") for a heading-graphic frame - same poster-shapes tech,
+	   authored per entry in milestones.json. A string value becomes
+	   data-poster-size, which milestone.css maps to the frame ratio. */
 	$poster_size = is_string($milestone['poster'] ?? null) ? " data-poster-size='" . $milestone['poster'] . "'" : '';
 ?>
 

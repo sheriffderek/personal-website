@@ -25,15 +25,23 @@
 	   data. The poster SVG cover-crops to any frame
 	   (preserveAspectRatio='slice'), so shorter shows a center band, never
 	   a squash. Phones still square everything up below. */
-	/* :where() keeps these at .milestone's own specificity, so the phone
-	   breakpoint's square-up at the end of this file still wins by source
-	   order - a bare attribute selector would outrank it and pin the short
-	   ratio on phones. */
-	&:where([data-poster-size="16x6"]) {
+	/* Specificity is doing design work here, on purpose:
+	   - "large" (the full 16:9, named out loud) sits in :where() so it
+	     stays at .milestone's own weight and the phone square-up at the end
+	     of this file beats it by source order - large covers square up on
+	     phones like every other full cover.
+	   - "medium" and "small" are heading graphics, not covers: their
+	     authored ratio holds on EVERY screen, so they keep their natural
+	     attribute weight, which outranks the phone rule. */
+	&:where([data-poster-size="large"]) {
+		--media-ratio: 16 / 9;
+	}
+
+	&[data-poster-size="medium"] {
 		--media-ratio: 16 / 6;
 	}
 
-	&:where([data-poster-size="16x3"]) {
+	&[data-poster-size="small"] {
 		--media-ratio: 16 / 3;
 	}
 

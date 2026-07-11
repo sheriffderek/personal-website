@@ -64,7 +64,10 @@
    first used it pulses a soft accent halo - "touch me" - then settles into
    a plain toggle. The seen-state class comes from settings-panel.js
    (grid-invite-seen in localStorage). */
-.grid-invite {
+/* button-qualified to tie button.toolbox-trigger's display (settings-panel
+   .css) so this later-loading hide wins - a bare .grid-invite loses on
+   specificity and the invite leaks onto phones. */
+button.grid-invite {
 	display: none;
 }
 
