@@ -10,8 +10,13 @@
 	}
 
 	var observer = new IntersectionObserver(function (entries) {
-		/* sentinel no longer visible = rail is pinned to the top */
-		rail.classList.toggle('is-stuck', !entries[0].isIntersecting);
+		/* sentinel no longer visible = rail is pinned to the top. The
+		   scrollY guard grounds the observer in reality: the sentinel is
+		   zero-height and sits exactly on the viewport's top edge, so a
+		   resize reflow can momentarily report it gone while the page is
+		   still at the top - which flashed the border in and out (the 1s
+		   fade made it linger). You can't be stuck without having scrolled. */
+		rail.classList.toggle('is-stuck', !entries[0].isIntersecting && window.scrollY > 0);
 	});
 
 	observer.observe(sentinel);
