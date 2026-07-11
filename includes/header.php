@@ -51,11 +51,12 @@
 				var emphasis = localStorage.getItem('emphasis-preference');
 				if (['muted', 'focused', 'immersive'].indexOf(emphasis) !== -1) html.setAttribute('data-emphasis', emphasis);
 
-				<?php if (GRID_VIEW_ENABLED): ?>
+				<?php if (GRID_VIEW_ENABLED && ($page_controls ?? null) === 'filter-control'): ?>
 					/* Grid only exists from 1600px (the breakpoint in
 					   styles/layouts/grid-view.css - keep the two matched); below
 					   it the preference waits, unapplied, and settings-panel.js
-					   re-checks on resize. */
+					   re-checks on resize. Gated to the timeline page - a saved
+					   grid preference means nothing anywhere else. */
 					var view = localStorage.getItem('view-preference');
 					if (view === 'grid' && window.matchMedia('(min-width: 1600px)').matches) html.setAttribute('data-view', 'grid');
 				<?php endif; ?>
@@ -97,6 +98,12 @@
 		renders, see settings-panel.php) when the flag is on. */ ?>
 	<?php if (GRID_VIEW_ENABLED): ?>
 		<link rel='stylesheet' href='<?= asset('/styles/layouts/grid-view.css') ?>'>
+
+		<?php /* The masonry script only serves the timeline page - same gate
+			as the view toggle and the FOUC data-view line. */ ?>
+		<?php if (($page_controls ?? null) === 'filter-control'): ?>
+			<script src='<?= asset('/scripts/grid-masonry.js') ?>' defer></script>
+		<?php endif; ?>
 	<?php endif; ?>
 
 	<?php if (TOUR_ENABLED): ?>

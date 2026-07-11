@@ -33,6 +33,13 @@
 		--grid-columns: 2;
 		--wall-column: 36rem;
 		--wall-gap: 4rem;
+
+		/* The wall's left rail: proportional, so the content isn't pinned
+		   tight to the viewport edge on big screens. Extra width beyond the
+		   constrained columns falls to the RIGHT (never a wider wall) - at
+		   huge sizes a fourth column would also fit, but breathing room
+		   beats being in their face; deliberate choice, revisit knowingly. */
+		--wall-inset: 4vw;
 	}
 }
 
@@ -160,6 +167,11 @@
 			grid-row: 1 / span 5;
 		}
 
+		/* Intro and wall share one left edge, inset by the proportional rail. */
+		main {
+			padding-inline-start: max(var(--gutter), var(--wall-inset));
+		}
+
 		/* The intro reads as lane one: same measure as the wall's columns,
 		   so the top of the page shares the grid's geometry. */
 		.page-header {
@@ -168,18 +180,26 @@
 
 		/* --- The wall itself. Cells keep the full card at column width. ---
 
-		   Cards vary a lot in height (media vs text-only), so an aligned-rows
-		   grid leaves craters under the short ones. Native masonry ("grid
-		   lanes") isn't in any stable browser yet, so the everywhere layout
-		   is multi-column LANES: same column token, tight vertical packing,
-		   with the tradeoff that order flows down each lane (newspaper-style)
-		   instead of across rows. The @supports block below upgrades to real
-		   masonry - row-major order AND tight packing - wherever it ships. */
+		   Cards vary a lot in height (media vs text-only), and the wall must
+		   read in a Z (row-major) - the reverse-chronology walks across the
+		   columns, then down. CSS alone can't do both yet: multi-column packs
+		   tight but flows DOWN each lane, and an aligned-rows grid keeps Z
+		   order but leaves craters under short cards. So the packing is the
+		   measured-row-span technique: this grid uses 1px auto-rows, and
+		   scripts/grid-masonry.js gives each card a row span matching its
+		   height (a ResizeObserver keeps spans true when brand scales, media
+		   loads, or an unfolding read-more change heights). Grid
+		   auto-placement then walks the cards left-to-right - the Z.
+
+		   Without the script (its .is-packed class), the fallback is the
+		   aligned-rows grid: correct order, craters accepted. When native
+		   masonry ("grid lanes") ships, it replaces the script wholesale. */
 
 		[role="list"].timeline {
-			display: block;
-			columns: var(--grid-columns);
+			display: grid;
+			grid-template-columns: repeat(var(--grid-columns), 1fr);
 			column-gap: var(--wall-gap);
+			row-gap: 4rem;
 
 			/* Count x measure: lanes hold the designed width instead of
 			   stretching to fill whatever screen this is. */
@@ -193,23 +213,12 @@
 			margin-top: 10rem;
 		}
 
-		[role="list"].timeline > li {
-			/* A card must never split across two lanes. */
-			break-inside: avoid;
-			margin-block-end: 4rem;
-		}
-
-		@supports (grid-template-rows: masonry) {
-			[role="list"].timeline {
-				display: grid;
-				grid-template-columns: repeat(var(--grid-columns), 1fr);
-				grid-template-rows: masonry;
-				gap: 4rem var(--wall-gap);
-			}
-
-			[role="list"].timeline > li {
-				margin-block-end: 0;
-			}
+		/* Packed mode (grid-masonry.js): rows become a 1px ruler for the
+		   measured spans; each span already includes the breathing room, so
+		   the row gap stands down. */
+		[role="list"].timeline.is-packed {
+			grid-auto-rows: 1px;
+			row-gap: 0;
 		}
 
 		.milestone {

@@ -13,12 +13,17 @@
 	routes and templates are untouched - uncomment when those pages are real.
 */ ?>
 
+<?php /* Grid view exists only where the timeline does - the page carrying
+	the timeline's own controls (home). Everywhere else the invite and the
+	Layout row would be doors to nothing. */ ?>
+<?php $page_has_grid = GRID_VIEW_ENABLED && ($page_controls ?? null) === 'filter-control'; ?>
+
 <?php /* ---- Grid invite ----
 	A little toggle that only exists where the grid exists (>= 1600px, list
 	view) and pulses "touch me" until first used - discovery for the magic.
 	Chrome/visibility/pulse live in styles/layouts/grid-view.css; wiring in
 	settings-panel.js (view section). */ ?>
-<?php if (GRID_VIEW_ENABLED): ?>
+<?php if ($page_has_grid): ?>
 	<button
 		type='button'
 		class='toolbox-trigger settings-trigger grid-invite'
@@ -86,7 +91,7 @@
 	<?= partial('settings/mode-switcher') ?>
 	<?= partial('settings/brand-switcher') ?>
 	<?= partial('settings/emphasis-switcher') ?>
-	<?php if (GRID_VIEW_ENABLED): ?>
+	<?php if ($page_has_grid): ?>
 		<?= partial('settings/view-switcher') ?>
 	<?php endif; ?>
 	<?= partial('settings/sound-switcher') ?>
