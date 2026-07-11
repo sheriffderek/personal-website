@@ -118,6 +118,23 @@
 	}
 
 	function syncScroll(applyChange, willSurvive) {
+		/* Per-view interaction decisions key off data-view - this is the one
+		   switch. In grid view the lanes re-pack wholesale on any change, so
+		   there's no stable "card under the reader's eye" to hold; anchoring
+		   would just fight the re-pack. Apply the change plainly and let the
+		   wall reflow. */
+		if (html.getAttribute('data-view') === 'grid') {
+			/* Discard (never run) any correction still owed from list view -
+			   its measurements described a layout that no longer exists, and
+			   letting it fire after the lanes re-pack would jump the page. */
+			if (pendingFrame !== null) cancelAnimationFrame(pendingFrame);
+			pendingFrame = null;
+			pendingShift = null;
+
+			applyChange();
+			return;
+		}
+
 		settlePending();
 
 		var anchor = centeredSection(willSurvive);
@@ -298,8 +315,8 @@
 	   the sliders' max in includes/settings/{brand,emphasis}-switcher.php. */
 	var BRANDS         = ['personal', 'marketing', 'product', 'documentation'];
 	var BRAND_NAMES    = ['Personal', 'Marketing', 'Product', 'Documentation'];
-	var EMPHASES       = ['default', 'warm', 'cool', 'neutral'];
-	var EMPHASIS_NAMES = ['Default', 'Warm', 'Cool', 'Neutral'];
+	var EMPHASES       = ['default', 'muted', 'focused', 'immersive'];
+	var EMPHASIS_NAMES = ['Default', 'Muted', 'Focused', 'Immersive'];
 
 	var applyBrand = sliderSwitcher({
 		kind: 'brand',
@@ -520,10 +537,26 @@
 	var GRID_MIN = window.matchMedia('(min-width: 1600px)');
 	var currentView = 'list';
 
+	/* The grid invite (rail button, markup in settings-panel.php) pulses
+	   until the visitor has entered grid view once - by any door, the invite
+	   or the panel's Grid pill - then settles into a plain toggle forever
+	   (localStorage breadcrumb, same pattern as the passkey button). */
+	var inviteButton = document.querySelector('[data-grid-invite]');
+
+	function markInviteSeen() {
+		try { localStorage.setItem('grid-invite-seen', '1'); } catch (error) {}
+		if (inviteButton) inviteButton.classList.add('is-seen');
+	}
+
 	function applyView(value, opts) {
 		currentView = value;
 
 		var applied = value === 'grid' && GRID_MIN.matches ? 'grid' : 'list';
+
+		/* Deliberately ENTERING grid view retires the invite's pulse - the
+		   applied state, not the preference, so a too-narrow window (where
+		   the grid never showed) doesn't count as having seen it. */
+		if (applied === 'grid' && shouldPersist(opts)) markInviteSeen();
 
 		if (applied === 'grid') {
 			html.setAttribute('data-view', 'grid');
@@ -570,6 +603,17 @@
 
 	if (viewButtons.length) {
 		applyByKind.view = applyView;
+
+		var inviteSeen = null;
+		try { inviteSeen = localStorage.getItem('grid-invite-seen'); } catch (error) {}
+		if (inviteSeen && inviteButton) inviteButton.classList.add('is-seen');
+
+		if (inviteButton) {
+			inviteButton.addEventListener('click', function () {
+				applyView('grid');
+				window.scrollTo(0, 0);
+			});
+		}
 
 		var savedView = null;
 		try { savedView = localStorage.getItem('view-preference'); } catch (error) {}

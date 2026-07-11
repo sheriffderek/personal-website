@@ -20,12 +20,19 @@
    wall respond) needs no sticky chrome. The JS swaps the popover attribute;
    everything visual lives here. */
 
-/* Column count is one shared token so the minimap's schematic can mirror the
-   real grid without hand-syncing. Two comfortable columns from 1600, three
-   on genuinely big monitors. */
+/* The wall's geometry is three shared tokens, so every consumer (lanes,
+   intro, minimap) reads the same truth instead of hand-syncing:
+     --grid-columns  lane count - 2 from 1600, 3 on genuinely big monitors
+     --wall-column   the designed lane measure; cards never stretch past it
+     --wall-gap      the gutter between lanes
+   Clear column widths constrain the layout: the wall's max-width derives
+   from count x measure, so growing the window past a breakpoint adds a lane
+   rather than inflating the cards. */
 @media (width >= 1600px) {
 	:root {
 		--grid-columns: 2;
+		--wall-column: 36rem;
+		--wall-gap: 4rem;
 	}
 }
 
@@ -41,6 +48,52 @@
 
 	@media (width >= 1600px) {
 		display: block;
+	}
+}
+
+/* The grid invite - a one-tap door into grid view, sitting beside the
+   settings trigger in the rail. Only exists where the grid exists, and only
+   in list view (in grid view the rail's triggers hide wholesale). Until
+   first used it pulses a soft accent halo - "touch me" - then settles into
+   a plain toggle. The seen-state class comes from settings-panel.js
+   (grid-invite-seen in localStorage). */
+.grid-invite {
+	display: none;
+}
+
+@media (width >= 1600px) {
+	/* List view = no data-view attribute (data-view is the single switch;
+	   'grid' is its only value). In grid view the invite's job is done. */
+	:root:not([data-view="grid"]) .grid-invite {
+		display: inline-flex;
+
+		opacity: 1;
+		transition: opacity 400ms ease;
+
+		@starting-style {
+			opacity: 0;
+		}
+
+		&:not(.is-seen) {
+			animation: grid-invite-pulse 2.2s ease-out infinite;
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			&:not(.is-seen) {
+				animation: none;
+			}
+		}
+	}
+}
+
+@keyframes grid-invite-pulse {
+	from {
+		box-shadow: 0 0 0 0 color-mix(in oklch, var(--accent) 45%, transparent);
+	}
+
+	70%,
+	to {
+		box-shadow: 0 0 0 16px color-mix(in oklch, var(--accent) 0%, transparent);
 	}
 }
 
@@ -103,11 +156,30 @@
 			grid-row: 1 / span 5;
 		}
 
-		/* --- The wall itself. Cells keep the full card at column width. --- */
+		/* The intro reads as lane one: same measure as the wall's columns,
+		   so the top of the page shares the grid's geometry. */
+		.page-header {
+			max-width: var(--wall-column);
+		}
+
+		/* --- The wall itself. Cells keep the full card at column width. ---
+
+		   Cards vary a lot in height (media vs text-only), so an aligned-rows
+		   grid leaves craters under the short ones. Native masonry ("grid
+		   lanes") isn't in any stable browser yet, so the everywhere layout
+		   is multi-column LANES: same column token, tight vertical packing,
+		   with the tradeoff that order flows down each lane (newspaper-style)
+		   instead of across rows. The @supports block below upgrades to real
+		   masonry - row-major order AND tight packing - wherever it ships. */
 
 		[role="list"].timeline {
-			grid-template-columns: repeat(var(--grid-columns), 1fr);
-			gap: 4rem 2rem;
+			display: block;
+			columns: var(--grid-columns);
+			column-gap: var(--wall-gap);
+
+			/* Count x measure: lanes hold the designed width instead of
+			   stretching to fill whatever screen this is. */
+			max-width: calc(var(--grid-columns) * var(--wall-column) + (var(--grid-columns) - 1) * var(--wall-gap));
 
 			/* Clearance for the absolute panel card above-right: the first
 			   row must start below it, and the intro alone isn't reliably
@@ -115,6 +187,25 @@
 			   sized against the tallest current panel - if the panel grows a
 			   row, re-check this. */
 			margin-top: 10rem;
+		}
+
+		[role="list"].timeline > li {
+			/* A card must never split across two lanes. */
+			break-inside: avoid;
+			margin-block-end: 4rem;
+		}
+
+		@supports (grid-template-rows: masonry) {
+			[role="list"].timeline {
+				display: grid;
+				grid-template-columns: repeat(var(--grid-columns), 1fr);
+				grid-template-rows: masonry;
+				gap: 4rem var(--wall-gap);
+			}
+
+			[role="list"].timeline > li {
+				margin-block-end: 0;
+			}
 		}
 
 		.milestone {

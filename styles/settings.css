@@ -235,57 +235,61 @@
 }
 
 /* ----------------------------------------------------------------------------
-   EMPHASIS - color palettes only. Never type or shape: the same palette must
-   work under every brand. Light values here; dark counterparts below with the
-   scheme blocks. Palette lineage: Warm and Cool and Neutral carry forward the
-   palettes the retired serif/display/mono theme bundles proved out. */
+   EMPHASIS - intensity, not hue. The dial runs from soft to theatrical:
+   Default (the calibrated normal) · Muted (contrast eases off, chrome
+   recedes) · Focused (contrast sharpens, edges crisp) · Immersive (the paint
+   gets rich - fills carry a wash, the accent leans in). Each level still
+   speaks through the color tokens only - never type or shape, so any brand
+   works at any emphasis. These recipes are placeholders to make the dial
+   real; tune per level once it's felt in use. Light values here; dark
+   counterparts below with the scheme blocks. */
 
-[data-emphasis="warm"] {
-	--fill-primary: var(--color-taupe-50);
-	--fill-secondary: var(--color-taupe-100);
-	--fill-auxiliary: var(--color-taupe-200);
+[data-emphasis="muted"] {
+	--fill-primary: var(--color-stone-100);
+	--fill-secondary: var(--color-stone-200);
+	--fill-auxiliary: var(--color-stone-300);
 
-	--ink-primary: var(--color-taupe-900);
-	--ink-secondary: var(--color-taupe-600);
-	--ink-auxiliary: var(--color-taupe-500);
+	--ink-primary: var(--color-stone-600);
+	--ink-secondary: var(--color-stone-500);
+	--ink-auxiliary: var(--color-stone-400);
 
-	--stroke-primary: var(--color-taupe-400);
-	--stroke-secondary: var(--color-taupe-300);
-	--stroke-auxiliary: var(--color-taupe-200);
+	--stroke-primary: var(--color-stone-300);
+	--stroke-secondary: var(--color-stone-200);
+	--stroke-auxiliary: var(--color-stone-200);
 
-	--accent: var(--color-amber-700);
+	--accent: var(--color-stone-500);
 }
 
-[data-emphasis="cool"] {
-	--fill-primary: var(--color-slate-50);
-	--fill-secondary: var(--color-slate-100);
-	--fill-auxiliary: var(--color-slate-200);
+[data-emphasis="focused"] {
+	--fill-primary: white;
+	--fill-secondary: var(--color-stone-50);
+	--fill-auxiliary: var(--color-stone-100);
 
-	--ink-primary: var(--color-slate-900);
-	--ink-secondary: var(--color-slate-600);
-	--ink-auxiliary: var(--color-slate-500);
+	--ink-primary: var(--color-stone-950);
+	--ink-secondary: var(--color-stone-800);
+	--ink-auxiliary: var(--color-stone-600);
 
-	--stroke-primary: var(--color-slate-400);
-	--stroke-secondary: var(--color-slate-300);
-	--stroke-auxiliary: var(--color-slate-200);
+	--stroke-primary: var(--color-stone-500);
+	--stroke-secondary: var(--color-stone-400);
+	--stroke-auxiliary: var(--color-stone-300);
 
-	--accent: var(--color-violet-600);
+	--accent: var(--color-blue-700);
 }
 
-[data-emphasis="neutral"] {
-	--fill-primary: var(--color-neutral-50);
-	--fill-secondary: var(--color-neutral-100);
-	--fill-auxiliary: var(--color-neutral-200);
+[data-emphasis="immersive"] {
+	--fill-primary: var(--color-blue-50);
+	--fill-secondary: var(--color-blue-100);
+	--fill-auxiliary: var(--color-blue-200);
 
-	--ink-primary: var(--color-neutral-900);
-	--ink-secondary: var(--color-neutral-600);
-	--ink-auxiliary: var(--color-neutral-500);
+	--ink-primary: var(--color-blue-950);
+	--ink-secondary: var(--color-blue-900);
+	--ink-auxiliary: var(--color-blue-800);
 
-	--stroke-primary: var(--color-neutral-400);
-	--stroke-secondary: var(--color-neutral-300);
-	--stroke-auxiliary: var(--color-neutral-200);
+	--stroke-primary: var(--color-blue-300);
+	--stroke-secondary: var(--color-blue-200);
+	--stroke-auxiliary: var(--color-blue-100);
 
-	--accent: var(--color-neutral-700);
+	--accent: var(--color-blue-600);
 }
 
 html {
@@ -309,41 +313,41 @@ html {
 		--accent: var(--color-blue-300);
 		--scrim: rgb(0 0 0 / 0.45);
 	}
-	[data-emphasis="warm"]:not([data-scheme="light"]) {
-		--fill-primary: var(--color-taupe-900);
-		--fill-secondary: var(--color-taupe-800);
-		--fill-auxiliary: var(--color-taupe-700);
-		--ink-primary: var(--color-taupe-50);
-		--ink-secondary: var(--color-taupe-300);
-		--ink-auxiliary: var(--color-taupe-400);
-		--stroke-primary: var(--color-taupe-600);
-		--stroke-secondary: var(--color-taupe-700);
-		--stroke-auxiliary: var(--color-taupe-800);
-		--accent: var(--color-amber-300);
+	[data-emphasis="muted"]:not([data-scheme="light"]) {
+		--fill-primary: var(--color-stone-800);
+		--fill-secondary: var(--color-stone-700);
+		--fill-auxiliary: var(--color-stone-600);
+		--ink-primary: var(--color-stone-300);
+		--ink-secondary: var(--color-stone-400);
+		--ink-auxiliary: var(--color-stone-500);
+		--stroke-primary: var(--color-stone-600);
+		--stroke-secondary: var(--color-stone-700);
+		--stroke-auxiliary: var(--color-stone-700);
+		--accent: var(--color-stone-400);
 	}
-	[data-emphasis="cool"]:not([data-scheme="light"]) {
-		--fill-primary: var(--color-slate-900);
-		--fill-secondary: var(--color-slate-800);
-		--fill-auxiliary: var(--color-slate-700);
-		--ink-primary: var(--color-slate-50);
-		--ink-secondary: var(--color-slate-300);
-		--ink-auxiliary: var(--color-slate-400);
-		--stroke-primary: var(--color-slate-600);
-		--stroke-secondary: var(--color-slate-700);
-		--stroke-auxiliary: var(--color-slate-800);
-		--accent: var(--color-violet-300);
+	[data-emphasis="focused"]:not([data-scheme="light"]) {
+		--fill-primary: var(--color-stone-950);
+		--fill-secondary: var(--color-stone-900);
+		--fill-auxiliary: var(--color-stone-800);
+		--ink-primary: white;
+		--ink-secondary: var(--color-stone-200);
+		--ink-auxiliary: var(--color-stone-400);
+		--stroke-primary: var(--color-stone-500);
+		--stroke-secondary: var(--color-stone-600);
+		--stroke-auxiliary: var(--color-stone-700);
+		--accent: var(--color-blue-400);
 	}
-	[data-emphasis="neutral"]:not([data-scheme="light"]) {
-		--fill-primary: var(--color-neutral-900);
-		--fill-secondary: var(--color-neutral-800);
-		--fill-auxiliary: var(--color-neutral-700);
-		--ink-primary: var(--color-neutral-50);
-		--ink-secondary: var(--color-neutral-300);
-		--ink-auxiliary: var(--color-neutral-400);
-		--stroke-primary: var(--color-neutral-600);
-		--stroke-secondary: var(--color-neutral-700);
-		--stroke-auxiliary: var(--color-neutral-800);
-		--accent: var(--color-neutral-300);
+	[data-emphasis="immersive"]:not([data-scheme="light"]) {
+		--fill-primary: var(--color-blue-950);
+		--fill-secondary: var(--color-blue-900);
+		--fill-auxiliary: var(--color-blue-800);
+		--ink-primary: var(--color-blue-50);
+		--ink-secondary: var(--color-blue-200);
+		--ink-auxiliary: var(--color-blue-300);
+		--stroke-primary: var(--color-blue-700);
+		--stroke-secondary: var(--color-blue-800);
+		--stroke-auxiliary: var(--color-blue-800);
+		--accent: var(--color-blue-300);
 	}
 }
 
@@ -361,41 +365,41 @@ html {
 	--scrim: rgb(0 0 0 / 0.45);
 }
 
-[data-emphasis="warm"][data-scheme="dark"] {
-	--fill-primary: var(--color-taupe-900);
-	--fill-secondary: var(--color-taupe-800);
-	--fill-auxiliary: var(--color-taupe-700);
-	--ink-primary: var(--color-taupe-50);
-	--ink-secondary: var(--color-taupe-300);
-	--ink-auxiliary: var(--color-taupe-400);
-	--stroke-primary: var(--color-taupe-600);
-	--stroke-secondary: var(--color-taupe-700);
-	--stroke-auxiliary: var(--color-taupe-800);
-	--accent: var(--color-amber-300);
+[data-emphasis="muted"][data-scheme="dark"] {
+	--fill-primary: var(--color-stone-800);
+	--fill-secondary: var(--color-stone-700);
+	--fill-auxiliary: var(--color-stone-600);
+	--ink-primary: var(--color-stone-300);
+	--ink-secondary: var(--color-stone-400);
+	--ink-auxiliary: var(--color-stone-500);
+	--stroke-primary: var(--color-stone-600);
+	--stroke-secondary: var(--color-stone-700);
+	--stroke-auxiliary: var(--color-stone-700);
+	--accent: var(--color-stone-400);
 }
 
-[data-emphasis="cool"][data-scheme="dark"] {
-	--fill-primary: var(--color-slate-900);
-	--fill-secondary: var(--color-slate-800);
-	--fill-auxiliary: var(--color-slate-700);
-	--ink-primary: var(--color-slate-50);
-	--ink-secondary: var(--color-slate-300);
-	--ink-auxiliary: var(--color-slate-400);
-	--stroke-primary: var(--color-slate-600);
-	--stroke-secondary: var(--color-slate-700);
-	--stroke-auxiliary: var(--color-slate-800);
-	--accent: var(--color-violet-300);
+[data-emphasis="focused"][data-scheme="dark"] {
+	--fill-primary: var(--color-stone-950);
+	--fill-secondary: var(--color-stone-900);
+	--fill-auxiliary: var(--color-stone-800);
+	--ink-primary: white;
+	--ink-secondary: var(--color-stone-200);
+	--ink-auxiliary: var(--color-stone-400);
+	--stroke-primary: var(--color-stone-500);
+	--stroke-secondary: var(--color-stone-600);
+	--stroke-auxiliary: var(--color-stone-700);
+	--accent: var(--color-blue-400);
 }
 
-[data-emphasis="neutral"][data-scheme="dark"] {
-	--fill-primary: var(--color-neutral-900);
-	--fill-secondary: var(--color-neutral-800);
-	--fill-auxiliary: var(--color-neutral-700);
-	--ink-primary: var(--color-neutral-50);
-	--ink-secondary: var(--color-neutral-300);
-	--ink-auxiliary: var(--color-neutral-400);
-	--stroke-primary: var(--color-neutral-600);
-	--stroke-secondary: var(--color-neutral-700);
-	--stroke-auxiliary: var(--color-neutral-800);
-	--accent: var(--color-neutral-300);
+[data-emphasis="immersive"][data-scheme="dark"] {
+	--fill-primary: var(--color-blue-950);
+	--fill-secondary: var(--color-blue-900);
+	--fill-auxiliary: var(--color-blue-800);
+	--ink-primary: var(--color-blue-50);
+	--ink-secondary: var(--color-blue-200);
+	--ink-auxiliary: var(--color-blue-300);
+	--stroke-primary: var(--color-blue-700);
+	--stroke-secondary: var(--color-blue-800);
+	--stroke-auxiliary: var(--color-blue-800);
+	--accent: var(--color-blue-300);
 }

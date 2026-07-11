@@ -13,6 +13,40 @@
 	routes and templates are untouched - uncomment when those pages are real.
 */ ?>
 
+<?php /* ---- Grid invite ----
+	A little toggle that only exists where the grid exists (>= 1600px, list
+	view) and pulses "touch me" until first used - discovery for the magic.
+	Chrome/visibility/pulse live in styles/layouts/grid-view.css; wiring in
+	settings-panel.js (view section). */ ?>
+<?php if (GRID_VIEW_ENABLED): ?>
+	<button
+		type='button'
+		class='toolbox-trigger settings-trigger grid-invite'
+		data-grid-invite
+		aria-label='Switch to the grid layout'
+	>
+		<span aria-hidden='true'>
+			<svg
+				class='toolbox-glyph'
+				viewBox='0 0 16 16'
+				fill='none'
+				stroke='currentColor'
+				stroke-width='1.4'
+				stroke-linecap='round'
+				focusable='false'
+			>
+				<rect x='2.6' y='2.6' width='4.5' height='4.5' rx='0.9' />
+
+				<rect x='8.9' y='2.6' width='4.5' height='4.5' rx='0.9' />
+
+				<rect x='2.6' y='8.9' width='4.5' height='4.5' rx='0.9' />
+
+				<rect x='8.9' y='8.9' width='4.5' height='4.5' rx='0.9' />
+			</svg>
+		</span>
+	</button>
+<?php endif; ?>
+
 <?php /* ---- Settings menu ---- */ ?>
 <button
 	type='button'
