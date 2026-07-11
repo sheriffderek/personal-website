@@ -167,8 +167,11 @@
 			grid-row: 1 / span 5;
 		}
 
-		/* Intro and wall share one left edge, inset by the proportional rail. */
-		main {
+		/* Intro, wall, and footer share one left edge, inset by the
+		   proportional rail - everything on the page keeps the same width
+		   situation, not just the timeline. */
+		main,
+		.site-footer {
 			padding-inline-start: max(var(--gutter), var(--wall-inset));
 		}
 
@@ -215,9 +218,15 @@
 
 		/* Packed mode (grid-masonry.js): rows become a 1px ruler for the
 		   measured spans; each span already includes the breathing room, so
-		   the row gap stands down. */
+		   the row gap stands down. The script pins each card to its lane
+		   (item i -> column i mod N) so the order reads STRICTLY across then
+		   down - 1 2 3 / 4 5 6 - and `dense` lets each lane backfill right
+		   below its own previous card instead of waiting for the slowest
+		   lane (the row cursor never moves backwards without it). */
 		[role="list"].timeline.is-packed {
-			grid-auto-rows: 1px;
+			/* 8px ruler - must match ROW_UNIT in grid-masonry.js. */
+			grid-auto-rows: 8px;
+			grid-auto-flow: row dense;
 			row-gap: 0;
 		}
 

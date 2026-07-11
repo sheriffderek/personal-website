@@ -130,7 +130,7 @@ Code lives in `includes/footer.php`, `templates/milestone.php`, and the shared p
 
 **Three media shapes, all built on the themable poster-shapes cover** (there is no `format` field; it was retired). The poster-shapes is ALWAYS the cover — slides and videos are *additional*, never a replacement for it:
 - **no poster** → text-only card.
-- **poster only** → the poster-shapes alone (a card wants a visual but has no slides/videos yet). Opt in with `"poster": true`.
+- **poster only** → the poster-shapes alone (a card wants a visual but has no slides/videos yet). Opt in with `"poster": true` for the full 16:9 cover, or a purpose-made shorter size - `"poster": "16x6"` or `"poster": "16x3"` - for a heading-graphic frame (same poster-shapes tech, cover-cropped to the shorter band). **Sizes are authored in the JSON, never derived** from weight or shape - the key IS the record of the design decision. The string value becomes `data-poster-size` on the article; milestone.css maps it to `--media-ratio`.
 - **poster + media** → the poster-shapes cover slide first, then every real slide/video, in a carousel.
 
 Shape is derived, never hand-set: a card with any `real_media_items()` (drops `/content/placeholder/`, see `render.php`) is **poster + media**; else `"poster": true` gives **poster only**; else text-only. So a single slide/video is still **poster + media** — the poster, then that one item (never the item by itself). One partial (`posters/media-item`) renders every item (`photo`/`loop`/`play`/`vimeo`). Placeholder entries (`["/content/placeholder/…"]`) are the "no real media yet" marker and stay text-only until real media replaces them.

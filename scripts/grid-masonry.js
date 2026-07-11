@@ -20,8 +20,12 @@
 	var timeline = document.querySelector("[role='list'].timeline");
 	if (!timeline) return;
 
-	/* The span ruler: must match .is-packed { grid-auto-rows: 1px }. */
-	var ROW_UNIT = 1;
+	/* The span ruler: must match .is-packed { grid-auto-rows: 8px }. Coarser
+	   than 1px on purpose - the spans read as sane numbers in devtools
+	   (span 72, not span 572) and the browser tracks 8x fewer implicit
+	   rows. Cards round UP to the next ruler line, so the cost is at most
+	   7px of extra air below a card - invisible at wall scale. */
+	var ROW_UNIT = 8;
 
 	/* Breathing room below each card, baked into its span (packed mode has
 	   no row-gap). Matches the 4rem row-gap of the unpacked fallback. */
@@ -31,29 +35,47 @@
 		return html.getAttribute('data-view') === 'grid';
 	}
 
-	/* Span the list item to its card's height. The card (the article) is
-	   measured rather than the item itself, because the item's height IS
-	   the span - measuring it would feed back into itself. */
-	function packItem(li) {
-		var card = li.firstElementChild;
-		if (!card) return;
-
-		var height = card.getBoundingClientRect().height;
-		if (height === 0) return; /* filtered out - nothing to place */
-
-		li.style.gridRowEnd = 'span ' + Math.max(1, Math.ceil((height + CARD_GAP) / ROW_UNIT));
-	}
-
 	function items() {
 		return timeline.querySelectorAll(':scope > li');
 	}
 
+	/* Every visible card gets two placements:
+	     - its LANE: item i goes to column (i % lane count), so the order
+	       reads strictly across then down - 1 2 3 / 4 5 6 - never "whichever
+	       lane is shortest" (which could make a row read backwards).
+	     - its SPAN: the card's measured height on the 1px row ruler. The
+	       card (the article) is measured rather than the item, because the
+	       item's height IS the span - measuring it would feed back into
+	       itself.
+	   Always a full pass: the filter changes which cards are visible, and
+	   every index after a removed card shifts by one. */
 	function packAll() {
-		items().forEach(packItem);
+		var laneCount = parseInt(getComputedStyle(html).getPropertyValue('--grid-columns'), 10) || 1;
+		var lane = 0;
+
+		/* Measure everything first, then write everything: interleaving a
+		   style write with the next card's measurement would force the
+		   browser to re-run layout once per card. */
+		var measured = [];
+
+		items().forEach(function (li) {
+			var card = li.firstElementChild;
+			if (!card) return;
+			measured.push({ li: li, height: card.getBoundingClientRect().height });
+		});
+
+		measured.forEach(function (entry) {
+			if (entry.height === 0) return; /* filtered out - nothing to place */
+
+			entry.li.style.gridColumn = String((lane % laneCount) + 1);
+			entry.li.style.gridRowEnd = 'span ' + Math.max(1, Math.ceil((entry.height + CARD_GAP) / ROW_UNIT));
+			lane++;
+		});
 	}
 
 	function unpackAll() {
 		items().forEach(function (li) {
+			li.style.gridColumn = '';
 			li.style.gridRowEnd = '';
 		});
 	}
@@ -68,16 +90,25 @@
 		}
 	}
 
-	/* Re-span a card whenever its box changes. Observing the card (not the
-	   item) avoids a feedback loop: setting the span changes the ITEM's
-	   height, never the card's. */
-	var observer = new ResizeObserver(function (entries) {
-		if (!inGrid()) return;
+	/* Re-pack whenever any card's box changes - a brand swap rescales type,
+	   media loads, a read-more unfolds, the filter hides a card (size 0), a
+	   resize changes column width. One full pass per frame at most: lane
+	   assignment depends on every card's visibility, so per-card updates
+	   aren't enough. Observing the card (not the item) avoids a feedback
+	   loop: setting the span changes the ITEM's height, never the card's. */
+	var repackFrame = null;
 
-		entries.forEach(function (entry) {
-			var li = entry.target.parentElement;
-			if (li) packItem(li);
+	function queueRepack() {
+		if (repackFrame) return;
+		repackFrame = requestAnimationFrame(function () {
+			repackFrame = null;
+			packAll();
 		});
+	}
+
+	var observer = new ResizeObserver(function () {
+		if (!inGrid()) return;
+		queueRepack();
 	});
 
 	items().forEach(function (li) {

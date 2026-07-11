@@ -18,6 +18,25 @@
 	   between carousel slides. Phones override it to a square below. */
 	--media-ratio: 16 / 9;
 
+	/* Purpose-made shorter posters - a heading graphic rather than a full
+	   cover, for cards with no carousel. Authored per entry ("poster":
+	   "16x6" in milestones.json -> data-poster-size here), never derived
+	   from weight or shape: the size is a design decision recorded in the
+	   data. The poster SVG cover-crops to any frame
+	   (preserveAspectRatio='slice'), so shorter shows a center band, never
+	   a squash. Phones still square everything up below. */
+	/* :where() keeps these at .milestone's own specificity, so the phone
+	   breakpoint's square-up at the end of this file still wins by source
+	   order - a bare attribute selector would outrank it and pin the short
+	   ratio on phones. */
+	&:where([data-poster-size="16x6"]) {
+		--media-ratio: 16 / 6;
+	}
+
+	&:where([data-poster-size="16x3"]) {
+		--media-ratio: 16 / 3;
+	}
+
 	display: grid;
 	gap: 0.75rem;
 	max-width: 720px;

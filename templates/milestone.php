@@ -4,7 +4,16 @@
 	*/
 ?>
 
-<article id='<?= $milestone['slug'] ?>' class='milestone' data-flavor='<?= $milestone['flavor'] ?? 'default' ?>' data-weight='<?= $milestone['weight'] ?? 6 ?>'>
+<?php
+	/* Poster sizes are purpose-made, never derived: the "poster" key is
+	   true for the full 16:9 cover, or a named size ("16x6", "16x3") for a
+	   shorter heading-graphic frame - same poster-shapes tech, authored per
+	   entry in milestones.json. A string value becomes data-poster-size,
+	   which milestone.css maps to the frame ratio. */
+	$poster_size = is_string($milestone['poster'] ?? null) ? " data-poster-size='" . $milestone['poster'] . "'" : '';
+?>
+
+<article id='<?= $milestone['slug'] ?>' class='milestone' data-flavor='<?= $milestone['flavor'] ?? 'default' ?>' data-weight='<?= $milestone['weight'] ?? 6 ?>'<?= $poster_size ?>>
 
 	<div class='setup'>
 		<p class='year high-voice'><?= $milestone['date'] ?></p>
