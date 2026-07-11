@@ -6,6 +6,12 @@
 			"runtimeExecutable": "/Users/sheriffderek/Library/Application Support/Herd/bin/php",
 			"runtimeArgs": ["-S", "127.0.0.1:8299", ".claude/router.php"],
 			"port": 8299
+		},
+		{
+			"name": "site-alt",
+			"runtimeExecutable": "/Users/sheriffderek/Library/Application Support/Herd/bin/php",
+			"runtimeArgs": ["-S", "127.0.0.1:8399", ".claude/router.php"],
+			"port": 8399
 		}
 	]
 }

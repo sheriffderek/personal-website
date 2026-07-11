@@ -3,6 +3,14 @@ RewriteEngine On
 # If MAMP serves this site from a subfolder, set the base to that folder.
 # RewriteBase /
 
+# Data files under content/ (milestones.json, targets/*.json) are read ONLY by
+# PHP server-side - never fetched by the browser - and they carry PRIVATE fields
+# (e.g. per-milestone `backstory`) that must never be downloadable. Wall them off
+# before the serve-as-is rule below, which would otherwise hand out the raw file.
+# The media beside them (content/milestones/<slug>/*.jpg|mp4) is NOT json, so it
+# still serves normally. Do not remove this - it is the privacy guarantee.
+RewriteRule ^content/.*\.json$ - [F,L]
+
 # Real files and folders (css, js, images) are served as-is.
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
