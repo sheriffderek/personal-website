@@ -8,16 +8,17 @@
    (includes/header.php), and in GRID_MIN (settings-panel.js) in sync.
 
    List view is the argument (a readable spine); grid view is the evidence
-   (fifteen years of artifacts at a glance). So grid cells are compact -
-   date + title + media only, no description - and motion stands down: loops
-   don't autoplay in the grid (the guard is in includes/footer.php), stills
-   carry the wall.
+   (fifteen years of work at a glance). Cells keep their full card - date,
+   title, media, description, read-more - just at column width; only motion
+   stands down: loops don't autoplay in the grid (the guard is in
+   includes/footer.php), stills carry the wall.
 
-   In grid view the settings panel leaves its popover and sits inline at the
-   top of the page, at regular scroll - at these widths the controls and the
-   first grid rows share the viewport, so the playground moment (drag a
-   slider, watch the wall respond) needs no sticky chrome. The JS swaps the
-   popover attribute; everything visual lives here. */
+   In grid view the settings panel leaves its popover and sits as a
+   content-sized card in the page's top-right, at regular scroll, with the
+   intro beside it on the left - so the controls and the first grid rows
+   share the viewport and the playground moment (drag a slider, watch the
+   wall respond) needs no sticky chrome. The JS swaps the popover attribute;
+   everything visual lives here. */
 
 /* Column count is one shared token so the minimap's schematic can mirror the
    real grid without hand-syncing. Two comfortable columns from 1600, three
@@ -45,16 +46,23 @@
 
 @media (width >= 1600px) {
 	[data-view="grid"] {
-		/* --- Page shell: rail becomes a top bar, main goes full width. --- */
+		/* --- Page shell: the rail stops being a bar and parks its panel as a
+		   card in the page's top-right corner, beside the intro (which keeps
+		   its normal top-left position inside main). --- */
 
 		.page-wrapper {
 			display: block;
+			position: relative;
 		}
 
 		.page-rail {
-			position: static;
-			display: block;
-			padding: var(--gutter);
+			position: absolute;
+			inset-block-start: var(--gutter);
+			inset-inline-end: var(--gutter);
+			z-index: 5;
+			padding: 0;
+			background: none;
+			border: 0;
 		}
 
 		/* The panel is inline now - its trigger has nothing to do. */
@@ -62,56 +70,56 @@
 			display: none;
 		}
 
-		/* The panel as a top bar: settings-panel.js removes the popover
-		   attribute in grid view, making it a plain always-visible div. The
-		   popover styling in settings-panel.css still applies (same class), so
-		   un-anchor it, let it fill the bar, and flow the rows horizontally.
-		   opacity must be forced: a non-popover never matches :popover-open,
-		   so the panel's `&:not(:popover-open) { opacity: 0 }` would hide it. */
+		/* The panel card: settings-panel.js removes the popover attribute in
+		   grid view, making it a plain always-visible div. The popover styling
+		   in settings-panel.css still applies (same class), so un-anchor it
+		   and size it to its content. opacity must be forced: a non-popover
+		   never matches :popover-open, so the panel's
+		   `&:not(:popover-open) { opacity: 0 }` would hide it. */
 		.toolbox-panel {
 			position: static;
 			inset: auto;
 			opacity: 1;
-			width: auto;
+			width: max-content;
 			min-width: 0;
-			max-width: none;
+			max-width: min(820px, 48vw);
 			max-height: none;
 			margin: 0;
 		}
 
+		/* Inside the card: the small controls stack in a left column, the
+		   filter (slider + minimap schematic) takes a right column at full
+		   height. The span count = the panel's control rows; a new row in
+		   settings-panel.php means bumping it. */
 		.settings-panel {
-			display: flex;
-			flex-wrap: wrap;
+			display: grid;
+			grid-template-columns: max-content minmax(260px, 340px);
+			gap: 1.25rem 2.5rem;
 			align-items: start;
-			gap: 1.5rem 3rem;
 		}
 
-		/* The filter (slider + minimap) is the widest row - give it room. */
 		.settings-panel .filter-control {
-			flex: 1 1 320px;
-			max-width: 440px;
+			grid-column: 2;
+			grid-row: 1 / span 5;
 		}
 
-		main {
-			padding-top: 1rem;
-		}
-
-		/* --- The wall itself. --- */
+		/* --- The wall itself. Cells keep the full card at column width. --- */
 
 		[role="list"].timeline {
 			grid-template-columns: repeat(var(--grid-columns), 1fr);
 			gap: 4rem 2rem;
+
+			/* Clearance for the absolute panel card above-right: the first
+			   row must start below it, and the intro alone isn't reliably
+			   taller than the panel (brand scales move both). Heuristic,
+			   sized against the tallest current panel - if the panel grows a
+			   row, re-check this. */
+			margin-top: 10rem;
 		}
 
 		.milestone {
 			/* Cells fill their column instead of the list's reading measure. */
 			max-width: none;
-
-			/* Compact card state: date + title + media. The description and
-			   read-more are list-view reading; the wall shows artifacts. */
-			.info {
-				display: none;
-			}
 		}
 
 		/* --- Minimap: the faithful schematic follows the layout it depicts
