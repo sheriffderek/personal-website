@@ -158,34 +158,119 @@
 	--poster-ink: var(--ink-primary);
 }
 
+/* The default set is a 70s muted rainbow - classy, not costume: harvest
+   gold, dusty blue, greige, espresso, avocado, dusty rose. The scale files
+   don't carry these mid-chroma period tones, so like stone's greige they're
+   authored oklch here - this block IS the token layer for posters. */
+
 [data-flavor="warm"] {
-	--poster-fill: var(--color-amber-100);
-	--poster-ink: var(--color-orange-900);
+	/* harvest gold, leaning burnt orange */
+	--poster-fill: oklch(80% 0.085 70);
+	--poster-ink: oklch(36% 0.09 45);
 }
 
 [data-flavor="cool"] {
-	--poster-fill: var(--color-sky-100);
-	--poster-ink: var(--color-blue-900);
+	/* dusty blue */
+	--poster-fill: oklch(78% 0.05 240);
+	--poster-ink: oklch(33% 0.06 250);
 }
 
 [data-flavor="stone"] {
+	/* the original greige, already period-correct */
 	--poster-fill: #c9c9be;
 	--poster-ink: var(--color-stone-900);
 }
 
 [data-flavor="night"] {
-	--poster-fill: var(--color-stone-900);
-	--poster-ink: var(--color-amber-200);
+	/* espresso brown with a gold ink */
+	--poster-fill: oklch(27% 0.03 60);
+	--poster-ink: oklch(80% 0.08 85);
 }
 
 [data-flavor="moss"] {
-	--poster-fill: var(--color-green-100);
-	--poster-ink: var(--color-green-900);
+	/* avocado */
+	--poster-fill: oklch(76% 0.07 115);
+	--poster-ink: oklch(33% 0.06 120);
 }
 
 [data-flavor="rose"] {
-	--poster-fill: var(--color-red-100);
-	--poster-ink: var(--color-red-900);
+	/* dusty rose */
+	--poster-fill: oklch(80% 0.05 20);
+	--poster-ink: oklch(36% 0.07 15);
+}
+
+/* Muted takes on the flavors - the same 70s rainbow, whispered. The custom
+   near-neutral families (taupe, mist, olive, mauve) ARE those hues with the
+   chroma nearly gone, so each flavor maps to its ghost. The nested
+   descendant selectors beat the one-attribute baselines above by
+   specificity, not order. */
+
+[data-emphasis="muted"] {
+	[data-flavor="warm"] {
+		--poster-fill: var(--color-taupe-200);
+		--poster-ink: var(--color-taupe-700);
+	}
+
+	[data-flavor="cool"] {
+		--poster-fill: var(--color-mist-200);
+		--poster-ink: var(--color-mist-700);
+	}
+
+	[data-flavor="stone"] {
+		--poster-fill: var(--color-stone-200);
+		--poster-ink: var(--color-stone-700);
+	}
+
+	[data-flavor="night"] {
+		--poster-fill: var(--color-taupe-800);
+		--poster-ink: var(--color-taupe-300);
+	}
+
+	[data-flavor="moss"] {
+		--poster-fill: var(--color-olive-200);
+		--poster-ink: var(--color-olive-700);
+	}
+
+	[data-flavor="rose"] {
+		--poster-fill: var(--color-mauve-200);
+		--poster-ink: var(--color-mauve-700);
+	}
+}
+
+/* Red light - one hue, many values. The page goes deep red (recipes with
+   the emphasis blocks below); the posters stay in the red family and vary
+   by value instead of hue, so the wall reads as one room lit one way. */
+
+[data-emphasis="red-light"] {
+	[data-flavor="warm"] {
+		--poster-fill: var(--color-red-400);
+		--poster-ink: var(--color-red-950);
+	}
+
+	[data-flavor="cool"] {
+		--poster-fill: var(--color-rose-300);
+		--poster-ink: var(--color-red-950);
+	}
+
+	[data-flavor="stone"] {
+		--poster-fill: var(--color-red-200);
+		--poster-ink: var(--color-red-900);
+	}
+
+	[data-flavor="night"] {
+		--poster-fill: var(--color-red-800);
+		--poster-ink: var(--color-red-200);
+	}
+
+	[data-flavor="moss"] {
+		--poster-fill: var(--color-red-500);
+		--poster-ink: var(--color-red-50);
+	}
+
+	[data-flavor="rose"] {
+		--poster-fill: var(--color-rose-200);
+		--poster-ink: var(--color-rose-900);
+	}
 }
 
 /* ----------------------------------------------------------------------------
@@ -198,7 +283,7 @@
 	--font-heading: "Poppins", system-ui, sans-serif;
 	--font-body: "General Sans", system-ui, sans-serif;
 
-	--corners: 24px;
+	--corners: 16px;
 
 	--scale-ratio: 1.414;
 	--font-heading-weight: 700;
@@ -248,14 +333,14 @@
 }
 
 /* ----------------------------------------------------------------------------
-   EMPHASIS - intensity, not hue. The dial runs from soft to theatrical:
-   Default (the calibrated normal) · Muted (contrast eases off, chrome
-   recedes) · Focused (contrast sharpens, edges crisp) · Immersive (the paint
-   gets rich - fills carry a wash, the accent leans in). Each level still
-   speaks through the color tokens only - never type or shape, so any brand
-   works at any emphasis. These recipes are placeholders to make the dial
-   real; tune per level once it's felt in use. Light values here; dark
-   counterparts below with the scheme blocks. */
+   EMPHASIS - the dial runs from soft to theatrical, three stops (focused
+   and immersive merged into one theatrical level, 2026-07-11):
+   Default (the calibrated normal, 70s rainbow posters) · Muted (everything
+   whispers - page and posters both ease off) · Red light (the room goes
+   deep red and the posters vary by value, not hue). Each level still speaks
+   through the color tokens only - never type or shape, so any brand works
+   at any emphasis. Light values here; dark counterparts below with the
+   scheme blocks. */
 
 [data-emphasis="muted"] {
 	--fill-primary: var(--color-stone-100);
@@ -273,36 +358,23 @@
 	--accent: var(--color-stone-500);
 }
 
-[data-emphasis="focused"] {
-	--fill-primary: white;
-	--fill-secondary: var(--color-stone-50);
-	--fill-auxiliary: var(--color-stone-100);
+[data-emphasis="red-light"] {
+	/* Deep background in BOTH schemes - a red-lit room is dark by nature.
+	   Light scheme is the slightly warmer room; dark goes deeper still. */
+	--fill-primary: var(--color-red-900);
+	--fill-secondary: var(--color-red-950);
+	--fill-auxiliary: var(--color-red-800);
 
-	--ink-primary: var(--color-stone-950);
-	--ink-secondary: var(--color-stone-800);
-	--ink-auxiliary: var(--color-stone-600);
+	--ink-primary: var(--color-red-50);
+	--ink-secondary: var(--color-red-200);
+	--ink-auxiliary: var(--color-red-300);
 
-	--stroke-primary: var(--color-stone-500);
-	--stroke-secondary: var(--color-stone-400);
-	--stroke-auxiliary: var(--color-stone-300);
+	--stroke-primary: var(--color-red-700);
+	--stroke-secondary: var(--color-red-800);
+	--stroke-auxiliary: var(--color-red-800);
 
-	--accent: var(--color-blue-700);
-}
-
-[data-emphasis="immersive"] {
-	--fill-primary: var(--color-blue-50);
-	--fill-secondary: var(--color-blue-100);
-	--fill-auxiliary: var(--color-blue-200);
-
-	--ink-primary: var(--color-blue-950);
-	--ink-secondary: var(--color-blue-900);
-	--ink-auxiliary: var(--color-blue-800);
-
-	--stroke-primary: var(--color-blue-300);
-	--stroke-secondary: var(--color-blue-200);
-	--stroke-auxiliary: var(--color-blue-100);
-
-	--accent: var(--color-blue-600);
+	--accent: var(--color-red-300);
+	--scrim: rgb(0 0 0 / 0.45);
 }
 
 html {
@@ -338,29 +410,17 @@ html {
 		--stroke-auxiliary: var(--color-stone-700);
 		--accent: var(--color-stone-400);
 	}
-	[data-emphasis="focused"]:not([data-scheme="light"]) {
-		--fill-primary: var(--color-stone-950);
-		--fill-secondary: var(--color-stone-900);
-		--fill-auxiliary: var(--color-stone-800);
-		--ink-primary: white;
-		--ink-secondary: var(--color-stone-200);
-		--ink-auxiliary: var(--color-stone-400);
-		--stroke-primary: var(--color-stone-500);
-		--stroke-secondary: var(--color-stone-600);
-		--stroke-auxiliary: var(--color-stone-700);
-		--accent: var(--color-blue-400);
-	}
-	[data-emphasis="immersive"]:not([data-scheme="light"]) {
-		--fill-primary: var(--color-blue-950);
-		--fill-secondary: var(--color-blue-900);
-		--fill-auxiliary: var(--color-blue-800);
-		--ink-primary: var(--color-blue-50);
-		--ink-secondary: var(--color-blue-200);
-		--ink-auxiliary: var(--color-blue-300);
-		--stroke-primary: var(--color-blue-700);
-		--stroke-secondary: var(--color-blue-800);
-		--stroke-auxiliary: var(--color-blue-800);
-		--accent: var(--color-blue-300);
+	[data-emphasis="red-light"]:not([data-scheme="light"]) {
+		--fill-primary: var(--color-red-950);
+		--fill-secondary: var(--color-red-900);
+		--fill-auxiliary: var(--color-red-800);
+		--ink-primary: var(--color-red-100);
+		--ink-secondary: var(--color-red-300);
+		--ink-auxiliary: var(--color-red-400);
+		--stroke-primary: var(--color-red-800);
+		--stroke-secondary: var(--color-red-900);
+		--stroke-auxiliary: var(--color-red-900);
+		--accent: var(--color-red-400);
 	}
 }
 
@@ -391,28 +451,15 @@ html {
 	--accent: var(--color-stone-400);
 }
 
-[data-emphasis="focused"][data-scheme="dark"] {
-	--fill-primary: var(--color-stone-950);
-	--fill-secondary: var(--color-stone-900);
-	--fill-auxiliary: var(--color-stone-800);
-	--ink-primary: white;
-	--ink-secondary: var(--color-stone-200);
-	--ink-auxiliary: var(--color-stone-400);
-	--stroke-primary: var(--color-stone-500);
-	--stroke-secondary: var(--color-stone-600);
-	--stroke-auxiliary: var(--color-stone-700);
-	--accent: var(--color-blue-400);
-}
-
-[data-emphasis="immersive"][data-scheme="dark"] {
-	--fill-primary: var(--color-blue-950);
-	--fill-secondary: var(--color-blue-900);
-	--fill-auxiliary: var(--color-blue-800);
-	--ink-primary: var(--color-blue-50);
-	--ink-secondary: var(--color-blue-200);
-	--ink-auxiliary: var(--color-blue-300);
-	--stroke-primary: var(--color-blue-700);
-	--stroke-secondary: var(--color-blue-800);
-	--stroke-auxiliary: var(--color-blue-800);
-	--accent: var(--color-blue-300);
+[data-emphasis="red-light"][data-scheme="dark"] {
+	--fill-primary: var(--color-red-950);
+	--fill-secondary: var(--color-red-900);
+	--fill-auxiliary: var(--color-red-800);
+	--ink-primary: var(--color-red-100);
+	--ink-secondary: var(--color-red-300);
+	--ink-auxiliary: var(--color-red-400);
+	--stroke-primary: var(--color-red-800);
+	--stroke-secondary: var(--color-red-900);
+	--stroke-auxiliary: var(--color-red-900);
+	--accent: var(--color-red-400);
 }

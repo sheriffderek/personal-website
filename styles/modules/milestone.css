@@ -76,6 +76,8 @@
 		/* --corners is brand-owned (settings.css): each brand states its corner
 		   personality and every media frame follows. */
 		border-radius: var(--corners, 0);
+
+		transition: border-radius 0.2s;
 		overflow: clip;
 
 		/* Every media shape is built from .slide, so single posters and carousel

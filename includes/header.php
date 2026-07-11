@@ -49,7 +49,7 @@
 				if (['marketing', 'product', 'documentation'].indexOf(brand) !== -1) html.setAttribute('data-brand', brand);
 
 				var emphasis = localStorage.getItem('emphasis-preference');
-				if (['muted', 'focused', 'immersive'].indexOf(emphasis) !== -1) html.setAttribute('data-emphasis', emphasis);
+				if (['muted', 'red-light'].indexOf(emphasis) !== -1) html.setAttribute('data-emphasis', emphasis);
 
 				<?php if (GRID_VIEW_ENABLED && ($page_controls ?? null) === 'filter-control'): ?>
 					/* Grid only exists from 1600px (the breakpoint in

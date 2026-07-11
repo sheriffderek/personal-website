@@ -195,7 +195,7 @@ The theming behavior is a load-bearing artifact of this site — it's part of th
 
 **Attribute axes (each lives at a specific level, do not confuse):**
 - `data-brand` on `<html>` — structure: type pair, `--corners`, scale ratio, voice weights (`personal | marketing | product | documentation`). Absent = personal (`:root` IS the personal brand).
-- `data-emphasis` on `<html>` — intensity, not hue (`default | muted | focused | immersive`): a dial from soft to theatrical. Each level is still *expressed* through the color tokens only (that's the mechanism), but the semantic is loudness — muted eases contrast off, focused sharpens it, immersive lets the paint go rich. Absent = default. Current recipes are placeholders to make the dial real.
+- `data-emphasis` on `<html>` — a dial from soft to theatrical, three stops (`default | muted | red-light`; focused and immersive merged 2026-07-11). Each level speaks through the color tokens only (that's the mechanism) AND may override the poster flavors: default is the 70s muted-rainbow flavors on a neutral page; muted whispers both (flavors map to the near-neutral taupe/mist/olive/mauve families); red-light is the theatrical one — deep red page in both schemes, posters varying by value within the red family, not by hue. Absent = default.
 - `data-scheme` on `<html>` — `system | light | dark`. Absent = system (reads `prefers-color-scheme`).
 - `data-view` on `<html>` — `grid` when the grid view is applied; absent = list. See the Grid view section below.
 - `data-sound` on `<html>` — audio-feedback toggle.

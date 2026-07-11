@@ -315,8 +315,8 @@
 	   the sliders' max in includes/settings/{brand,emphasis}-switcher.php. */
 	var BRANDS         = ['personal', 'marketing', 'product', 'documentation'];
 	var BRAND_NAMES    = ['Personal', 'Marketing', 'Product', 'Documentation'];
-	var EMPHASES       = ['default', 'muted', 'focused', 'immersive'];
-	var EMPHASIS_NAMES = ['Default', 'Muted', 'Focused', 'Immersive'];
+	var EMPHASES       = ['default', 'muted', 'red-light'];
+	var EMPHASIS_NAMES = ['Default', 'Muted', 'Red light'];
 
 	var applyBrand = sliderSwitcher({
 		kind: 'brand',
