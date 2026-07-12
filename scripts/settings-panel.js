@@ -434,6 +434,16 @@
 					localStorage.setItem('filter-preference', String(tiersShown));
 				}
 			} catch (error) {}
+
+			/* A moved filter outdates any #milestone in the URL - the visitor
+			   has re-scoped the timeline (the hash may even point at a card
+			   the filter just hid), so the link to one moment in it is done.
+			   replaceState clears it without scrolling or adding a history
+			   entry. Only on real moves - restoring a saved filter at load
+			   must not eat a hash the visitor arrived with. */
+			if (window.location.hash) {
+				history.replaceState(null, '', window.location.pathname + window.location.search);
+			}
 		}
 		if (filterSlider) filterSlider.value = String(tiersShown);
 	}
@@ -663,33 +673,11 @@
 			}, 150);
 		});
 
-		/* In the grid, a milestone title click is "let me read this one" - so
-		   it lands in LIST view, scrolled to that milestone, instead of
-		   hash-jumping around the wall. */
-		document.addEventListener('click', function (event) {
-			if (!html.hasAttribute('data-view')) return;
-
-			var link = event.target.closest('.milestone .heading a');
-			if (!link) return;
-
-			event.preventDefault();
-
-			/* persist: false - this is a navigation aid ("let me read this
-			   one"), not the reader choosing list. Their saved grid choice
-			   survives for the next visit; only the toggle changes a
-			   preference. */
-			applyView('list', { persist: false });
-
-			/* Put the milestone in the URL (shareable, like any title click),
-			   then scroll to it ourselves - a hash assignment alone is a no-op
-			   when that hash was already set, so the explicit scroll is what
-			   guarantees the landing. Layout is already the list's: setting
-			   styles is synchronous, and the scroll forces the reflow. */
-			var hash = link.getAttribute('href');
-			var target = document.getElementById(hash.slice(1));
-			window.location.hash = hash;
-			if (target) target.scrollIntoView();
-		});
+		/* Milestone title clicks are plain hash links in BOTH views. The grid
+		   briefly diverted them into list view ("let me read this one"), but
+		   a click that swaps the whole layout confuses more than a scroll
+		   ever did - the cells carry the full card, so reading in place
+		   works. Removed 2026-07-12; don't re-add without a rethink. */
 	}
 
 	/* Corner island (grid view only - markup in settings-panel.php, chrome in
