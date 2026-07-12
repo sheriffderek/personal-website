@@ -18,7 +18,10 @@ label {
    fallback (a knocked-back inversion of the scope's own ink and fill)
    covers any scope that repaints tokens without saying a selection. */
 ::selection {
-	background-color: var(--selection-fill, color-mix(in oklab, var(--ink-primary) 75%, transparent));
+	background-color: var(
+		--selection-fill,
+		color-mix(in oklab, var(--ink-primary) 75%, transparent)
+	);
 	color: var(--selection-ink, var(--fill-primary));
 }
 
@@ -37,9 +40,41 @@ a.link {
 	text-underline-offset: 0.15em;
 }
 
-/*a.relaxed {
-	color: inherit;
-}*/
+/* The subtle link: wears the surrounding text's color and lets a quiet
+   underline carry the linkness - for links that shouldn't shout in a
+   sentence. Both knobs are optional per-emphasis tokens (settings.css);
+   undeclared, it inherits its color and underlines in the scope's own
+   quiet stroke - so every emphasis gets a correct relaxed link for free. */
+a.relaxed,
+.relaxed a {
+	display: inline;
+	color: var(--link-relaxed-color, inherit);
+	text-decoration: underline;
+	text-decoration-color: var(
+		--link-relaxed-underline-color,
+		var(--stroke-primary)
+	);
+	text-underline-offset: 0.15em;
+}
+
+/* Link marks - the relationship each link has to this page, said by glyph
+   and enforced by selector, so content never remembers to add an icon:
+   +  unfolds in place (the read-more summaries, hardcoded in the templates)
+   →  goes to another page here (the standalone read-more links)
+   ↗  opens outside this page (any targeted link - _blank or a named window)
+   inline-block keeps the propagated underline off the mark, matching the
+   read-more rule that the glyph sits outside the underlined span. */
+a[target]::after {
+	content: "↗";
+	display: inline-block;
+	padding-left: 0.05em;
+}
+
+a.read-more:not([target])::after {
+	content: "→";
+	display: inline-block;
+	padding-left: 0.05em;
+}
 
 picture {
 	display: block;
@@ -60,8 +95,8 @@ audio {
 	display: block;
 }
 
-ul[role='list'],
-ol[role='list'] {
+ul[role="list"],
+ol[role="list"] {
 	list-style: none;
 	margin: 0;
 	padding: 0;

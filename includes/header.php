@@ -106,6 +106,13 @@
 		<?php endif; ?>
 	<?php endif; ?>
 
+	<?php /* The slider hint ships behind its flag with the same "no weight when
+		off" contract: the script only loads when the flag is on, and it no-ops
+		on pages without carousels. */ ?>
+	<?php if (SLIDER_HINT_ENABLED): ?>
+		<script src='<?= asset('/scripts/slider-hint.js') ?>' defer></script>
+	<?php endif; ?>
+
 	<?php if (TOUR_ENABLED): ?>
 		<link rel='stylesheet' href='<?= asset('/styles/components/welcome-video.css') ?>'>
 		<script src='<?= asset('/scripts/welcome-video.js') ?>' defer></script>

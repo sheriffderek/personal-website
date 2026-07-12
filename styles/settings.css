@@ -60,6 +60,12 @@
 	   (tracks per emphasis since it reads --link-color); change this one line to
 	   any token for a differently-colored underline. */
 	--link-underline-color: var(--link-color);
+	/* The subtle link (a.relaxed, setup.css) has two OPTIONAL tokens an
+	   emphasis may declare: --link-relaxed-color (else it inherits the
+	   surrounding text) and --link-relaxed-underline-color (else the scope's
+	   --stroke-primary). Deliberately not declared here - the fallbacks ARE
+	   the default design, so every emphasis re-themes both links without
+	   restating anything. */
 	/* we also need the distance from the line/link here too, right? */
 
 	/* Scrim behind the mobile menu. Scheme-dependent only (not per emphasis),
@@ -317,7 +323,7 @@
 	--calm-voice-line-height: 1.6;
 	--strong-voice-font-weight: 600;
 	--attention-voice-font-weight: 700;
-	--attention-voice-line-height: 1.05;
+	--attention-voice-line-height: 1.2;
 	--loud-voice-font-weight: 700;
 	--loud-voice-line-height: 1;
 }

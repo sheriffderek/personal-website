@@ -100,6 +100,102 @@
 	<?php endif; ?>
 </div>
 
+<?php /* ---- Corner island (grid view only) ----
+	The conditional cluster from the CLAUDE.md island spec: appears once the
+	inline settings panel scrolls out of view (IntersectionObserver in
+	settings-panel.js), floats in the wall's right margin. Settings re-opens
+	the SAME panel node as a popover - one instance, never a duplicate.
+	Chrome/visibility live in grid-view.css. */ ?>
+<?php if ($page_has_grid): ?>
+	<nav class='corner-island' data-ui='app' aria-label='Quick controls'>
+		<button
+			type='button'
+			class='toolbox-trigger island-button'
+			data-island-settings
+			aria-expanded='false'
+			aria-label='Display settings'
+		>
+			<span aria-hidden='true'>
+				<svg
+					class='toolbox-glyph'
+					viewBox='0 0 16 16'
+					fill='none'
+					stroke='currentColor'
+					stroke-width='1.4'
+					stroke-linecap='round'
+					focusable='false'
+				>
+					<line x1='2.5' y1='5' x2='13.5' y2='5' />
+
+					<circle cx='10' cy='5' r='1.9' fill='currentColor' stroke='none' />
+
+					<line x1='2.5' y1='11' x2='13.5' y2='11' />
+
+					<circle cx='6' cy='11' r='1.9' fill='currentColor' stroke='none' />
+				</svg>
+			</span>
+		</button>
+
+		<?php /* Bulleted lines, NOT three bare bars - bare bars read as the
+			hamburger menu, and this button switches layout, it doesn't
+			navigate. (Learned the hard way 2026-07-11.) */ ?>
+		<button
+			type='button'
+			class='toolbox-trigger island-button'
+			data-island-list
+			aria-label='Switch to the list layout'
+		>
+			<span aria-hidden='true'>
+				<svg
+					class='toolbox-glyph'
+					viewBox='0 0 16 16'
+					fill='none'
+					stroke='currentColor'
+					stroke-width='1.4'
+					stroke-linecap='round'
+					focusable='false'
+				>
+					<circle cx='3.2' cy='3.5' r='0.9' fill='currentColor' stroke='none' />
+
+					<line x1='6' y1='3.5' x2='13.5' y2='3.5' />
+
+					<circle cx='3.2' cy='8' r='0.9' fill='currentColor' stroke='none' />
+
+					<line x1='6' y1='8' x2='13.5' y2='8' />
+
+					<circle cx='3.2' cy='12.5' r='0.9' fill='currentColor' stroke='none' />
+
+					<line x1='6' y1='12.5' x2='13.5' y2='12.5' />
+				</svg>
+			</span>
+		</button>
+
+		<button
+			type='button'
+			class='toolbox-trigger island-button'
+			data-island-top
+			aria-label='Back to top'
+		>
+			<span aria-hidden='true'>
+				<svg
+					class='toolbox-glyph'
+					viewBox='0 0 16 16'
+					fill='none'
+					stroke='currentColor'
+					stroke-width='1.4'
+					stroke-linecap='round'
+					stroke-linejoin='round'
+					focusable='false'
+				>
+					<line x1='8' y1='13' x2='8' y2='3.5' />
+
+					<polyline points='3.5,8 8,3.5 12.5,8' />
+				</svg>
+			</span>
+		</button>
+	</nav>
+<?php endif; ?>
+
 <?php /* ---- Pages menu - disabled until the sub-pages are real ----
 
 <button

@@ -692,6 +692,77 @@
 		});
 	}
 
+	/* Corner island (grid view only - markup in settings-panel.php, chrome in
+	   grid-view.css, design spec in CLAUDE.md). Visible only while the inline
+	   settings panel is off-screen: that is exactly the moment its jobs are
+	   orphaned, so panel-exit IS the condition - no magic scroll depth. The
+	   observer just reports the truth; the CSS gates it to grid view. */
+	var island = document.querySelector('.corner-island');
+	if (island) {
+		var islandSettings = island.querySelector('[data-island-settings]');
+		var islandList = island.querySelector('[data-island-list]');
+		var islandTop = island.querySelector('[data-island-top]');
+		var islandPanel = document.getElementById('menu-settings');
+
+		if (islandPanel && 'IntersectionObserver' in window) {
+			new IntersectionObserver(function (observed) {
+				/* Only the INLINE panel's visibility is the condition. In
+				   popover mode (opened from the island) the same node is
+				   suddenly "visible" again - acting on that would hide the
+				   island out from under its own open popover. Hold state
+				   until the panel is back in its inline home. */
+				if (islandPanel.hasAttribute('popover')) return;
+
+				island.classList.toggle('is-visible', !observed[0].isIntersecting);
+			}).observe(islandPanel);
+		}
+
+		/* Settings: re-add the popover attribute to the SAME panel node and
+		   pop it beside the island (positioning in grid-view.css). One panel
+		   instance, never a duplicate. Closing (Esc, light-dismiss, or the
+		   toggle below) returns it to its inline home at the top. */
+		if (islandSettings && islandPanel) {
+			islandSettings.addEventListener('click', function () {
+				if (islandPanel.hasAttribute('popover')) {
+					islandPanel.hidePopover();
+					return;
+				}
+				islandPanel.setAttribute('popover', '');
+				islandPanel.showPopover();
+				islandSettings.setAttribute('aria-expanded', 'true');
+			});
+
+			islandPanel.addEventListener('toggle', function (event) {
+				if (event.newState !== 'closed') return;
+				islandSettings.setAttribute('aria-expanded', 'false');
+
+				/* Only strip the attribute while the grid is applied - in
+				   list view the panel is SUPPOSED to be a popover, and
+				   applyView owns that state. */
+				if (html.getAttribute('data-view') === 'grid') {
+					islandPanel.removeAttribute('popover');
+				}
+			});
+		}
+
+		/* List: a real view choice, same as the panel's Layout row - it
+		   persists, and lands at the top like every deliberate view switch
+		   (the two layouts share no scroll geometry). */
+		if (islandList) {
+			islandList.addEventListener('click', function () {
+				applyView('list');
+				window.scrollTo(0, 0);
+			});
+		}
+
+		if (islandTop) {
+			islandTop.addEventListener('click', function () {
+				var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+				window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+			});
+		}
+	}
+
 	/* Outside-tap dismiss, for BOTH menus (Settings + Pages). Native popover
 	   light-dismiss is unreliable on iOS Safari (a styled ::backdrop swallows
 	   the tap, and support only landed in 18.3), so we close it ourselves.

@@ -71,6 +71,13 @@ button.grid-invite {
 	display: none;
 }
 
+/* The corner island renders in the rail wherever the grid CAN exist, but it
+   only ever SHOWS in grid view (rules in the [data-view='grid'] block below)
+   - in list view the toolbox row already does its jobs. */
+.corner-island {
+	display: none;
+}
+
 @media (width >= 1600px) {
 	/* List view = no data-view attribute (data-view is the single switch;
 	   'grid' is its only value). In grid view the invite's job is done. */
@@ -146,8 +153,10 @@ button.grid-invite {
 		   shadow; in the grid the controls sit on the page like content, the
 		   lane alignment does the framing. opacity must be forced: a
 		   non-popover never matches :popover-open, so the panel's
-		   `&:not(:popover-open) { opacity: 0 }` would hide it. */
-		.toolbox-panel {
+		   `&:not(:popover-open) { opacity: 0 }` would hide it.
+		   :not([popover]) scopes all of this to the INLINE state - when the
+		   island re-adds the attribute, the module's card chrome returns. */
+		.toolbox-panel:not([popover]) {
 			position: static;
 			inset: auto;
 			opacity: 1;
@@ -163,22 +172,74 @@ button.grid-invite {
 			box-shadow: none;
 		}
 
-		/* Inside the panel: the small controls stack in a left column, the
-		   filter (slider + minimap schematic) takes a right column at full
-		   height. The right column flexes because the panel is now a fixed
-		   lane width - a rigid minmax floor could overflow the lane. The
-		   span count = the panel's control rows; a new row in
-		   settings-panel.php means bumping it. */
-		.settings-panel {
+		/* The island-opened popover: the module css would anchor it to the
+		   rail (parked at the page TOP in grid view - off-screen once you've
+		   scrolled), so pin it to the viewport beside the island instead. */
+		.toolbox-panel[popover] {
+			position: fixed;
+			top: var(--page-top);
+			right: calc(var(--gutter) + 3.5rem);
+		}
+
+		/* Inside the inline panel: the small controls stack in a left
+		   column, the filter (slider + minimap schematic) takes a right
+		   column at full height. The right column flexes because the panel
+		   is a fixed lane width - a rigid minmax floor could overflow the
+		   lane. The span count = the panel's control rows; a new row in
+		   settings-panel.php means bumping it. The island-opened popover is
+		   excluded - it keeps the module's single-column stack. */
+		.settings-panel:not([popover]) {
 			display: grid;
 			grid-template-columns: max-content minmax(0, 1fr);
 			gap: 1.25rem 2.5rem;
 			align-items: start;
 		}
 
-		.settings-panel .filter-control {
+		.settings-panel:not([popover]) .filter-control {
 			grid-column: 2;
 			grid-row: 1 / span 5;
+		}
+
+		/* --- The corner island: the conditional cluster (CLAUDE.md spec).
+		   Exists only in grid view, and only while the inline panel is off
+		   screen (.is-visible from the IntersectionObserver in
+		   settings-panel.js). Fixed in the right margin the wall already
+		   leaves empty - vertical, one circular button per job. Reserved
+		   slots: members never appear/disappear individually, the whole
+		   island does. --- */
+		.corner-island {
+			position: fixed;
+			top: var(--page-top);
+			right: var(--gutter);
+			z-index: 6;
+
+			display: flex;
+			flex-direction: column;
+			gap: 0.25rem;
+			padding: 0.4rem;
+
+			background: var(--fill-primary);
+			border: 1px solid var(--stroke-primary);
+			border-radius: 999px;
+
+			opacity: 0;
+			visibility: hidden;
+			transition:
+				opacity 200ms ease,
+				visibility 200ms;
+
+			&.is-visible {
+				opacity: 1;
+				visibility: visible;
+			}
+		}
+
+		.corner-island .island-button {
+			width: 2.4rem;
+			height: 2.4rem;
+			padding: 0;
+			border-radius: 50%;
+			border: 1px solid var(--stroke-secondary);
 		}
 
 		/* Intro, wall, and footer share one left edge, inset by the
@@ -189,10 +250,14 @@ button.grid-invite {
 			padding-inline-start: max(var(--gutter), var(--wall-inset));
 		}
 
-		/* The intro reads as lane one: same measure as the wall's columns,
-		   so the top of the page shares the grid's geometry. */
+		/* The intro gets a reading measure (75ch), capped so it can never
+		   cross into the panel's lane - the panel sits on the wall's LAST
+		   lane and wears no card chrome, so an overrun doesn't stack behind
+		   it, it interleaves with it (seen at the 2-column stage, where one
+		   lane plus a gutter is narrower than 75ch). The cap is the room
+		   before that lane starts, minus one gap of breathing space. */
 		.page-header {
-			max-width: 75ch;
+			max-width: min(75ch, calc((var(--grid-columns) - 1) * (var(--wall-column) + var(--wall-gap)) - var(--wall-gap)));
 		}
 
 		/* --- The wall itself. Cells keep the full card at column width. ---

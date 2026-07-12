@@ -52,15 +52,12 @@
 
 	<?php if ($media_items): ?>
 
-		<?php
-			/* wrapAround only loops cleanly with 3+ cells; with 2 (poster + one
-			   item) Flickity clones and can leave a 1px seam at the edge. Cell
-			   count = 1 poster + the media items. */
-			$wrap_around = (count($media_items) + 1) >= 3 ? 'true' : 'false';
-		?>
-
 		<figure class='media'>
-			<div class='carousel' data-flickity='{ "wrapAround": <?= $wrap_around ?>, "imagesLoaded": true, "prevNextButtons": false }'>
+			<?php /* wrapAround with only 2 cells (poster + one item) can leave a
+			   1px clone seam at the edge - we turned it off for those once
+			   (2026-07-08) and losing the loop-through read as broken, which is
+			   worse. If the seam shows up again, fix the seam, not the wrap. */ ?>
+			<div class='carousel' data-flickity='{ "wrapAround": true, "imagesLoaded": true, "prevNextButtons": false }'>
 				<div class='slide' data-type='poster'>
 					<?php include INCLUDES_DIR . '/posters/poster-shapes.php'; ?>
 				</div>
@@ -92,7 +89,7 @@
 		<?php if (!empty($milestone['details'])): ?>
 			<details class='more'>
 				<summary class='read-more'>
-					<span class='calm-voice link'>Read more</span> →
+					<span class='calm-voice link'>Read more</span> +
 				</summary>
 
 				<text-content class='styled more-body'>
@@ -104,7 +101,7 @@
 			$is_external = strpos($milestone['link'], 'http') === 0;
 			$label = isset($milestone['link_label']) ? $milestone['link_label'] : 'Read more';
 		?>
-			<a class='read-more link' href='<?= $milestone['link'] ?>'<?= $is_external ? " target='_blank' rel='noopener'" : '' ?>><?= $label ?> →</a>
+			<a class='read-more link' href='<?= $milestone['link'] ?>'<?= $is_external ? " target='_blank' rel='noopener'" : '' ?>><?= $label ?></a>
 		<?php endif; ?>
 	</text-content>
 </article>

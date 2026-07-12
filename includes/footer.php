@@ -35,12 +35,55 @@
 </div>
 
 	<script>
+		// ------------------------------------------------------------------
+		// THE PLAYBACK RULEBOOK - what a tester should expect, in plain rules.
+		// This is the behavioral spec; every handler below implements one line
+		// of it. If the code and this list disagree, one of them is a bug.
+		//
+		// Two video kinds (the 'type' on each media item in milestones.json):
+		//   loop - ambient motion. Always muted, always loops, no controls.
+		//          The ONLY thing that ever autoplays.
+		//   play - a talking video. Audio + custom controls. Starts only when
+		//          its button is pressed, never by itself.
+		//
+		// On page load: every carousel sits on its poster cover slide, so
+		// nothing is playing anywhere.
+		//
+		// Scrolling: if a card's SELECTED slide is a loop and the card crosses
+		// the middle of the screen, the loop starts. A card leaving the screen
+		// entirely pauses its loops - but never a talking play, so you can
+		// listen while you scroll.
+		//
+		// Swiping: swiping away from a slide stops everything in that carousel
+		// (play included - a swipe is a direct gesture at that video). If the
+		// arriving slide is a loop, it starts.
+		//
+		// Hover (desktop): hovering a loop slide plays it; leaving pauses it
+		// unless it's the selected slide.
+		//
+		// Pressing a play button: it talks; any other talking play stops.
+		// Tapping the video body does nothing (so a swipe can't start a clip).
+		//
+		// Grid view: scrolling never starts a loop (the wall stays still), but
+		// swiping to a loop or hovering it still plays - those are direct
+		// gestures at that card, like pressing a play button.
+		//
+		// Always: at most one video is audible; autoplay is never audible;
+		// reduced-motion visitors get still frames, never motion.
+		// ------------------------------------------------------------------
 		window.addEventListener('load', () => {
+			// The one talking video. Only 'play' items carry audio (loops are
+			// muted by construction, in the markup), so audio exclusivity is a
+			// 'play'-only concern: pressing one silences the other. Loops run
+			// independently - ambient muted motion neither silences a talking
+			// 'play' nor waits for it to finish.
 			let current = null;
 
 			function play(video) {
-				if (current && current !== video) current.pause();
-				current = video;
+				if (isPlayVideo(video)) {
+					if (current && current !== video) current.pause();
+					current = video;
+				}
 				video.play();
 			}
 
@@ -53,17 +96,17 @@
 				return video.closest('.slide').dataset.type === 'play';
 			}
 
-			// A 'play' video is something the visitor pressed; a 'loop' is ambient
-			// motion nobody asked for. So loops yield: they never take the audio
-			// away from a running 'play'. Loops autoplay through here, while the
-			// play/pause button calls play() directly and always wins.
+			// Loops autoplay through here (scroll, settle, and hover all route
+			// through it); the play/pause button calls play() directly.
 			function autoplay(video) {
-				// Grid view is a wall of stills - ambient motion stands down there
-				// entirely (scroll, settle, and hover all route through here).
-				// A 'play' the visitor presses still works; that's a choice.
-				if (document.documentElement.getAttribute('data-view') === 'grid') return;
-				if (current && !current.paused && isPlayVideo(current)) return;
 				play(video);
+			}
+
+			// Grid view is a wall of stills: scrolling never starts a loop there.
+			// But a swipe to a loop slide or a hover IS a gesture at that card, so
+			// those still play - only the ambient scroll trigger checks this.
+			function gridView() {
+				return document.documentElement.getAttribute('data-view') === 'grid';
 			}
 
 			// Which cut to load. <source media> is ignored inside <video>, so we
@@ -252,7 +295,7 @@
 						: null;
 					if (view.fullyOff) {
 						pauseLoops();
-					} else if (!reduceMotion && view.pastStartLine && video && video.paused) {
+					} else if (!reduceMotion && !gridView() && view.pastStartLine && video && video.paused) {
 						autoplay(video);
 					}
 				};

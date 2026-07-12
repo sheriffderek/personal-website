@@ -37,3 +37,11 @@ define('TOUR_ENABLED', false);
    data-view - the site is exactly the single-column list. Trying it out -
    flip to false to pull it. */
 define('GRID_VIEW_ENABLED', true);
+
+/* SLIDER_HINT_ENABLED - the carousel-affordance nudge: the first carousel to
+   scroll into view slides itself a little toward slide 2 and settles back,
+   demonstrating the swipe. Once per pageview, retired forever after the
+   visitor's first real swipe (localStorage breadcrumb, same pattern as the
+   grid invite). Off = the script never loads. Trying it out - flip to false
+   to pull it. */
+define('SLIDER_HINT_ENABLED', true);
