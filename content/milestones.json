@@ -28,14 +28,16 @@
 			"purpose": "Show Derek looking friendly and approachable, and signal that he's looking for a new job / open to what's next. Room for general UI hints - line quality, a connecting-the-dots feel. Open to ideas.",
 			"assets": "Talking-head clip/photo of Derek (HTML shirt). Flow-diagram treatment: Derek's frame with arrows out to question-mark boxes ('what's next'), rendered in the poster-shape flavor colors."
 		},
+		"poster_note": "DECISION: full carousel, no size key. The \"now\" card, not core history - unique in that way; it carries a real intro video, so poster-shapes cover + media by default.",
 		"description": "<p>I'm holding out for the right full-time role - I want the right company to go all-in with, not just the next thing that lands on my plate. If you're reading this, there's a good chance you're on my list.</p> <p>While I've been exploring and talking with different companies, I took on some light consulting and rounded out a few side projects - but now I'm fully ready to join a new team.</p>",
-		"details": "<p>People don't always know what to make of me. My path has gone in a lot of directions - breadth and depth, as you'll see below. I can write full-stack code, lead design at a startup, plan and build an app end to end - but what I want most right now is to be on a team doing something that matters.</p>"
+		"details": "<p>People don't always know what to make of me. My path has gone in a lot of directions - breadth and depth, as you'll see below. I can write full-stack code, lead design at a startup, plan and build an app end to end - but what I want most right now is to be on a team doing something that matters.</p>",
+		"backstory": "Source (dereks-story-narrative.md, written Oct 2025): 'I don't want to run a software agency. I did my time.' What he actually wants: 'to be a product designer who has subject matter experts and a dev team' - still prototyping in code, but not responsible for shipping everything, and no competing commitments now that PE runs self-paced and List at Ease wrapped. The narrative was written aiming at Brilliant specifically ('career consolidation, not career change' - the educational-design through-line across 10 domains) - that framing transfers to any learning-product target. The card's 'light consulting' = Fulcrum Insights + ETERNL Health (semi-stealth, June 2026) and the longevity-clinic landing page (May-June 2026), per dereks-history.md."
 	},
 	{
 		"slug": "2026-portfolio-site",
 		"date": "June 2026",
 		"title": "2026 Fresh thoughts on the \"Portfolio\"",
-		"weight": 3,
+		"weight": 2,
 		"tags": [
 			"job",
 			"dev",
@@ -45,25 +47,30 @@
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
+		"poster_note": "DECISION: text-only for now. Eventually a video of Derek talking about the site plus a poster that loosely shows how it looks. Nothing for it today.",
 		"description": "<p>This is the site you're looking at right now. It had been a long time since I relied on a classic portfolio of work. I have a lot of thoughts on the <a class='relaxed' href='https://perpetual.education/stories/is-your-portfolio-doing-its-job-with-don-the-developer/' target='_blank' rel='noopener'>failures of the common dev portfolio</a> and the way bootcamps teach cookie-cutter case studies - but now that I'm back on the market, I needed a way to tell my less-than-linear story. I took the opportunity to show off my ideas on multi-brand design systems while housing my history in a small but impactful format. If it's doing its job, you'll say: \"Woah - Derek's worked across a big range and gone deep in all of it. We want to talk to him.\"</p>",
-		"details": ""
+		"details": "",
+		"backstory": "Source docs predate this site (the narrative ends Oct 2025), so there's no backstory to mine - the repo itself is the record of what it does. Known context: the anti-portfolio stance traces to the Don the Developer episode linked on the card, and the multi-brand theme system IS the design-systems demo the card claims. Nothing private to add."
 	},
 	{
 		"slug": "pe-self-paced",
-		"date": "2024 alphas – May 2026 launch",
+		"date": "May 2026",
 		"title": "Transitioning the PE LMS from cohort to self-paced",
-		"weight": 2,
+		"weight": 1,
 		"tags": [
 			"job",
 			"education",
 			"product"
 		],
 		"flavor": "moss",
+		"poster": "small",
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
-		"description": "<p>After years of running cohorts in parallel, I decided to take a break. But enough students were still asking to go through the course that I decided to try an experiment: what would happen if it were self-paced? Would people speed up? Get lost? I'm a big fan of cohort-style learning, but self-paced turned out to open up a lot of interesting angles. After enough successful trials, I committed to redesigning how the whole PE site worked, with a monthly membership.</p>",
-		"details": "<p>Moving off the daily drip meant major changes, but it also inspired a host of new features that are turning out to be really exciting. The final polish isn't everywhere yet, but it was a full rewrite with a ton of database changes - and now the system is themeable at every level.</p>"
+		"poster_note": "Small (16:3) heading band, decided 2026-07-12 - enough visual rhythm on the wall without competing with the first milestone beside it. (Supersedes the earlier intentionally-text-only call; the eventual case-study link still stands.)",
+		"description": "<p>After years of leading cohorts day to day, I decided to take a much-needed break to reset. But students kept asking to go through the course. So I tried an experiment: what would happen if it were self-paced? Would people speed up? Get lost? I'm a big fan of cohort-style learning - and I didn't want to lose that magic - but self-paced turned out to open up a lot of interesting opportunities. After enough successful trials, I decided to redesign from a daily drip to a system that lets people go at their own pace with clear milestone checkpoints, based on a monthly membership.</p>",
+		"details": "<p>Moving off the daily drip meant major changes, but it also inspired a host of new features that are turning out to be really exciting. Native CSS has come a long way since the initial build in 2019 - so I took the opportunity to fold in everything I'd learned about themeable systems. It was nearly a full rewrite with a ton of database changes. The final polish isn't everywhere yet, but the system is themeable at every level and fortified for its new job.</p>",
+		"backstory": "Source (narrative): the cohort cycle (Alphas 1-7, overlapping every 3-4 months for 4 years) was exhausting, and Derek let cohorts FADE rather than announcing an ending. Tested self-paced with 10 people before committing - it worked. The real validation: students needed Derek less and less as the curriculum refined - 'the ultimate validation: it works WITHOUT you.' Date note: dereks-history.md logs a 'self-paced transition' under 2024 (business-model redesign) while the official launch is May 2026 - it was a two-year fade, not one decision; the card dates it at the launch end. Un-fakeable: the 10-person trial, cohorts faded not killed."
 	},
 	{
 		"slug": "pe-figure-cms-options",
@@ -77,11 +84,14 @@
 			"design"
 		],
 		"flavor": "warm",
+		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
+		"poster_note": "DECISION: poster + media (full-cover carousel), slides to be made. Low tier (weight 5), but this is a visual feature and the slides are cheap to produce - screenshots of the frame system framing real UI. No size key (full 16:9 cover). Stays placeholder/text-only until the real slides exist; do not fake the seam.",
 		"description": "<p>PE's LMS has many types of figures and diagrams making up the workshop pages. When we first started, we'd often use macOS screenshots to show the UI, drop shadow and all - but those files are big, and it's rough to calculate the shadow size and align everything. There are semantic concerns, plus real-world ones - like a light image sitting on a light background, and how colors hold up across themes. So I designed a more programmatic approach that lets you show an image inside a UI we have full control over. This keeps our images sized down and more maintainable, and it's more fun.</p>",
-		"details": ""
+		"details": "",
+		"backstory": "Not in the source docs - nearest entry is 'PE Visual Design Curriculum (June 2026),' same work window but not this feature. Everything on the card (macOS screenshots with baked-in shadows, the programmatic frame approach) is memory-only. Low stakes at weight 5, but if a target note ever leans on this, it needs Derek."
 	},
 	{
 		"slug": "pe-code-editor",
@@ -113,8 +123,10 @@
 			"purpose": "Open with a UI-style drawing of how the CodeStudy component works - componentized and composable, drawn in our visual language. Following slides are real screenshots of the editor in use.",
 			"assets": "Real screenshots of the CodeStudy editor. The componentized/composable component diagram still needs to be drawn."
 		},
+		"poster_note": "EVENTUAL: \"poster\": \"medium\" band into a carousel - real editor screenshots (photo), a loop, and a play walkthrough; poster graphic = a graphic showing many frames around a box; plus a link out to a page showing all the CodeStudy feature examples. NOW: no poster, text-only - the slides and poster graphic are not made yet, so nothing sits on a placeholder. Set the medium key + real media when ready.",
 		"description": "<p>PE students live in real code and real projects - that's core to how DFTW works. But <em>some</em> ideas are best explored right on the workshop page. I researched everything under the sun, prototyped a base editor, tested it with real students, refined it, and put it into practice across the curriculum - fully themeable to be incorporated into any system.</p>",
-		"details": "<p>CodePen embeds did that job well for years. But when we finally decided to build a robust internal replacement, we wanted it to tick <em>all our boxes</em> - including running server-side code (PHP, Python), which almost no browser editor does. We even added touches like CSS grid guides, and we keep improving it as we run across interesting situations. It's built as a standalone system that can be hooked up to any language runner. The name: a \"study\" is the resource - a small, self-contained unit for exploring one idea - and &lt;code-study&gt; is the standalone app that runs it. So, CodeStudy.</p>"
+		"details": "<p>CodePen embeds did that job well for years. But when we finally decided to build a robust internal replacement, we wanted it to tick <em>all our boxes</em> - including running server-side code (PHP, Python), which almost no browser editor does. We even added touches like CSS grid guides, and we keep improving it as we run across interesting situations. It's built as a standalone system that can be hooked up to any language runner. The name: a \"study\" is the resource - a small, self-contained unit for exploring one idea - and &lt;code-study&gt; is the standalone app that runs it. So, CodeStudy.</p>",
+		"backstory": "Source is one line (dereks-history.md): 'PE Code Editor / CodeStudy (March 2026) - rebuilt the in-app coding interface for PE.' Card says April 2026 - minor mismatch, probably build vs rollout. Everything else (CodePen embeds doing the job for years, server-side runners as the differentiator, CSS grid guides, the study/code-study naming story) is memory-only but self-consistent with the LMS work. The editor itself is the demo."
 	},
 	{
 		"slug": "world-ia-day-2026",
@@ -127,7 +139,7 @@
 			"leadership"
 		],
 		"flavor": "warm",
-		"poster": "medium",
+		"poster": true,
 		"media": [
 			{
 				"type": "photo",
@@ -147,7 +159,9 @@
 			"assets": "Photos from the event, plus the visual language / branding we made for World IA Day."
 		},
 		"description": "<p>Information architecture is the core of all good communicative design, but too often we rush past it only to be misguided at every downstream turn. So when I was asked to chair the 2026 World IA Day for LA, I took on the mantle with purpose. Over 6 months, I worked with the volunteer team, ArtCenter and other partners to make sure we had a powerful conference that brought a spotlight to the power and importance of IA.</p>",
-		"details": "<p>IA conferences often turn into website-centric wireframing and UI talks - and conferences in general lately end up being all about \"AI\" - so I was set on keeping this one about <em>information architecture</em> itself. I defined three pillars for the theme and wrote the call for speakers around them. It was an interesting challenge to build an event around exploration and networking that was welcoming and thought-provoking for people of all experience levels.</p><p>Timelines, branding, graphics, the venue, the social plan, and so many shared logins I lost count. I met with every applicant to discuss their talk and decide if it fit our goals - then helped the final speakers shape their talks for the theme and the crowd. But mostly it's people. A dozen volunteers giving their time for free, everyone with their own way of working, and my job was making sure it all came together - supporting each person, playing to their strengths, and helping them grow along the way.</p>"
+		"details": "<p>IA conferences often turn into website-centric wireframing and UI talks - and conferences in general lately end up being all about \"AI\" - so I was set on keeping this one about <em>information architecture</em> itself. I defined three pillars for the theme and wrote the call for speakers around them. It was an interesting challenge to build an event around exploration and networking that was welcoming and thought-provoking for people of all experience levels.</p><p>Timelines, branding, graphics, the venue, the social plan, and so many shared logins I lost count. I met with every applicant to discuss their talk and decide if it fit our goals - then helped the final speakers shape their talks for the theme and the crowd. But mostly it's people. A dozen volunteers giving their time for free, everyone with their own way of working, and my job was making sure it all came together - supporting each person, playing to their strengths, and helping them grow along the way.</p>",
+		"backstory": "Source (dereks-history.md): role recorded as CO-chair, organized Nov 2025 - Mar 2026 (4 months); the card says 'asked to chair' and 'over 6 months.' Per Derek's telling, the co-chair didn't really show up, so Derek carried it - the public copy frames that gracefully (per the writing-rules example list), but the current details don't tell it at all. Confirm the co-chair story and the real time span with Derek before any target note uses it. Un-fakeable (memory-only): met with every speaker applicant personally; three theme pillars written into the call for speakers.",
+		"poster_note": "EVENTUAL: full-cover photo slider (NOT the medium band - medium would letterbox event photos to 16:6). NOW: text-only. TODO (cheap, deferrable): 4 real event photos already in content/milestones/world-ia-day-2026/ (01-04.jpg, wide only). Just need renaming to convention (01-photo-wide.jpg ...) + wiring as photo slides. No new assets to shoot."
 	},
 	{
 		"slug": "smart-text-editor",
@@ -166,8 +180,10 @@
 				"src": "/content/milestones/smart-text-editor/spacial-code-editor.jpg"
 			}
 		],
-		"description": "<p>I've been using AI in every way you can think of. It's part of my job to try everything and transfer that back to my students. People keep adding chatbots to everything, bolting things onto the same text editor we've always had. And who knows, maybe we won't write code in the future. But I think we <em>will</em>. The thing that would actually help people become better developers - keep them honing their skills, create more long-term value for a company, and still make good use of AI - is a different way to view code. Being able to pull up a feature and automatically pull up all the related code, so you can see exactly how it connects and work on it as a visualized system? That sure seems like a good idea. So I prototyped it.</p>",
-		"details": ""
+		"description": "<p>I've been using AI in every way you can think of. It's part of my job to try everything and transfer that back to the PE curriculum where needed - and generally just be as aware of what's happening as possible. Dev-centric apps keep adding chatbots to everything, bolting things onto the same text editor we've always had. And who knows, maybe we won't write code in the future. But I think we <em>will</em>.</p><p>The thing that would actually help people become better developers (keep them honing their skills, create more long-term value for a company, and still make good use of AI) isn't another text box - it's a different way to view code. Being able to pull up a feature and automatically pull up all the related code, so you can see exactly how it connects and work on it as a visualized system? That sure seems like a good idea. So I prototyped it.</p>",
+		"details": "",
+		"backstory": "Not in the source docs (Jan 2026 post-dates the narrative). The one real screenshot (spacial-code-editor.jpg) is the artifact - the prototype is the proof, not the docs. Card claims are memory-only. If this comes up in a target match, lead with the demo.",
+		"poster_note": "EVENTUAL: slider - abstract poster graphic showing the general mapped connection between editor windows, then 2 slides of the real thing. Fun exploration, low priority (weight 4), not much info needed. NOW: keeps its one real screenshot (spacial-code-editor.jpg) on the default poster-shapes cover - fine as-is. TODO: make the abstract mapped-connections poster art (moderate); grab 1 more real screenshot (cheap). Deferrable."
 	},
 	{
 		"slug": "midi-sequencing",
@@ -181,11 +197,14 @@
 			"design"
 		],
 		"flavor": "night",
+		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
 		"description": "<p>I've been sequencing MIDI instruments in software since 2001, when I was gifted a stack of synths. I started on Digital Performer and have used all the DAWs, then moved to hardware with the MPC1000. I've had a great time with all of it, but something always irked me. It wasn't until I started thinking in terms of \"components\" in code and Figma that I began investigating a <em>different</em> way to think about music design.</p>",
-		"details": "<p>DAWs (digital audio workstations - the software we use to record music) are built around the concept of \"tracks.\" But what if a sequence were a more abstract, reusable structure - something you could use anywhere, in any way, with its own connections to its outputs, without being tied to a track? What started as an exploration into \"a better MPC\" ended up becoming more of a universal protocol. I'll happily tell you all about it, but I decided it was something to pull some experts in on. The prototype and proofs of concept are exciting - but I did something a little strange: instead of pushing forward, I went back to document the journey to this point as a YouTube series. Do we really need a new way of sequencing? We'll find out.</p>"
+		"details": "<p>DAWs (digital audio workstations - the software we use to record music) are built around the concept of \"tracks.\" But what if a sequence were a more abstract, reusable structure - something you could use anywhere, in any way, with its own connections to its outputs, without being tied to a track? What started as an exploration into \"a better MPC\" ended up becoming more of a universal protocol. I'll happily tell you all about it, but I decided it was something to pull some experts in on. The prototype and proofs of concept are exciting - but I did something a little strange: instead of pushing forward, I went back to document the journey to this point as a YouTube series. Do we really need a new way of sequencing? We'll find out.</p>",
+		"backstory": "Source roots (narrative): a family member gifted old synths and drum machines during CCA (~2001) - first automated songs, MIDI sequencing, and later Max/MSP-programmed lighting synced to live performances. The floating 'MIDI Sequencer & Synth Learning Tool' consulting project in the source (interactive music education, undated) may be an earlier pass at the same thread - [NEEDS INFO] when/for whom. The 'universal protocol' framing and the document-the-journey YouTube detour are memory-only. Un-fakeable: the gifted stack of synths, Digital Performer start, MPC1000.",
+		"poster_note": "EVENTUAL: slider of Figma screenshots of the sequencing concept. Full cover. NOW: text-only (no assets yet). TODO: export the Figma screenshots (moderate). Deferrable (weight 4)."
 	},
 	{
 		"slug": "outside-insights-turing",
@@ -198,11 +217,14 @@
 			"education"
 		],
 		"flavor": "night",
+		"poster": "medium",
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
-		"description": "<p>I met up with Jeff Casimir to talk shop and share insights with Turing's students. I talked about my background, how I learned, mistakes I made, the importance of the fundamentals and a core problem-solving attitude, pedagogy, how AI changes things in ways people aren't seeing yet, finding a niche, what employers actually need, and more. It's <a class='relaxed' href='https://youtu.be/UNEjOi7ouSc?si=_Qt94tnWdrUnIgqJ&amp;t=106' target='_blank' rel='noopener'>on YouTube</a>.</p>",
-		"details": ""
+		"description": "<p>I met up with Jeff Casimir to talk shop and share insights with Turing's students. We got into how AI is changing things in ways people aren't seeing yet, what employers actually need, and the mistakes I made when I was learning. It's <a class='relaxed' href='https://youtu.be/UNEjOi7ouSc?si=_Qt94tnWdrUnIgqJ&amp;t=106' target='_blank' rel='noopener'>on YouTube</a>.</p>",
+		"details": "",
+		"backstory": "Source is one line ('Guest lecturer Turing School'). The YouTube video linked on the card is the real record - Jeff Casimir and the topic list are verifiable there. Nothing private to add.",
+		"poster_note": "EVENTUAL: \"poster\": \"medium\" band, poster-only (no slider) - an abstract poster graphic of the two of us talking. Podcast/talk-family treatment. NOW: text-only. TODO: make the abstract talking-heads poster art (moderate). Deferrable (weight 6)."
 	},
 	{
 		"slug": "list-at-ease",
@@ -224,6 +246,7 @@
 			"purpose": "Convey 'a lot of planning and design systems.' A collage of components from the app, in our visual style. Following slides are autoplay videos showing aspects of the app.",
 			"assets": "Component collage to be assembled in our visual style. Autoplay video clips of the app in use for the subsequent slides."
 		},
+		"poster_note": "EVENTUAL: full slider, same recipe as list-at-ease-style pitch - component-collage poster (see poster_plan) + several autoplay (loop) videos, the volume selling \"a ton of work.\" Weight-1 pitch card, HIGH priority. NOW: one real loop (01-loop-wide.mp4) already live on the default cover - keep it. TODO: build the component-collage poster (moderate); capture more autoplay clips - ASSET SOURCE: there are good interactive CodePens to screen-record (cheaper than re-capturing the app).",
 		"description": "<p>People traditionally pay six percent in realtor fees to sell a house, mostly because the process is complicated and gated behind a license. The founders came to us with a whiteboard sketch and an ambitious plan: let a homeowner do it themselves, legally, with a licensed realtor handling compliance behind the scenes. I led the research and discovery, then the end-to-end design and build for what would usually cost millions and require a large, focused team.</p>",
 		"details": "<p>The system breaks into four product scopes that tie together. First, onboarding and agent-matching. Second, data upload plus education for getting the house and its documents ready. Third, a course-like flow for being on the market - showings, offers, negotiation - paced so it feels complete and even a little fun instead of overwhelming. And fourth, a robust dashboard where agents and admins run everything behind the scenes. Four big flows, each with its own goals, and I built the whole thing. On a lean team, I treated every stakeholder as a user and a co-designer, and I made the tradeoff calls: what was worth building carefully in Figma, and what we could just build and refine right in the browser.</p><p>There's a lot of talk on LinkedIn about AI and 10x-ing this or that - but most of it is hype from people who don't know what they're talking about. I do. I used this project to explore everything Claude Code (and many other AI tools) have to offer: project structure, an agentic design system, skills, agents, all of it. The real skill isn't using AI, it's judgment. I know where LLMs and agents genuinely help - and where they become a trap that steals your human context, quietly builds tech debt, and erodes the communication a team runs on.</p>",
 		"backstory": "Working notes (private, from dereks-story-narrative.md) - the unpolished version the card smooths over. I came in to finally be JUST the product designer and stay out of the code. Hired Saeed to lead dev and Brian as the full-stack workhorse. Saeed did basically nothing for a month, so I fired him - back to square one. I'd already stood up the Laravel infrastructure and used it to teach the team TDD, so I got pulled right back into dev anyway. A second dev hire flaked too, so it was really just me and Brian. Matthew (the partner) checked out, and the client checked out after they paid - strange dynamics, not the collaborative team I wanted. Scoped for 3 months, dragged to 8. Never went live (legal/marketing timing), but the four-flow build and the thinking are a mile deep. Real end-to-end ownership, and genuinely exhausting. Un-fakeable specifics for matching: fired a non-performing lead, taught the team TDD on Laravel, held the whole thing together on a two-person team when both the partner and the client disengaged."
@@ -239,7 +262,7 @@
 			"speaking"
 		],
 		"flavor": "night",
-		"poster": "medium",
+		"poster": "small",
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
@@ -247,6 +270,7 @@
 			"purpose": "Event images mixed with the playful graphic style from the symposium, filtered through our general visual language. Following slides: images from the event.",
 			"assets": "Photos from the AICAD symposium, and the event's playful graphic style to riff on."
 		},
+		"poster_note": "EVENTUAL: \"poster\": \"small\" band, poster-only (no slider) - a poster graphic, likely riffing on the symposium playful style in our visual language. SUPERSEDES the poster_plan above: event photos are out - Derek: \"not sure what photos from the event would really help with.\" NOW: text-only. TODO: make the medium poster art (moderate). Weight 1, but only one graphic to produce.",
 		"description": "<p>The Association of Independent Colleges of Art and Design (AICAD) is the consortium of the top art and design schools in the country. Each year they hold a symposium to address what's changing in education. I was invited to speak, and my talk, \"Untangling Web Design Education,\" argued that most programs teach tools instead of core universal design and communication foundations - and that we're failing students because of it. Web designers and developers are building the systems we all have to use. Their work reaches the farthest, with the most serious consequences - yet we expect them to learn through YouTube videos and \"watch how I do it\" courses. We've arbitrarily separated people into \"creatives\" and \"coders\" when what we truly need are well-rounded Designers.</p>",
 		"details": "<p>It was strange being \"back at art school\" - this time as an educator. I spent days across the beautiful ArtCenter campuses, sitting among educators and provosts from the top design schools in the country - including CCA, where I did my undergrad. I especially enjoyed <a class='relaxed' href='https://safiyaunoble.com' target='_blank' rel='noopener'>Safiya Noble</a>'s keynote (<em>Algorithms of Oppression</em>) and the <a class='relaxed' href='https://datavandals.com' target='_blank' rel='noopener'>Data Vandals</a> (a data-viz art collective out of NYC). I got to hear so many perspectives - but some of these schools are strangely out of touch about AI. Someone with a lot of influence over these programs asked, in earnest, whether it means we could get students through a degree in two years instead of four. No. That's not how art school works, at all.</p>",
 		"backstory": "Source is logistics-only (dereks-history.md): talk 'Untangling Web Design Education,' ArtCenter College of Design (Pasadena), Nov 13-15 2024, AICAD annual gathering, tracks AI/ML / New Learners / Pedagogy and Practice / Graduate Education. The good texture - Safiya Noble's keynote, the Data Vandals collective, the provost who asked about two-year degrees, the CCA-undergrad full-circle - is already in the public 'details,' not the source. So there's little PRIVATE backstory to add here yet. If there's more grit (who invited him, how the talk landed, specific conversations), it needs Derek."
@@ -255,7 +279,7 @@
 		"slug": "open-office-hours",
 		"date": "March 2024 – ongoing",
 		"title": "Open office hours for designers and developers",
-		"weight": 1,
+		"weight": 2,
 		"tags": [
 			"job",
 			"education",
@@ -263,7 +287,6 @@
 			"mentoring"
 		],
 		"flavor": "rose",
-		"poster": "medium",
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
@@ -271,8 +294,10 @@
 			"purpose": "Show a shared video call - a Slack/Zoom-style UI - with a photo of Derek and placeholder people talking. Conveys the 1:1 / small-group session vibe. No subsequent slides needed.",
 			"assets": "Photo of Derek, placeholder participant avatars, and a mocked Slack/Zoom-style call interface."
 		},
+		"poster_note": "DECISION: text-only, no poster. The card carries on the human story (hundreds of real conversations); a mocked Zoom/Slack call UI would be generic filler that adds nothing and costs the timeline some visual variety. SUPERSEDES the poster_plan above. OPTIONAL / nice-to-have only: an abstract \"video sharing\" medium poster - not owed, do not treat as a real TODO.",
 		"description": "<p>I meet a lot of designers and developers. I'm active in local meetups, I get asked to guest critique (at local colleges), I keep up with the sentiment across forums - so I hear it when people need help. But if you really want to help, you have to talk with the actual human. It might be someone just starting out, or a veteran who's lost in how to present themselves. So I decided to take a proactive approach and just <em>be there</em> for anyone who needed it.</p>",
-		"details": "<p>I'm not sure if it was COVID or something larger in society - but so many designers and developers were hiding out, not being human, not connecting. Part of the point was to get them to come out of their shell and meet someone who'd actually look at their work with them. People building robots. People with a bootcamp plus a CS degree plus a master's who still couldn't figure out how to do anything. Designers who felt down on themselves but turned out to be really talented once they learned how to talk about their work. Every conversation is different - and sometimes I meet people who blow me away. It's not really \"mentorship\" so much as getting together and talking about design - not just Figma and JavaScript, but how we see the world. And selfishly, I come away with a huge range of stories and situations you'd never see from inside a single job. I've seen the inside of hundreds of people's ecommerce stores, visual design portfolios, and design system problems at work. That kind of exposure is its own education.</p>"
+		"details": "<p>I'm not sure if it was COVID or something larger in society - but so many designers and developers were hiding out, not being human, not connecting. Part of the point was to get them to come out of their shell and meet someone who'd actually look at their work with them. People building robots. People with a bootcamp plus a CS degree plus a master's who still couldn't figure out how to do anything. Designers who felt down on themselves but turned out to be really talented once they learned how to talk about their work. Every conversation is different - and sometimes I meet people who blow me away. It's not really \"mentorship\" so much as getting together and talking about design - not just Figma and JavaScript, but how we see the world. And selfishly, I come away with a huge range of stories and situations you'd never see from inside a single job. I've seen the inside of hundreds of people's ecommerce stores, visual design portfolios, and design system problems at work. That kind of exposure is its own education.</p>",
+		"backstory": "Source (dereks-history.md): started March 2024, Saturdays 11am PST, posted on r/codingbootcamp (link in source). The longer private thread: Derek was tutoring Lambda School students around 2019 - paying customers of a $30k program coming to HIM for help - and the free office hours are the public continuation of that. Narrative also notes the marketing/community-building function (Reddit presence, PE pipeline) - the card frames it as pure service; both are true."
 	},
 	{
 		"slug": "don-podcast-gap",
@@ -286,29 +311,14 @@
 			"community"
 		],
 		"flavor": "warm",
+		"poster": "medium",
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
 		"description": "<p>I met up with DonTheDeveloper for a frank discussion about the uncomfortable gap between what junior devs have and what they actually need to be hirable. Between Don and me, we've probably talked to more coding bootcamp students than just about anyone. Is it a teaching issue? Or a change in our culture? Well, it got 50k+ views, so apparently people were curious. It's <a class='relaxed' href='https://www.youtube.com/watch?v=EHmqZkC3LqU' target='_blank' rel='noopener'>on YouTube</a>.</p>",
-		"details": ""
-	},
-	{
-		"slug": "pe-redesign-dashboard",
-		"date": "February – September 2023",
-		"weight": 2,
-		"title": "PE Redesign + Student Dashboard",
-		"tags": [
-			"job",
-			"dev",
-			"education",
-			"design"
-		],
-		"flavor": "rose",
-		"media": [
-			"/content/placeholder/poster-wide.png"
-		],
-		"description": "<p>Comprehensive PE redesign. New landing page with GSAP scroll animations, refreshed CSS architecture, the first real student dashboard with progress visualization, and admin views for instructors. The platform finally looked like the school it had become.</p>",
-		"details": "<p>By 2023 the visual surface hadn't kept up with the depth of what was inside. The redesign brought everything back into one voice and made the dashboard a daily place for students to land - not just a content browser to click through.</p>"
+		"details": "",
+		"backstory": "Not in the source docs. The episode (50k+ views) is its own record. Context: the Don relationship started with the April 2021 episode right after PE's first cohort launched, and grew into a channel (this episode, plus the portfolio conversation linked on the 2026-portfolio-site card). More texture needs Derek.",
+		"poster_note": "EVENTUAL: \"poster\": \"medium\" band, poster-only - abstract \"us talking\" graphic. Same podcast/talk-family treatment as outside-insights-turing. NOW: text-only. TODO: abstract talking-heads poster art (moderate). Deferrable (weight 6)."
 	},
 	{
 		"slug": "better-life",
@@ -320,7 +330,7 @@
 			"product"
 		],
 		"flavor": "rose",
-		"poster": "medium",
+		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
@@ -328,6 +338,7 @@
 			"purpose": "Same treatment as the List at Ease poster (a component collage in our visual style), but with UI examples from this app. Following slides: screenshots of the branding.",
 			"assets": "UI examples from the better-life app for the collage. Branding screenshots for the subsequent slides."
 		},
+		"poster_note": "EVENTUAL: full slider, same recipe as list-at-ease - a wide-range-of-UI collage poster + autoplay (loop) videos for a \"ton of stuff\" vibe. Weight-1 pitch card, HIGH priority. NOW: text-only. TODO: source UI from the saved Figma (live site is gone - see backstory); build the UI-range collage poster (moderate); autoplay clips - ASSET SOURCE: good interactive CodePens to screen-record.",
 		"description": "<p>A real estate mastermind community had grown from simple group calls to seven patched-together third-party services. They'd proven people wanted it, but it was a mess - separate logins everywhere, no clear sense of what lived where. I worked across the whole product to pull it into one unified social network: research, UX flows, prototyping and testing with users, leading front-end, and handling some unexpected evolution of the visual branding.</p>",
 		"details": "<p>I came on as \"the UI designer\" - a title I'd never held on its own. I was honestly excited to see what it'd be like to work <em>only</em> in Figma, not as UX or dev. That lasted about a minute. They needed me on UX almost immediately, and from there I got pulled into every aspect of it.</p><p>The project had a little of everything: a unique stepped onboarding flow, discovery for finding and joining your group, and heavy API integration for video and meetings. There was a data science side too - collecting the right data to match people into pods - so the design had to account for it. We even did a pretty deep R&amp;D pass on a companion habit-tracking app.</p><p>Before I'd joined the team, they'd worked with a great <a class='relaxed' href='https://invisiblecreature.com' target='_blank' rel='noopener'>brand designer</a> to rework the identity. I loved the direction - but the moment we put it on real screens, everything felt like Home Depot. The orange that had felt like an adventurous angle - didn't work. I needed to evolve it all fast - conferences were already on the calendar, collateral and marketing underway. So I redirected the color system and rebuilt the brand guidelines mid-project.</p>",
 		"backstory": "SOURCE THIN + CONFLICTING - confirm with Derek before trusting. The source docs frame this as 'A Better Life - Financial Education / personal finance and life organization,' split across a 2023 'financial education' section and a 'Mid-2024 UI Designer' section (possibly conflated or mis-dated). The public card frames it as a real-estate mastermind social network + habit-tracking R&D with the Home Depot rebrand story - and 'Home Depot,' 'mastermind,' and 'realtor' appear NOWHERE in the source, so those vivid details are memory-only. Open questions: is this finance or real-estate-mastermind (or did the framing shift)? One project or two? What's the real Home Depot rebrand story? Known-true from source: came on as UI Designer (first time with that title), scope expanded fast to UX + branding + dev, heavy gamification, social/collaborative, data-driven onboarding."
@@ -343,11 +354,14 @@
 			"dev"
 		],
 		"flavor": "night",
+		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
 		"description": "<p>When I was learning to code, I was surprised there weren't better tools to show exactly how a variable was used across a longer program. The original idea was already in place at PE, but it was a pain to mark up and maintain. So with the redesign underway, it was the right time to build our ideal tool for authoring our own snippets. It's core to how our \"feature\" system works - our very targeted, pared-down internal MDN.</p>",
-		"details": ""
+		"details": "",
+		"backstory": "Not in the source docs - PE internals only appear as summary bullets ('built interactive coding interfaces and visual learning tools'). The card's claims (the original hard-to-maintain markup, the 'feature' system as a pared-down internal MDN) are memory-only. Fine at weight 5.",
+		"poster_note": "EVENTUAL: slider showing the behind-the-scenes authoring UI + examples of the code colors / highlighting. Full cover. NOW: text-only. TODO: screenshots of the live system (authoring UI + colored-code examples) - cheap to capture. Weight 5, easy."
 	},
 	{
 		"slug": "equivalent-design",
@@ -361,7 +375,7 @@
 			"accessibility"
 		],
 		"flavor": "cool",
-		"poster": "medium",
+		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
@@ -369,8 +383,10 @@
 			"purpose": "Graphic examples showing the same SVG/logo rendering across light mode, dark mode, and forced colors - demonstrating the accessibility/theming problem and how it behaves when done right.",
 			"assets": "SVG/graphic examples we can show side by side in light mode, dark mode, and forced-colors mode."
 		},
+		"poster_note": "EVENTUAL: poster showing a simple graphic in light + dark mode (evokes the same-graphic-across-contexts accessibility work; see poster_plan), plus slides. ASSET SOURCE: good interactive CodePens to screen-record for the slides. Weight-1 accessibility credential. NOW: text-only. TODO: make the light/dark poster graphic (moderate); video the CodePens (cheap-moderate).",
 		"description": "<p>Light mode, dark mode, forced-colors, contrast, and animation preferences - can you build universal graphics that <em>behave</em> no matter the context? You know those logos in your email that show up broken, black on black? Situations where branding just feels broken across platforms? An accessibility-focused company was working on a solution, and I came on to consult and audit what they'd accomplished so far. It's not something a lot of people think about, so I helped build out the education: client-facing material so target companies could understand the technology by interacting with it, plus internal explainers and checklists for the teams we'd be working with.</p>",
-		"details": "<p>I created examples in every combination we could discover and documented each one in extreme detail. I worked with real screen reader users and blind testers along the way. We explored a bunch of ways to show the technology - scrolling storytelling, interactive demos - and I represented the work at the <a href='https://www.csun.edu/cod/conference'>CSUN Assistive Technology Conference</a> that year, where I met a lot of amazing people and got real feedback.</p><p>This kind of work goes deep - it's not a graphic you fix once and hand back. It's embedding with a company's internal team, shifting how they think about it, and working out how all of these pieces fit into their design and theming system at large.</p>"
+		"details": "<p>I created examples in every combination we could discover and documented each one in extreme detail. I worked with real screen reader users and blind testers along the way. We explored a bunch of ways to show the technology - scrolling storytelling, interactive demos - and I represented the work at the <a href='https://www.csun.edu/cod/conference'>CSUN Assistive Technology Conference</a> that year, where I met a lot of amazing people and got real feedback.</p><p>This kind of work goes deep - it's not a graphic you fix once and hand back. It's embedding with a company's internal team, shifting how they think about it, and working out how all of these pieces fit into their design and theming system at large.</p>",
+		"backstory": "Source: Feb-Aug 2022, SVG + accessibility R&D, built internal tools to teach the team about accessible graphics, and prototyped a habit tracker they were considering building. The private grit (narrative): the ending was weird - Derek had to tell them their tech wasn't really proprietary (you can't patent SVGs that are public knowledge) - his 'why do I always end up working for crazy people?' pattern. Also pedagogically load-bearing: PE students watched him get and do this job in real time - 'I'm actually doing the things they're learning for real - and they can see it.' The CSUN conference appearance in the public details is NOT in the source - memory-only. The habit-tracker R&D here predates the better-life habit-tracking R&D - possible thread, check with Derek."
 	},
 	{
 		"slug": "pe-calendar-milestones",
@@ -384,11 +400,14 @@
 			"design"
 		],
 		"flavor": "cool",
+		"poster": "small",
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
 		"description": "<p>When PE started, it ran on a very simple drip mechanic. Your goal was to spend 2-3 hours a day on one clearly scoped workshop - no more, no less. Sometimes that shifted a day based on life, but from your cohort's start date, you'd see a new workshop show up in your list each day. It worked. But students and teachers also need to plan around holidays, breaks, and think a little more long-term. So I designed a calendar view that showed each cohort's progress and let us shift things around based on the time of year and how far along a cohort was.</p>",
-		"details": "<p>Just like any college course, you develop it over years - adjusting as you learn from the students. We'd float a bunch of links and resources in Slack, but they'd get lost in the mix. Which things are ephemeral conversations, and which are gems worth holding onto and pinning to the timeline? We needed a place where everyone could see everything we deemed worthy. That led to the \"gem\" content type, and to more standalone resource types that make up \"milestones\" - which open up along with course progression and are tied to workshops, so people see exactly what they need without having to track anything down.</p>"
+		"details": "<p>Just like any college course, you develop it over years - adjusting as you learn from the students. We'd float a bunch of links and resources in Slack, but they'd get lost in the mix. Which things are ephemeral conversations, and which are gems worth holding onto and pinning to the timeline? We needed a place where everyone could see everything we deemed worthy. That led to the \"gem\" content type, and to more standalone resource types that make up \"milestones\" - which open up along with course progression and are tied to workshops, so people see exactly what they need without having to track anything down.</p>",
+		"backstory": "Not in the source docs beyond summary bullets ('milestone dashboards, feedback tools, progress tracking'). The card's story (daily drip outgrown, the calendar view, 'gem' content type, milestone resources tied to workshops) is memory-only. Fine at weight 5.",
+		"poster_note": "EVENTUAL: \"poster\": \"small\" band, poster-only (no slider) - an abstract calendar graphic. Part of getting some small posters into the timeline for visual rhythm variety. NOW: text-only. TODO: make the abstract calendar small-poster art (cheap-moderate). Weight 5."
 	},
 	{
 		"slug": "dondev-podcast-2021",
@@ -402,11 +421,14 @@
 			"community"
 		],
 		"flavor": "moss",
+		"poster": "medium",
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
 		"description": "<p>Right after PE's first cohort launched, Don (who's interviewed students from pretty much every coding bootcamp) had me on to explain the idea behind Design for <em>The Web</em>. How are we going to teach coding and visual design together? Is Derek crazy? It was the first time I got to lay out publicly why the two belong in the same curriculum - and I got to make a new friend. <a class='relaxed' href='https://www.youtube.com/watch?v=Djmiqd-S13Q' target='_blank' rel='noopener'>Watch on YouTube</a>.</p>",
-		"details": ""
+		"details": "",
+		"backstory": "Not in the source docs, but the timing checks out against them: first cohort launched March 3, 2021, and this episode is April 2021 - 'right after PE's first cohort launched' is confirmed by the dates. First public articulation of the DFTW design-plus-code thesis, and the start of the Don friendship that produced the 2024 episode.",
+		"poster_note": "EVENTUAL: \"poster\": \"medium\" band, poster-only - abstract \"us talking\" graphic. Same podcast/talk-family treatment as outside-insights-turing and don-podcast-gap. NOW: text-only. TODO: abstract talking-heads poster art (moderate). Deferrable (weight 6)."
 	},
 	{
 		"slug": "pe-study-hall",
@@ -424,7 +446,9 @@
 			"/content/placeholder/poster-wide.png"
 		],
 		"description": "<p>In DFTW (and any PE program), your progress is shown by your ability to complete your projects. You can either do it - or you can't. This cuts out the \"Well, am I good enough yet\" mentality. Can you make a website - or not? No mystery here. Building that sense of what it means to actually understand something is core to our pedagogy. But we wanted to try building a data-driven Anki-type system and see how people used it.</p>",
-		"details": "<p>The goal was to help students see how much they were learning - just an added reminder - but it also served as a conversation starter. Students often avoid just meeting up and chatting if they don't have something specific to talk about, so we created \"Study Hall\" as a companion layer that feeds off the material introduced in each workshop. Use it as a conversation guide, to practice interviews, as a recap, or not at all! The truth is, almost no one used it - but the gears are in place, one student even used the API endpoint to build their own Anki system, and it's becoming more useful now with the self-paced model.</p>"
+		"details": "<p>The goal was to help students see how much they were learning - just an added reminder - but it also served as a conversation starter. Students often avoid just meeting up and chatting if they don't have something specific to talk about, so we created \"Study Hall\" as a companion layer that feeds off the material introduced in each workshop. Use it as a conversation guide, to practice interviews, as a recap, or not at all! The truth is, almost no one used it - but the gears are in place, one student even used the API endpoint to build their own Anki system, and it's becoming more useful now with the self-paced model.</p>",
+		"backstory": "Not in the source docs. The card is already unusually honest ('almost no one used it'). The student who built their own Anki system off the API endpoint is memory-only - a great un-fakeable specific if Derek can name who and when.",
+		"poster_note": "DECISION: likely text-only, no poster. The card is deliberately the honest \"almost no one used it\" story; it does not need a visual. Weight 5 texture. OPTIONAL only: a small UI screenshot if ever wanted - not a real TODO."
 	},
 	{
 		"slug": "pssst-css",
@@ -441,7 +465,9 @@
 			"/content/placeholder/poster-wide.png"
 		],
 		"description": "<p>As a developer, there are usually two roads: you pick something you like and stick with it forever, or you're like me and constantly on the hunt for better ways to organize things. It's important not to rehash things in your practical work, but this is where I've kept my view on CSS documented as a starter for new projects. It's changed a lot over the years, but the core ideas are still the same. If you actually think it all through in layers, you can write clean, clear CSS you understand - instead of consciously trying to avoid it.</p>",
-		"details": ""
+		"details": "",
+		"backstory": "Source is one line (dereks-history.md): 'Design Systems / PSSST CSS (ongoing, 2026) - currently reworking.' The repo (github.com/perpetual-education/pssst-css) is the real record, and it's the house methodology across all of Derek's projects. The long-lineage claim on the card is consistent with the CSS-Tricks type-patterns article (Jan 2021) being an output of the same thinking.",
+		"poster_note": "DECISION: text-only for now. A methodology is abstract and Derek is unsure how to show it; do NOT force a graphic that does not actually illuminate it (never build around a weak guess). PARKED IDEA (when inspired, not owed): the PSSST name is a layer stack (Preset -> Setup -> scales -> Settings -> Structure -> Typography), so an abstract labeled-stack poster could evoke it. Weight 2."
 	},
 	{
 		"slug": "css-tricks-article",
@@ -462,8 +488,10 @@
 			"purpose": "A graphic mockup of the CSS-Tricks page featuring the article. Following slides: screenshots of the article.",
 			"assets": "Screenshots of the published CSS-Tricks article. A graphic mockup of the CSS-Tricks page to be made."
 		},
+		"poster_note": "EVENTUAL: \"poster\": \"medium\" band, poster-only - the CSS-Tricks page / published article (see poster_plan). Cheap asset: the article is live, so screenshots are free. Weight-1 published credential. NOW: text-only. TODO: capture/mock the CSS-Tricks page as a medium poster (cheap).",
 		"description": "<p>Between brand guidelines, the various graphics programs, and the code, there's a gap in naming that everyone just accepts. I thought it was time we talked about it. I'd found that, with very little effort, a whole team can work from clear, semantic type patterns everyone can actually name. It was great working with <a class='relaxed' href='https://geoffgraham.me/' target='_blank' rel='noopener'>Geoff Graham</a> and <a class='relaxed' href='https://chriscoyier.net/' target='_blank' rel='noopener'>Chris Coyier</a> (a big influence back when I was learning to code) on this piece for CSS-Tricks.</p>",
-		"details": "<p>Most font lists in style guides aren't helpful for developers - they're documenting something brittle. An h2 is a data-structure hierarchy, not a size. But since no one talks about it, you find things like <code>&lt;p class='h2'&gt;</code> to smooth over the incomplete thought. Type patterns are reusable text styles named by purpose instead of size - not \"h2\" or \"extra-large\" but \"attention-voice\" or \"calm-voice.\" A shared language designers, developers, marketing, copywriters, and the boss can all use without needing to feel technical or <em>creative</em>.</p><p><a class='link' href='https://css-tricks.com/on-type-patterns-and-style-guides/' target='_blank' rel='noopener'>Read the article</a></p>"
+		"details": "<p>Most font lists in style guides aren't helpful for developers - they're documenting something brittle. An h2 is a data-structure hierarchy, not a size. But since no one talks about it, you find things like <code>&lt;p class='h2'&gt;</code> to smooth over the incomplete thought. Type patterns are reusable text styles named by purpose instead of size - not \"h2\" or \"extra-large\" but \"attention-voice\" or \"calm-voice.\" A shared language designers, developers, marketing, copywriters, and the boss can all use without needing to feel technical or <em>creative</em>.</p><p><a class='link' href='https://css-tricks.com/on-type-patterns-and-style-guides/' target='_blank' rel='noopener'>Read the article</a></p>",
+		"backstory": "Source is logistics-only: published January 19, 2021, URL in dereks-history.md, 'one of the most-read front-end publications.' The Geoff Graham / Chris Coyier collaboration on the card is memory-only but publicly verifiable. Timing worth knowing: it published six weeks before PE's first official cohort launched (March 3, 2021) - the credential landed right as the school needed it."
 	},
 	{
 		"slug": "pe-page-modules",
@@ -477,17 +505,20 @@
 			"design"
 		],
 		"flavor": "warm",
+		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
 		"description": "<p>If your curriculum is solid, it really doesn't matter if it's in a fancy LMS or a Google doc or a PDF - the philosophy is what matters. But as things grew, a system started forming. Patterns emerged, and we needed something that could house cross-use resources like key concepts that might be revisited across many workshops or programs. If you're just going to have one big long white page, things are simple - we could have used Markdown/MDX - but we also wanted our site to be a teaching tool. It mattered that everything we taught in DFTW showed up in the actual LMS they were using - the kind of product they'd eventually be building themselves.</p>",
-		"details": "<p>How do you compose pages that stay accessible, visually appealing, and themeable - with relational data that can make something more than an article and a video? You need big areas of text that handle whatever you throw at them. There's reason for some more specifically styled standalone lists, a variety of figure types, videos, mid-page key concepts, shortcuts, and related resources. A whole little system of drag-and-drop page modules to compose pages with no code in the CMS.</p>"
+		"details": "<p>How do you compose pages that stay accessible, visually appealing, and themeable - with relational data that can make something more than an article and a video? You need big areas of text that handle whatever you throw at them. There's reason for some more specifically styled standalone lists, a variety of figure types, videos, mid-page key concepts, shortcuts, and related resources. A whole little system of drag-and-drop page modules to compose pages with no code in the CMS.</p>",
+		"backstory": "Not in the source docs beyond the '200+ interactive learning modules' bullet. The 2020 date fits the narrative's build-out year (office space, lights, video setup, burning through the $50k). The drag-and-drop module CMS specifics are memory-only.",
+		"poster_note": "EVENTUAL: full poster (\"poster\": true / true 16:9), poster-only (no slider) - an abstract view of the ways the page structure worked. A small band would be too cramped to read the structure, so full cover. NOW: text-only. TODO: make the abstract page-structure poster art (moderate). Weight 5."
 	},
 	{
 		"slug": "freelancing-2019",
 		"date": "2019 – 2020",
 		"title": "Exploring the edges of ecommerce",
-		"weight": 2,
+		"weight": 3,
 		"tags": [
 			"job",
 			"consulting",
@@ -497,8 +528,10 @@
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
-		"description": "<p>While I was creating the first rounds of curriculum for PE, I also needed some work to pay the bills. I ended up on a bunch of Shopify projects with local agencies. I hadn't used Shopify before - but it's basically a CMS for products, right? What it really entailed was learning all the quirks and weird problems. There are a lot! I had to research and design across the full purchase journey - catalog, cart, checkout, post-purchase, returns, retention, coupons, inventory, plugins, and <em>yeah</em>. The forums were full of drop-shipping noise and nothing for developers, so I found the Shopify Discord (for developers), which is still going strong today. I learned a bunch about Vue, integrating it, building configurators, and helping teams work out new workflows.</p>",
-		"details": ""
+		"description": "<p>While I was creating the first rounds of curriculum for PE, I also needed some work to pay the bills. I ended up on a bunch of Shopify projects with local agencies. I hadn't used Shopify before - but it's basically a CMS for products, right? What it really entailed was learning all the quirks and weird problems. There are a lot! I had to research and design across the full purchase journey - catalog, cart, checkout, post-purchase, returns, retention, coupons, inventory, plugins, and <em>yeah</em>.</p><p>The forums were full of drop-shipping noise and nothing for developers, so I founded the Shopify Discord (for developers), which is still going strong today. I learned a bunch about Vue, integrating it within Shopify, building configurators, and helping teams work out new workflows.</p>",
+		"details": "",
+		"backstory": "Source: 'Shopify/Vue Configurators (2019-2020)' - side work while building PE; the narrative is blunter: 'I didn't have any money during the planning period.' This card IS the survival-income era - PE's curriculum was being written on the other half of the week. Learned Vue at PXL just before and applied it here. Founding the Shopify Discord (for developers) is memory-only - appears nowhere in the source; strong claim, worth pinning down with Derek (when, how big now).",
+		"poster_note": "DECISION: text-only, no poster. The story (survival Shopify work while building PE, founding the Shopify Discord) carries itself; old client ecommerce work is not worth chasing for a visual here. Weight 3. Not a TODO."
 	},
 	{
 		"slug": "pe-founded",
@@ -511,7 +544,7 @@
 			"product"
 		],
 		"flavor": "moss",
-		"poster": "medium",
+		"poster": true,
 		"media": [
 			{
 				"type": "photo",
@@ -530,8 +563,10 @@
 			"purpose": "Something more generic about leveling up - progress bars, a pyramid / skill structure, and UI that evokes how the school connects information into a learning journey.",
 			"assets": "'Leveling up' UI motifs to be designed in our visual language - progress bars, a pyramid, connected-info elements."
 		},
+		"poster_note": "EVENTUAL: full cover, full slider - this is THE flagship (PE origin), it earns the room. Weight 1, HIGH priority. POSTER CONCEPT still open (Derek unsure): candidate A = abstract graphic showing progress / leveling up (see poster_plan motifs); candidate B = a \"product trio\" situation (the LMS across a few surfaces). Pick one before building. NOW: text-only. TODO: decide the poster concept + build it (moderate-heavy); gather slider content (LMS screenshots + a loop).",
 		"description": "<p>There's no real checklist for what it means to be an experienced designer or developer. Bootcamp grads, CS grads, design school, self-taught, seniors ten or twenty years in - nobody shares the same foundations. Everyone means well, but it's tricky. And unfortunately, it can feel like a competition - more about hierarchy than shared goals. Instead of <em>communicating</em> and leveling up together, people retreat into their headphones.</p><p>What if there were an established outline for what a foundation would even mean? What if we saw these things as parts of big-picture \"design\" instead of tools and tasks? What if web designers understood how The Web <em>actually works</em>, and developers stopped pretending color and type were a mystery reserved for only the most \"creative\" people? I decided to build the path that combines everything you'll need to start your career as an ethical, aware designer for this medium - without spending years chasing your tail.</p>",
-		"details": "<p>I'd worked with enough people from enough backgrounds to know: most of them couldn't work as a team, didn't understand cross-role goals, and had no shared vocabulary for how design and development connect. Coding bootcamps were charging $30k. I figured I could do something at least three times better for a third of the price. <a class='relaxed' href='https://en.wikipedia.org/wiki/Bloom_Institute_of_Technology' target='_blank' rel='noopener'>Lambda School</a> raised $50 million and still failed its students. I started Perpetual Education with $50k.</p><p>I called the first program \"Design for <em>The Web</em>\" but had to frame it as a coding school. People hear \"coding\" or \"UI design\" and think they know which door they'd pick - but they don't know enough about either to choose yet. The best way to find out is to actually do both, and understand both, before picking a direction - and that's what DFTW facilitates. The long-term bet is someone who thinks like a designer - in any field - no matter how the tech changes.</p><p>It ran in cohorts - just two to three hours a day, six days a week, for six months, in contrast to the 10-plus-hour-a-day programs - and it got better results, because we made space for real learning instead of shoving React.js tutorials into your eye sockets.</p><p>I wrote the curriculum, designed the workshops, built the modules, wrote the glossary, filmed and edited the videos, created the animated graphics, handled marketing, and built a custom Learning Management System (LMS) from scratch. Every little piece, down to the enrollment form, was designed to teach people about the program while they filled it out, so by the end they knew whether it was for them. I met with every prospective student personally before accepting them.</p><p>We experimented with ISAs, payment plans, and different pricing models to keep the program accessible. The platform grew over the years into a full system - milestone tracking, dashboards, and features we added as we naturally learned what we needed. The first cohort launched March 2021, with overlapping cohorts every three to four months for four years after.</p>"
+		"details": "<p>I'd worked with enough people from enough backgrounds to know: most of them couldn't work as a team, didn't understand cross-role goals, and had no shared vocabulary for how design and development connect. Coding bootcamps were charging $30k. I figured I could do something at least three times better for a third of the price. <a class='relaxed' href='https://en.wikipedia.org/wiki/Bloom_Institute_of_Technology' target='_blank' rel='noopener'>Lambda School</a> raised $50 million and still failed its students. I started Perpetual Education with $50k.</p><p>I called the first program \"Design for <em>The Web</em>\" but had to frame it as a coding school. People hear \"coding\" or \"UI design\" and think they know which door they'd pick - but they don't know enough about either to choose yet. The best way to find out is to actually do both, and understand both, before picking a direction - and that's what DFTW facilitates. The long-term bet is someone who thinks like a designer - in any field - no matter how the tech changes.</p><p>It ran in cohorts - just two to three hours a day, six days a week, for six months, in contrast to the 10-plus-hour-a-day programs - and it got better results, because we made space for real learning instead of shoving React.js tutorials into your eye sockets.</p><p>I wrote the curriculum, designed the workshops, built the modules, wrote the glossary, filmed and edited the videos, created the animated graphics, handled marketing, and built a custom Learning Management System (LMS) from scratch. Every little piece, down to the enrollment form, was designed to teach people about the program while they filled it out, so by the end they knew whether it was for them. I met with every prospective student personally before accepting them.</p><p>We experimented with ISAs, payment plans, and different pricing models to keep the program accessible. The platform grew over the years into a full system - milestone tracking, dashboards, and features we added as we naturally learned what we needed. The first cohort launched March 2021, with overlapping cohorts every three to four months for four years after.</p>",
+		"backstory": "The card already carries $50k-vs-Lambda's-$50M and the everything-list publicly. Private grit (narrative): self-funded with help from a family member; the funding routes he explored all wanted immediate scale (rent buildings, hundreds of students, charge a lot) so he declined; first students were a mix - some auditing free for feedback, some paying $2k up front with an ISA for the rest; Ivy worked on it with him; 'I cut things way too close. I'm clearly not a business person.' Feast-or-famine finances the whole way. He'd been tutoring Lambda's own students - paying customers of a $30k program coming to him - which is what convinced him the model was failing people. Un-fakeable: family-member funding, the free-audit first mix, Ivy."
 	},
 	{
 		"slug": "pxl",
@@ -544,7 +579,7 @@
 			"agency"
 		],
 		"flavor": "night",
-		"poster": "medium",
+		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
@@ -552,8 +587,10 @@
 			"purpose": "Low-fi mockup of DreamWorks.com and an iPhone game. Following slides: real screenshots.",
 			"assets": "Low-fi mockups of DreamWorks.com and the iPhone game to be made. Real screenshots for the subsequent slides."
 		},
+		"poster_note": "EVENTUAL: full poster (full cover) - an abstract version of DreamWorks - then slides of real project screenshots (DreamWorks.com, the Bumblebee trivia game). Weight-1 credential. NOW: text-only. TODO: make the abstract DreamWorks poster art (moderate); gather real screenshots of the projects (site has changed - may need archive/own captures).",
 		"description": "<p>PXL was an award-winning creative agency (acquired by Studio City in 2020) with big accounts like Universal Pictures and Fox Films, doing tons of fun creative microsites and ad campaigns. I'd known their creative technologist through the Ember meetup, and when she moved up, they needed a senior front-end developer. The first project on my plate was <a class='relaxed' href='https://www.dreamworks.com' target='_blank' rel='noopener'>DreamWorks.com</a> - open the dev tools and you'll still see my 2018 code.</p>",
-		"details": "<p>Behind the scenes of these big movie companies is a ton of data. PXL had built custom content management systems and had all of that locked in. My job was to get DreamWorks in place and handle whatever else popped up - when the Bumblebee movie came out, we made a fun trivia game for it. There were always new projects and long-term contracts to balance.</p><p>Naturally I wanted to be on the fun stuff, so when I was put in charge of mentoring the others - a CS intern, a bootcamp grad, and someone who came over from marketing - I happily (and effectively) taught them how to do my job so I could focus on R&amp;D. It was great to be back in a creative tech role after so much C-suite at the previous job. And it's what got me more excited about teaching than about climbing the developer ladder.</p>"
+		"details": "<p>Behind the scenes of these big movie companies is a ton of data. PXL had built custom content management systems and had all of that locked in. My job was to get DreamWorks in place and handle whatever else popped up - when the Bumblebee movie came out, we made a fun trivia game for it. There were always new projects and long-term contracts to balance.</p><p>Naturally I wanted to be on the fun stuff, so when I was put in charge of mentoring the others - a CS intern, a bootcamp grad, and someone who came over from marketing - I happily (and effectively) taught them how to do my job so I could focus on R&amp;D. It was great to be back in a creative tech role after so much C-suite at the previous job. And it's what got me more excited about teaching than about climbing the developer ladder.</p>",
+		"backstory": "Source: Nov 2018 - Apr 2019, dreamworks.com, mentored someone who rapidly moved up (proof the teaching works). The private arc: this is where 'I want to start a school' actually crystallized - he could see the lean-process fixes the agency needed but 'change was going to take a long time,' and 'it felt like everyone would always be pushed to the edge.' Also: a government/international-relations shift put the big client he was basically hired for in jeopardy, so leaving was strategic for both sides. The card's cheerful 'taught them my job so I could do R&D' is true, but the exit had more structure than the card shows."
 	},
 	{
 		"slug": "mentoring",
@@ -571,7 +608,9 @@
 			"/content/placeholder/poster-wide.png"
 		],
 		"description": "<p>After I'd done what I could at Niagen - hired a designer to take over and set the team up - I took a little time off. I did some casual mentoring, and it picked up fast. Next thing I knew, I was a teacher. My wife had just bought a laundromat, so I'd mentor designers and developers from all over the world while helping rehab the washing machines (and learning way too much about laundromats and my own neighborhood). That's where I started building the reusable lesson plans that eventually became Perpetual Education.</p>",
-		"details": ""
+		"details": "",
+		"backstory": "Source confirms the whole card: wife bought Echo Park Laundry (2018), Derek spent much of the year taking apart and rebuilding laundry machines; 1-on-1 mentoring 2018-2020 via Codementor, MentorCruise, word of mouth; pattern recognition from those sessions fed the PE curriculum directly. Two private threads: the mentees included Lambda School students (paying customers of a $30k bootcamp coming to him - the anti-bootcamp origin evidence), and Derek had his OWN mentors in this period (Jeffrey Biles; David from ChromaDex) - being mentored while mentoring. Un-fakeable: the laundry-machine rebuilds, mentorship in both directions.",
+		"poster_note": "DECISION: text-only, no poster. The laundromat + mentoring interlude reads on its human texture alone. Weight 4. Not a TODO."
 	},
 	{
 		"slug": "niagen-bioscience",
@@ -584,7 +623,7 @@
 			"design-systems"
 		],
 		"flavor": "cool",
-		"poster": "medium",
+		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
@@ -592,8 +631,10 @@
 			"purpose": "Show health-tracking UI and pills/supplements, or the wall where I mapped out the whole company flow with sticky notes ('chasing a murderer').",
 			"assets": "Health-tracking UI examples, pill/supplement imagery, and a photo or recreation of the wall-sized flow map."
 		},
+		"poster_note": "EVENTUAL: full poster (full cover). POSTER CONCEPT LOCKED (Derek shared a comp): monochrome composition - the supplement bottle + spilled pills as the hero object, a rising line graph (self-tracking), a molecular-structure diagram, and a progress-dot column down the left. This comp also sets the house visual-language reference for the other abstract posters. Weight-1 founding-designer credential. NOW: text-only. TODO: finalize + export this poster art and wire it (art concept already done).",
 		"description": "<p>Niagen Bioscience (formerly ChromaDex) had a startup-within-a-company building consumer products around NAD+ and cellular health. I was the founding product designer on a tiny design team, working closely with the product owner, the CMO, and the CEO. The science was promising but the clinical trials weren't finished yet, so we couldn't make health claims. I worked with the scientists, doctors, and copywriters on creative ways to tell our story.</p>",
-		"details": "<p>I designed self-tracking tools that let users monitor how they felt over time and draw their own conclusions. If people are feeling better and healthier, that's what matters.</p><p>I established the design surface for the company: their web presence, how they were being perceived, the component systems, the brand voice. I ran user testing through UserTesting.com, did competitive research, worked with the head of development, and hired the designers who eventually took over. Long before Charlie from Always Sunny, I had a wall-sized flow map of the entire business like I was tracking a killer.</p>"
+		"details": "<p>I designed self-tracking tools that let users monitor how they felt over time and draw their own conclusions. If people are feeling better and healthier, that's what matters.</p><p>I established the design surface for the company: their web presence, how they were being perceived, the component systems, the brand voice. I ran user testing through UserTesting.com, did competitive research, worked with the head of development, and hired the designers who eventually took over. Long before Charlie from Always Sunny, I had a wall-sized flow map of the entire business like I was tracking a killer.</p>",
+		"backstory": "Source-rich (narrative). Found the posting on AngelList - listed as 'front-end developer' but loose; hired by a former General Assembly UX teacher who handed him a prerequisite reading list; 'The Elements of User Experience' was the click - 'I'd been doing UX and I didn't really know that.' First time claiming the Senior Product Designer title. $135k + bonuses. The arc the card smooths over: nobody wanted to try anything new (budget went to ad spend), Derek 'started to think they were trying to tank the company - or maybe just keep hiring people to look good to investors'; a new CTO came in and simply wouldn't talk to him. He gave notice but hired his replacement first - a visual designer for what they actually wanted (normal Shopify design work). Learned Ember here. Un-fakeable: AngelList, the reading list, the wall chart, the CTO freeze-out, hiring his own replacement."
 	},
 	{
 		"slug": "sheriffderek-consulting",
@@ -605,11 +646,14 @@
 			"consulting"
 		],
 		"flavor": "stone",
+		"poster": "medium",
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
 		"description": "<p>My clients so far had all hired me to \"build them a website.\" They weighed the cost like they were buying code - but I was really doing the strategy, the design, the consulting, and the code. In their minds, they'd bring the idea and I'd just build it. In reality, they usually didn't know what they wanted. They had no mental model for how a website actually leads to a measurable change or a clearer goal. So I had to change the relationship, and to do that I had to change how I talked about my job: consulting first, with code as a byproduct.</p>",
-		"details": "<p>So, I started calling myself a consultant. My friends smirked. I made a bright pink website and gave it the name \"Sheriffderek Consulting\" (leveraging my online handle, and admittedly a bit silly). This scared off the people I wouldn't want to work with, but quickly accomplished exactly what I was hoping for. I had changed my role and my place in the design process. I was being brought in as an expert who could help them get to their goal, and understanding the web side of things was just one of the tools to get there.</p>"
+		"details": "<p>So, I started calling myself a consultant. My friends smirked. I made a bright pink website and gave it the name \"Sheriffderek Consulting\" (leveraging my online handle, and admittedly a bit silly). This scared off the people I wouldn't want to work with, but quickly accomplished exactly what I was hoping for. I had changed my role and my place in the design process. I was being brought in as an expert who could help them get to their goal, and understanding the web side of things was just one of the tools to get there.</p>",
+		"backstory": "The pink site / 'friends smirked' story is memory-only - the source never mentions the consulting rebrand by name. What the source DOES have for 2016: the pattern of being asked to define team process at every agency ('helping UI people understand constraints... which is really product design. Right?') - the rebrand is the outward move matching that inward realization. Date fits between the agency-contracting era and School Loop.",
+		"poster_note": "EVENTUAL: \"poster\": \"medium\" band, poster-only - the sheriffderek insignia across it. Cheap (the insignia asset already exists). NOW: text-only. TODO: place the insignia into a medium poster + wire. Weight 3."
 	},
 	{
 		"slug": "school-loop",
@@ -622,7 +666,7 @@
 			"education"
 		],
 		"flavor": "stone",
-		"poster": "medium",
+		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
@@ -630,12 +674,14 @@
 			"purpose": "Something that just evokes design systems - a clean, systematic components/tokens visual in our style.",
 			"assets": "Design-system-evoking graphic to be made (shared primitives, components, per-school theming)."
 		},
+		"poster_note": "EVENTUAL: full cover slider - video of the CodePens all hooked up (the linked-pen component system in action). POSTER CONCEPT open: an abstract version of those hooked-up pens (TBD). Weight-1 design-systems credential. NOW: text-only. TODO: screen-record the CodePens wired together (moderate - ASSET SOURCE: the pens may still exist on CodePen); design the abstract linked-system poster (moderate, concept TBD).",
 		"description": "<p>School Loop (since acquired) built a platform that powers high school websites across the country. Each school needs its own theme: mascot, colors, typography. The core application that generated the sites was Java, and they wanted a CSS expert to come in and audit their entire component architecture. I came in, broke everything down, and worked with everyone on the team to make sure their system was declarative and maintainable.</p>",
-		"details": "<p>Instead of getting into their giant Java system and scaring everyone, I started in CodePen to show what was possible in a sandbox. That worked great, so I used the platform's ability to link pens within other pens and built an entire component architecture as a standalone, themable system they could explore and adopt at their own pace.</p><p>I don't remember calling it a \"design system\" ... but that's what it was: themable websites sharing the same primitives with per-school overrides. This was real scale with a lot more edge cases than your average system. It taught me a lot technically - and even more about teamwork and governance: how a group actually agrees on a shared system and keeps it maintained.</p>"
+		"details": "<p>Instead of getting into their giant Java system and scaring everyone, I started in CodePen to show what was possible in a sandbox. That worked great, so I used the platform's ability to link pens within other pens and built an entire component architecture as a standalone, themable system they could explore and adopt at their own pace.</p><p>I don't remember calling it a \"design system\" ... but that's what it was: themable websites sharing the same primitives with per-school overrides. This was real scale with a lot more edge cases than your average system. It taught me a lot technically - and even more about teamwork and governance: how a group actually agrees on a shared system and keeps it maintained.</p>",
+		"backstory": "Source: late 2016. Grit the card softens: they never implemented ANY of it - he built the complete themable component system in CodePen and they just didn't use it, told him to 'keep going,' possibly so they could say they'd paid someone. He walked away from being paid to do nothing, with no backup plan ('normal people would have just kept taking the money - or planned ahead'). The Java string-templates-replicating-Sass trick is source-confirmed. Un-fakeable: the whole system delivered as linked CodePens, and walking away from unused paid work on principle."
 	},
 	{
 		"slug": "agency-work",
-		"date": "2013 – 2017",
+		"date": "2015 – 2017",
 		"title": "Front-End Developer across LA agencies",
 		"weight": 1,
 		"tags": [
@@ -644,7 +690,7 @@
 			"dev"
 		],
 		"flavor": "warm",
-		"poster": "medium",
+		"poster": true,
 		"media": [
 			{
 				"type": "photo",
@@ -663,25 +709,30 @@
 			"purpose": "Show a lot of brochure sites and game UI - a busy variety of work that reads as 'range.' Following slides: screenshots of work, or videos.",
 			"assets": "Screenshots/thumbnails of brochure sites and game UIs. Videos of the work for the subsequent slides."
 		},
+		"poster_note": "EVENTUAL: full poster (full cover) - a big collage of the varied work (the pitch here is RANGE), then slides of screens and videos. Weight-1 breadth card. POSTER: an abstract version of the White House game / AAA game. ASSETS EXIST: Derek has a video of the White-House-shown project, and maybe the AAA game. NOW: text-only. TODO: build the abstract work poster (moderate); wire the White House video (+ AAA if available).",
 		"description": "<p>LA has a ton of great creative agencies, and I was lucky to contract with a few of them - SEW Digital being one. I got to work on a wide variety of project types - data-driven dashboards for Fox Films, interactive games for AAA auto insurance, microsites for companies like Gap, and an educational project about mass incarceration that was presented at the White House. I explored a lot more animation, and even made some music and sound design for a few projects. Every project meant a different team, a different stack, and real deadlines.</p>",
-		"details": "<p>This was all back when responsive web design was pretty new. Companies didn't know if they wanted to invest in the extra work, and agencies didn't exactly know how to handle it. I was a super nerd about it, so I could show them how to work through the process at the same cost and keep everything working on every screen size. They'd ask me to help formalize their in-house process with build tools - and it seemed that even when I was hired as the developer, I'd end up working across roles. Around that time I also did some consulting with Ticketfly on the responsive needs for event data: unknown lengths and combos of bands, DJs, prices, all the things you have to plan for.</p>"
+		"details": "<p>This was all back when responsive web design was pretty new. Companies didn't know if they wanted to invest in the extra work, and agencies didn't exactly know how to handle it. I was a super nerd about it, so I could show them how to work through the process at the same cost and keep everything working on every screen size. They'd ask me to help formalize their in-house process with build tools - and it seemed that even when I was hired as the developer, I'd end up working across roles. Around that time I also did some consulting with Ticketfly on the responsive needs for event data: unknown lengths and combos of bands, DJs, prices, all the things you have to plan for.</p>",
+		"backstory": "Source: SEW Digital + agency contracts 2015-2017. Confirmed: the White House jail/social-justice educational game (his first major educational interactive), AAA insurance games, Fox dashboards with early ML, Gap/Shell/vodka microsites, Ticketfly. Grit: at Ticketfly he prototyped API changes to give theme developers better responsive options - a management change killed it. Recurring pattern: hired as the developer, always ends up asked to define the team's process. Two strong source stories with NO timeline home: Clean Program (2014-15, taught the team Sass, walked away from a ~$144k/yr contract over micromanagement) and the animator-duo Disney three-book site (2015, one base with Metal/Gold/Rust themes - early SVG + themable design systems). Flag for Derek: do these deserve cards?"
 	},
 	{
 		"slug": "shoutq",
 		"date": "May 2014 – January 2015",
 		"title": "Web app dev for an early influencer marketplace startup",
-		"weight": 3,
+		"weight": 1,
 		"tags": [
 			"job",
 			"product",
 			"dev"
 		],
 		"flavor": "cool",
+		"poster": "medium",
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
 		"description": "<p>ShoutQ's goal was to create the first social media influencer marketplace. I built an Angular prototype so we'd have a live, usable example for investors to play with. This was my first time building a real <em>application</em>, and it was exciting to watch everything I'd learned come together into interactive user interfaces for the first time.</p>",
-		"details": "<p>Up to this point, most of my work had been brochure pages, content-driven projects, and custom WordPress sites with some interaction. This was a startup with investor money, building everything from scratch: user accounts, matching influencers with brands, image recognition to verify what they posted, pricing, campaign management. I think the final product ended up built with Django. I handled responsive design and UI polish, and ran user testing. It opened my eyes to more ambitious software projects.</p>"
+		"details": "<p>Up to this point, most of my work had been brochure pages, content-driven projects, and custom WordPress sites with some interaction. This was a startup with investor money, building everything from scratch: user accounts, matching influencers with brands, image recognition to verify what they posted, pricing, campaign management. I think the final product ended up built with Django. I handled responsive design and UI polish, and ran user testing. It opened my eyes to more ambitious software projects.</p>",
+		"backstory": "Source: hired at a good rate by the guys from his first agency (Nouveau) after they raised funding - 'they really liked my attention to detail.' Angular 1 MVP; someone else ran the Django backend; all-details adds an iOS wrapper for production. The UX-engineer-before-the-title framing is source-confirmed ('acting as what we'd call a UX-engineer these days'). The ending: overvalued, 'main investor might have done some shady stuff,' collapsed. The card's 'opened my eyes to ambitious software' is true; the second-collapse-in-a-row pattern is the private half.",
+		"poster_note": "EVENTUAL: \"poster\": \"medium\" band, poster-only - an abstract representation of interconnected social / phones, Instagram-ish, connecting people. Weight-1 (first real app; product is long gone, so abstract is the move). NOW: text-only. TODO: make the abstract social-connection poster art (moderate)."
 	},
 	{
 		"slug": "nouveau-studios",
@@ -694,22 +745,26 @@
 			"dev"
 		],
 		"flavor": "warm",
+		"poster": "small",
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
 		"description": "<p>I'd been freelancing and learning as I went, but the goal was always to work at a real design shop. Nouveau Studios was in downtown LA and I got to ride my bike to work. They hired me for my responsive CSS skills, but pretty quickly they started trusting me with more responsibility than my experience probably warranted - research, strategy, project planning, content auditing, client relationships, and business development.</p>",
-		"details": "<p>Great team, and I learned a ton. Over time I introduced modern development practices - Bower, Sass, Git - and started thinking systematically about components and reusable patterns before anyone was calling it \"design systems.\"</p>"
+		"details": "<p>Great team, and I learned a ton. Over time I introduced modern development practices like Bower, Sass, and Git. I was also starting to think in components and reusable patterns and we created our own in-house Bootstrap-like system.</p>",
+		"backstory": "Source: Mar 2013 - May 2014. Grit: the agency collapsed because some members misspent money, and they offered Derek a PARTNER role on the way down - he recognized a sinking ship and declined. GOLD for the GoFundMe target: he did a crowdfunding-competitor UX exploration WHILE at Nouveau (~2013-14), one of his first real UX planning projects - 'breaking down crowdfunding UX over a decade before applying' (resolved July 2026: earlier 'Nouvou' mentions were a misspelling, it was a Nouveau project). Screenshots exist for Cam & Benny, Murder Doll House, and Jamie Palumbo (in resume-exploration). Un-fakeable: the declined partner offer, teaching the team Git.",
+		"poster_note": "EVENTUAL: \"poster\": \"small\" band, poster-only - abstract responsive-layout wireframes (evokes the early responsive-CSS work). NOT the client screenshots (Cam & Benny etc. exist in resume-exploration but are not needed here). NOW: text-only. TODO: make the abstract responsive-wireframe small poster (cheap-moderate). Weight 3."
 	},
 	{
 		"slug": "fundamonium",
 		"date": "2011 – 2013",
 		"title": "Freelance designer + developer, early responsive web",
-		"weight": 4,
+		"weight": 1,
 		"tags": [
 			"job",
 			"freelance"
 		],
 		"flavor": "warm",
+		"poster": true,
 		"media": [
 			{
 				"type": "photo",
@@ -721,7 +776,9 @@
 			}
 		],
 		"description": "<p>There weren't YouTube tutorials for everything back then. If a client needed a photo gallery, I'd have to figure it out. Video integration? A CMS? Figure it out. It was tough - no flexbox yet, still plenty of cross-browser issues - but I'm really glad I had to just dive in. I got passionate about responsive design right when @media rules started being used, which put me at the edge of that curve and made me notably useful.</p>",
-		"details": "<p>I built a lot of things, but the website for Time No Place was where all the relational data and CMS stuff really came together, and I finally felt like a real web designer.</p>"
+		"details": "<p>I built a lot of things, but the website for Time No Place was where all the relational data and CMS stuff really came together, and I finally felt like a real web designer.</p>",
+		"backstory": "Source: Jan 2011 - Mar 2013 (the freelance business name). The origin story: he learned by trying to teach his print-designer girlfriend HTML - 'so, I learned to show her' - she picked it up, HE got hooked. The learn-by-teaching pattern starts here. Time No Place (record label) was the first dynamic WordPress custom theme - the 'all was revealed' moment about CMSs, databases, relationships; client base was artists, bands, and labels. He'd spent 2001 telling friends HTML was dead and Flash was king - 'I was wrong!' Also taught web programming somewhere ~2011-12 ([NEEDS INFO]: venue and format unknown). Time No Place screenshots exist.",
+		"poster_note": "EVENTUAL: full cover slider of real period screenshots (Time No Place + other early-freelance work). Weight-1 origin card. ASSETS EXIST: Derek has slides of his work from that time (Time No Place screenshots noted in backstory). Poster concept: default cover, or an abstract of the early-responsive era (TBD). NOW: text-only. TODO (cheap - assets exist): name the existing screenshots to convention + wire as photo slides."
 	},
 	{
 		"slug": "holloys",
@@ -732,11 +789,14 @@
 			"music",
 			"art"
 		],
+		"poster": "medium",
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
 		"description": "<p>I don't really think of myself as a guitar player, but Jim Brown needed to replace Jon Gonnelli when he moved, and the record was so good that I went for it. I ended up programming drum beats and playing synths, gigging all around LA and touring twice. And now that I'm thinking about it - I did a lot of the graphic design for the posters, and built the websites too. I learned a ton and got a lot of experience in front of an audience.</p>",
-		"details": ""
+		"details": "",
+		"backstory": "Source: ~2009-2011, exact dates unconfirmed. The private frame: this was the broke period - moved to LA in 2009 to make the web a real job, couldn't find any work for a year, so joined the band. Built the band sites in Dreamweaver 'just guessing - didn't really know anything about code.' Toured Europe twice, 11+ countries, 2+ albums; odd jobs on the side including art hanging/installation at residences, galleries, museums ([NEEDS INFO] which ones). The card frames it as music-plus-design; the source frames it as survival.",
+		"poster_note": "EVENTUAL: \"poster\": \"medium\" band, poster-only - a band/music-themed graphic (Derek made real Holloys posters back then; could riff on that). PLUS a video link worked into the description copy. NOW: text-only. TODO: make the medium poster art (moderate); add a Holloys video link to the copy (cheap copy edit). Weight 6."
 	},
 	{
 		"slug": "pizzaiolo",
@@ -746,26 +806,32 @@
 		"tags": [
 			"life"
 		],
+		"poster": "small",
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
 		"description": "<p>There was an odd hardware store down the street from my house in Oakland, and when it closed, the space became a new restaurant: Pizzaiolo. I got a job as a busser and ended up learning a lot more about slow food, wine, and hospitality than I expected. Over the years I took on different roles, and even acted as interim manager for a bit. It was an exciting time - and a lot of those details of service and operations are still things I think about and bring into my work today.</p>",
-		"details": ""
+		"details": "",
+		"backstory": "Source: 2005-2009, Oakland - server, then interim manager. The private frame: the gap years - art school grad with no employable skills yet, 'partied too much,' 'I didn't have a clear view at that time.' Creative output continued the whole time (screenprinting, stage outfits, Max/MSP lighting design for shows). The card's service-and-operations lesson is the graceful public read of a directionless stretch - fine, but don't let a target note imply career intent that wasn't there.",
+		"poster_note": "EVENTUAL: \"poster\": \"small\" band, poster-only - an abstract food / restaurant graphic. NOW: text-only. TODO: make the small poster art (cheap-moderate). Weight 6 texture."
 	},
 	{
 		"slug": "cca-bfa",
-		"date": "2001 – 2005",
+		"date": "2000 – 2005",
 		"title": "Art college, Flash, and MySpace",
-		"weight": 6,
+		"weight": 4,
 		"tags": [
 			"job",
 			"art",
 			"education"
 		],
+		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
 		"description": "<p>After an art-specific magnet school, art college seemed like the next step. I went to <a class='relaxed' href='https://www.cca.edu' target='_blank' rel='noopener'>CCA (California College of the Arts)</a> assuming I'd become an illustrator - I wanted to work with <a class='relaxed' href='https://en.wikipedia.org/wiki/Barron_Storey' target='_blank' rel='noopener'>Barron Storey</a>. But I drifted toward printmaking and painting instead, and ended up with an individualized major. I can't say I was the best student, but I was busy: a lot of Flash, customizing MySpace pages, and interdisciplinary computer classes where I learned <a class='relaxed' href='https://cycling74.com/' target='_blank' rel='noopener'>Max/MSP and Jitter</a> from some of the guys from <a class='relaxed' href='https://www.srl.org/' target='_blank' rel='noopener'>Survival Research Laboratories</a>. I was also making a lot of music with synthesizers. So I got to spend five years thinking about composition, typography, and interactivity - and really, what is worth making. All the things that happen to be my job today.</p>",
-		"details": ""
+		"details": "",
+		"backstory": "Source-rich. Started 2000 (Derek corrected July 2026 - not 2001), BFA 2005, individualized major. Grit the card skips: the Flash internship came through his dad meeting people at an adult-film-industry conference/event - told to 'learn Macromedia Flash,' so he did, and took the internship. Broke his leg, which ended skateboarding and pushed everything digital. The MySpace styling was for the band, hacking with little idea what he was doing. Two source confessions: 'I never learned any real graphic design - it just seemed like some magic skill that wasn't on the table,' and the evergreen lesson 'clients never give you the content.' Won the 'Start to Be' scholarship contest; went to CCA to study with Barron Storey (card has that part).",
+		"poster_note": "EVENTUAL: full cover slider of real art-school-era photos. Poster = an abstract version made from one chosen photo. Timeline starting bookend (2000-05). Also: a video link Derek provided - https://www.youtube.com/watch?v=pd4oP0NKMFc - to work into the copy (YouTube lives in copy as a link, not a media slide). NOW: text-only. TODO: FIND era photos (hunt/moderate); pick one -> make abstract poster of it (moderate); wire slides; add the video link to the copy. Weight 4."
 	}
 ]
