@@ -1,5 +1,15 @@
 # Copy notes - copywriter session (2026-07-11)
 
+## Session 2026-07-12 - pe-founded card
+
+24. **pe-founded description - competition sentence** - **APPLIED** Derek's split: "...it can feel like a competition. Instead of <em>communicating</em> and leveling up together, people retreat into their headphones." (period replaces the spaced hyphen).
+
+25. **pe-founded details - coding-school framing sentence** - **APPLIED** Derek's rework (option b + his capper line): "I called the first program \"Design for <em>The Web</em>\" but had to frame it as a coding school. People hear \"coding\" or \"UI design\" and know which door they'd pick - but what I was teaching was the whole thing, and you can't really picture that until you're in the thick of it. The long-term bet is someone who thinks like a designer - in any field - no matter how the tech changes." Paragraph split after the bet line; cohort mechanics start a new paragraph. Replaces "because nobody understands what product design is yet." Known echo, accepted: description's "everything you need" vs details' "the whole thing" (different registers, a read-more apart).
+
+26. **Program name styling rule (site-wide)** - **APPLIED**: always "Design for <em>The Web</em>" - italics on The Web only, never the whole title; DFTW acronym plain. Fixed the dondev-podcast-2021 card (<em>Design for the Web</em> → Design for <em>The Web</em>). Rule recorded in CLAUDE.md Voice section.
+
+27. **pe-founded remaining observations (NOT applied, awaiting verdict)**: (a) passive "The enrollment form was designed to teach..." → active option offered; (b) cross-card echo "I met with every prospective student personally" vs World IA Day's "I met with every applicant"; (c) "wrote" twice in the big list; (d) "ISAs" acronym legibility; (e) "naturally" filler in "as we naturally learned"; (f) title lacks the founder signal. GoFundMe target note drafts (a/b/c) offered, win gate = yes (mentoring/raise-the-bar bullet); pick pending.
+
 Notes only - not applied yet. All refer to the home intro (`templates/pages/home.php`, `.page-header`).
 
 1. **"design while keeping a hand in a range of design roles the whole time"** - "range of design roles" is too abstract. Say something more telling about the breadth - e.g. that it was *for many companies* / many contexts and clients, not just many hats.

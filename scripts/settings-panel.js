@@ -700,7 +700,6 @@
 	var island = document.querySelector('.corner-island');
 	if (island) {
 		var islandSettings = island.querySelector('[data-island-settings]');
-		var islandList = island.querySelector('[data-island-list]');
 		var islandTop = island.querySelector('[data-island-top]');
 		var islandPanel = document.getElementById('menu-settings');
 
@@ -742,16 +741,6 @@
 				if (html.getAttribute('data-view') === 'grid') {
 					islandPanel.removeAttribute('popover');
 				}
-			});
-		}
-
-		/* List: a real view choice, same as the panel's Layout row - it
-		   persists, and lands at the top like every deliberate view switch
-		   (the two layouts share no scroll geometry). */
-		if (islandList) {
-			islandList.addEventListener('click', function () {
-				applyView('list');
-				window.scrollTo(0, 0);
 			});
 		}
 

@@ -136,40 +136,9 @@
 			</span>
 		</button>
 
-		<?php /* Bulleted lines, NOT three bare bars - bare bars read as the
-			hamburger menu, and this button switches layout, it doesn't
-			navigate. (Learned the hard way 2026-07-11.) */ ?>
-		<button
-			type='button'
-			class='toolbox-trigger island-button'
-			data-island-list
-			aria-label='Switch to the list layout'
-		>
-			<span aria-hidden='true'>
-				<svg
-					class='toolbox-glyph'
-					viewBox='0 0 16 16'
-					fill='none'
-					stroke='currentColor'
-					stroke-width='1.4'
-					stroke-linecap='round'
-					focusable='false'
-				>
-					<circle cx='3.2' cy='3.5' r='0.9' fill='currentColor' stroke='none' />
-
-					<line x1='6' y1='3.5' x2='13.5' y2='3.5' />
-
-					<circle cx='3.2' cy='8' r='0.9' fill='currentColor' stroke='none' />
-
-					<line x1='6' y1='8' x2='13.5' y2='8' />
-
-					<circle cx='3.2' cy='12.5' r='0.9' fill='currentColor' stroke='none' />
-
-					<line x1='6' y1='12.5' x2='13.5' y2='12.5' />
-				</svg>
-			</span>
-		</button>
-
+		<?php /* No layout-switch member: every glyph for it read as a menu
+			(two died trying, 2026-07-11), and the settings member already
+			carries the Layout row one tap away. */ ?>
 		<button
 			type='button'
 			class='toolbox-trigger island-button'
