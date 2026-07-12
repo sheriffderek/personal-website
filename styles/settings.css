@@ -45,6 +45,16 @@
 	--stroke-auxiliary: var(--color-stone-200);
 
 	--accent: var(--color-blue-900);
+
+	/* Text selection - a calm highlighter yellow. The ink is a LITERAL dark
+	   (not var(--ink-primary)): the marker is light in both schemes, and in
+	   dark scheme the primary ink goes near-white - white on yellow would
+	   be unreadable. Every emphasis states its own pair (this one inherits
+	   into any block that doesn't restate it - red-light MUST restate or
+	   it goes yellow). */
+	--selection-fill: oklch(93% 0.12 102);
+	--selection-ink: var(--color-stone-900);
+
 	--link-color: var(--accent);
 	/* Underline color, independent of the link text. Defaults to the link color
 	   (tracks per emphasis since it reads --link-color); change this one line to
@@ -182,9 +192,12 @@
 }
 
 [data-flavor="night"] {
-	/* espresso brown with a gold ink */
-	--poster-fill: oklch(27% 0.03 60);
-	--poster-ink: oklch(80% 0.08 85);
+	/* milk-chocolate brown with a gold ink - deliberately a MID tone, not
+	   espresso: a near-black card in a light wall of muted pastels reads
+	   as a hole (seen in the grid). Truly dark posters are red-light's
+	   whole thing; the default set stays in one tonal family. */
+	--poster-fill: oklch(42% 0.045 55);
+	--poster-ink: oklch(85% 0.06 85);
 }
 
 [data-flavor="moss"] {
@@ -222,8 +235,8 @@
 	}
 
 	[data-flavor="night"] {
-		--poster-fill: var(--color-taupe-800);
-		--poster-ink: var(--color-taupe-300);
+		--poster-fill: var(--color-taupe-600);
+		--poster-ink: var(--color-taupe-200);
 	}
 
 	[data-flavor="moss"] {
@@ -234,6 +247,42 @@
 	[data-flavor="rose"] {
 		--poster-fill: var(--color-mauve-200);
 		--poster-ink: var(--color-mauve-700);
+	}
+}
+
+/* Immersive takes on the flavors - the page is a rich blue there, so each
+   flavor keeps its identity but cools toward blue's neighbors and paints a
+   step deeper (200-level fills instead of pastels). */
+
+[data-emphasis="immersive"] {
+	[data-flavor="warm"] {
+		--poster-fill: var(--color-amber-200);
+		--poster-ink: var(--color-orange-950);
+	}
+
+	[data-flavor="cool"] {
+		--poster-fill: var(--color-sky-200);
+		--poster-ink: var(--color-blue-950);
+	}
+
+	[data-flavor="stone"] {
+		--poster-fill: var(--color-slate-200);
+		--poster-ink: var(--color-slate-950);
+	}
+
+	[data-flavor="night"] {
+		--poster-fill: var(--color-indigo-950);
+		--poster-ink: var(--color-sky-300);
+	}
+
+	[data-flavor="moss"] {
+		--poster-fill: var(--color-teal-200);
+		--poster-ink: var(--color-teal-950);
+	}
+
+	[data-flavor="rose"] {
+		--poster-fill: var(--color-fuchsia-200);
+		--poster-ink: var(--color-fuchsia-950);
 	}
 }
 
@@ -310,14 +359,14 @@
 }
 
 /* ----------------------------------------------------------------------------
-   EMPHASIS - the dial runs from soft to theatrical, three stops (focused
-   and immersive merged into one theatrical level, 2026-07-11):
+   EMPHASIS - the dial runs from soft to theatrical, four stops:
    Default (the calibrated normal, 70s rainbow posters) · Muted (everything
-   whispers - page and posters both ease off) · Red light (the room goes
-   deep red and the posters vary by value, not hue). Each level still speaks
-   through the color tokens only - never type or shape, so any brand works
-   at any emphasis. Light values here; dark counterparts below with the
-   scheme blocks. */
+   whispers - page and posters both ease off) · Immersive (the paint goes
+   rich blue, flavors cool toward blue's neighbors) · Red light (the
+   theatrical finale - one red theme, two scheme takes). Each level still
+   speaks through the color tokens only - never type or shape, so any brand
+   works at any emphasis. Light values here; dark counterparts below with
+   the scheme blocks. */
 
 [data-emphasis="muted"] {
 	--fill-primary: var(--color-stone-100);
@@ -333,18 +382,42 @@
 	--stroke-auxiliary: var(--color-stone-200);
 
 	--accent: var(--color-stone-500);
+
+	/* The highlighter, whispered. Literal dark ink for the same
+	   scheme-proofing reason as the default's. */
+	--selection-fill: oklch(94% 0.06 102);
+	--selection-ink: var(--color-stone-800);
+}
+
+[data-emphasis="immersive"] {
+	--fill-primary: var(--color-blue-50);
+	--fill-secondary: var(--color-blue-100);
+	--fill-auxiliary: var(--color-blue-200);
+
+	--ink-primary: var(--color-blue-950);
+	--ink-secondary: var(--color-blue-900);
+	--ink-auxiliary: var(--color-blue-800);
+
+	--stroke-primary: var(--color-blue-300);
+	--stroke-secondary: var(--color-blue-200);
+	--stroke-auxiliary: var(--color-blue-100);
+
+	--accent: var(--color-blue-600);
+
+	/* Selection stays in the blue world, both schemes. */
+	--selection-fill: var(--color-blue-200);
+	--selection-ink: var(--color-blue-950);
 }
 
 [data-emphasis="red-light"] {
-	/* ONE look in both schemes - the iPhone red-only filter, faithfully:
-	   the filter maps brightness to red, so the white page becomes FULL-ON
-	   red and the dark ink stays near-black. Two poles, nothing in between
-	   but shades of the same red. The scheme toggle changes nothing here
-	   (the dark blocks below restate these exact values purely to out-rank
-	   the generic dark recipes); the near-black is authored oklch since the
-	   scale stops at red-950. The wall is #ff0004 - all the way red, not a
-	   scale stop - with its support fills authored as darker/lighter cuts
-	   of the same red. */
+	/* Two takes on one red theme, picked by the scheme toggle:
+	   light (this block) = the iPhone red-only filter look - brightness
+	   maps to red, so the white page becomes FULL-ON #ff0004 (all the way
+	   red, not a scale stop; support fills are darker/lighter cuts of the
+	   same red) and the ink stays near-black;
+	   dark (the blocks below) = terminator view - a near-black room where
+	   the type glows red out of the dark.
+	   The near-blacks are authored oklch since the scale stops at red-950. */
 	--fill-primary: #ff0004;
 	--fill-secondary: #d40003;
 	--fill-auxiliary: #ff3236;
@@ -370,6 +443,13 @@
 	--media-blend: luminosity;
 	--media-blend-fill: #ff0004;
 	--dot-ink: #ff0004;
+
+	/* Selection RESTATES the inversion recipe: without this the default's
+	   highlighter yellow inherits in and breaks the two-color room. The
+	   vars resolve per scheme, so both the #ff0004 room and the terminator
+	   view invert correctly. */
+	--selection-fill: color-mix(in oklab, var(--ink-primary) 80%, transparent);
+	--selection-ink: var(--fill-primary);
 }
 
 html {
@@ -405,20 +485,32 @@ html {
 		--stroke-auxiliary: var(--color-stone-700);
 		--accent: var(--color-stone-400);
 	}
-	/* Red light is ONE look - the room doesn't change with the scheme. This
-	   restates the base recipe only to out-rank the generic dark block above
-	   (which would otherwise win on specificity and repaint the room stone). */
+	[data-emphasis="immersive"]:not([data-scheme="light"]) {
+		--fill-primary: var(--color-blue-950);
+		--fill-secondary: var(--color-blue-900);
+		--fill-auxiliary: var(--color-blue-800);
+		--ink-primary: var(--color-blue-50);
+		--ink-secondary: var(--color-blue-200);
+		--ink-auxiliary: var(--color-blue-300);
+		--stroke-primary: var(--color-blue-700);
+		--stroke-secondary: var(--color-blue-800);
+		--stroke-auxiliary: var(--color-blue-800);
+		--accent: var(--color-blue-300);
+	}
+	/* Red light, dark scheme = terminator view: a near-black red room where
+	   the type glows out of the dark. (Light scheme is the full-on #ff0004
+	   room - see the base block.) */
 	[data-emphasis="red-light"]:not([data-scheme="light"]) {
-		--fill-primary: #ff0004;
-		--fill-secondary: #d40003;
-		--fill-auxiliary: #ff3236;
-		--ink-primary: oklch(16% 0.05 26);
-		--ink-secondary: var(--color-red-950);
-		--ink-auxiliary: var(--color-red-900);
+		--fill-primary: oklch(16% 0.05 26);
+		--fill-secondary: oklch(21% 0.07 26);
+		--fill-auxiliary: var(--color-red-950);
+		--ink-primary: var(--color-red-300);
+		--ink-secondary: var(--color-red-400);
+		--ink-auxiliary: var(--color-red-500);
 		--stroke-primary: var(--color-red-800);
-		--stroke-secondary: var(--color-red-700);
-		--stroke-auxiliary: var(--color-red-700);
-		--accent: var(--color-red-950);
+		--stroke-secondary: var(--color-red-900);
+		--stroke-auxiliary: var(--color-red-950);
+		--accent: var(--color-red-500);
 	}
 }
 
@@ -449,17 +541,29 @@ html {
 	--accent: var(--color-stone-400);
 }
 
-/* Same one-look rule as the prefers-dark counterpart above: restated only
-   to out-rank the generic [data-scheme='dark'] block. */
+[data-emphasis="immersive"][data-scheme="dark"] {
+	--fill-primary: var(--color-blue-950);
+	--fill-secondary: var(--color-blue-900);
+	--fill-auxiliary: var(--color-blue-800);
+	--ink-primary: var(--color-blue-50);
+	--ink-secondary: var(--color-blue-200);
+	--ink-auxiliary: var(--color-blue-300);
+	--stroke-primary: var(--color-blue-700);
+	--stroke-secondary: var(--color-blue-800);
+	--stroke-auxiliary: var(--color-blue-800);
+	--accent: var(--color-blue-300);
+}
+
+/* Terminator view - keep matched to the prefers-dark counterpart above. */
 [data-emphasis="red-light"][data-scheme="dark"] {
-	--fill-primary: #ff0004;
-	--fill-secondary: #d40003;
-	--fill-auxiliary: #ff3236;
-	--ink-primary: oklch(16% 0.05 26);
-	--ink-secondary: var(--color-red-950);
-	--ink-auxiliary: var(--color-red-900);
+	--fill-primary: oklch(16% 0.05 26);
+	--fill-secondary: oklch(21% 0.07 26);
+	--fill-auxiliary: var(--color-red-950);
+	--ink-primary: var(--color-red-300);
+	--ink-secondary: var(--color-red-400);
+	--ink-auxiliary: var(--color-red-500);
 	--stroke-primary: var(--color-red-800);
-	--stroke-secondary: var(--color-red-700);
-	--stroke-auxiliary: var(--color-red-700);
-	--accent: var(--color-red-950);
+	--stroke-secondary: var(--color-red-900);
+	--stroke-auxiliary: var(--color-red-950);
+	--accent: var(--color-red-500);
 }

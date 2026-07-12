@@ -5,5 +5,5 @@
 <div class='emphasis-switcher' role='group' aria-labelledby='emphasis-switcher-label'>
 	<p class='app-data-voice' id='emphasis-switcher-label'>Emphasis: <span data-emphasis-name>Default</span></p>
 
-	<input type='range' min='0' max='2' step='1' value='0' data-set-emphasis-slider class='plain-range' aria-label='Emphasis'>
+	<input type='range' min='0' max='3' step='1' value='0' data-set-emphasis-slider class='plain-range' aria-label='Emphasis'>
 </div>

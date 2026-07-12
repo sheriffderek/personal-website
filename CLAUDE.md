@@ -166,6 +166,13 @@ Shape is derived, never hand-set: a card with any `real_media_items()` (drops `/
 - `loop` autoplay respects `prefers-reduced-motion`: those users get the still frame, no autoplay.
 - `play` never autoplays — the user presses play.
 
+**The corner island (designed 2026-07-11, deferred - generalizes the pill).** The pill's "reserved slot" rule, promoted to the whole corner: the top-right chrome is a *conditional cluster*, and each view renders it its own way. List view already has it (the sticky toolbox row = always-present triggers + the conditional pill slot). Grid view hides the triggers and parks the panel inline at the top, which orphans its jobs after scrolling - so grid view gets a floating island of menu buttons, everything in it conditional. **Placement adapts to the room** (2026-07-11): the wall deliberately drops extra width to the RIGHT (`--wall-inset` note in grid-view.css), so when that leftover margin fits a button column, the island is a *vertical list beside the grid* - chrome living in space the layout already left calm; when the margin is tight it collapses to the top-right corner cluster. Members:
+- **Settings glyph** - appears when the inline panel scrolls out of view (panel-exit is the condition, via IntersectionObserver - it's exactly the moment the controls are lost; no magic scroll depth). Pressing it re-adds `popover` to the SAME panel node and pops it in place; closing returns it inline. One panel instance, never a duplicate.
+- **Now-playing pill - probably NOT a grid member** (2026-07-11): the wall is dense and easy to navigate back through, so orphaned audio barely orphans there. The pill is a list-view concern (35 cards of single column between you and the talking video). If it ever joins the island, same spec as above, same condition - but don't build it there by default.
+- **Candidate members, undecided**: the list/grid view toggle (leaving the wall mid-scroll is a real want), back-to-top. Add members by the same test - is its job orphaned at this scroll position? - not because the island has room.
+- Empty island = no island. Members keep reserved slots so it never reflows mid-scroll (the pill's rule, now the island's rule); in the vertical form that means fixed slot heights, no jumping stack.
+- **Prerequisite for settings appearing in more places** (island mirrors, a wall cell, footer): refactor settings-panel.js to document-level event delegation off the `data-set-*` attributes + reflect-all rendering (querySelectorAll every mirror on apply), and de-ID the partials (`aria-labelledby`/`popovertarget` are the blockers; popover machinery stays exclusive to the rail instance). State already lives on `<html>` + localStorage; controls become dumb mirrors of it - N instances for free, none owns the state. A settings cell at the wall's end additionally needs masonry manners: always last, excluded from filter/minimap counts (they select `.timeline > li`), pinned so `dense` can't backfill it.
+
 **Scroll trigger for `loop` autoplay:**
 - Start: figure's top scrolls above 50% of the viewport
 - Stop: figure is fully off-screen (either fully above or fully below)
@@ -195,7 +202,7 @@ The theming behavior is a load-bearing artifact of this site — it's part of th
 
 **Attribute axes (each lives at a specific level, do not confuse):**
 - `data-brand` on `<html>` — structure: type pair, `--corners`, scale ratio, voice weights (`personal | marketing | product | documentation`). Absent = personal (`:root` IS the personal brand).
-- `data-emphasis` on `<html>` — a dial from soft to theatrical, three stops (`default | muted | red-light`; focused and immersive merged 2026-07-11). Each level speaks through the color tokens only (that's the mechanism) AND may override the poster flavors: default is the 70s muted-rainbow flavors on a neutral page; muted whispers both (flavors map to the near-neutral taupe/mist/olive/mauve families); red-light is the theatrical one — the iPhone red-only filter look: the filter maps brightness to red, so the page is FULL-ON red with near-black ink, and every poster is the same black panel with red linework, flavored or not. One look in both schemes (the dark blocks restate the same recipe purely to out-rank the generic dark blocks). Absent = default.
+- `data-emphasis` on `<html>` — a dial from soft to theatrical, four stops (`default | muted | immersive | red-light`). Each level speaks through the color tokens only (that's the mechanism) AND may override the poster flavors: default is the 70s muted-rainbow flavors on a neutral page; muted whispers both (flavors map to the near-neutral taupe/mist/olive/mauve families); immersive goes rich blue with the flavors cooled toward blue's neighbors; red-light is the theatrical finale — two takes picked by the scheme toggle: light = the iPhone red-only filter look (brightness maps to red, so the page is FULL-ON red with near-black ink), dark = terminator view (near-black room, type glowing red out of it), and every poster the same black panel with red linework, flavored or not. Absent = default.
 - `data-scheme` on `<html>` — `system | light | dark`. Absent = system (reads `prefers-color-scheme`).
 - `data-view` on `<html>` — `grid` when the grid view is applied; absent = list. See the Grid view section below.
 - `data-sound` on `<html>` — audio-feedback toggle.
@@ -221,6 +228,7 @@ The theming behavior is a load-bearing artifact of this site — it's part of th
 **Queued structural improvements** (in priority order — none urgent):
 1. Split settings.css into orthogonal token layer files (`settings/brands.css`, `settings/emphasis.css`, …) now that the axes exist — file split only, no indirection.
 2. Pull the FOUC restoration list into one PHP-side config that both the inline script and the JS read from.
+3. URL-shareable settings state (`&brand=…&emphasis=…`) — full plan in `url-state-plan.md`; do item 2 first (it adds a fourth consumer of the value lists).
 
 ## Timeline weights (locked-in rules)
 
