@@ -113,7 +113,7 @@
 			$is_external = strpos($milestone['link'], 'http') === 0;
 			$label = isset($milestone['link_label']) ? $milestone['link_label'] : 'Read more';
 		?>
-			<a class='read-more link' href='<?= $milestone['link'] ?>'<?= $is_external ? " target='_blank' rel='noopener'" : '' ?>><?= $label ?></a>
+			<a class='read-more link' href='<?= $milestone['link'] ?>'<?= $is_external ? " target='_blank'" : '' ?>><?= $label ?></a>
 		<?php endif; ?>
 	</text-content>
 </article>

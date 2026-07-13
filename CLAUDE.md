@@ -59,6 +59,8 @@ Code should tell a real story. Pick constructs for a reason, not because they're
 
 This cuts against fashion in both directions. `var` is fine and sometimes *better* — it honestly says "a variable," while `const` on a mutating array tells a false story ("constant" on a thing that changes). `rel=` is storytelling itself — it names the relationship between documents. Don't let linter dogma overrule the narrative.
 
+The flip side of that same rule is the house-wide **no `rel="noopener"`** convention (see the projects-root CLAUDE.md syntax rules): it's the one `rel=` that names no relationship, and browsers default `target="_blank"` to noopener anyway — so it earns no place in this markup.
+
 For CSS-specific conventions (no BEM, no underscores/double-dashes, nesting scoped to parent class), see `../CLAUDE.md` at the projects root.
 
 ## Writing rules
@@ -81,6 +83,7 @@ The home page-header intro (`templates/pages/home.php`, `.page-header`) is the s
 - Breadth framed as method, not menu. "That's how I attack problems," never "I can do anything."
 - Each paragraph does one job (what / where and how long). Three jobs in a paragraph is the ceiling.
 - Don't repeat what the timeline already tells. The header owns certain phrases ("do their best work," "folding it back into the curriculum") - entries must not reuse them.
+- Cards must stand alone - we don't know who reads what. The same true claim appearing on two cards is an honest career, not a bug; what can't repeat is exact phrases and signature moves.
 
 ### Entry titles
 
@@ -246,9 +249,9 @@ Every milestone carries a `weight` (1-6) in `content/milestones.json` - **that f
 - **5 - Craft detail.** Internal tooling and feature-level work (mostly the PE LMS internals).
 - **6 - Texture & color.** Podcasts and talks, music, food, art school - the human layer.
 
-**The gap rule.** Weight 1 doubles as the timeline's spine: it must cover the years with no visible multi-year gaps, so the default view reads as a continuous career, not a highlight reel with holes. When two entries tie on merit, the one that fills a year-gap takes the higher (numerically lower) weight. This is why weight 1 is a larger bucket (~14) than the tiers below it.
+**The gap rule.** Weight 1 doubles as the timeline's spine: it must cover the years with no visible multi-year gaps, so the default view reads as a continuous career, not a highlight reel with holes. When two entries tie on merit, the one that fills a year-gap takes the higher (numerically lower) weight. This is why weight 1 is a larger bucket (~16) than the tiers below it.
 
-**The balance rule (Shape A - pitch-floored).** Weight 1 is the fixed ~14-entry pitch; the rest split into evenly-sized tiers below it so each slider notch reveals a comparable chunk - never a big jump then a trickle. Current tier sizes are **14 / 4 / 4 / 4 / 5 / 6** (= 37) for weights 1→6, so the slider reveals cumulatively **14 → 18 → 22 → 26 → 31 → 37**. (What the visitor actually sees is per-lane: the default `job` lane's tag filter drops two un-tagged weight-6 entries - Holloys, Pizzaiolo - so its slider tops out at **35**, not 37. The label's total reflects the live lane count, not the full 37.) When adding entries, keep the lower tiers within a couple of each other. (If the slider ever needs to *narrow below* the pitch to a smaller flagship view, that's "Shape B" - a different default-position design we chose against; revisit deliberately, don't drift into it.)
+**The balance rule (Shape A - pitch-floored).** Weight 1 is the fixed ~16-entry pitch; the rest split into evenly-sized tiers below it so each slider notch reveals a comparable chunk - never a big jump then a trickle. Current tier sizes are **16 / 3 / 3 / 4 / 5 / 5** (= 36) for weights 1→6, so the slider reveals cumulatively **16 → 19 → 22 → 26 → 31 → 36**. (2026-07-12 rebalance, agent-audited: pe-self-paced, fundamonium, and shoutq moved to 1 - the launch/"runs itself" story, the 2011 fifteen-years anchor, and the 2014 product-lineage plank; open-office-hours and 2026-portfolio-site to 2; freelancing-2019 to 3; cca-bfa to 4 (the 2000 bookend outranks blog-post-tier texture); pe-redesign-dashboard removed entirely.) (What the visitor actually sees is per-lane: the default `job` lane's tag filter drops two un-tagged weight-6 entries - Holloys, Pizzaiolo - so its slider tops out at **34**, not 36. The label's total reflects the live lane count, not the full 36.) When adding entries, keep the lower tiers within a couple of each other. (If the slider ever needs to *narrow below* the pitch to a smaller flagship view, that's "Shape B" - a different default-position design we chose against; revisit deliberately, don't drift into it.)
 
 **Wiring.** Three places must agree: the slider's `max` in `includes/settings/filter-control.php`, and `MAX_WEIGHT` + `FILTER_NAMES` in `scripts/settings-panel.js`. Adding or removing a tier means touching all three.
 

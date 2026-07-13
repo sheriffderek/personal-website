@@ -6,16 +6,20 @@
    toward slide 2, holds a beat, and settles back. The real mechanic demos
    itself - no overlay chrome, nothing added to the poster art.
 
-   The lesson only needs teaching once:
-     - once per PAGEVIEW: the first qualifying carousel nudges, the rest
-       stay still.
-     - once per VISITOR: the first real swipe (anywhere, ever) drops the
-       'slider-hint-seen' breadcrumb and no page hints again - same
-       retire-forever pattern as the grid invite pulse.
+   The lesson only needs teaching once, on two layers:
+     - per PAGE LOAD: one nudge, max - the first qualifying carousel does
+       it, every card after stays still.
+     - across VISITS: it repeats (one nudge per load) until the visitor's
+       first real swipe or dot-click, anywhere, ever. That's the "got it"
+       signal: it drops the 'slider-hint-seen' breadcrumb and no page ever
+       hints again - same retire-forever pattern as the grid invite pulse.
 
-   Stand-downs: prefers-reduced-motion visitors never see it (the page dots
-   remain their signal), and grid view suppresses it while active (motion
-   stands down on the wall) - switching back to list view re-arms it. */
+   Stand-down: grid view suppresses it while active (motion stands down on
+   the wall) - switching back to list view re-arms it.
+
+   $todo (Derek, 2026-07-12): as tuned, it's way too subtle and firing only
+   once per load may be too shy. Revisit the distance/duration (the -48px
+   and 1400ms below) and maybe the once-per-load rule. */
 
 window.addEventListener('load', function () {
 	var carousels = document.querySelectorAll('.carousel');
@@ -30,6 +34,13 @@ window.addEventListener('load', function () {
 	function retire() {
 		try { localStorage.setItem('slider-hint-seen', 'true'); } catch (error) {}
 	}
+
+	/* Testing back door (commented out for launch): load the page with
+	   ?hint=reset to forget the breadcrumb, so the nudge plays again like a
+	   first visit. Uncomment with the footer link in footer.php to tune. */
+	// if (new URLSearchParams(window.location.search).get('hint') === 'reset') {
+	// 	try { localStorage.removeItem('slider-hint-seen'); } catch (error) {}
+	// }
 
 	var nudge = null; /* the running animation, so a swipe can cut it short */
 
@@ -51,8 +62,6 @@ window.addEventListener('load', function () {
 	});
 
 	if (seen()) return;
-
-	if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
 	/* Watch every carousel; the first one comfortably in view fires the one
 	   nudge this pageview gets. */

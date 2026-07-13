@@ -27,6 +27,17 @@
 			marker-end='url(#poster-shapes-arrow-tip)'/>
 	</g>
 
+	<!-- NOTE for the final posters: this texture group is a full hatch FIELD
+	     (strokes span ~x800-1609, y567-907) that we crop to the small box with
+	     the clipPath above. That crop leaks at fractional browser-zoom levels -
+	     the texture "breaks out" of the box, because SVG clip-path here is a
+	     cached raster mask that falls out of alignment with the paths once the
+	     'slice'-scaled SVG is re-scaled by zoom (same subpixel-clip family as
+	     the outer-frame note in milestone.css). When redrawing the finals, don't
+	     rely on the clipPath: either wrap the texture in a nested
+	     <svg x y width height> viewport (hard-geometry clip, survives zoom) or
+	     only draw the strokes that actually fall inside the box so there's
+	     nothing to clip out. -->
 	<g class='texture' clip-path='url(#poster-shapes-texture-clip)'
 		fill='none' stroke='var(--ink-secondary)'
 		style='stroke-width: var(--line-width-secondary); stroke-linecap: round'>

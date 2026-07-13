@@ -84,7 +84,7 @@ $target_notes = $target['milestones'] ?? [];
 
 					<?php foreach ($document_links as $label => $href): ?>
 						<li>
-							<a class='link' href='<?= $href ?>' target='_blank' rel='noopener'><?= $label ?></a>
+							<a class='link' href='<?= $href ?>' target='_blank'><?= $label ?></a>
 						</li>
 					<?php endforeach; ?>
 
