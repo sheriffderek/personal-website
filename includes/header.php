@@ -99,9 +99,14 @@
 	<?php if (GRID_VIEW_ENABLED): ?>
 		<link rel='stylesheet' href='<?= asset('/styles/layouts/grid-view.css') ?>'>
 
+		<?php /* Escape hatch: true pauses the lane dealer and the wall
+			renders the no-JS fallback - aligned rows, level top edges,
+			holes accepted (approved as fallback-only, 2026-07-12). */ ?>
+		<?php $masonry_paused = false; ?>
+
 		<?php /* The masonry script only serves the timeline page - same gate
 			as the view toggle and the FOUC data-view line. */ ?>
-		<?php if (($page_controls ?? null) === 'filter-control'): ?>
+		<?php if (!$masonry_paused && ($page_controls ?? null) === 'filter-control'): ?>
 			<script src='<?= asset('/scripts/grid-masonry.js') ?>' defer></script>
 		<?php endif; ?>
 	<?php endif; ?>

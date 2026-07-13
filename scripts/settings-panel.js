@@ -354,7 +354,10 @@
 	var filterName   = document.querySelector('[data-filter-name]');
 	var filterCount  = document.querySelector('[data-filter-count]');
 	var filterTotal  = document.querySelector('[data-filter-total]');
-	var entries      = document.querySelectorAll('.timeline > li');
+	/* Both depths on purpose: in grid view the lane dealer re-parents the
+	   items into .timeline-lane wrappers. A bare '.timeline li' would also
+	   catch list items INSIDE card content (tag lists, document links). */
+	var entries      = document.querySelectorAll('.timeline > li, .timeline > .timeline-lane > li');
 	var MAX_WEIGHT   = 6;
 
 	/* Total is the count in this tag lane (what actually rendered), so the
@@ -446,6 +449,10 @@
 			}
 		}
 		if (filterSlider) filterSlider.value = String(tiersShown);
+
+		/* Announce the new visible set - the grid's lane dealer re-deals on
+		   this (a filter change is a deliberate re-setup moment). */
+		window.dispatchEvent(new CustomEvent('timeline:filtered'));
 	}
 
 	var savedFilter = null;

@@ -299,24 +299,36 @@ button.grid-invite {
 			margin-top: var(--wall-clearance, 12rem);
 		}
 
-		/* Packed mode (grid-masonry.js): rows become a 1px ruler for the
-		   measured spans; each span already includes the breathing room, so
-		   the row gap stands down. The script pins each card to its lane
-		   (item i -> column i mod N) so the order reads STRICTLY across then
-		   down - 1 2 3 / 4 5 6 - and `dense` lets each lane backfill right
-		   below its own previous card instead of waiting for the slowest
-		   lane (the row cursor never moves backwards without it). */
-		[role="list"].timeline.is-packed {
-			/* 8px ruler - must match ROW_UNIT in grid-masonry.js. */
-			grid-auto-rows: 8px;
-			grid-auto-flow: row dense;
-			row-gap: 0;
+		/* Laned mode (grid-masonry.js dealt the cards into real lane
+		   wrappers): the timeline becomes a flex row of independent column
+		   stacks. Each lane is plain block flow, so a read-more unfold
+		   pushes ITS lane down naturally and nothing else moves - no spans,
+		   no measuring, no repacking. The dealer only decides who goes
+		   where at setup; the lanes live their own lives after that. */
+		[role="list"].timeline.is-laned {
+			display: flex;
+			align-items: flex-start;
+			column-gap: var(--wall-gap);
+		}
+
+		.timeline.is-laned .timeline-lane {
+			flex: 1 1 0;
+			min-width: 0;
+			display: flex;
+			flex-direction: column;
+			row-gap: 4rem;
 		}
 
 		.milestone {
 			/* Cells fill their column instead of the list's reading measure. */
 			max-width: none;
 		}
+
+		/* Read-more unfolds INLINE in the grid too - same as list view. A
+		   floating-panel version was tried (2026-07-12) and read as a weird
+		   box pasted over the wall; natural push-down wins. With the
+		   masonry's per-lane packing, an unfold grows only its own lane -
+		   the other lanes never move. */
 
 		/* --- Minimap: the faithful schematic follows the layout it depicts
 		   (same contract as its 1024px two-column flip): panel strip on top,

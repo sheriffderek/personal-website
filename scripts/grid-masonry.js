@@ -1,122 +1,197 @@
-/* Z-order masonry for grid view (loaded only when GRID_VIEW_ENABLED).
+/* Lane dealer for grid view (loaded only when GRID_VIEW_ENABLED).
 
-   The wall must read in a Z - across the columns, then down - AND pack
-   tight despite very different card heights. No stable browser has native
-   masonry yet, so this is the measured-row-span technique: the timeline
-   grid uses 1px auto-rows (grid-view.css, .is-packed), each card gets a
-   row span matching its measured height, and grid auto-placement walks
-   the cards left-to-right - the Z comes free.
+   The wall is N real columns - plain flex stacks - and this script's ONE
+   job is the initial deal: distribute the cards across the lanes, in
+   order, with a height correction so no lane runs away. After the deal
+   the page is on its own: a read-more unfolds and pushes its own lane
+   down naturally, media loads, type rescales - no spans, no measuring
+   observers, no repacking. The initial setup is what we control; the
+   wear from reading is honest and stays.
 
-   Heights change constantly - a brand swap rescales the type, media
-   finishes loading, a read-more unfolds, the window resizes a column -
-   so one ResizeObserver on every card keeps its span true. No manual
-   resize or slider hooks; anything that changes a card's box re-spans it.
+   (This replaced the measured-row-span masonry, 2026-07-12. Setting
+   every card's height meant owning every height change forever - unfold,
+   media load, font swap all needed a re-pack, and re-packing shifted the
+   whole wall under the reader. Distribute-then-let-flow costs none of
+   that.)
 
-   When native masonry ("grid lanes") ships, delete this file and switch
-   .is-packed to the native declaration. */
+   The deal re-runs only at deliberate re-setup moments: entering grid
+   view, a filter change (settings-panel.js announces 'timeline:filtered'),
+   or the lane count changing at a breakpoint. Leaving grid view hands
+   every card back to the one timeline list in source order.
+
+   No-JS fallback: without the dealer the timeline keeps its aligned-rows
+   grid (grid-view.css) - correct order, craters accepted. */
 
 (function () {
 	var html = document.documentElement;
 	var timeline = document.querySelector("[role='list'].timeline");
 	if (!timeline) return;
 
-	/* The span ruler: must match .is-packed { grid-auto-rows: 8px }. Coarser
-	   than 1px on purpose - the spans read as sane numbers in devtools
-	   (span 72, not span 572) and the browser tracks 8x fewer implicit
-	   rows. Cards round UP to the next ruler line, so the cost is at most
-	   7px of extra air below a card - invisible at wall scale. */
-	var ROW_UNIT = 8;
-
-	/* Breathing room below each card, baked into its span (packed mode has
-	   no row-gap). Matches the 4rem row-gap of the unpacked fallback. */
-	var CARD_GAP = 64;
+	/* Source order, captured once - the deal and the restore both walk
+	   this list, so the chronology can never be lost to reshuffling. */
+	var cards = Array.prototype.slice.call(timeline.querySelectorAll(':scope > li'));
 
 	function inGrid() {
 		return html.getAttribute('data-view') === 'grid';
 	}
 
-	function items() {
-		return timeline.querySelectorAll(':scope > li');
+	function laneCount() {
+		return parseInt(getComputedStyle(html).getPropertyValue('--grid-columns'), 10) || 1;
 	}
 
-	/* Every visible card gets two placements:
-	     - its LANE: item i goes to column (i % lane count), so the order
-	       reads strictly across then down - 1 2 3 / 4 5 6 - never "whichever
-	       lane is shortest" (which could make a row read backwards).
-	     - its SPAN: the card's measured height on the 1px row ruler. The
-	       card (the article) is measured rather than the item, because the
-	       item's height IS the span - measuring it would feed back into
-	       itself.
-	   Always a full pass: the filter changes which cards are visible, and
-	   every index after a removed card shifts by one. */
-	function packAll() {
-		var laneCount = parseInt(getComputedStyle(html).getPropertyValue('--grid-columns'), 10) || 1;
-		var lane = 0;
+	/* Put every card back in the timeline itself, in source order. The
+	   base for every deal, and the whole of leaving grid view. */
+	function restore() {
+		cards.forEach(function (li) {
+			timeline.appendChild(li);
+		});
 
-		/* Measure everything first, then write everything: interleaving a
-		   style write with the next card's measurement would force the
-		   browser to re-run layout once per card. */
-		var measured = [];
+		timeline.querySelectorAll(':scope > .timeline-lane').forEach(function (lane) {
+			lane.remove();
+		});
 
-		items().forEach(function (li) {
+		timeline.classList.remove('is-laned');
+	}
+
+	/* The deal: walk the cards left-to-right, one lane per card, like
+	   dealing a hand - BUT if the lane the cycle wants is already taller
+	   than the shortest lane by more than the tolerance (about half an
+	   average card), the card goes to the shortest lane instead and the
+	   sweep resumes after it. Mostly chronological rows, self-correcting
+	   before any lane runs away. Heights are read once, before dealing -
+	   they only steer the assignment, they're never written anywhere. */
+	function deal() {
+		restore();
+
+		var count = laneCount();
+		var pool = cards.filter(function (li) {
+			return li.style.display !== 'none';
+		});
+
+		if (!pool.length) return;
+
+		/* Measure the CARD (the article), not the item: in the aligned-rows
+		   fallback the items stretch to their row's height, so an item
+		   measure would feed the deal the row's max instead of the card's
+		   own size. */
+		var heights = pool.map(function (li) {
 			var card = li.firstElementChild;
-			if (!card) return;
-			measured.push({ li: li, height: card.getBoundingClientRect().height });
+			return card ? card.getBoundingClientRect().height : 0;
 		});
 
-		measured.forEach(function (entry) {
-			if (entry.height === 0) return; /* filtered out - nothing to place */
+		var total = 0;
+		heights.forEach(function (h) { total += h; });
+		var average = total / pool.length;
 
-			entry.li.style.gridColumn = String((lane % laneCount) + 1);
-			entry.li.style.gridRowEnd = 'span ' + Math.max(1, Math.ceil((entry.height + CARD_GAP) / ROW_UNIT));
-			lane++;
-		});
-	}
+		/* One candidate deal at a given tolerance: returns each card's
+		   lane and the resulting bottom spread. Pure arithmetic - nothing
+		   touches the DOM until a winner is picked. */
+		function tryDeal(tolerance) {
+			var laneHeights = [];
+			for (var i = 0; i < count; i++) {
+				laneHeights.push(0);
+			}
 
-	function unpackAll() {
-		items().forEach(function (li) {
-			li.style.gridColumn = '';
-			li.style.gridRowEnd = '';
+			var assignment = [];
+			var cursor = 0;
+			heights.forEach(function (h) {
+				var next = cursor % count;
+
+				var shortest = 0;
+				for (var c = 1; c < count; c++) {
+					if (laneHeights[c] < laneHeights[shortest]) shortest = c;
+				}
+
+				var chosen = laneHeights[next] - laneHeights[shortest] > tolerance ? shortest : next;
+				assignment.push(chosen);
+				laneHeights[chosen] += h;
+				cursor = chosen + 1;
+			});
+
+			return {
+				assignment: assignment,
+				spread: Math.max.apply(null, laneHeights) - Math.min.apply(null, laneHeights),
+			};
+		}
+
+		/* No single tolerance suits every card set (measured: a factor
+		   that's near-perfect at one filter setting is terrible at
+		   another), so try a handful and keep the deal with the tightest
+		   bottom. Ties go to the LARGER tolerance - fewer corrections,
+		   more purely chronological rows. */
+		var best = null;
+		[1, 0.75, 0.5, 0.375, 0.25].forEach(function (factor) {
+			var candidate = tryDeal(average * factor);
+			if (!best || candidate.spread < best.spread) {
+				best = candidate;
+			}
 		});
+
+		var lanes = [];
+		for (var i = 0; i < count; i++) {
+			var lane = document.createElement('div');
+			lane.className = 'timeline-lane';
+			lane.setAttribute('role', 'presentation');
+			lanes.push(lane);
+		}
+
+		pool.forEach(function (li, index) {
+			lanes[best.assignment[index]].appendChild(li);
+		});
+
+		lanes.forEach(function (lane) {
+			timeline.appendChild(lane);
+		});
+
+		timeline.classList.add('is-laned');
 	}
 
 	function sync() {
 		if (inGrid()) {
-			timeline.classList.add('is-packed');
-			packAll();
+			deal();
 		} else {
-			timeline.classList.remove('is-packed');
-			unpackAll();
+			restore();
 		}
 	}
 
-	/* Re-pack whenever any card's box changes - a brand swap rescales type,
-	   media loads, a read-more unfolds, the filter hides a card (size 0), a
-	   resize changes column width. One full pass per frame at most: lane
-	   assignment depends on every card's visibility, so per-card updates
-	   aren't enough. Observing the card (not the item) avoids a feedback
-	   loop: setting the span changes the ITEM's height, never the card's. */
-	var repackFrame = null;
+	/* Re-setup moments only - never in response to reading. */
 
-	function queueRepack() {
-		if (repackFrame) return;
-		repackFrame = requestAnimationFrame(function () {
-			repackFrame = null;
-			packAll();
+	/* data-view is the single switch for view behavior - watch it flip.
+	   Note: settings-panel.js re-stamps the attribute on its debounced
+	   resize re-applies, and a MutationObserver fires on any re-stamp -
+	   so the wall quietly re-deals as the window resizes, keeping the
+	   bottoms even at every width. Deliberate: the deal is cheap (pure
+	   arithmetic plus two DOM moves), and this is why resizing "just
+	   works" - don't optimize the re-stamps away. */
+	new MutationObserver(sync).observe(html, { attributes: true, attributeFilter: ['data-view'] });
+
+	/* The filter changed which cards are visible (announced by
+	   settings-panel.js). */
+	window.addEventListener('timeline:filtered', function () {
+		if (inGrid()) deal();
+	});
+
+	/* The lane count changes at a breakpoint (2 lanes -> 3). Only a
+	   changed count re-deals - plain width changes just reflow. */
+	var dealtCount = null;
+	var resizeTimer = null;
+	window.addEventListener('resize', function () {
+		if (resizeTimer) clearTimeout(resizeTimer);
+		resizeTimer = setTimeout(function () {
+			if (inGrid() && laneCount() !== dealtCount) sync();
+			dealtCount = laneCount();
+		}, 150);
+	});
+
+	/* Webfonts landing rewrite every card's height, and a deal computed on
+	   pre-swap heights optimizes for numbers that no longer exist (seen
+	   live: ~15x the bottom spread). Fonts-ready is the last setup moment. */
+	if (document.fonts && document.fonts.ready) {
+		document.fonts.ready.then(function () {
+			if (inGrid()) deal();
 		});
 	}
 
-	var observer = new ResizeObserver(function () {
-		if (!inGrid()) return;
-		queueRepack();
-	});
-
-	items().forEach(function (li) {
-		if (li.firstElementChild) observer.observe(li.firstElementChild);
-	});
-
-	/* data-view is the single switch for view behavior - watch it flip. */
-	new MutationObserver(sync).observe(html, { attributes: true, attributeFilter: ['data-view'] });
-
+	dealtCount = laneCount();
 	sync();
 })();
