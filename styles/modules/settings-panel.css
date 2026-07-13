@@ -84,36 +84,18 @@ button.toolbox-trigger {
 
 .toolbox-glyph {
 	--glyph-size: 1.25rem;
-	--glyph-line-width: 10px;
-	--glyph-line-height: 1.5px;
-	--glyph-line-gap: 5.25px;
-	--glyph-line-radius: calc(var(--glyph-line-height) / 2);
 
 	width: var(--glyph-size);
 	height: var(--glyph-size);
 	display: block;
 
+	/* The glyphs are one filled icon set (Phosphor); one place colors them
+	   all, so the whole set matches. */
+	fill: currentColor;
+
 	/* Let taps fall through to the button, so the tap target is the button
 	   (which sets touch-action) and never the raw glyph. */
 	pointer-events: none;
-
-	.glyph-line {
-		fill: currentColor;
-		width: var(--glyph-line-width);
-		height: var(--glyph-line-height);
-		rx: var(--glyph-line-radius);
-		x: calc((16px - var(--glyph-line-width)) / 2);
-	}
-
-	.glyph-line-1 {
-		y: calc(8px - var(--glyph-line-gap) - var(--glyph-line-height) / 2);
-	}
-	.glyph-line-2 {
-		y: calc(8px - var(--glyph-line-height) / 2);
-	}
-	.glyph-line-3 {
-		y: calc(8px + var(--glyph-line-gap) - var(--glyph-line-height) / 2);
-	}
 }
 
 .toolbox-panel {
