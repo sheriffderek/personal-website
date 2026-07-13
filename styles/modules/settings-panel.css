@@ -179,7 +179,23 @@ button.toolbox-trigger {
    two independent backdrops behave as one continuous dim). This single element
    belongs to neither menu: settings-panel.js shows it when ANY menu opens and
    hides it when ALL close, so a switch never touches it and there's nothing to
-   flash. Tapping it dismisses via the document-level handler in that same file. */
+   flash. Tapping it dismisses via the document-level handler in that same file.
+
+   $todo (design note, menu currently disabled 2026-07-13): the scrim's
+   `.is-visible` is impersonating a state it doesn't own. The real condition
+   isn't "a menu is open" - it's "a menu is open AND presented as an OVERLAY."
+   Two axes, not one: open/closed, and presentation (OVERLAY = popover in the top
+   layer, on top of content, wants a scrim; PLACED = has its own column - the
+   sticky rail in desktop list view, or the inline strip at the top in grid
+   view). A placed menu is open and overlays nothing, so it wants no scrim. That
+   fact is currently smeared across three spots that only happen to agree: this
+   `.is-visible`, the `@media (width >= 1024px)` display:none below, and the JS
+   that adds/removes the `popover` attribute when the panel goes inline for grid.
+   When the menu comes back: name it once as a presentation flag on <html>
+   (`data-menu='overlay'`, same shelf as data-view/data-brand), set where the
+   rail-vs-inline-vs-popover decision is already made, and make the scrim (plus
+   any future scroll-lock / background inert / page-blur) a CONSUMER of it rather
+   than each re-deriving "are we overlaying?" on its own. */
 .menu-scrim {
 	position: fixed;
 	inset: 0;
