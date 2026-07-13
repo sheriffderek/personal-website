@@ -4,15 +4,19 @@
 
 $all_milestones = load_json('milestones.json');
 
-// Which lane of the timeline? Defaults to job-relevant entries. We render ALL
-// weights (not just the top tier) so the filter slider has lower tiers to
-// reveal — the slider's default (tier 1) shows only weight-1 entries on load,
-// so the initial view is unchanged.
+// Which lane of the timeline? Defaults to job-relevant entries.
 $filter_tag = isset($_GET['filter']) ? $_GET['filter'] : 'job';
 
+// TEMPORARY - paired with the settings menu being OFF (header.php): the weight
+// filter is normally the JS slider, which renders all weights and hides the
+// lower tiers. With the menu disabled nothing trims the list, so we cap to the
+// weight-1 spine here in PHP to keep the curated default view.
+// RE-ENABLING THE MENU: drop the weight check below - the slider needs every
+// weight present in the HTML to reveal the lower tiers.
 $milestones = array_filter($all_milestones, function ($m) use ($filter_tag) {
 	$tags = isset($m['tags']) ? $m['tags'] : [];
-	return in_array($filter_tag, $tags);
+	$weight = isset($m['weight']) ? $m['weight'] : 6;
+	return in_array($filter_tag, $tags) && $weight <= 1;
 });
 
 // A ?target=companyname loads tailored notes for specific milestones.
