@@ -109,6 +109,10 @@
 			object-fit: cover;
 		}
 
+		.slide > svg {
+			opacity: 0;
+		}
+
 		/* Themable media wash - OFF by default (normal blend over a
 		   transparent backdrop = the photo as shot). An emphasis may opt
 		   real photos/videos into its palette by declaring the pair in

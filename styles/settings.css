@@ -315,15 +315,17 @@
 	--font-heading: "Poppins", system-ui, sans-serif;
 	--font-body: "General Sans", system-ui, sans-serif;
 
-	--corners: 16px;
+	--corners: 12px;
+	/* we need border stuff here - right */
+	--border-width: 0;
 
-	--scale-ratio: 1.414;
+	--scale-ratio: 1.314;
 	--font-heading-weight: 700;
 	--calm-voice-font-weight: 400;
 	--calm-voice-line-height: 1.6;
 	--strong-voice-font-weight: 600;
-	--attention-voice-font-weight: 700;
-	--attention-voice-line-height: 1.2;
+	--attention-voice-font-weight: 600;
+	--attention-voice-line-height: 1.3;
 	--loud-voice-font-weight: 700;
 	--loud-voice-line-height: 1;
 }
