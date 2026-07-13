@@ -10,6 +10,7 @@
 			"consulting"
 		],
 		"flavor": "stone",
+		"coverless": true,
 		"media": [
 			{
 				"type": "play",

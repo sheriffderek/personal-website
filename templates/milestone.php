@@ -50,7 +50,19 @@
 		$poster_only = empty($media_items) && !empty($milestone['poster']);
 	?>
 
-	<?php if ($media_items): ?>
+	<?php if (!empty($milestone['coverless']) && $media_items): ?>
+
+		<?php /* TEMPORARY (pre-covers phase): show just the intro video, bare -
+			no poster-shapes cover, no carousel. This deliberately overrides the
+			locked "poster-first / no bare media" rule for a card whose real
+			cover isn't drawn yet. The card keeps its other media in the JSON,
+			simply unshown, until it's ready. To restore the full poster+carousel,
+			remove the "coverless" key from the milestone and this branch. */ ?>
+		<figure class='media'>
+			<?= partial('posters/media-item', ['item' => $media_items[0]]) ?>
+		</figure>
+
+	<?php elseif ($media_items): ?>
 
 		<figure class='media'>
 			<?php /* wrapAround with only 2 cells (poster + one item) can leave a
