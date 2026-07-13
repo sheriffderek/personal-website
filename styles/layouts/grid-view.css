@@ -78,6 +78,16 @@ button.grid-invite {
 	display: none;
 }
 
+/* Kill the settings panel's open/close opacity transition for the one frame
+   the view swaps (settings-panel.js adds .is-switching-view around the
+   attribute flip, drops it next frame). Top-level, NOT under [data-view]: on
+   grid->list that attribute is already gone while the swap is mid-flight, so a
+   scoped rule wouldn't match. Without this the list popover fades out from the
+   visible grid state - the flash. */
+.is-switching-view .toolbox-panel {
+	transition: none;
+}
+
 @media (width >= 1600px) {
 	/* List view = no data-view attribute (data-view is the single switch;
 	   'grid' is its only value). In grid view the invite's job is done. */

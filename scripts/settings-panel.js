@@ -575,6 +575,14 @@
 		   the grid never showed) doesn't count as having seen it. */
 		if (applied === 'grid' && shouldPersist(opts)) markInviteSeen();
 
+		/* Suppress the panel's open/close opacity transition across the swap.
+		   grid<->list flips the panel between its inline and popover styling in
+		   one tick; without this, the list popover's opacity:0 target would FADE
+		   from the visible grid state - a boxed panel briefly fading out where it
+		   should never be seen. Cleared next frame, so the trigger-driven
+		   open/close animation still plays normally. */
+		html.classList.add('is-switching-view');
+
 		if (applied === 'grid') {
 			html.setAttribute('data-view', 'grid');
 		} else {
@@ -592,6 +600,15 @@
 				panel.setAttribute('popover', '');
 			}
 		}
+
+		/* Re-enable transitions once the transition-free swap has painted (double
+		   rAF: the first frame commits the new state instantly, the second lets
+		   normal open/close animations resume). */
+		requestAnimationFrame(function () {
+			requestAnimationFrame(function () {
+				html.classList.remove('is-switching-view');
+			});
+		});
 
 		if (shouldPersist(opts)) {
 			try {
