@@ -20,6 +20,33 @@ $target = isset($_GET['target']) ? load_target($_GET['target']) : null;
 $target_notes = $target['milestones'] ?? [];
 ?>
 
+<style>
+	/*
+	.page-header {
+		border: 4px solid red;
+	}
+
+	.page-wrapper {
+		border: 4px solid orange;
+
+		> 	.page-rail {
+			border: 4px solid blue;
+		}
+	}
+
+	.rail-sentinel {
+		border: 4px solid green;
+	}
+
+	.timeline {
+		border: 4px solid green;
+	}
+	*/
+
+
+
+</style>
+
 <header class='page-header'>
 	<h1 class='loud-voice'>
 		<span class='name'>Derek Wood</span>

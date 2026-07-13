@@ -36,7 +36,7 @@ define('TOUR_ENABLED', false);
    renders, the grid stylesheet never loads, and the FOUC script never sets
    data-view - the site is exactly the single-column list. Trying it out -
    flip to false to pull it. */
-define('GRID_VIEW_ENABLED', true);
+define('GRID_VIEW_ENABLED', false);
 
 /* SLIDER_HINT_ENABLED - the carousel-affordance nudge: the first carousel to
    scroll into view slides itself a little toward slide 2 and settles back,
