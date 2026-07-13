@@ -28,7 +28,7 @@
 	--font-heading: var(--font-sans);
 
 	--app-data-voice-font-family: var(--font-mono);
-	--app-data-voice-font-size: calc(var(--step-0) * 0.85);
+	--app-data-voice-font-size: calc(var(--step-0) * 0.75);
 	--app-data-voice-line-height: 1.4;
 	--app-data-voice-letter-spacing: 0.01em;
 }
@@ -128,21 +128,24 @@ button.toolbox-trigger {
 
 	padding: var(--gutter);
 
-	background: var(--fill-primary);
-	color: var(--ink-primary);
-	border: 1px solid var(--stroke-primary);
-	border-radius: 8px;
-	box-shadow: var(--panel-shadow, 0 4px 12px rgb(0 0 0 / 0.12));
-
 	font-family: var(--app-data-voice-font-family);
 	font-size: var(--app-data-voice-font-size);
 	line-height: var(--app-data-voice-line-height);
 	letter-spacing: var(--app-data-voice-letter-spacing);
 
 	opacity: 1;
+
 	transition:
 		opacity 120ms ease,
 		display 120ms allow-discrete;
+
+	/* these can change colors if needed per theme - since they don't change the size of things */
+	/* we can't go from border: 1 to 0 though, so that has to go from color to color */
+	background: var(--fill-primary);
+	color: var(--ink-primary);
+	border: 1px solid var(--stroke-primary);
+	border-radius: 0px;
+	box-shadow: var(--panel-shadow, 0 4px 12px rgb(0 0 0 / 0.12));
 
 	&:not(:popover-open) {
 		opacity: 0;
@@ -236,16 +239,18 @@ button.settings-trigger {
 	   target. The dot makes the single-select obvious (matching role=radio), so
 	   the row no longer needs an inset container. */
 	button {
+		font: inherit;
+		cursor: pointer;
+
 		display: inline-flex;
 		align-items: center;
 		gap: 0.45rem;
 		padding: 0.4rem 0.65rem;
+
 		border: 1px solid var(--stroke-primary);
 		background: var(--fill-primary);
 		color: var(--ink-primary);
-		border-radius: 6px;
-		font: inherit;
-		cursor: pointer;
+		border-radius: 0px;
 
 		&:focus-visible {
 			outline: 2px solid var(--accent);
@@ -305,7 +310,7 @@ button.settings-trigger {
    The gradient stops are radii, so each is half its diameter via calc. */
 .plain-range {
 	--range-hit: 36px;
-	--range-dot: 18px;
+	--range-dot: 14px;
 	--range-halo: 30px;
 
 	-webkit-appearance: none;

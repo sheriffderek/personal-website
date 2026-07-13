@@ -50,7 +50,7 @@ $target_notes = $target['milestones'] ?? [];
 <header class='page-header'>
 	<h1 class='loud-voice'>
 		<span class='name'>Derek Wood</span>
-		<span class='role'>Goal-driven Designer</span>
+		<span class='role'>Goal&#8209driven Designer</span>
 		<?php // specific role text could be target-based too ?>
 	</h1>
 

@@ -154,6 +154,8 @@
 	--high-voice-line-height: 1.2;
 	--high-voice-letter-spacing: 0.08em;
 	--high-voice-text-transform: uppercase;
+
+	--setting-button-corners: 0px;
 }
 
 /* ----------------------------------------------------------------------------
@@ -328,6 +330,10 @@
 	--attention-voice-line-height: 1.3;
 	--loud-voice-font-weight: 700;
 	--loud-voice-line-height: 1;
+
+	.toolbox-panel {
+		border-radius: 12px;
+	}
 }
 
 [data-brand="product"] {
@@ -359,6 +365,9 @@
 
 	--scale-ratio: 1.2;
 	--font-heading-weight: 700;
+
+	--calm-voice-font-size: 0.9rem;
+
 	--calm-voice-font-weight: 400;
 	--calm-voice-line-height: 1.6;
 	--strong-voice-font-weight: 700;
@@ -395,6 +404,12 @@
 	   scheme-proofing reason as the default's. */
 	--selection-fill: oklch(94% 0.06 102);
 	--selection-ink: var(--color-stone-800);
+
+	.toolbox-panel {
+		border-radius: 12px;
+		border-color: transparent;
+		box-shadow: none;
+	}
 }
 
 [data-emphasis="immersive"] {
