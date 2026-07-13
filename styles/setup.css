@@ -65,13 +65,25 @@ a.relaxed,
    inline-block keeps the propagated underline off the mark, matching the
    read-more rule that the glyph sits outside the underlined span. */
 a[target]::after {
-	content: "↗";
+	/* Unicode escape, not the literal glyph: a .css file served without a
+	   charset gets read as Latin-1, turning the ↗ bytes into "â†—". The
+	   escape is pure ASCII, so the mark is right no matter how the CSS is
+	   served (↗ = U+2197).
+
+	   $todo (keep an eye on it): the ROOT cause is that .css is served with
+	   no charset (neither .htaccess nor .claude/router.php sets one), so the
+	   browser guesses - fine in some contexts, Latin-1 in others. This escape
+	   fixes the glyphs, but any future non-ASCII in a CSS content: value will
+	   mojibake the same way. The real fix is serving .css as charset=utf-8
+	   (Apache AddDefaultCharset / a content-type header in the router). */
+	content: "\2197";
 	display: inline-block;
 	padding-left: 0.05em;
 }
 
 a.read-more:not([target])::after {
-	content: "→";
+	/* Same reason as the ↗ above - ASCII escape survives any charset (→ = U+2192). */
+	content: "\2192";
 	display: inline-block;
 	padding-left: 0.05em;
 }
