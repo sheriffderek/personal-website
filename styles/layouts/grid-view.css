@@ -218,19 +218,32 @@ button.grid-invite {
 		   slots: members never appear/disappear individually, the whole
 		   island does. --- */
 		.corner-island {
+			/* Live out in the calm margin the wall leaves to its right (see the
+			   --wall-inset note above): anchor the island's left edge just past
+			   the wall's right grid line. The min() clamps it back toward the
+			   viewport edge when that margin is tight - the ~1900px band where
+			   the 3-column wall fills the width - so it rides the corner there
+			   and floats into the margin only when there's room for it. */
+			--island-width: 3.2rem;
+			--island-anchor: calc(
+				max(var(--gutter), var(--wall-inset)) + var(--grid-columns) *
+					var(--wall-column) + (var(--grid-columns) - 1) *
+					var(--wall-gap) + var(--wall-gap)
+			);
+
 			position: fixed;
 			top: var(--page-top);
-			right: var(--gutter);
+			left: min(var(--island-anchor), calc(100vw - var(--island-width) - var(--gutter)));
 			z-index: 6;
 
 			display: flex;
 			flex-direction: column;
-			gap: 0.25rem;
+			gap: 0.4rem;
 			padding: 0.4rem;
 
 			background: var(--fill-primary);
 			border: 1px solid var(--stroke-primary);
-			border-radius: 999px;
+			border-radius: 1.25rem;
 
 			opacity: 0;
 			visibility: hidden;
