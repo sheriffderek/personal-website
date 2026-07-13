@@ -393,6 +393,15 @@ button.settings-trigger {
 			display: block;
 		}
 	}
+
+	/* ...but any POPOVER state (the list dropdown, the grid island) is too
+	   narrow for the aside - it wraps, which is what the rule above was trying
+	   to avoid by viewport but couldn't (a popover is narrow at every width).
+	   Gate on the state, not the width: it shows only in the wide inline grid
+	   panel. */
+	&[popover] .filter-level-name {
+		display: none;
+	}
 }
 
 /* The minimap is a scaled schematic of the page itself. One column of bars
