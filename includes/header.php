@@ -88,7 +88,10 @@
 	<script src='https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js' defer></script>
 	<script src='https://player.vimeo.com/api/player.js' defer></script>
 	<script src='<?= asset('/scripts/audio.js') ?>' defer></script>
-	<script src='<?= asset('/scripts/settings-panel.js') ?>' defer></script>
+	<?php /* Settings menu OFF (temporary - mobile scroll-freeze hunt). This
+		disables all the settings JS; the panel markup is also commented out in
+		<body> below. Re-enable both together. */ ?>
+	<?php /* <script src='<?= asset('/scripts/settings-panel.js') ?>' defer></script> */ ?>
 
 	<?php /* The tour experiment ships dark: its stylesheet AND scripts only load
 		when the flag is on, honoring the "no weight when off" contract in
@@ -146,7 +149,9 @@
 		<header class='page-rail'>
 			<!--<a class='site-name' href='<?= '/' . ($target_query ?? '') ?>'>Derek Wood</a>-->
 
-			<?php include INCLUDES_DIR . '/settings-panel.php'; ?>
+			<?php /* Settings menu OFF (temporary - mobile scroll-freeze hunt; see
+				the settings-panel.js script comment in <head>). Re-enable both.
+				include INCLUDES_DIR . '/settings-panel.php'; */ ?>
 		</header>
 
 		<?php /* One dim behind an open menu (phones/tablets). Root-level so it
