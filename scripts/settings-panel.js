@@ -724,7 +724,14 @@
 				   until the panel is back in its inline home. */
 				if (islandPanel.hasAttribute('popover')) return;
 
-				island.classList.toggle('is-visible', !observed[0].isIntersecting);
+				/* Gate on grid view, don't lean on the CSS display:none to
+				   mask a wrong class. In list view the panel is a CLOSED
+				   popover (display:none = "not intersecting"), which would set
+				   is-visible=true and carry over the moment you toggle to grid -
+				   the island flashing at the top. data-view is the one switch. */
+				var inGrid = html.getAttribute('data-view') === 'grid';
+
+				island.classList.toggle('is-visible', inGrid && !observed[0].isIntersecting);
 			}).observe(islandPanel);
 		}
 
