@@ -20,16 +20,28 @@
 		---- end footer nav ---- */ ?>
 
 		<?php $version = deployed_version(); ?>
-		<p class='quiet-voice'>
-			&copy; <?= SITE_TITLE ?>
 
-			<span class='data-voice'>
-				<?php if ($version['hash']): ?>
-					<?= $version['hash'] ?> ·
-				<?php endif; ?>
-				<?= date('Y-m-d H:i', $version['time']) ?>
-			</span>
+		<p class='data-voice'>&copy; <?= SITE_TITLE ?></p>
+
+		<p class='data-voice'>
+			<?php if ($version['hash']): ?>
+				<?= $version['hash'] ?> ·
+			<?php endif; ?>
+			<?= date('Y-m-d H:i', $version['time']) ?>
 		</p>
+
+		<?php /* Testing knob for the carousel nudge, riding its flag: the link
+			reloads with ?hint=reset, which forgets the swiped-once breadcrumb so
+			the nudge plays again like a first visit. Commented out for launch -
+			uncomment (with the ?hint=reset handler in slider-hint.js) to tune.
+
+		<?php if (SLIDER_HINT_ENABLED): ?>
+			<p class='quiet-voice'>
+				<a class='link' href='/?hint=reset'>Reset the slider hint</a>
+			</p>
+		<?php endif; ?>
+
+		*/ ?>
 	</footer>
 
 </div>
