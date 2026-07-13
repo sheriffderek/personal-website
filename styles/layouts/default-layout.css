@@ -49,9 +49,6 @@ main {
 
 	z-index: 5;
 
-	border-bottom: 1px solid transparent;
-	transition: border-color 1s;
-
 	/* The menu popovers anchor to this bar (not their trigger buttons), so
 	   they align to the bar's edges instead of dangling off a small glyph. */
 	anchor-name: --menu-bar;
@@ -72,11 +69,17 @@ main {
 }
 
 /* Small screens only: once the rail pins to the top, give it a bottom
-   border so it reads as a header. sticky-header.js sets .is-stuck. */
+   border so it reads as a header. sticky-header.js sets .is-stuck. The border
+   AND its transition live only here - at large widths there's no border box,
+   so a grid<->list toggle can't flash a transitioning border on recompute. */
 @media (width < 1024px) {
-	.page-rail.is-stuck {
-		border-color: var(--stroke-secondary);
+	.page-rail {
+		border-bottom: 1px solid transparent;
 		transition: border-color 1s;
+
+		&.is-stuck {
+			border-color: var(--stroke-secondary);
+		}
 	}
 }
 
