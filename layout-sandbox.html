@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang='en'>
+
+<head>
+	<meta charset='utf-8'>
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+	<title>Layout sandbox</title>
+
+	<style>
+		/* Least-boilerplate sandbox for the shell switchboard. No framework, no
+		   build - native <popover>, CSS, fake content. Grow the switchboard here,
+		   then port into the real shell. */
+
+		* {
+			box-sizing: border-box;
+		}
+
+		/* Shell measures as variables, so any threshold (grid's "does the panel
+		   fit in the right space") is calculable from these, never a magic number. */
+		:root {
+			--content-max: 720px;
+			--rail-width: 300px;
+
+			/* grid-mode wall geometry (all derivable, no magic numbers) */
+			--grid-columns: 2;
+			--wall-gap: 1.5rem;
+			--wall-max: calc(var(--content-max) + var(--rail-width) + var(--wall-gap));
+		}
+
+		body {
+			margin: 0;
+			font-family: system-ui, sans-serif;
+			line-height: 1.5;
+		}
+
+		/* ---- shell ---- */
+		.page-wrapper {
+			display: flex;
+			flex-direction: column;
+			min-height: 100dvh;
+		}
+
+		/* the chrome - site nav. Holds the trigger(s). */
+		.shell-nav {
+			position: sticky;
+			top: 0;
+
+			display: flex;
+			justify-content: flex-end;
+			gap: 0.5rem;
+
+			padding: 0.75rem 1rem;
+
+			/* region tint (debug) */
+			background: #fbf6e6;
+		}
+
+		/* the toolbox - the stable trigger CLUSTER. Holds N triggers, placed
+		   right. The panel anchors to this, so both/all triggers share one edge. */
+		.toolbox {
+			display: flex;
+			gap: 0.5rem;
+
+			anchor-name: --toolbox;
+		}
+
+		/* Grid invite appears ONLY at the grid threshold (there's room for the wall).
+		   Room-gated, pure CSS. NOTE: @media conditions can't read custom properties,
+		   so the threshold is a literal here even though the shell measures are
+		   variables - a real platform limit, not an oversight. */
+		.grid-invite {
+			display: none;
+		}
+
+		@media (width >= 1200px) {
+			.grid-invite {
+				display: inline-flex;
+			}
+		}
+
+		main {
+			padding: 1rem;
+
+			/* region tint (debug) */
+			background: #eef3fb;
+		}
+
+		.page-header {
+			/* region tint (debug) */
+			background: #f3ecfb;
+		}
+
+		.shell-footer {
+			/* region tint (debug) */
+			background: #eaf6ee;
+		}
+
+		/* SIGNAL 1: Room. Narrow = the shell-nav is a sticky top bar (above).
+		   Wide = the wrapper becomes two columns and the SAME <header> is placed
+		   into a persistent side rail. No DOM move - CSS grid does the placing. */
+		@media (width >= 1024px) {
+			.page-wrapper {
+				display: grid;
+
+				/* Flexible gutters so the group breathes as it grows, held
+				   off-center to the LEFT: the right gutter (1.5fr) is bigger than
+				   the left (1fr), so the extra width favors the right - the space
+				   the exhibit / menu-revival lives in later. Each gutter keeps a min
+				   so it never fully collapses. Content caps at a readable measure;
+				   rail stays fixed. */
+				grid-template-columns:
+					minmax(1rem, 1fr)
+					minmax(0, var(--content-max))
+					var(--rail-width)
+					minmax(1rem, 1.5fr);
+				grid-template-rows: 1fr auto;
+				column-gap: 1.5rem;
+			}
+
+			main {
+				grid-column: 2;
+				grid-row: 1;
+			}
+
+			.shell-footer {
+				grid-column: 2;
+				grid-row: 2;
+			}
+
+			.shell-nav {
+				grid-column: 3;
+				grid-row: 1 / -1;
+
+				/* only as tall as the toolbox when closed - the rail stays
+				   unoccupied until the panel opens. */
+				align-self: start;
+
+				/* a side column now: stack the toolbox + panel vertically, contents
+				   pulled RIGHT so the toolbox hugs the right edge. */
+				flex-direction: column;
+				align-items: flex-end;
+				gap: 0.75rem;
+				justify-content: flex-start;
+			}
+
+			/* When open here, the panel matches the rail COLUMN width: fill up to
+			   the column measure. One variable (--rail-width) sets both, so they
+			   can't drift. (Anchoring below/right of the toolbox comes from base.) */
+			.panel {
+				width: 100%;
+				max-width: var(--rail-width);
+			}
+		}
+
+		/* ---- SIGNAL 2: View = grid (the wall) ----
+		   Opt-in via the Grid button, and only where grid can exist (>=1600, the
+		   invite's gate). Everything keys off the one attribute on <html>. The wall
+		   spans wide (content + rail + a gap) and the timeline lays out as columns.
+		   Off-center left, same as list. Settings placement in grid is a later sub-
+		   step - the toolbox stays in the right region for now. */
+		@media (width >= 1200px) {
+			html[data-view='grid'] .page-wrapper {
+				grid-template-columns:
+					minmax(1rem, 1fr)
+					minmax(0, var(--wall-max))
+					minmax(1rem, 1.5fr);
+			}
+
+			html[data-view='grid'] main,
+			html[data-view='grid'] .shell-footer {
+				grid-column: 2;
+			}
+
+			html[data-view='grid'] .shell-nav {
+				grid-column: 3;
+			}
+
+			html[data-view='grid'] .timeline {
+				display: grid;
+				grid-template-columns: repeat(var(--grid-columns), 1fr);
+				gap: var(--wall-gap);
+			}
+		}
+
+		/* At rail size + up, the panel opens as an anchored dropdown INTO the rail's
+		   own empty space (below the toolbox), covering the rail rather than the
+		   content - so no dim. Still a native popover (always toggled by the
+		   ever-present trigger); we just drop the visible backdrop. Pure CSS - no
+		   JS, no state flag needed for this step. */
+		@media (width >= 1024px) {
+			.panel::backdrop {
+				background: transparent;
+			}
+		}
+
+		/* the timeline list - reset the <ol> chrome; the layout does the rest. */
+		.timeline {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		/* a fake milestone block so there's something to scroll past */
+		.block {
+			border: 1px solid #ccc;
+			padding: 1rem;
+			margin-block: 1rem;
+			min-height: 40vh;
+		}
+
+		/* ---- the settings panel (a guest) ---- */
+		.trigger {
+			font: inherit;
+			padding: 0.4rem 0.8rem;
+			cursor: pointer;
+		}
+
+		.panel {
+			/* native popover, anchored to the toolbox cluster. Reset the default
+			   centering inset so anchor positioning takes over. */
+			inset: auto;
+			position-anchor: --toolbox;
+			top: anchor(bottom);
+			right: anchor(right);
+			margin: 0.5rem 0 0;
+
+			padding: 1rem;
+			border: 1px solid #333;
+
+			/* region tint (debug) */
+			background: #fbeef1;
+
+			/* Fallback where anchor positioning is unsupported: top-right corner. */
+			@supports not (anchor-name: --x) {
+				top: 4rem;
+				right: 1rem;
+			}
+		}
+
+		/* PROOF: the backdrop. Native ::backdrop exists ONLY while the panel is an
+		   open popover (top-layer overlay) - so its presence IS the overlay state,
+		   for free. Sheer tint (never a blackout) so the live page shows through.
+		   When the panel later goes PLACED (inline, not a popover), there's no
+		   ::backdrop at all - the state and the backdrop stay in lockstep. */
+		.panel::backdrop {
+			background: rgb(0 0 0 / 0.15);
+		}
+	</style>
+</head>
+
+<body>
+	<div class='page-wrapper'>
+		<!-- role 1: site chrome. Top-level <header> = the banner landmark.
+			Holds site nav (later) + the settings trigger. -->
+		<header class='shell-nav'>
+			<div class='toolbox'>
+				<!-- Grid invite: the doorbell to grid mode. Exists ONLY at the grid
+					threshold (there's room for the wall), so it's Room-gated in CSS.
+					Below it, grid can't exist, so neither can the button. -->
+				<button
+					type='button'
+					class='trigger grid-invite'
+				>
+					Grid
+				</button>
+
+				<button
+					type='button'
+					class='trigger'
+					popovertarget='settings'
+				>
+					Settings
+				</button>
+			</div>
+
+			<!-- role 3: the settings panel (a guest). Lives in the rail's DOM so
+				that when JS drops `popover` (the placed enhancement) it flows here
+				inline. As a popover (the default) it escapes to the top layer, so
+				this DOM home doesn't affect the overlay. Semantics track state -
+				dialog-ish when overlaying, plain region when placed. -->
+			<div
+				id='settings'
+				popover
+				class='panel'
+				aria-label='Display settings'
+			>
+				<p>settings go here</p>
+			</div>
+		</header>
+
+		<main>
+			<!-- role 2: the page-header (per-page intro). A <header> nested in
+				<main> is NOT a banner (ARIA excludes it), so it reads correctly as
+				this page's introductory content - no landmark clash. -->
+			<header class='page-header'>
+				<h1>Layout sandbox</h1>
+
+				<p>Bare test bed for the shell switchboard - nav, settings panel, placement across sizes.</p>
+			</header>
+
+			<!-- the timeline: reverse-chron <ol> of milestones, matching the real
+				structure (grid lane-dealer keys off `.timeline > li`). -->
+			<ol class='timeline'>
+				<li class='block'>content</li>
+
+				<li class='block'>content</li>
+
+				<li class='block'>content</li>
+
+				<li class='block'>content</li>
+			</ol>
+		</main>
+
+		<footer class='shell-footer'>
+			<p>footer</p>
+		</footer>
+	</div>
+
+	<script>
+		// SIGNAL 2: View. Grid mode is opt-in - the Grid button toggles data-view
+		// on <html>, and every grid rule keys off that one attribute. This is the
+		// first JS; list mode needed none. If it never runs, the site is list mode.
+		var gridButton = document.querySelector('.grid-invite');
+		var root = document.documentElement;
+
+		gridButton.addEventListener('click', function () {
+			if (root.getAttribute('data-view') === 'grid') {
+				root.removeAttribute('data-view');
+			} else {
+				root.setAttribute('data-view', 'grid');
+			}
+		});
+	</script>
+
+</body>
+</html>
