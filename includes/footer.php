@@ -52,48 +52,59 @@
 		// This is the behavioral spec; every handler below implements one line
 		// of it. If the code and this list disagree, one of them is a bug.
 		//
-		// Two video kinds (the 'type' on each media item in milestones.json):
-		//   loop - ambient motion. Always muted, always loops, no controls.
-		//          The ONLY thing that ever autoplays.
-		//   play - a talking video. Audio + custom controls. Starts only when
-		//          its button is pressed, never by itself.
+		// Three video kinds (the 'type' on each media item in milestones.json):
+		//   loop  - ambient motion. Always muted, always loops, no controls.
+		//   story - a little animation with a quick story behind it. Runs as
+		//           silent ambient motion like a loop, but wears a Listen
+		//           button; pressing it restarts the clip from the top WITH
+		//           sound. When the story ends it goes quiet and loops again.
+		//   play  - a talking video. Audio + custom controls. Starts only when
+		//           its button is pressed, never by itself.
+		//
+		// Only muted videos ever autoplay - that is a browser rule, not a
+		// choice of ours: no browser will start a video that has a voice
+		// without the visitor asking. That is why a story starts silent and
+		// why Listen (a click) is the one door into its audio.
 		//
 		// On page load: every carousel sits on its poster cover slide, so
 		// nothing is playing anywhere.
 		//
-		// Scrolling: if a card's SELECTED slide is a loop and the card crosses
-		// the middle of the screen, the loop starts. A card leaving the screen
-		// entirely pauses its loops - but never a talking play, so you can
-		// listen while you scroll.
+		// Scrolling: if a card's SELECTED slide is ambient (a loop, or a story
+		// nobody has pressed) and the card crosses the middle of the screen, it
+		// starts. A card leaving the screen entirely pauses its ambient motion -
+		// but never a video that is talking, so you can listen while you scroll.
 		//
 		// Swiping: swiping away from a slide stops everything in that carousel
-		// (play included - a swipe is a direct gesture at that video). If the
-		// arriving slide is a loop, it starts.
+		// (a talking video included - a swipe is a direct gesture at that
+		// video). If the arriving slide is ambient, it starts.
 		//
-		// Hover (desktop): hovering a loop slide plays it; leaving pauses it
-		// unless it's the selected slide.
+		// Hover (desktop): hovering an ambient slide plays it; leaving pauses it
+		// unless it's the selected slide. A talking story ignores both.
 		//
-		// Pressing a play button: it talks; any other talking play stops.
+		// Pressing Listen or a play button: it talks; whatever else was talking
+		// stops (a story that gets silenced keeps running as ambient motion; a
+		// play has nothing to fall back to, so it just stops).
 		// Tapping the video body does nothing (so a swipe can't start a clip).
 		//
-		// Grid view: scrolling never starts a loop (the wall stays still), but
-		// swiping to a loop or hovering it still plays - those are direct
-		// gestures at that card, like pressing a play button.
+		// Grid view: scrolling never starts ambient motion (the wall stays
+		// still), but swiping to it or hovering it still plays - those are
+		// direct gestures at that card, like pressing a play button.
 		//
 		// Always: at most one video is audible; autoplay is never audible;
 		// reduced-motion visitors get still frames, never motion.
 		// ------------------------------------------------------------------
 		window.addEventListener('load', () => {
-			// The one talking video. Only 'play' items carry audio (loops are
-			// muted by construction, in the markup), so audio exclusivity is a
-			// 'play'-only concern: pressing one silences the other. Loops run
-			// independently - ambient muted motion neither silences a talking
-			// 'play' nor waits for it to finish.
+			// The one talking video. A video claims that slot the moment it has a
+			// voice, and 'muted' is the honest test for that whatever its type: a
+			// 'play' is never muted, a 'loop' always is, and a 'story' is muted
+			// until someone presses Listen. So audio exclusivity falls out of one
+			// rule for all three - a talking video silences the other talker, and
+			// muted motion neither silences anyone nor waits for anyone.
 			let current = null;
 
 			function play(video) {
-				if (isPlayVideo(video)) {
-					if (current && current !== video) current.pause();
+				if (!video.muted) {
+					if (current && current !== video) hush(current);
 					current = video;
 				}
 				video.play();
@@ -104,12 +115,59 @@
 				if (current === video) current = null;
 			}
 
-			function isPlayVideo(video) {
-				return video.closest('.slide').dataset.type === 'play';
+			function isStory(video) {
+				return video.closest('.slide').dataset.type === 'story';
 			}
 
-			// Loops autoplay through here (scroll, settle, and hover all route
-			// through it); the play/pause button calls play() directly.
+			// Ambient = muted, by the rule above. It's what scroll may start and
+			// what scrolling away may stop.
+			function isAmbientSlide(slide) {
+				return slide.dataset.type === 'loop' || slide.dataset.type === 'story';
+			}
+
+			// Pressing Listen. The clip restarts from the top: unmuting it in place
+			// would drop the visitor into the middle of a sentence, and the whole
+			// point of a story clip is the little story. Looping is dropped for the
+			// same reason - ambient motion may repeat forever, a spoken story may not.
+			function tell(video) {
+				video.muted = false;
+				video.loop = false;
+				video.currentTime = 0;
+				markTalking(video, true);
+				play(video);
+			}
+
+			// Taking a video's voice away. A story doesn't stop existing when it
+			// stops talking - it goes back to being the silent little loop it was
+			// before anyone pressed Listen, still moving. A 'play' has no ambient
+			// life to return to, so it simply stops.
+			function hush(video) {
+				if (!isStory(video)) {
+					pause(video);
+					return;
+				}
+
+				video.muted = true;
+				video.loop = true;
+				markTalking(video, false);
+
+				if (current === video) current = null;
+			}
+
+			function markTalking(video, talking) {
+				const slide = video.closest('.slide');
+				const listen = slide.querySelector('.listen');
+
+				slide.classList.toggle('is-talking', talking);
+
+				if (listen) {
+					listen.setAttribute('aria-label', talking ? 'Mute' : 'Play with sound');
+				}
+			}
+
+			// Ambient motion autoplays through here (scroll, settle, and hover all
+			// route through it); Listen and the play/pause button talk directly to
+			// tell() and play().
 			function autoplay(video) {
 				play(video);
 			}
@@ -236,9 +294,34 @@
 				});
 			});
 
-			// Autoplay for 'loop' videos respects reduced-motion: those users get
-			// the still first frame, never an auto-playing clip.
+			// Ambient autoplay respects reduced-motion: those users get the still
+			// first frame, never an auto-playing clip. A story still shows its
+			// Listen button, so the story itself is never withheld from them - only
+			// the motion they didn't ask for. (Motion policy: gate the decorative,
+			// never the requested.)
 			const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+			// The Listen button on 'story' slides - the one door from silent motion
+			// to a spoken story, and it must be a click: see the rulebook above.
+			document.querySelectorAll('.slide[data-type="story"]').forEach(slide => {
+				const video = slide.querySelector('video');
+				const listen = slide.querySelector('.listen');
+
+				listen.addEventListener('click', () => {
+					if (video.muted) tell(video); else hush(video);
+				});
+
+				// Told all the way through, it goes quiet and picks its silent loop
+				// back up (play() on an ended video restarts it from the top).
+				video.addEventListener('ended', () => {
+					hush(video);
+					if (!reduceMotion) video.play();
+				});
+
+				// Same guard as the custom player: a press on a control must not
+				// also become a carousel swipe.
+				listen.addEventListener('pointerdown', event => event.stopPropagation());
+			});
 
 			// Shared scroll test:
 			//   pastStartLine - the figure's top has crossed above 50% of viewport
@@ -268,46 +351,59 @@
 				if (!flkty) return;
 
 				// Swiping away from a slide is a direct gesture at that video, so
-				// settle stops everything here, a pressed 'play' included.
+				// settle stops everything here, a talking one included. A story that
+				// gets swiped away is hushed first, so it can't sit half-told and
+				// resume mid-sentence when the visitor swipes back.
 				const pauseAll = () => {
-					el.querySelectorAll('video').forEach(video => pause(video));
+					el.querySelectorAll('video').forEach(video => {
+						hush(video);
+						pause(video);
+					});
 				};
 
-				// Scrolling away is not. It only ends the ambient loops - a 'play'
-				// keeps talking until the visitor stops it, scrolls back to it, or
-				// presses a different one.
-				const pauseLoops = () => {
-					el.querySelectorAll('.slide[data-type="loop"] video').forEach(video => pause(video));
+				// Scrolling away is not. It only ends the ambient motion - anything
+				// with a voice keeps talking until the visitor stops it, scrolls back
+				// to it, or presses a different one. Muted IS ambient (see above).
+				const pauseAmbient = () => {
+					el.querySelectorAll('video').forEach(video => {
+						if (video.muted) pause(video);
+					});
 				};
 
 				// Settle = animation finished. Pause everything, then autoplay the
-				// arriving slide if it's a loop.
+				// arriving slide if it's ambient.
 				flkty.on('settle', i => {
 					pauseAll();
 					const arriving = flkty.cells[i].element;
-					if (!reduceMotion && arriving.dataset.type === 'loop') {
+					if (!reduceMotion && isAmbientSlide(arriving)) {
 						autoplay(arriving.querySelector('video'));
 					}
 				});
 
-				// Hover on loop slides — desktop only by virtue of mouseenter/leave.
-				el.querySelectorAll('.slide[data-type="loop"]').forEach(slide => {
+				// Hover on ambient slides — desktop only by virtue of mouseenter/leave.
+				// A story that's talking ignores hover entirely: the visitor asked for
+				// it, so a stray mouse must not take it away.
+				el.querySelectorAll('.slide[data-type="loop"], .slide[data-type="story"]').forEach(slide => {
 					const video = slide.querySelector('video');
-					slide.addEventListener('mouseenter', () => autoplay(video));
+
+					slide.addEventListener('mouseenter', () => {
+						if (video.muted) autoplay(video);
+					});
+
 					slide.addEventListener('mouseleave', () => {
-						if (flkty.selectedElement !== slide) pause(video);
+						if (video.muted && flkty.selectedElement !== slide) pause(video);
 					});
 				});
 
 				const check = () => {
 					const view = visibility(el);
 					const selected = flkty.selectedElement;
-					const video = selected && selected.dataset.type === 'loop'
+					const video = selected && isAmbientSlide(selected)
 						? selected.querySelector('video')
 						: null;
 					if (view.fullyOff) {
-						pauseLoops();
-					} else if (!reduceMotion && !gridView() && view.pastStartLine && video && video.paused) {
+						pauseAmbient();
+					} else if (!reduceMotion && !gridView() && view.pastStartLine && video && video.muted && video.paused) {
 						autoplay(video);
 					}
 				};

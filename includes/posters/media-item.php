@@ -16,7 +16,7 @@
 	$poster = '';
 	$poster_square = '';
 
-	if ($type === 'loop' || $type === 'play') {
+	if ($type === 'loop' || $type === 'play' || $type === 'story') {
 		$poster = poster_variant($src);
 		$poster_square = poster_variant($sq);
 	}
@@ -62,6 +62,31 @@
 		<video muted loop playsinline preload='metadata'<?= $poster_attributes ?> data-src-wide='<?= $src ?>' data-src-square='<?= $sq ?>'>
 			<source src='<?= $src ?>' type='video/mp4'>
 		</video>
+	</div>
+
+<?php elseif ($type === 'story'): ?>
+	<div class='slide' data-type='story'>
+		<video muted loop playsinline preload='metadata'<?= $poster_attributes ?> data-src-wide='<?= $src ?>' data-src-square='<?= $sq ?>'>
+			<source src='<?= $src ?>' type='video/mp4'>
+		</video>
+
+		<button type='button' class='listen' aria-label='Play with sound'>
+			<span class='icon icon-sound-off'>
+				<svg viewBox='0 0 24 24' aria-hidden='true'>
+					<path d='M11 5 6 9H3v6h3l5 4z'></path>
+
+					<path d='m15 9 4 6M19 9l-4 6' fill='none' stroke='currentColor' stroke-width='2'></path>
+				</svg>
+			</span>
+
+			<span class='icon icon-sound-on'>
+				<svg viewBox='0 0 24 24' aria-hidden='true'>
+					<path d='M11 5 6 9H3v6h3l5 4z'></path>
+
+					<path d='M15.5 8.5a4.5 4.5 0 0 1 0 7M18 6a8 8 0 0 1 0 12' fill='none' stroke='currentColor' stroke-width='2'></path>
+				</svg>
+			</span>
+		</button>
 	</div>
 
 <?php elseif ($type === 'play'): ?>

@@ -1,5 +1,5 @@
 <div class='sound-switcher'>
-	<p class='app-data-voice' id='sound-switcher-label'>Sound preference</p>
+	<p class='app-data-voice' id='sound-switcher-label'>Interface sounds</p>
 
 	<div class='mode-button-group' role='radiogroup' aria-labelledby='sound-switcher-label'>
 		<button type='button' role='radio' aria-checked='false' data-set-sound='off'>Off</button>

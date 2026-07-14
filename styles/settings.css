@@ -421,25 +421,8 @@
 	}
 }
 
-[data-emphasis="immersive"] {
-	--fill-primary: var(--color-blue-50);
-	--fill-secondary: var(--color-blue-100);
-	--fill-auxiliary: var(--color-blue-200);
-
-	--ink-primary: var(--color-blue-950);
-	--ink-secondary: var(--color-blue-900);
-	--ink-auxiliary: var(--color-blue-800);
-
-	--stroke-primary: var(--color-blue-300);
-	--stroke-secondary: var(--color-blue-200);
-	--stroke-auxiliary: var(--color-blue-100);
-
-	--accent: var(--color-blue-600);
-
-	/* Selection stays in the blue world, both schemes. */
-	--selection-fill: var(--color-blue-200);
-	--selection-ink: var(--color-blue-950);
-}
+/* Immersive has MOVED to the light-dark() model - its one block lives at the
+   bottom of this file (the pilot). Nothing for it here. */
 
 [data-emphasis="red-light"] {
 	/* Two takes on one red theme, picked by the scheme toggle:
@@ -450,7 +433,7 @@
 	   dark (the blocks below) = terminator view - a near-black room where
 	   the type glows red out of the dark.
 	   The near-blacks are authored oklch since the scale stops at red-950. */
-	--fill-primary: #ff0004;
+	--fill-primary: #fd2222;
 	--fill-secondary: #d40003;
 	--fill-auxiliary: #ff3236;
 
@@ -489,7 +472,44 @@ html {
 	color: var(--ink-primary);
 }
 
-/* Dark scheme — system preference OR explicit data-scheme='dark'. */
+/* ----------------------------------------------------------------------------
+   SCHEME WIRING - maps our data-scheme attribute onto the native color-scheme
+   property. Two jobs, one line each:
+
+     1. It tells the browser to theme its OWN ui (scrollbars, form controls, the
+        canvas) to match, instead of leaving them light on a dark page.
+     2. It is the switch light-dark() reads. A token written
+        light-dark(a, b) resolves to `a` under `color-scheme: light` and to `b`
+        under `color-scheme: dark` - so the SYSTEM preference and OUR toggle
+        both flow through one mechanism, and a scheme-varying token gets
+        declared exactly once instead of in a media-query block AND a
+        data-scheme block.
+
+   'system' is the absent/default case: `light dark` means "defer to the OS",
+   which is precisely what that row of the switcher promises. (Three states is
+   deliberate - see the Theme system section of CLAUDE.md.) */
+
+:root {
+	color-scheme: light dark;
+}
+
+[data-scheme="light"] {
+	color-scheme: light;
+}
+
+[data-scheme="dark"] {
+	color-scheme: dark;
+}
+
+/* Dark scheme — system preference OR explicit data-scheme='dark'.
+
+   $refactor (light-dark migration, in progress): these generic blocks are the
+   OLD model - the same dark values restated for the media query and for the
+   toggle. They also silently STOMP any emphasis that doesn't define its own
+   dark blocks (they out-rank a bare [data-emphasis] selector), which is the
+   trap that motivated the migration. Immersive has already moved to
+   light-dark() (see the pilot block at the bottom of this file); when the rest
+   follow, everything from here down gets deleted. */
 
 @media (prefers-color-scheme: dark) {
 	:root:not([data-scheme="light"]) {
@@ -517,18 +537,8 @@ html {
 		--stroke-auxiliary: var(--color-stone-700);
 		--accent: var(--color-stone-400);
 	}
-	[data-emphasis="immersive"]:not([data-scheme="light"]) {
-		--fill-primary: var(--color-blue-950);
-		--fill-secondary: var(--color-blue-900);
-		--fill-auxiliary: var(--color-blue-800);
-		--ink-primary: var(--color-blue-50);
-		--ink-secondary: var(--color-blue-200);
-		--ink-auxiliary: var(--color-blue-300);
-		--stroke-primary: var(--color-blue-700);
-		--stroke-secondary: var(--color-blue-800);
-		--stroke-auxiliary: var(--color-blue-800);
-		--accent: var(--color-blue-300);
-	}
+	/* (immersive's dark block is gone - it's light-dark() now, see the bottom.) */
+
 	/* Red light, dark scheme = terminator view: a near-black red room where
 	   the type glows out of the dark. (Light scheme is the full-on #ff0004
 	   room - see the base block.) */
@@ -573,18 +583,7 @@ html {
 	--accent: var(--color-stone-400);
 }
 
-[data-emphasis="immersive"][data-scheme="dark"] {
-	--fill-primary: var(--color-blue-950);
-	--fill-secondary: var(--color-blue-900);
-	--fill-auxiliary: var(--color-blue-800);
-	--ink-primary: var(--color-blue-50);
-	--ink-secondary: var(--color-blue-200);
-	--ink-auxiliary: var(--color-blue-300);
-	--stroke-primary: var(--color-blue-700);
-	--stroke-secondary: var(--color-blue-800);
-	--stroke-auxiliary: var(--color-blue-800);
-	--accent: var(--color-blue-300);
-}
+/* (immersive's toggle-dark block is gone too - light-dark() covers both.) */
 
 /* Terminator view - keep matched to the prefers-dark counterpart above. */
 [data-emphasis="red-light"][data-scheme="dark"] {
@@ -598,4 +597,49 @@ html {
 	--stroke-secondary: var(--color-red-900);
 	--stroke-auxiliary: var(--color-red-950);
 	--accent: var(--color-red-500);
+}
+
+/* ----------------------------------------------------------------------------
+   PILOT - the light-dark() model, proven on ONE theme before the rest follow.
+
+   Immersive used to be THREE blocks: a light base, a dark block for the media
+   query, and an identical dark block for the toggle. It is now ONE. Each token
+   states its light value and its dark value on a single line, and light-dark()
+   picks between them by reading the used color-scheme - which the wiring above
+   drives from BOTH the OS preference and our data-scheme toggle. So the two
+   dark blocks aren't merged, they're gone: there was only ever one dark design,
+   and now it's written once. The pairing is also readable for the first time
+   (blue-50 -> blue-950 sits on one line; before, you had to scroll between
+   three blocks to learn what a token even became in dark).
+
+   A token with NO dark variant simply doesn't call light-dark() - see the
+   selection pair below, which is blue in both schemes and says so by just being
+   a value. Under the old model that same "don't change" had to be RESTATED in
+   both dark blocks purely to stop the generic ones from overwriting it.
+
+   $todo - SCAFFOLDING, remove at full migration: the `:root` prefix and this
+   block's position at the bottom of the file are here only to out-rank the
+   generic dark blocks above, which still stomp any bare [data-emphasis]
+   selector. They are the reason the trap exists. When every emphasis has moved
+   and those blocks are deleted, this becomes a plain [data-emphasis='immersive']
+   block sitting with its siblings, and the specificity bump goes away. */
+
+:root[data-emphasis="immersive"] {
+	--fill-primary: light-dark(var(--color-blue-50), var(--color-blue-950));
+	--fill-secondary: light-dark(var(--color-blue-100), var(--color-blue-900));
+	--fill-auxiliary: light-dark(var(--color-blue-200), var(--color-blue-800));
+
+	--ink-primary: light-dark(var(--color-blue-950), var(--color-blue-50));
+	--ink-secondary: light-dark(var(--color-blue-900), var(--color-blue-200));
+	--ink-auxiliary: light-dark(var(--color-blue-800), var(--color-blue-300));
+
+	--stroke-primary: light-dark(var(--color-blue-300), var(--color-blue-700));
+	--stroke-secondary: light-dark(var(--color-blue-200), var(--color-blue-800));
+	--stroke-auxiliary: light-dark(var(--color-blue-100), var(--color-blue-800));
+
+	--accent: light-dark(var(--color-blue-600), var(--color-blue-300));
+
+	/* Selection stays in the blue world, both schemes - so no light-dark(). */
+	--selection-fill: var(--color-blue-200);
+	--selection-ink: var(--color-blue-950);
 }

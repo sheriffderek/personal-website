@@ -377,26 +377,31 @@
 			visibility: visible;
 		}
 
-		/* revived from the island, the panel anchors to it (the toolbox anchor is
-		   hidden in the exhibit). The island sits near the right edge, so opening
-		   below/right would overflow - the panel opens to the LEFT instead, its
-		   right edge meeting the island's left, expanding over the wall. */
-		html[data-exhibit-orphaned] .panel {
-			position-anchor: --island;
-			top: anchor(top);
-			right: anchor(left);
-			left: auto;
-			margin: 0 0.5rem 0 0;
+		/* In the EXHIBIT the toolbox is display:none, so a popover panel must anchor
+		   to the ISLAND - always, not only while scrolled. (Keying this to the scroll
+		   state meant that scrolling back up with the popover open reverted it to the
+		   hidden --toolbox anchor, which is invalid, so the popover fell back to its
+		   static position in the top-left corner.) The island is visibility:hidden,
+		   not display:none, so it stays a valid anchor even when unseen.
+		   It sits near the right edge, so the panel opens LEFT - its right edge
+		   meeting the island's left, expanding over the wall. */
+		@media (width >= 1600px) {
+			html[data-view='grid'] .panel[popover] {
+				position-anchor: --island;
+				top: anchor(top);
+				right: anchor(left);
+				left: auto;
+				margin: 0 0.5rem 0 0;
+			}
 		}
 
-		/* Even bigger: once there's room to the RIGHT of the island, the revived menu
-		   opens into its OWN area (right) instead of over the wall (left) - and
-		   own-area means no dim. Room decides Panel-state. Placed AFTER the open-left
-		   rule above so it wins at this width (equal specificity -> source order).
-		   Literal breakpoint because @media can't read the custom-property math -
-		   approximate the real page; tune as needed. */
+		/* Even bigger: once there's room to the RIGHT of the island, the menu opens
+		   into its OWN area (right) instead of over the wall (left) - and own-area
+		   means no dim. Room decides Panel-state. Placed AFTER the open-left rule so
+		   it wins at this width (equal specificity -> source order). Literal
+		   breakpoint because @media can't read the custom-property math. */
 		@media (width >= 2400px) {
-			html[data-exhibit-orphaned] .panel {
+			html[data-view='grid'] .panel[popover] {
 				left: anchor(right);
 				right: auto;
 				top: anchor(top);
@@ -404,7 +409,7 @@
 			}
 
 			/* own area - nothing covered, so drop the dim */
-			html[data-exhibit-orphaned] .panel::backdrop {
+			html[data-view='grid'] .panel[popover]::backdrop {
 				background: transparent;
 			}
 		}
@@ -630,7 +635,13 @@
 		// island CLICK (below), a one-off, never scroll-driven.
 		function updatePanelMode() {
 			if (inExhibit()) {
-				// leave an island-opened popover alone; otherwise it's the band
+				// Scrolled back to the top: the persistent band is the control surface
+				// again, so close any island popover first - otherwise the node stays
+				// a popover and the band never comes back (the filters "vanish").
+				if (bandVisible && panel.matches(':popover-open')) {
+					panel.hidePopover();
+				}
+
 				if (!panel.matches(':popover-open')) {
 					panel.removeAttribute('popover');
 				}

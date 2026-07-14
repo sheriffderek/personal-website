@@ -61,9 +61,10 @@
 	// hooks and no ids, so the live script leaves them alone and each keeps the
 	// state authored here - letting every state sit on the surface at once. The
 	// pill / slider / minimap styling all comes from the real component classes.
-	$scheme_options = ['system' => 'System', 'light' => 'Light', 'dark' => 'Dark'];
-	$sound_options  = ['off' => 'Off', 'on' => 'On'];
-	$view_options   = ['list' => 'List', 'grid' => 'Grid'];
+	// One group per control TYPE, not one per option. A radiogroup already shows
+	// the active pill next to a resting one, so a second copy with a different
+	// option checked proves nothing the first didn't.
+	$radio_options = ['off' => 'Off', 'on' => 'On'];
 
 	// One inert radio-pill group - the shape behind scheme / sound / layout.
 	// aria-checked marks the active pill (the accent-filled state); the others
@@ -179,40 +180,12 @@
 	<section class='ds-section'>
 		<h2 class='attention-voice'>Menus &amp; settings</h2>
 
-		<p>The controls from the settings menu, shown inline and in each state. These are static copies (no wiring) - the live, working versions sit in the gear popover at the top of this page. The pill, slider, and minimap styling all come from the real component classes, so anything that changes there changes here too.</p>
-
-		<h3 class='strong-voice'>Segmented controls</h3>
-
-		<p class='quiet-voice'>Single-select radiogroups. The accent-filled pill is the active choice; the rest show the resting state.</p>
+		<p>The raw controls the settings menu is built from - one of each, shown inline. These are static copies (no wiring); the live, working versions sit in the gear popover at the top of this page. The pill, slider, and minimap styling all come from the real component classes, so anything that changes there changes here too.</p>
 
 		<div class='control-states'>
-			<div class='settings-panel demo-control' data-ui='app'><?= demo_switcher('Color scheme - System', $scheme_options, 'system') ?></div>
+			<div class='settings-panel demo-control' data-ui='app'><?= demo_switcher('Radio choices', $radio_options, 'off') ?></div>
 
-			<div class='settings-panel demo-control' data-ui='app'><?= demo_switcher('Color scheme - Light', $scheme_options, 'light') ?></div>
-
-			<div class='settings-panel demo-control' data-ui='app'><?= demo_switcher('Color scheme - Dark', $scheme_options, 'dark') ?></div>
-
-			<div class='settings-panel demo-control' data-ui='app'><?= demo_switcher('Sound - Off', $sound_options, 'off') ?></div>
-
-			<div class='settings-panel demo-control' data-ui='app'><?= demo_switcher('Sound - On', $sound_options, 'on') ?></div>
-
-			<div class='settings-panel demo-control' data-ui='app'><?= demo_switcher('Layout - List', $view_options, 'list') ?></div>
-
-			<div class='settings-panel demo-control' data-ui='app'><?= demo_switcher('Layout - Grid', $view_options, 'grid') ?></div>
-		</div>
-
-		<h3 class='strong-voice'>Sliders</h3>
-
-		<p class='quiet-voice'>The two design-system axes. Brand carries type and shape; emphasis carries color. Shown at each end of their travel.</p>
-
-		<div class='control-states'>
-			<div class='settings-panel demo-control' data-ui='app'><?= demo_slider('Brand', 'Personal', 3, 0) ?></div>
-
-			<div class='settings-panel demo-control' data-ui='app'><?= demo_slider('Brand', 'Documentation', 3, 3) ?></div>
-
-			<div class='settings-panel demo-control' data-ui='app'><?= demo_slider('Emphasis', 'Default', 3, 0) ?></div>
-
-			<div class='settings-panel demo-control' data-ui='app'><?= demo_slider('Emphasis', 'Red light', 3, 3) ?></div>
+			<div class='settings-panel demo-control' data-ui='app'><?= demo_slider('Slider', 'Third stop', 3, 2) ?></div>
 		</div>
 
 		<h3 class='strong-voice'>Timeline filter</h3>

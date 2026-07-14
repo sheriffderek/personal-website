@@ -145,6 +145,63 @@
 			border: 0;
 		}
 
+		/* The Listen button on 'story' slides. A story runs as silent ambient
+		   motion until pressed, so this glyph is the only sign there's a voice
+		   in there - it sits in the corner wearing the muted-speaker mark the
+		   whole web already reads as "tap to hear this." */
+		.slide[data-type="story"] {
+			--control-ink: white;
+
+			.listen {
+				position: absolute;
+				inset-block-start: 0;
+				inset-inline-end: 0;
+				z-index: 1;
+				display: grid;
+				place-items: center;
+				width: 2.75rem;
+				height: 2.75rem;
+				padding: 0;
+				border: 0;
+				background: transparent;
+				color: var(--control-ink);
+				cursor: pointer;
+			}
+
+			.listen .icon {
+				display: grid;
+				place-items: center;
+				/* A scrim under the glyph alone (not the whole corner) so white
+				   linework stays legible over a bright frame. */
+				width: 1.9rem;
+				height: 1.9rem;
+				border-radius: 50%;
+				background: rgb(0 0 0 / 0.4);
+			}
+
+			.listen svg {
+				width: 1.15rem;
+				height: 1.15rem;
+				fill: currentColor;
+				stroke: currentColor;
+				stroke-linecap: round;
+			}
+
+			/* Which speaker shows: crossed-out while silent, sounding while it
+			   talks. The JS flips .is-talking and the button's aria-label with it. */
+			.icon-sound-on {
+				display: none;
+			}
+
+			&.is-talking .icon-sound-off {
+				display: none;
+			}
+
+			&.is-talking .icon-sound-on {
+				display: grid;
+			}
+		}
+
 		/* Custom player for 'play' slides — native controls can't be trimmed
 		   on iOS, so we paint our own over the video. */
 		.slide[data-type="play"] {

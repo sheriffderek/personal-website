@@ -6,6 +6,12 @@
 	<meta charset='utf-8'>
 	<meta name='viewport' content='width=device-width, initial-scale=1'>
 
+	<?php /* Declares that we support both schemes, so the browser themes its own
+		UI (scrollbars, form controls, the initial canvas) instead of painting a
+		white flash before our CSS lands. Also the switch light-dark() reads: the
+		color-scheme wiring in settings.css maps data-scheme -> color-scheme. */ ?>
+	<meta name='color-scheme' content='light dark'>
+
 	<?php
 		/* Two title lanes (see config.php): $meta_title is the plain browser
 		   <title> (page name, or the site name on the home page); $share_title

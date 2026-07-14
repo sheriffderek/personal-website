@@ -34,6 +34,18 @@ The per-company `?target=` notes (`content/targets/<company>/target.json`) have 
 
 Round 1 target: GoFundMe Senior Product Designer application. Five entries needed. See `timeline-content-plan.md` for the full plan and `SESSION-HANDOFF.md` for latest state.
 
+## Motion policy (2026-07-14)
+
+**This site is a playground, not a government voting booth.** Motion is part of what it's demonstrating - the theme system performing itself IS the pitch. The bar is not "remove all motion for anyone who might not want it."
+
+**The test: decorative, or functional?**
+- **Decorative / ambient - GATE it.** Motion the visitor never asked for, that just happens at them. The `loop` autoplay, the grid-invite pulse. These already carry `prefers-reduced-motion` guards and they stay.
+- **Functional / requested - DON'T gate it.** Motion the visitor directly triggered, or that IS the thing being shown. A `play` video they pressed. A theme switch they flipped, where the corners melting and the palette crossfading are the demonstration, not garnish. Gating that would delete the feature, not soften it.
+
+This is the same line the spec draws - WCAG's reduced-motion guidance targets *non-essential* animation and exempts motion essential to what's being conveyed. So the split is the standard test applied honestly, not a shortcut around it.
+
+**Don't add a `prefers-reduced-motion` guard reflexively.** It is not an automatic include on every new transition, and proposing it per-feature as "non-negotiable" is the failure mode - run it through the test above, and if it's functional, leave it alone.
+
 ## Design notes
 
 - 16:9 poster cards for each entry
@@ -151,12 +163,17 @@ Shape is derived, never hand-set: a card with any `real_media_items()` (drops `/
 **Item types** (`type` on each media object; becomes `data-type` on the slide):
 - `photo` — still image (`<picture>`, responsive)
 - `loop` — muted video, no controls, ambient motion; autoplays on scroll into view (and on carousel settle/hover)
+- `story` — "here's a little animation, and a quick story about it." Runs as silent ambient motion exactly like a `loop`, but wears a **Listen** button (corner speaker glyph); pressing it restarts the clip **from the top, with sound**, and it joins the audio-exclusive pool. When the story finishes it goes quiet and picks its silent loop back up.
 - `play` — video with our own custom controls (below), user-initiated; never autoplays
 - `vimeo` — responsive `<iframe>` embed (`src` is the Vimeo id)
 
+**Why a `story` can't just autoplay with sound (2026-07-14 — don't re-litigate).** No browser will autoplay a video that has a voice; drop the `muted` attribute and the `play()` promise is rejected, so instead of a talking clip you get a frozen one (and it fails on exactly the Safari/iOS phones recruiters use). The visitor's click is the only thing that makes audio legal, which is why Listen exists. **Restarting from the top is the point, not a detail**: unmuting in place drops them mid-sentence, and the whole value of these clips is the little story. Looping is dropped once it's talking for the same reason — ambient motion may repeat forever, a spoken story may not.
+
+**The `muted` property IS the audio-slot test** (`includes/footer.php`). A `play` is never muted, a `loop` always is, a `story` is muted until pressed — so "does this video have a voice right now" is one question with one answer, and audio exclusivity, ambient autoplay, and the pause-on-scroll rule all key off it rather than off a list of types. A silenced `story` keeps *moving* (it goes back to ambient); a silenced `play` just stops, because it has no ambient life to return to.
+
 **Media file convention.** One folder per milestone (`content/milestones/<slug>/`), files named `<order>-<type>-<size>[-<slug>].<ext>` — the folder listing IS the storyboard, top to bottom, and every file states what it is.
 - `<order>` — storyboard position (`01`, `02`, `03`). Load-bearing and must be visible. Don't split assets into per-type subfolders — that scatters the sequence and hides what plays first.
-- `<type>` — `photo` | `loop` | `play`. This is the "what does it do" token: `loop` autoplays muted on scroll, `play` waits for a click and carries audio + controls. It must agree with the item's `"type"` in the JSON, but the JSON is the source of truth (the template keys off `data-type`, not the path).
+- `<type>` — `photo` | `loop` | `story` | `play`. This is the "what does it do" token: `loop` autoplays muted on scroll, `story` autoplays muted but carries narration behind a Listen button, `play` waits for a click and carries audio + controls. It must agree with the item's `"type"` in the JSON, but the JSON is the source of truth (the template keys off `data-type`, not the path). **A clip with an audio track is a `story` or a `play`, never a `loop`** — a `loop` whose file has a voice in it is a story being silenced by its own filename (this is exactly how `2026-job-search`'s 25-second narrated clip sat mute for months).
 - `<size>` — `wide` | `square`. **Both variants carry it**, so neither is an implicit "default" you have to remember (that ambiguity is exactly how a set of files ended up contradicting itself). The JSON always points at the **`-wide`** file; `square_variant($src)` (`includes/render.php`) swaps the size token and falls back to the wide when no square cut exists, so a clip without a phone crop just serves at every width.
 - `<slug>` — optional, only when it earns its place (`01-play-wide-intro.mp4`); omit it when the type already says everything (`03-loop-wide.mp4`). Never a milestone prefix — the folder already scopes them.
 - `2026-job-search/` is the reference: `01-play-wide-intro.mp4` + `01-play-square-intro.mp4`, `02-photo-wide.jpg` + `02-photo-square.jpg`, `03-loop-wide.mp4` + `03-loop-square.mp4`.
@@ -165,9 +182,9 @@ Shape is derived, never hand-set: a card with any `real_media_items()` (drops `/
 - Media URLs are cache-busted by mtime via `asset()` in `includes/posters/media-item.php` (same as CSS/JS), so re-encoding/replacing a file forces a fresh fetch. Without it a browser can keep serving a stale copy (e.g. a pre-fast-start video Safari already failed on).
 
 **Playback rules:** (the tester-facing spec is THE PLAYBACK RULEBOOK comment at the top of the playback script in `includes/footer.php` - plain if/else rules a human can QA against; the bullets here carry the design rationale behind them)
-- **Audio is exclusive; motion is not** (2026-07-11, replaced the old "one video plays at a time / loops yield to a running `play`" rule). Only one `play` talks at a time (the shared `current` tracks `play` videos only) - starting a second `play` stops the first. Loops are muted by construction (the `muted` attribute in `media-item.php`), so they run independently: a loop autoplaying never silences a talking `play`, and a talking `play` never blocks ambient motion. The old yield rule was why loops "stopped autoplaying" whenever a `play` was running - no autoplaying video can ever have audio, so there was nothing to protect.
+- **Audio is exclusive; motion is not** (2026-07-11, replaced the old "one video plays at a time / loops yield to a running `play`" rule; generalized past `play` when `story` arrived 2026-07-14). Only one video talks at a time - the shared `current` holds whichever video currently has a voice (`!video.muted`), so starting a second talker silences the first. Muted motion runs independently: a loop autoplaying never silences a talking video, and a talking video never blocks ambient motion. The old yield rule was why loops "stopped autoplaying" whenever a `play` was running - no autoplaying video can ever have audio, so there was nothing to protect.
 - On carousel `settle` (slide animation finishes): pause everything in that carousel, `play` included - swiping away is a direct gesture at that video. If the arriving slide is a `loop`, autoplay it.
-- **Scrolling is not a gesture at the video.** A figure going fully off-screen pauses that carousel's `loop`s only (`pauseLoops()`). A `play` keeps talking, so a visitor can scroll the timeline while listening - they stop it, scroll back to it, or press a different one.
+- **Scrolling is not a gesture at the video.** A figure going fully off-screen pauses that carousel's *ambient* videos only (`pauseAmbient()` - i.e. the muted ones). Anything talking keeps talking, so a visitor can scroll the timeline while listening - they stop it, scroll back to it, or press a different one.
 
 **Now-playing pill (designed 2026-07-09, deferred - build it if orphaned audio actually annoys someone).** The shape, so it isn't re-derived: two circles the same size as the `.toolbox-trigger` glyphs, fused into one pill, sitting to the left of them. Left circle is the playing video's `poster_variant()` still (says *which* video is talking, and clicking it scrolls the milestone back into view); right circle pauses. Unlike its neighbors it acts directly - no popover.
 - **It only exists when the audio is orphaned**: a `play` video is running AND its figure is fully out of view. Fades in on that, fades out when either stops holding - so scrolling back to the video dismisses it, no separate close.
@@ -217,7 +234,7 @@ The theming behavior is a load-bearing artifact of this site — it's part of th
 - `data-scheme` on `<html>` — `system | light | dark`. Absent = system (reads `prefers-color-scheme`).
 	- **Three states, deliberately - do not "correct" this to a two-state toggle.** Common web guidance (including the Chrome team's dark-mode guide) says to expose only two states, on the reasoning that a toggle is a comfort knob and "system" is a redundant option most users can't reason about. That reasoning doesn't hold here: on this site the settings panel IS the design-system pitch, and the visitor poking at it is being *shown the mechanism*. "System" is the row that teaches them their OS has its own setting, and that a page can defer to it or override it within its own scope. Collapsing to two states would hide exactly the thing the panel exists to demonstrate. (Compatible with any implementation - under `light-dark()`, system = `color-scheme: light dark`, which is literally "defer to the OS.")
 - `data-view` on `<html>` — `grid` when the grid view is applied; absent = list. See the Grid view section below.
-- `data-sound` on `<html>` — audio-feedback toggle.
+- `data-sound` on `<html>` — the UI-feedback synth toggle (`scripts/audio.js`: clicks, ticks, toggles). Labeled **"Interface sounds"** in the panel, renamed 2026-07-14 from "Sound preference" because it kept reading as a video-audio control. **It has nothing to do with video audio and must never gate it** - a visitor who turned off the interface beeps did not ask to be denied the narration on a clip they pressed.
 - `data-flavor` on `<article class='milestone'>` — per-poster color variant (`warm | cool | stone | night | moss | rose`).
 - `data-ui='app'` on the settings panel container — chrome-stays-stable scope.
 
@@ -318,3 +335,20 @@ Type comes from [Fontshare](https://www.fontshare.com) via its CSS API. The audi
 ## Future: journal page
 
 Eventually the site should have a journal section. Blog-style entries, dated, casual. The point is the *register*, not the topic — Derek talking about how he's feeling about a given moment, reminiscing about something, working an idea out loud. Adjacent to the timeline but not part of it. Lower polish than the timeline cards, higher signal about who Derek is as a person and a thinker. Not for Round 1.
+
+## Future fun: AI interfaces on the timeline (parked 2026-07-14, nothing scheduled)
+
+Two toys worth planning someday. Written down for the *shape*, not because either is queued. Neither is for Round 1.
+
+**The shared groundwork: an answer bank.** Authored answers to the skeptical questions - STAR-shaped stories plus straight talk. Doesn't exist yet, and it's the actual work; both toys are thin skins over it. It pays for itself even if neither ever ships: it's interview prep, cover-letter source, and target-note raw material. Seed it from questions Derek has really been asked in screens, not invented ones.
+
+**Toy 1 - the answer bot (public, recruiter-facing).** Answers a visitor's questions about fit, and forwards the ones it can't answer to Derek. The forwarding is the better half: every question it can't answer is a hole in the timeline copy, named by a real recruiter.
+- **The voice is candor, not hype.** Derek's bar: *"Derek has designed hundreds of mobile-sized layouts but had only tinkered with the actual Swift and layout systems for iOS a little. He'd be able to pick anything platform-specific up in stride - and that's really not what you'd be hiring him for."* Volunteers the limit, sizes it honestly, reframes the hire. A bot that only sells gets disbelieved in one exchange; this one persuades *because* it concedes - and it screens (someone hiring for deep native work bounces early, which is a win).
+- **`backstory` never enters its context.** It's walled off from HTTP on purpose (see Content model); a public bot is an exfiltration path, and no prompt reliably stops a model talking its context out. This bot reads a deliberately built *public* corpus - never "just feed it milestones.json."
+- **Answer only from the bank; otherwise say so and offer to forward.** A bot told to "have an answer for everything" invents a plausible, flattering lie - the kind that gets caught in the interview. The escape hatch and the killer feature are the same mechanism: no answer → forwarded → Derek writes one → the bank grows.
+
+**Toy 2 - paste the posting, get the coverage grid (private, Derek-facing).** Feed a job posting in, get back every place he's proven each requirement. **This is the `target-notes` skill automated** - the coverage grid is a process he's already run by hand, so the output shape is known, which is a rare place to be building an AI feature from. Safer than Toy 1 in both directions: `backstory` *belongs* here (it's his own working layer), and he reviews every line before it becomes a `target.json`. Its byproduct is claims + evidence + gaps - i.e. the answer bank, accumulating as a side effect of applying to jobs. Probably the one to build first.
+
+**No RAG.** 36 milestones plus details fits in a context window whole - hand the model the entire corpus every time. Retrieval would only add a failure mode (fetch the wrong milestones, answer confidently from the wrong career) to solve a scale problem this site does not have. Easy to add later if it ever outgrows that.
+
+**What it costs structurally:** the first thing that stops this site being plain PHP with no secrets - a server endpoint holding an API key, plus somewhere for forwarded questions to land (email is likely enough).
