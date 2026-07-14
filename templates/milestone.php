@@ -1,6 +1,6 @@
 <?php
 	/*
-
+		<span class='weight quiet-voice'>(<?= $milestone['weight'] ?? '?' ?>)</span>
 	*/
 ?>
 
@@ -16,7 +16,7 @@
 <article id='<?= $milestone['slug'] ?>' class='milestone' data-flavor='<?= $milestone['flavor'] ?? 'default' ?>' data-weight='<?= $milestone['weight'] ?? 6 ?>'<?= $poster_size ?>>
 
 	<div class='setup'>
-		<p class='year high-voice'><?= $milestone['date'] ?> <span class='weight quiet-voice'>(<?= $milestone['weight'] ?? '?' ?>)</span></p>
+		<p class='year high-voice'><?= $milestone['date'] ?></p>
 
 		<?php
 			/* The optional swappable tail of the title. The one current use:
