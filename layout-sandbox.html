@@ -24,14 +24,23 @@
 			/* the settings panel has known content, so it earns a min width */
 			--panel-min: 280px;
 
-			/* grid-mode wall geometry (all derivable, no magic numbers) */
+			/* grid-mode wall geometry - matched to the real page (grid-view.css):
+			   wall-column is the designed lane measure (cards never exceed it),
+			   wall-gap the gutter; the wall's max derives from them. */
 			--grid-columns: 2;
-			--wall-gap: 1.5rem;
-			--wall-max: calc(var(--content-max) + var(--rail-width) + var(--wall-gap));
+			--wall-column: 36rem;
+			--wall-gap: 4rem;
+			--wall-inset: 4vw;
+			--wall-max: calc(var(--grid-columns) * var(--wall-column) + (var(--grid-columns) - 1) * var(--wall-gap));
 
-			/* one lane's width (for the intro to read as lane one). Derived from
-			   the wall: (wall - one gap) / 2 columns. */
-			--wall-column: calc((var(--wall-max) - var(--wall-gap)) / 2);
+			/* the reveal-on-orphan island's footprint - the wall reserves this much
+			   on the right so the buttons are never crowded out (sized to the actual
+			   button, not a glyph). */
+			--island-width: 6rem;
+			--island-reserve: calc(var(--island-width) + 2rem);
+
+			/* the intro reads a little bigger than a grid item - prominence. */
+			--intro-width: calc(var(--wall-column) * 1.2);
 		}
 
 		body {
@@ -187,8 +196,14 @@
 
 			html[data-view='grid'] .timeline {
 				display: grid;
+
+				/* real-page approach: cards are 1fr, but the WALL is capped at its
+				   max - so cards top out at the lane measure, extra becomes right
+				   space. Cleaner than a per-column min. */
 				grid-template-columns: repeat(var(--grid-columns), 1fr);
 				gap: var(--wall-gap);
+
+				max-width: var(--wall-max);
 			}
 
 			/* Intro = lane one: constrain it to one column width so it reads as the
@@ -233,11 +248,176 @@
 			}
 		}
 
-		/* the timeline list - reset the <ol> chrome; the layout does the rest. */
+		/* ---- EXHIBIT (grid + wide) ----
+		   The settings are DISPLAYED inline as a top band sharing the top row with
+		   the lane-one intro; the wall spans below. On its own (not a popover) ->
+		   no backdrop. JS drops `popover` at this breakpoint so the panel flows into
+		   the exhibit slot. */
+		/* The band styling applies only while the band is IN VIEW (:not orphaned).
+		   Once scrolled past (JS sets data-exhibit-orphaned), all of this drops:
+		   the panel reverts to the over-wall popover and the Settings trigger revives
+		   on the rail. */
+		@media (width >= 1600px) {
+			/* reserve the island's column on the right so the wall never grows under
+			   the buttons and crowds them out. */
+			html[data-view='grid'] .page-wrapper {
+				grid-template-columns: minmax(1rem, var(--wall-inset)) 1fr var(--island-reserve);
+			}
+
+			/* main uses the WALL's own column template, so the intro, the band, and
+			   the cards all share the same grid lines. THIS IS NOT scoped to the
+			   orphan state on purpose: the wall's grid must stay identical whether
+			   the band is shown or scrolled past, or the wall reflows/changes width
+			   as you scroll. Only the PANEL changes with orphan (band <-> popover). */
+			html[data-view='grid'] main {
+				display: grid;
+				grid-template-columns: repeat(var(--grid-columns), 1fr);
+				column-gap: var(--wall-gap);
+				row-gap: var(--wall-gap);
+				max-width: var(--wall-max);
+				align-items: start;
+			}
+
+			/* intro = the first column; the band takes the rest of the top row. */
+			html[data-view='grid'] .page-header {
+				grid-column: 1 / 2;
+				grid-row: 1;
+				max-width: none;
+			}
+
+			html[data-view='grid'] .timeline {
+				grid-column: 1 / -1;
+				grid-row: 2;
+			}
+
+			/* The band styling keys off whether the panel is a POPOVER, not the orphan
+			   flag: while it's a displayed band (`:not([popover])`) it stays placed at
+			   the top row - even after you scroll past it - so it never drops a stray
+			   box into the wall. The moment the island turns it into a popover, this
+			   drops and the overlay styling takes over. */
+			html[data-view='grid'] main > .panel:not([popover]) {
+				grid-column: 2 / -1;
+				grid-row: 1;
+				width: auto;
+				max-width: none;
+				margin: 0;
+
+				/* seamless: the band blends into the composition, no box/border -
+				   the control rows are the only visible chrome. */
+				border: none;
+				background: transparent;
+				padding: 0;
+
+				display: flex;
+				flex-wrap: wrap;
+				align-items: start;
+				gap: 0.75rem;
+			}
+
+			html[data-view='grid'] main > .panel:not([popover]) .panel-row {
+				margin: 0;
+				flex: 1 1 12rem;
+			}
+
+			/* in the exhibit the toolbox trigger is never used: the band shows the
+			   controls, and the reveal-on-orphan trigger is the fixed island below. */
+			html[data-view='grid'] .toolbox [popovertarget='settings'] {
+				display: none;
+			}
+
+			/* the rail column is empty in the exhibit - hide it so it doesn't leak
+			   a strip on the right (the island lives in the margin instead). */
+			html[data-view='grid'] .shell-nav {
+				display: none;
+			}
+		}
+
+		/* Next break: 3-column wall on genuinely big monitors (real page uses 1900).
+		   Only --grid-columns changes - the wall, wall-max, intro width, and island
+		   anchor all derive from it, so the whole layout follows and the island's
+		   min() clamp rides the corner once the margin tightens. */
+		@media (width >= 1900px) {
+			:root {
+				--grid-columns: 3;
+			}
+		}
+
+		/* ---- reveal-on-orphan island ----
+		   Matches the real page's .corner-island: fixed in the calm margin just
+		   past the wall's right grid line (--island-anchor), clamped back toward the
+		   edge when that margin is tight. Always present; visibility flips only when
+		   the exhibit band has scrolled away (JS sets data-exhibit-orphaned). */
+		.revival-island {
+			--island-anchor: calc(
+				max(1rem, var(--wall-inset)) + var(--grid-columns) * var(--wall-column)
+				+ (var(--grid-columns) - 1) * var(--wall-gap) + var(--wall-gap)
+			);
+
+			position: fixed;
+			top: 1rem;
+			left: min(var(--island-anchor), calc(100vw - var(--island-width) - 1rem));
+			z-index: 6;
+
+			/* the revived panel anchors to this */
+			anchor-name: --island;
+
+			font: inherit;
+			padding: 0.4rem 0.8rem;
+			cursor: pointer;
+
+			opacity: 0;
+			visibility: hidden;
+			transition:
+				opacity 200ms ease,
+				visibility 200ms;
+		}
+
+		html[data-exhibit-orphaned] .revival-island {
+			opacity: 1;
+			visibility: visible;
+		}
+
+		/* revived from the island, the panel anchors to it (the toolbox anchor is
+		   hidden in the exhibit). The island sits near the right edge, so opening
+		   below/right would overflow - the panel opens to the LEFT instead, its
+		   right edge meeting the island's left, expanding over the wall. */
+		html[data-exhibit-orphaned] .panel {
+			position-anchor: --island;
+			top: anchor(top);
+			right: anchor(left);
+			left: auto;
+			margin: 0 0.5rem 0 0;
+		}
+
+		/* Even bigger: once there's room to the RIGHT of the island, the revived menu
+		   opens into its OWN area (right) instead of over the wall (left) - and
+		   own-area means no dim. Room decides Panel-state. Placed AFTER the open-left
+		   rule above so it wins at this width (equal specificity -> source order).
+		   Literal breakpoint because @media can't read the custom-property math -
+		   approximate the real page; tune as needed. */
+		@media (width >= 2400px) {
+			html[data-exhibit-orphaned] .panel {
+				left: anchor(right);
+				right: auto;
+				top: anchor(top);
+				margin: 0 0 0 0.5rem;
+			}
+
+			/* own area - nothing covered, so drop the dim */
+			html[data-exhibit-orphaned] .panel::backdrop {
+				background: transparent;
+			}
+		}
+
+		/* the timeline list - reset the <ol> chrome; the layout does the rest.
+		   In LIST mode it's a reading column, capped at the content measure so it
+		   never stretches wide (grid turns this cap off - there it's the wall). */
 		.timeline {
 			margin: 0;
 			padding: 0;
 			list-style: none;
+
+			max-width: var(--content-max);
 		}
 
 		/* a fake milestone block so there's something to scroll past */
@@ -338,12 +518,23 @@
 					Settings
 				</button>
 			</div>
+		</header>
 
-			<!-- role 3: the settings panel (a guest). Lives in the rail's DOM so
-				that when JS drops `popover` (the placed enhancement) it flows here
-				inline. As a popover (the default) it escapes to the top layer, so
-				this DOM home doesn't affect the overlay. Semantics track state -
-				dialog-ish when overlaying, plain region when placed. -->
+		<main>
+			<!-- role 2: the page-header (per-page intro). A <header> nested in
+				<main> is NOT a banner (ARIA excludes it), so it reads correctly as
+				this page's introductory content - no landmark clash. -->
+			<header class='page-header'>
+				<h1>Layout sandbox</h1>
+
+				<p>Bare test bed for the shell switchboard - nav, settings panel, placement across sizes.</p>
+			</header>
+
+			<!-- role 3: the settings panel (a guest). Lives in `main` (with the
+				intro) so the exhibit can share the top row with it. As a popover it
+				escapes to the top layer, so this DOM home doesn't affect the list/
+				grid overlay modes; the toolbox still precedes it for anchoring. When
+				JS drops `popover` (the exhibit enhancement) it flows here inline. -->
 			<div
 				id='settings'
 				popover
@@ -374,34 +565,42 @@
 
 				<p class='panel-row'>Filter</p>
 			</div>
-		</header>
-
-		<main>
-			<!-- role 2: the page-header (per-page intro). A <header> nested in
-				<main> is NOT a banner (ARIA excludes it), so it reads correctly as
-				this page's introductory content - no landmark clash. -->
-			<header class='page-header'>
-				<h1>Layout sandbox</h1>
-
-				<p>Bare test bed for the shell switchboard - nav, settings panel, placement across sizes.</p>
-			</header>
 
 			<!-- the timeline: reverse-chron <ol> of milestones, matching the real
 				structure (grid lane-dealer keys off `.timeline > li`). -->
 			<ol class='timeline'>
-				<li class='block'>content</li>
+				<li class='block'>content 1</li>
 
-				<li class='block'>content</li>
+				<li class='block'>content 2</li>
 
-				<li class='block'>content</li>
+				<li class='block'>content 3</li>
 
-				<li class='block'>content</li>
+				<li class='block'>content 4</li>
+
+				<li class='block'>content 5</li>
+
+				<li class='block'>content 6</li>
+
+				<li class='block'>content 7</li>
+
+				<li class='block'>content 8</li>
 			</ol>
 		</main>
 
 		<footer class='shell-footer'>
 			<p>footer</p>
 		</footer>
+
+		<!-- reveal-on-orphan trigger (the real page's "corner island"): ALWAYS in
+			the DOM, fixed in the margin just past the wall's right grid line,
+			visibility hidden until the exhibit band scrolls away. -->
+		<button
+			type='button'
+			class='revival-island'
+			aria-label='Display settings'
+		>
+			Settings
+		</button>
 	</div>
 
 	<script>
@@ -409,6 +608,60 @@
 		// on <html>, and every grid rule keys off that one attribute. This is the
 		// first JS; list mode needed none. If it never runs, the site is list mode.
 		var root = document.documentElement;
+		var panel = document.getElementById('settings');
+		var pageHeader = document.querySelector('.page-header');
+		var island = document.querySelector('.revival-island');
+		var exhibit = window.matchMedia('(min-width: 1600px)');
+
+		// Is the top band (the intro/exhibit row) still in view? Only the island's
+		// visibility keys off this - NOT the panel's flow state (see below).
+		var bandVisible = true;
+
+		function inExhibit() {
+			return root.getAttribute('data-view') === 'grid' && exhibit.matches;
+		}
+
+		// The panel is a popover everywhere EXCEPT the exhibit, where it's the
+		// displayed band. CRUCIAL: in the exhibit the band stays in flow on scroll -
+		// it never toggles to a popover as you scroll. (It used to, which reflowed
+		// `main` every scroll tick and fought the observer = jitter.) Scroll only
+		// flips data-exhibit-orphaned, which drives the fixed island's visibility -
+		// a fixed element, so no reflow. The band becomes a popover only on an
+		// island CLICK (below), a one-off, never scroll-driven.
+		function updatePanelMode() {
+			if (inExhibit()) {
+				// leave an island-opened popover alone; otherwise it's the band
+				if (!panel.matches(':popover-open')) {
+					panel.removeAttribute('popover');
+				}
+			} else if (!panel.hasAttribute('popover')) {
+				panel.setAttribute('popover', '');
+			}
+
+			root.toggleAttribute('data-exhibit-orphaned', inExhibit() && !bandVisible);
+		}
+
+		// The island (visible once orphaned) pops the SAME panel where the reader
+		// is: make it a popover just for that, hand it back to the band on close.
+		island.addEventListener('click', function () {
+			if (!panel.hasAttribute('popover')) {
+				panel.setAttribute('popover', '');
+			}
+			panel.showPopover();
+		});
+
+		panel.addEventListener('toggle', function (event) {
+			if (event.newState === 'closed' && inExhibit()) {
+				panel.removeAttribute('popover');
+			}
+		});
+
+		// Watch the top row leave/enter; flip the orphan state as it crosses.
+		var bandObserver = new IntersectionObserver(function (entries) {
+			bandVisible = entries[0].isIntersecting;
+			updatePanelMode();
+		});
+		bandObserver.observe(pageHeader);
 
 		// Any [data-toggle-view] flips the view: the toolbox Grid invite (list ->
 		// grid) and the Layout control inside the panel (grid -> list) both use it.
@@ -419,8 +672,13 @@
 				} else {
 					root.setAttribute('data-view', 'grid');
 				}
+
+				updatePanelMode();
 			});
 		});
+
+		exhibit.addEventListener('change', updatePanelMode);
+		updatePanelMode();
 	</script>
 
 </body>
