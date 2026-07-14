@@ -4,6 +4,10 @@
 
 derekthomaswood.com is Derek's personal "hire me" site for full-time/salary roles. It's a reverse-chronological timeline of his work, visual-first, with short video walkthroughs instead of formal case studies.
 
+## Local development
+
+Served locally by **MAMP at `http://derek:8888/`** (plain PHP, no build step - the router is `index.php`). So the design-system tester is `http://derek:8888/design-system`, a target preview is `http://derek:8888/?target=gofundme`, and so on. This is the URL to hit for any browser verification - don't guess `.test`/Herd, this project isn't on Herd. Derek runs MAMP himself; agents never start or stop it.
+
 ## Related projects
 
 - **`resume-exploration/`** - master work history, job-specific application materials, source-of-truth dates. The canonical history lives at `resume-exploration/source-materials/dereks-history.md`.

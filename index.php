@@ -52,6 +52,25 @@ $pages = [
 		'title' => 'Contact - ' . SITE_TITLE,
 		'description' => 'Get in touch with Derek Wood about design and product roles.',
 	],
+
+	// Internal tester - every token, voice, and the poster card in one place,
+	// so a brand/emphasis/scheme change can be eyeballed against everything at
+	// once. No 'menu' key on purpose: reachable by URL, kept out of the public
+	// nav. This is the style-guide surface the house conventions call for.
+	'design-system' => [
+		'file' => 'design-system.php',
+		'title' => 'Design system - ' . SITE_TITLE,
+		'description' => SITE_DESCRIPTION,
+	],
+
+	// Internal tester for the shell itself - the nav, the settings apparatus,
+	// and how they place across screen sizes - in the barest possible HTML,
+	// away from real content. No 'menu' key: reachable by URL only.
+	'layout-lab' => [
+		'file' => 'layout-lab.php',
+		'title' => 'Layout lab - ' . SITE_TITLE,
+		'description' => SITE_DESCRIPTION,
+	],
 ];
 
 // Didn't recognize it? Show a 404 - still a real page with our normal chrome.
@@ -69,6 +88,12 @@ $current = $pages[$slug];
 $page_title = $current['title'];
 $page_description = $current['description'];
 $page_controls = $current['controls'] ?? null;
+
+// The settings panel is off site-wide right now (mobile scroll-freeze hunt -
+// see the gates in includes/header.php). The design-system tester is the one
+// exception: the brand/emphasis/scheme controls ARE its job, and it's an
+// internal desktop page the freeze doesn't reach. One flag, read in header.php.
+$settings_panel_on = ($slug === 'design-system');
 
 // Build the page: shared header, this page's body, shared footer.
 require __DIR__ . '/includes/header.php';

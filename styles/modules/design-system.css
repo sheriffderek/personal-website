@@ -1,0 +1,165 @@
+/* The design-system tester page. Geometry only - the swatches paint
+   themselves from the color tokens they demonstrate, the voices carry all
+   type, so this file is just spacing and arrangement. */
+
+.design-system {
+	/* Bench-local grain layers for the "combine to kill the JPEG look" hunt.
+	   They live here (not settings.css) on purpose - only the winning recipe
+	   gets promoted to the canonical --grain. The fine tooth is the canonical
+	   --grain; --grain-mottle is the second scale: a large, soft, low-frequency
+	   tonal variation. Fine alone = static; fine x mottle = paper. */
+	--grain-mottle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.015' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.3' intercept='0.62'/%3E%3CfeFuncG type='linear' slope='0.3' intercept='0.62'/%3E%3CfeFuncB type='linear' slope='0.3' intercept='0.62'/%3E%3CfeFuncA type='linear' slope='0' intercept='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+
+	/* Directional noise (anisotropic baseFrequency: fine across, coarse down)
+	   for a fibrous, construction-paper streak. */
+	--grain-fiber: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9 0.16' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.4' intercept='0.58'/%3E%3CfeFuncG type='linear' slope='0.4' intercept='0.58'/%3E%3CfeFuncB type='linear' slope='0.4' intercept='0.58'/%3E%3CfeFuncA type='linear' slope='0' intercept='1'/%3E%3C/feComponentTransfer%3E%3CfeGaussianBlur stdDeviation='0.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+
+	.ds-section {
+		margin-top: calc(var(--gutter) * 3);
+	}
+
+	.swatches {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+		gap: var(--gutter);
+		margin-top: var(--gutter);
+		padding: 0;
+		list-style: none;
+	}
+
+	/* Menu / settings demos. Each control keeps its real component classes (the
+	   pill / slider / minimap styling comes from settings-panel.css); this only
+	   lays the inert copies out on the page and boxes each so a state reads as
+	   its own example. h3 headings sit on the section rhythm. */
+	.ds-section h3 {
+		margin-top: calc(var(--gutter) * 1.5);
+	}
+
+	.control-states {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		gap: var(--gutter);
+		margin-top: var(--gutter);
+	}
+
+	.demo-control {
+		padding: var(--gutter);
+		border: 1px solid var(--stroke-secondary);
+		border-radius: var(--corners, 0);
+	}
+
+	.demo-filter {
+		margin-top: var(--gutter);
+		max-width: 340px;
+	}
+
+	.swatch {
+		display: grid;
+		gap: calc(var(--gutter) / 4);
+	}
+
+	.swatch .chip {
+		aspect-ratio: 16 / 9;
+		border: 1px solid var(--stroke-primary);
+		border-radius: var(--corners, 0);
+	}
+
+	.voices {
+		display: grid;
+		gap: var(--gutter);
+		margin-top: var(--gutter);
+		padding: 0;
+		list-style: none;
+	}
+
+	.voices li {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: var(--gutter);
+	}
+
+	.experiments {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: var(--gutter);
+		margin-top: var(--gutter);
+		padding: 0;
+		list-style: none;
+	}
+
+	.experiment-cell {
+		display: grid;
+		gap: calc(var(--gutter) / 3);
+	}
+
+	.media-sample {
+		display: grid;
+		place-items: center;
+		aspect-ratio: 16 / 9;
+		border: 1px solid var(--stroke-primary);
+		border-radius: var(--corners, 0);
+		background-color: var(--fill-primary);
+	}
+
+	.sample-mark {
+		width: 55%;
+	}
+
+	/* Finish classes - proven here on the tester first; graduate to a shared
+	   finishes.css when a real surface (a card, a poster container) adopts them.
+	   Grain is blended INTO the fill via background-blend-mode, so the color
+	   still comes from the fill token and only texture is added - the mark on
+	   top stays crisp. */
+	.media-sample.grain-primary {
+		background-image: var(--grain);
+		background-size: 160px 160px;
+		background-repeat: repeat;
+		background-blend-mode: multiply;
+	}
+
+	/* The combine: fine tooth (canonical --grain) multiplied over the large
+	   soft mottle, both landing on the fill color. Two scales at once is what
+	   reads as material instead of upscaled static. */
+	.media-sample.grain-layered {
+		background-image: var(--grain), var(--grain-mottle);
+		background-size: 132px 132px, 373px 373px;
+		background-repeat: repeat, repeat;
+		background-blend-mode: multiply, multiply;
+	}
+
+	.media-sample.grain-fiber {
+		background-image: var(--grain-fiber);
+		background-size: 170px 136px;
+		background-repeat: repeat;
+		background-blend-mode: multiply;
+	}
+
+	/* Same layered tiles, soft-light instead of multiply. Soft-light both
+	   lightens AND darkens, so unlike multiply it survives dark and colored
+	   fills - flip the scheme/emphasis and watch it hold where multiply turns
+	   to mud. On the pure-white default it's nearly invisible (white has no
+	   headroom to lighten) - that IS the cross-theme lesson. */
+	.media-sample.grain-softlight {
+		background-image: var(--grain), var(--grain-mottle);
+		background-size: 132px 132px, 373px 373px;
+		background-repeat: repeat, repeat;
+		background-blend-mode: soft-light, soft-light;
+	}
+
+	/* Geometric finishes - pure CSS gradients, so they're vector (crisp at any
+	   DPR, no retina softening) and token-colored (they REPAINT with the scheme
+	   instead of fighting it). The theme-robust family. */
+	.media-sample.halftone {
+		background-image: radial-gradient(var(--stroke-primary) 18%, transparent 20%);
+		background-size: 9px 9px;
+	}
+
+	.media-sample.hatch {
+		background-image: repeating-linear-gradient(45deg, var(--stroke-secondary) 0 1px, transparent 1px 7px);
+	}
+
+	.media-sample.vignette {
+		background-image: radial-gradient(circle at 50% 45%, transparent 58%, color-mix(in oklab, var(--ink-primary) 14%, transparent) 100%);
+	}
+}
