@@ -21,6 +21,22 @@
    1. App chrome scope */
 
 [data-ui="app"] {
+	/* This is the app-within-an-app: a sealed scope with its own token set, so
+	   theming the editorial layer can never move the UI out from under the
+	   cursor. Every rule inside the chrome reads an --app-* token below, NEVER a
+	   global token directly - that indirection IS the wall. The contract:
+
+	     COLOR slots default to aliasing the global semantic tokens, so the
+	     chrome tracks the active theme for free. They are the ONLY sanctioned
+	     door in: an emphasis that wants bespoke chrome (a filled coral pill, a
+	     soft lift) overrides these - and only these.
+
+	     GEOMETRY tokens are the frozen list. An emphasis block must never set
+	     them: a size or border-width change moves the control, defeating the
+	     whole point. (--app-corners is the one geometry lever that's cursor-safe
+	     - radius doesn't move a target's center - but it stays literal until the
+	     unfreeze-corners decision lands, so it's deliberately not a token yet.) */
+
 	/* Pin type families inside the panel so the brand switcher doesn't
 	   restyle its own chrome (the Documentation brand's mono would otherwise
 	   hit panel labels). */
@@ -31,6 +47,19 @@
 	--app-data-voice-font-size: calc(var(--step-0) * 0.75);
 	--app-data-voice-line-height: 1.4;
 	--app-data-voice-letter-spacing: 0.01em;
+
+	/* Color slots - free levers (an emphasis may repaint these). */
+	--app-fill: var(--fill-primary);
+	--app-ink: var(--ink-primary);
+	--app-ink-secondary: var(--ink-secondary);
+	--app-stroke: var(--stroke-primary);
+	--app-stroke-secondary: var(--stroke-secondary);
+	--app-accent: var(--accent);
+	--app-shadow: var(--panel-shadow, 0 4px 12px rgb(0 0 0 / 0.12));
+
+	/* Geometry - frozen. The border stays as a color-matched placeholder (a
+	   theme fakes "no border" via --app-stroke, never by zeroing the width). */
+	--app-border-width: 1px;
 }
 
 .app-data-voice {
@@ -39,7 +68,7 @@
 	font-size: var(--app-data-voice-font-size);
 	line-height: var(--app-data-voice-line-height);
 	letter-spacing: var(--app-data-voice-letter-spacing);
-	color: var(--ink-secondary);
+	color: var(--app-ink-secondary);
 }
 
 /* Kill double-tap-to-zoom across the whole menu chrome. touch-action isn't
@@ -73,10 +102,10 @@ button.toolbox-trigger {
 	padding: 0.25rem 0.5rem;
 	font-size: 1.25rem;
 	line-height: 1;
-	color: var(--ink-primary);
+	color: var(--app-ink);
 
 	&:focus-visible {
-		outline: 2px solid var(--accent);
+		outline: 2px solid var(--app-accent);
 		outline-offset: 2px;
 		border-radius: 4px;
 	}
@@ -139,13 +168,14 @@ button.toolbox-trigger {
 		opacity 120ms ease,
 		display 120ms allow-discrete;
 
-	/* these can change colors if needed per theme - since they don't change the size of things */
-	/* we can't go from border: 1 to 0 though, so that has to go from color to color */
-	background: var(--fill-primary);
-	color: var(--ink-primary);
-	border: 1px solid var(--stroke-primary);
+	/* Chrome reads --app-* only (the sealed-scope contract at the top of this
+	   file). Color slots are free; the border stays 1px and fakes "no border"
+	   via --app-stroke, never by zeroing --app-border-width. */
+	background: var(--app-fill);
+	color: var(--app-ink);
+	border: var(--app-border-width) solid var(--app-stroke);
 	border-radius: 0px;
-	box-shadow: var(--panel-shadow, 0 4px 12px rgb(0 0 0 / 0.12));
+	box-shadow: var(--app-shadow);
 
 	&:not(:popover-open) {
 		opacity: 0;
@@ -242,8 +272,8 @@ button.settings-trigger {
 	width: 2.25rem;
 	height: 2.25rem;
 	padding: 0;
-	border: 1px solid var(--stroke-primary);
-	background: var(--fill-primary);
+	border: var(--app-border-width) solid var(--app-stroke);
+	background: var(--app-fill);
 	border-radius: 50%;
 }
 
@@ -263,25 +293,25 @@ button.settings-trigger {
 		gap: 0.45rem;
 		padding: 0.4rem 0.65rem;
 
-		border: 1px solid var(--stroke-primary);
-		background: var(--fill-primary);
-		color: var(--ink-primary);
+		border: var(--app-border-width) solid var(--app-stroke);
+		background: var(--app-fill);
+		color: var(--app-ink);
 		border-radius: 0px;
 
 		&:focus-visible {
-			outline: 2px solid var(--accent);
+			outline: 2px solid var(--app-accent);
 			outline-offset: 2px;
 		}
 
 		&[aria-checked="true"] {
-			color: var(--fill-primary);
-			background: var(--accent);
+			color: var(--app-fill);
+			background: var(--app-accent);
 			background: linear-gradient(
 				to bottom,
-				color-mix(in oklch, var(--accent) 80%, white) 0%,
-				var(--accent) 100%
+				color-mix(in oklch, var(--app-accent) 80%, white) 0%,
+				var(--app-accent) 100%
 			);
-			border-color: color-mix(in oklch, var(--accent) 70%, black);
+			border-color: color-mix(in oklch, var(--app-accent) 70%, black);
 		}
 	}
 
@@ -296,7 +326,7 @@ button.settings-trigger {
 		}
 
 		&[aria-checked="true"]::before {
-			background: var(--accent);
+			background: var(--app-accent);
 		}
 	}
 }
@@ -339,7 +369,7 @@ button.settings-trigger {
 
 	&::-webkit-slider-runnable-track {
 		height: 4px;
-		background: var(--stroke-secondary);
+		background: var(--app-stroke-secondary);
 		border-radius: 2px;
 	}
 
@@ -354,8 +384,8 @@ button.settings-trigger {
 		border-radius: 50%;
 		background: radial-gradient(
 			circle at center,
-			var(--ink-primary) 0 calc(var(--range-dot) / 2),
-			color-mix(in oklch, var(--ink-primary) 22%, transparent)
+			var(--app-ink) 0 calc(var(--range-dot) / 2),
+			color-mix(in oklch, var(--app-ink) 22%, transparent)
 				calc(var(--range-dot) / 2 + 1px) calc(var(--range-halo) / 2),
 			transparent calc(var(--range-halo) / 2)
 		);
@@ -363,7 +393,7 @@ button.settings-trigger {
 
 	&::-moz-range-track {
 		height: 4px;
-		background: var(--stroke-secondary);
+		background: var(--app-stroke-secondary);
 		border-radius: 2px;
 	}
 
@@ -374,8 +404,8 @@ button.settings-trigger {
 		border-radius: 50%;
 		background: radial-gradient(
 			circle at center,
-			var(--ink-primary) 0 calc(var(--range-dot) / 2),
-			color-mix(in oklch, var(--ink-primary) 22%, transparent)
+			var(--app-ink) 0 calc(var(--range-dot) / 2),
+			color-mix(in oklch, var(--app-ink) 22%, transparent)
 				calc(var(--range-dot) / 2 + 1px) calc(var(--range-halo) / 2),
 			transparent calc(var(--range-halo) / 2)
 		);
@@ -388,7 +418,7 @@ button.settings-trigger {
 
 .filter-control {
 	.filter-count {
-		color: var(--ink-secondary);
+		color: var(--app-ink-secondary);
 	}
 
 	/* Filter body: horizontal slider on top, the timeline map below. */
@@ -408,7 +438,7 @@ button.settings-trigger {
 		/* Subtle support, not real info: smaller than the count label and faded,
 		   so it reads as a quiet aside under the slider rather than a headline. */
 		font-size: calc(var(--app-data-voice-font-size) * 0.85);
-		color: color-mix(in oklch, var(--ink-secondary) 65%, transparent);
+		color: color-mix(in oklch, var(--app-ink-secondary) 65%, transparent);
 
 		@media (width >= 1024px) {
 			display: block;
@@ -447,12 +477,12 @@ button.settings-trigger {
 
 		li {
 			height: 4px;
-			background: var(--stroke-secondary);
+			background: var(--app-stroke-secondary);
 			border-radius: 1px;
 			transition: background 0.5s;
 
 			&[data-state="in"] {
-				background: var(--ink-secondary);
+				background: var(--app-ink-secondary);
 			}
 		}
 	}
@@ -460,7 +490,7 @@ button.settings-trigger {
 	/* The fake panel exists only where the real layout grows its rail. */
 	.mini-map-panel {
 		display: none;
-		border: 1px solid var(--stroke-secondary);
+		border: var(--app-border-width) solid var(--app-stroke-secondary);
 		border-radius: 4px;
 	}
 

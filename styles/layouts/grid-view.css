@@ -241,8 +241,8 @@ button.grid-invite {
 			gap: 0.4rem;
 			padding: 0.4rem;
 
-			background: var(--fill-primary);
-			border: 1px solid var(--stroke-primary);
+			background: var(--app-fill);
+			border: var(--app-border-width) solid var(--app-stroke);
 			border-radius: 1.25rem;
 
 			opacity: 0;
@@ -262,7 +262,7 @@ button.grid-invite {
 			height: 2.4rem;
 			padding: 0;
 			border-radius: 50%;
-			border: 1px solid var(--stroke-secondary);
+			border: var(--app-border-width) solid var(--app-stroke-secondary);
 		}
 
 		/* Intro, wall, and footer share one left edge, inset by the
