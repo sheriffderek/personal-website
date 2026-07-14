@@ -21,10 +21,17 @@
 			--content-max: 720px;
 			--rail-width: 300px;
 
+			/* the settings panel has known content, so it earns a min width */
+			--panel-min: 280px;
+
 			/* grid-mode wall geometry (all derivable, no magic numbers) */
 			--grid-columns: 2;
 			--wall-gap: 1.5rem;
 			--wall-max: calc(var(--content-max) + var(--rail-width) + var(--wall-gap));
+
+			/* one lane's width (for the intro to read as lane one). Derived from
+			   the wall: (wall - one gap) / 2 columns. */
+			--wall-column: calc((var(--wall-max) - var(--wall-gap)) / 2);
 		}
 
 		body {
@@ -160,10 +167,13 @@
 		   step - the toolbox stays in the right region for now. */
 		@media (width >= 1200px) {
 			html[data-view='grid'] .page-wrapper {
+				/* the wall MAXIMIZES (1fr, takes as much space as it can); the right
+				   rail is only as wide as its buttons (max-content) - just reserved
+				   button space, not a big empty gutter. Small left inset. */
 				grid-template-columns:
-					minmax(1rem, 1fr)
-					minmax(0, var(--wall-max))
-					minmax(1rem, 1.5fr);
+					minmax(1rem, 4vw)
+					1fr
+					max-content;
 			}
 
 			html[data-view='grid'] main,
@@ -180,16 +190,46 @@
 				grid-template-columns: repeat(var(--grid-columns), 1fr);
 				gap: var(--wall-gap);
 			}
-		}
 
-		/* At rail size + up, the panel opens as an anchored dropdown INTO the rail's
-		   own empty space (below the toolbox), covering the rail rather than the
-		   content - so no dim. Still a native popover (always toggled by the
-		   ever-present trigger); we just drop the visible backdrop. Pure CSS - no
-		   JS, no state flag needed for this step. */
-		@media (width >= 1024px) {
-			.panel::backdrop {
-				background: transparent;
+			/* Intro = lane one: constrain it to one column width so it reads as the
+			   first cell of the wall, not a full-width banner. */
+			html[data-view='grid'] .page-header {
+				max-width: var(--wall-column);
+			}
+
+			/* Toolbox becomes a THIN vertical trigger rail in the right region
+			   (glyphs stacked), per the notes' "thin rail of triggers only". It
+			   sits at the LEFT of the right region - right next to the wall - not
+			   shoved to the far screen edge (that was the list rail's flex-end). */
+			html[data-view='grid'] .shell-nav {
+				align-items: flex-start;
+			}
+
+			html[data-view='grid'] .toolbox {
+				flex-direction: column;
+			}
+
+			/* In grid the panel opens OVER the wall (over-content) and to the LEFT
+			   of the toolbox - its right edge meets the toolbox's left edge, so it
+			   expands left over the wall rather than dropping below the buttons. The
+			   dim returns; it's no longer sized to the rail column. */
+			html[data-view='grid'] .panel {
+				top: anchor(top);
+				right: anchor(left);
+				left: auto;
+				width: auto;
+				max-width: min(360px, 40vw);
+				margin: 0 0.5rem 0 0;
+			}
+
+			html[data-view='grid'] .panel::backdrop {
+				background: rgb(0 0 0 / 0.15);
+			}
+
+			/* The Grid invite is the doorbell IN - once in grid it's done its job,
+			   so it hides. The way back to list is the Layout control in the panel. */
+			html[data-view='grid'] .grid-invite {
+				display: none;
 			}
 		}
 
@@ -224,6 +264,9 @@
 			right: anchor(right);
 			margin: 0.5rem 0 0;
 
+			/* known content earns a floor; capped so it can't overflow a phone */
+			min-width: min(var(--panel-min), 100vw - 2rem);
+
 			padding: 1rem;
 			border: 1px solid #333;
 
@@ -237,13 +280,35 @@
 			}
 		}
 
-		/* PROOF: the backdrop. Native ::backdrop exists ONLY while the panel is an
-		   open popover (top-layer overlay) - so its presence IS the overlay state,
-		   for free. Sheer tint (never a blackout) so the live page shows through.
-		   When the panel later goes PLACED (inline, not a popover), there's no
-		   ::backdrop at all - the state and the backdrop stay in lockstep. */
+		/* Backdrop = the over-content signal. DEFAULT is NO dim; the dim is added
+		   ONLY where the panel actually covers content: narrow (over content) and
+		   grid (over the wall, see the grid block). At rail width it opens in its
+		   own space, so it stays transparent here - no source-order fragility.
+		   Native ::backdrop exists only while the panel is an open popover, so
+		   backdrop-presence tracks the overlay state for free. */
 		.panel::backdrop {
-			background: rgb(0 0 0 / 0.15);
+			background: transparent;
+		}
+
+		/* Narrow: panel is over content -> sheer dim (never a blackout, so the live
+		   page still shows through). */
+		@media (width < 1024px) {
+			.panel::backdrop {
+				background: rgb(0 0 0 / 0.15);
+			}
+		}
+
+		/* fake control rows - just blocks with height so the panel has realistic
+		   vertical extent (stand-ins for the real control groups). */
+		.panel-row {
+			margin: 0 0 0.75rem;
+			padding: 1.5rem 0.75rem;
+			border: 1px solid #ccc;
+			background: #fff;
+		}
+
+		.panel-row:last-child {
+			margin-bottom: 0;
 		}
 	</style>
 </head>
@@ -260,6 +325,7 @@
 				<button
 					type='button'
 					class='trigger grid-invite'
+					data-toggle-view
 				>
 					Grid
 				</button>
@@ -284,7 +350,29 @@
 				class='panel'
 				aria-label='Display settings'
 			>
-				<p>settings go here</p>
+				<!-- Layout control: the way BACK to list lives here, inside the
+					panel, once you're in grid (the toolbox Grid button is only the
+					invite IN). -->
+				<p class='panel-row'>
+					<button
+						type='button'
+						data-toggle-view
+					>
+						Layout: List / Grid
+					</button>
+				</p>
+
+				<!-- fake control rows, just to give the panel realistic height so it
+					reads as the tall over-wall panel (real controls fill this down). -->
+				<p class='panel-row'>Color scheme</p>
+
+				<p class='panel-row'>Brand</p>
+
+				<p class='panel-row'>Emphasis</p>
+
+				<p class='panel-row'>Sound</p>
+
+				<p class='panel-row'>Filter</p>
 			</div>
 		</header>
 
@@ -320,15 +408,18 @@
 		// SIGNAL 2: View. Grid mode is opt-in - the Grid button toggles data-view
 		// on <html>, and every grid rule keys off that one attribute. This is the
 		// first JS; list mode needed none. If it never runs, the site is list mode.
-		var gridButton = document.querySelector('.grid-invite');
 		var root = document.documentElement;
 
-		gridButton.addEventListener('click', function () {
-			if (root.getAttribute('data-view') === 'grid') {
-				root.removeAttribute('data-view');
-			} else {
-				root.setAttribute('data-view', 'grid');
-			}
+		// Any [data-toggle-view] flips the view: the toolbox Grid invite (list ->
+		// grid) and the Layout control inside the panel (grid -> list) both use it.
+		document.querySelectorAll('[data-toggle-view]').forEach(function (button) {
+			button.addEventListener('click', function () {
+				if (root.getAttribute('data-view') === 'grid') {
+					root.removeAttribute('data-view');
+				} else {
+					root.setAttribute('data-view', 'grid');
+				}
+			});
 		});
 	</script>
 
