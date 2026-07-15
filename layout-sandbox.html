@@ -24,7 +24,7 @@
 		     BASE            list-small-over   (menu can only go over content)
 		     >= 1024         list-dedicated-sidebar
 		     >= 1200 (grid)  grid-2-rail-over
-		     >= 1600 (grid)  grid-2-persistent-settings / scrolled
+		     >= 1450 (grid)  grid-2-persistent-settings / scrolled
 		     >= 1900 (grid)  grid-3-...
 		     >= 2400 (grid)  grid-3-...-dedicated-sidebar (menu opens right)
 		   ============================================================ */
@@ -312,7 +312,7 @@
 		/* ============================================================
 		   grid-2-rail-over   (>= 1200, data-view='grid')
 		   The wall. A thin trigger rail on the right; the menu opens OVER the
-		   wall (dim). No persistent band yet (that starts at 1600).
+		   wall (dim). No persistent band yet (that starts at 1450).
 		   ============================================================ */
 		@media (width >= 1200px) {
 			html[data-view='grid'] .page-wrapper {
@@ -359,13 +359,13 @@
 		}
 
 		/* ============================================================
-		   grid-2-persistent-settings / scrolled   (>= 1600, data-view='grid')
+		   grid-2-persistent-settings / scrolled   (>= 1450, data-view='grid')
 		   The persistent settings BAND appears (a separate mirror instance),
 		   sharing the wall's columns. The shell-nav becomes the reveal ISLAND:
 		   hidden while the band is in view, shown once scrolled past
 		   (data-scrolled). The menu (popover) opens from the island.
 		   ============================================================ */
-		@media (width >= 1600px) {
+		@media (width >= 1450px) {
 			/* reserve the island's column on the right so the wall never grows
 			   under it. */
 			html[data-view='grid'] .page-wrapper {
@@ -378,41 +378,76 @@
 			/* main shares the wall's columns so the band + intro + cards align.
 			   NOT tied to scroll: the wall grid is identical whether the band is
 			   in view or scrolled past (that stability is what stopped the reflow). */
+			/* The TOP is its own composition, deliberately NOT the wall's columns:
+			   the intro breaks out wide (3fr, past the wall's lane line) for
+			   presence, and the filters take the top-right (2fr) to decorate the
+			   negative space. The wall spans below on its own grid. */
 			html[data-view='grid'] main {
 				display: grid;
-				grid-template-columns: repeat(var(--grid-columns), 1fr);
+				grid-template-columns: 3fr 2fr;
+				grid-template-areas:
+					"intro filters"
+					"wall  wall";
 				column-gap: var(--wall-gap);
-				row-gap: var(--wall-gap);
+				/* "time to breathe" - a generous gap before the content, so the top
+				   reads as a composed, airy space, not a packed header. */
+				row-gap: 6rem;
 				max-width: var(--wall-max);
 				align-items: start;
 			}
 
+			/* the intro has PRESENCE - big, bleeds past the grid rather than
+			   snapping to a lane. */
 			html[data-view='grid'] .page-header {
-				grid-column: 1 / 2;
-				grid-row: 1;
+				grid-area: intro;
 				max-width: none;
+				background: transparent;
+				padding: 0;
 			}
 
-			/* the BAND - a separate mirror instance, spread across the top row */
+			html[data-view='grid'] .page-header h1 {
+				font-size: clamp(2.5rem, 5vw, 4rem);
+				line-height: 1.05;
+				margin: 0 0 0.5rem;
+			}
+
+			/* the FILTERS decorate the top-right corner - NOT a box. No borders, no
+			   background; the controls just float in the negative space. */
 			html[data-view='grid'] .persistent-settings {
 				display: block;
-				grid-column: 2 / -1;
-				grid-row: 1;
+				grid-area: filters;
 			}
 
+			/* the apparatus breathes: control groups spread across the top-right with
+			   generous space, no boxes. */
 			html[data-view='grid'] .persistent-settings .settings {
-				flex-direction: row;
-				flex-wrap: wrap;
+				display: grid;
+				grid-template-columns: repeat(2, max-content);
+				gap: 1.75rem 2.5rem;
 				align-items: start;
 			}
 
 			html[data-view='grid'] .persistent-settings .setting {
-				flex: 1 1 12rem;
+				border: none;
+				background: transparent;
+				padding: 0;
+			}
+
+			/* quiet labels - the apparatus is ambient texture, not shouting form */
+			html[data-view='grid'] .persistent-settings legend {
+				font-size: 0.8rem;
+				font-weight: 500;
+				letter-spacing: 0.02em;
+				text-transform: uppercase;
+				opacity: 0.55;
+			}
+
+			html[data-view='grid'] .persistent-settings .options {
+				margin-top: 0.4rem;
 			}
 
 			html[data-view='grid'] .timeline {
-				grid-column: 1 / -1;
-				grid-row: 2;
+				grid-area: wall;
 			}
 
 			/* the shell-nav becomes the ISLAND: fixed in the reserved margin past the
@@ -420,7 +455,9 @@
 			   reachable at every scroll position, so the island itself never hides. */
 			html[data-view='grid'] .shell-nav {
 				position: fixed;
-				top: 1rem;
+				/* just below the top-right filter zone, per the design - the menu
+				   lives under the decorated corner, not above it. */
+				top: 13rem;
 				left: min(
 					calc(max(1rem, var(--wall-inset)) + var(--grid-columns) * var(--wall-column) + var(--grid-columns) * var(--wall-gap)),
 					calc(100vw - var(--island-width) - 1rem)
@@ -480,6 +517,28 @@
 			}
 		}
 
+		/* ---- plain page ---- */
+		.plain-content {
+			display: none;
+			max-width: var(--content-max);
+		}
+
+		.plain-content h2 {
+			margin-top: 0;
+		}
+
+		/* PLAIN PAGE mode: no wall, no persistent band, no grid toggle - the shell
+		   stays but the chrome is the calm list-mode version. Simple and clear. */
+		html[data-page='plain'] .persistent-settings,
+		html[data-page='plain'] .timeline,
+		html[data-page='plain'] .trigger[data-grid-toggle] {
+			display: none;
+		}
+
+		html[data-page='plain'] .plain-content {
+			display: block;
+		}
+
 		/* ============================================================
 		   DEBUG - live situation label. Driven by the SAME media queries as the
 		   layout, so it always names the real situation. Remove before ship.
@@ -516,7 +575,7 @@
 			}
 		}
 
-		@media (width >= 1600px) {
+		@media (width >= 1450px) {
 			html[data-view='grid'] .situation::after {
 				content: 'grid-2-persistent-settings';
 			}
@@ -716,8 +775,17 @@
 
 		<main>
 			<header class='page-header'>
-				<!-- DEBUG: live name of the current situation (remove before ship) -->
+				<!-- DEBUG: live name of the current situation + a page-type switch
+					(both remove before ship). -->
 				<div class='situation' aria-hidden='true'></div>
+
+				<button
+					type='button'
+					class='page-toggle'
+					data-page-toggle
+				>
+					Switch page type (timeline / plain)
+				</button>
 
 				<h1>Layout sandbox</h1>
 
@@ -800,6 +868,18 @@
 
 				<li class='block'>content 8</li>
 			</ol>
+
+			<!-- PLAIN PAGE content - shown only in plain mode. No wall, no band, no
+				grid. Just the shell chrome + ordinary content, simple and clear. -->
+			<section class='plain-content'>
+				<h2>A plain page</h2>
+
+				<p>How I work / Now / Contact / a case study - the majority of pages. No wall, no persistent band, no grid toggle. The outer shell stays (nav + footer), but the chrome is the calm, conventional list-mode version.</p>
+
+				<p>The weird apparatus is only for the exploration pages. Here, nav is simple and gets out of the way.</p>
+
+				<p>This is where we check that the same page-header and the same toolbox still read well with no timeline beneath them.</p>
+			</section>
 		</main>
 
 		<footer class='shell-footer'>
@@ -906,6 +986,20 @@
 			button.addEventListener('click', function () {
 				var next = root.getAttribute('data-view') === 'grid' ? 'list' : 'grid';
 				applyState('view', next);
+			});
+		});
+
+		// DEBUG page-type switch: flip between the timeline page and a plain page,
+		// so we can design the shell/header against both. Plain pages are never
+		// grid, so entering plain forces list.
+		document.querySelectorAll('[data-page-toggle]').forEach(function (button) {
+			button.addEventListener('click', function () {
+				if (root.getAttribute('data-page') === 'plain') {
+					root.removeAttribute('data-page');
+				} else {
+					root.setAttribute('data-page', 'plain');
+					applyState('view', 'list');
+				}
 			});
 		});
 	</script>

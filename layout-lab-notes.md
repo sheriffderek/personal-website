@@ -1,7 +1,169 @@
 # Layout lab - working notes
 
-Scratch notes for the shell rework. Page: `/layout-lab` (bare skeleton, no real content).
-These are decisions as we hone them - not final CLAUDE.md rules yet.
+Scratch notes for the shell rework. These are decisions as we hone them - not final CLAUDE.md rules yet.
+The live lab is now **`layout-sandbox.html`** (static file, http://derek:8888/layout-sandbox.html) - NOT the
+old `/layout-lab` PHP page. It will port into the real shell once proven.
+
+---
+
+## ⏭ SESSION HANDOFF / NEXT UP (last worked 2026-07-14)
+
+**WHERE WE ARE.** This session we REBUILT the sandbox on the **mirror model** after the old
+"one moving node" approach caused a cascade of bugs (anchor-jump, jitter, width-reflow,
+vanishing filters - all the same root cause: one panel node trying to be band + popover + rail
+at once). The rebuild's three principles (also at the top of the file's `<style>`):
+
+1. **Settings = ONE semantic form** (`fieldset`/`legend`/`radio`/`range`). Markup carries NO
+   layout - CSS arranges it per situation. (This is the view-source flex too.)
+2. **MIRROR MODEL** - the persistent band and the toolbox popover are SEPARATE instances of that
+   form. Neither owns state; both are dumb mirrors of `data-*` on `<html>` + localStorage.
+   Nothing moves or redraws anything else, so scroll/resize/open-state can't fight.
+3. **CSS by NAMED SITUATION** - base first, one complete block per situation, ascending width.
+   Kills the source-order surprises we kept hitting.
+
+**DEBUG AIDS in the sandbox** (remove before ship): a live situation-name badge in the intro, a
+"Switch page type (timeline / plain)" button, and region tints.
+
+**WORKING NOW:** all situations render (badge confirms live); mirror sync proven (change scheme
+anywhere, all copies reflect, page bg reacts); grid toggle appears >=1200 and flips both ways;
+nav island always present in grid with settings/grid-toggle/arrow revealing on scroll; plain-page
+mode (no band/wall/grid, simple list shell + text); exhibit moved to start at **1450**; first
+pass at the airy "time to breathe" exhibit.
+
+**THE NAMED SITUATIONS (the shared vocabulary - use these words):**
+
+| width | situation | menu behaviour |
+|---|---|---|
+| base | `list-small-over` | menu only goes over content (dim) |
+| >=1024 | `list-dedicated-sidebar` | menu in the rail's own space (no dim) |
+| >=1200 grid | `grid-2-rail-over` | thin trigger rail, menu over wall |
+| >=1450 grid | `grid-2-persistent-settings` | the airy band; scrolled -> island reveals |
+| >=1900 grid | `grid-3-...` | 3 columns |
+| >=2400 grid | `grid-3-...-dedicated-sidebar` | menu opens RIGHT into own space (no dim) |
+
+**THE OPEN QUESTION WE STOPPED MID-WALKTHROUGH: the MENU BUTTON (island) placement.**
+Established so far (resume here):
+- The button MUST be **independent of the settings/filters**. Tying it to them fails twice:
+  (1) it locks the settings' freedom to be re-composed, (2) it has no home on plain pages (no
+  filters exist there). "Works on all pages" is the hard test, and the tied option fails it.
+- So it wants its **own consistent, page-independent spot** (the reserved right edge / corner).
+  Pro: same place every page (learn it once), settings stay free, robust. Con: free-floating -
+  its vertical position is a CHOICE, not a derivation.
+- Current code uses `top: 13rem` - a HARDCODED guess ("below the filters"). That IS the
+  "leaning on things we can't count on" fragility Derek flagged. Leaning fix: pin to a stable
+  CORNER (`top: 1rem`), accept it's "the persistent corner trigger," not tied to content.
+- **STILL TO DECIDE:** where does an always-there, page-independent button live so it reads as
+  *intentional*, not orphaned? Derek was walking through options with pictures - pick up there.
+
+**OTHER OPEN THREADS (taste-led, Derek's calls):**
+- **Airy exhibit:** match the real page's spacious, un-boxed apparatus + big negative space
+  ("space, time to breathe"). First pass in (row-gap 6rem, quiet labels, un-boxed); needs Derek's
+  eye to push toward the ambient-decoration feel of the original screenshot.
+- **Intro breakout:** on the timeline page the intro deliberately does NOT align to the wall
+  grid (aligning reads lazy; breakout reads intentional).
+- **FRAGILITY TO FIX (important):** the top composition currently leans on `main` being one CSS
+  grid shared with the wall + magic numbers. The real timeline is the **lane-dealer** (flex
+  lanes, NOT a CSS grid), so top<->wall alignment WON'T PORT. Robust direction: **decouple the
+  top from the wall entirely** - the top is its own composition, sizes from its own content, and
+  never references the wall's columns. Real-wall alignment becomes a BY-EYE port pass.
+- **Plain-page header:** the same page-header must read well WITH the band and ALONE. Resolved:
+  timeline page = breakout; plain page = a heading over text; "share the wall's grid?" = no
+  (deliberate), and it's a per-page-type choice.
+- **Filter is page-specific** (home/style-guide only) - on plain pages it shouldn't appear even
+  in the toolbox popover (conditional row; not yet handled).
+
+**PRINCIPLES LOCKED THIS ARC:**
+- Weird nav is fine on a page or two (the exploration/flagship pages); the MAJORITY are simple +
+  clear (the calm list-mode shell).
+- The nav is a SEPARATE, minimal, always-present trigger - **never inside the settings art**.
+  That's how "spacious artful settings" and "functional nav" coexist without fighting.
+- Default/floor = the overlay popover (works with no JS). Every placement is an enhancement on top.
+
+**FILES:** `layout-sandbox.html` (the work) · `layout-lab-notes.md` (this file) · real-page grid
+sizing reference `styles/layouts/grid-view.css` (`--wall-column: 36rem`, `--wall-gap: 4rem`,
+`--wall-inset: 4vw`, the `.corner-island` anchor math).
+
+**COMMITS:** `9106ad8` = the pre-rebuild sandbox (fallback). The rebuild is committed as of this
+handoff.
+
+---
+
+# ⭐ SESSION HANDOFF - START HERE (next session)
+
+## Where we are
+Working in **`layout-sandbox.html`** - the design lab for the shell (nav + settings + menu) across every
+breakpoint. This session we did a full **REBUILD on the mirror model** (the old "one node that moves"
+approach caused a whole class of bugs - anchor jumps, jitter, reflow, vanishing filters - all one root
+cause, now abandoned).
+
+## What's built and working
+- **Semantic settings FORM**: `<form>` → `<fieldset>`/`<legend>`/`<input radio|range>`. Mounted TWICE
+  (persistent band + toolbox popover) = the mirror model. Both are dumb mirrors of `data-*` on `<html>`;
+  one delegated `change` listener writes state + reflect-all. Proven: Color scheme → Dark darkens the page
+  and both instances reflect. Nothing moves anything else.
+- **CSS organized by NAMED SITUATION**, base first, ascending width - kills the source-order bug class.
+- **The named situations** (live badge shows the current one in the intro):
+  - `list-small-over` (base) - menu overlays content, dim.
+  - `list-dedicated-sidebar` (≥1024) - menu in the rail's own space, no dim. Toolbox is a horizontal row.
+  - `grid-2-rail-over` (≥1200, grid) - 2-col wall, thin trigger rail, menu over wall.
+  - `grid-2-persistent-settings` / `scrolled` (≥1450, grid) - the airy exhibit band + reveal-on-scroll.
+  - `grid-3-…` (≥1900) - 3 columns.
+  - `grid-3-…-dedicated-sidebar` (≥2400) - menu opens right into its own space.
+- **Grid toggle** glyph (appears ≥1200; the door in/out; mirrors the Layout radio).
+- **Plain-page toggle** (debug button in the intro) - flips to a plain page: no band, no wall, no grid
+  toggle; just the shell + text, forced to list.
+- **Debug badge** (green, in the intro) - live situation name. (Both debug bits: remove before ship.)
+- **The exhibit is airy now**: intro breaks out (3fr/2fr top), settings un-boxed + quiet labels,
+  generous "time to breathe" gap before the wall.
+
+## 🔑 THE BIG OPEN DECISION (decide this FIRST next time)
+**Where the MENU BUTTON lives.** We walked through 3 options with pictures:
+1. Viewport corner (`top: 13rem`) - REJECTED: magic number, fragile.
+2. Tied to the settings block - REJECTED: locks the settings' freedom AND has no home on plain pages.
+3. **A persistent right MENU-RAIL beside the content** - the PROPOSED direction (not yet built).
+
+**Proposed plan (confirm/refine before building):**
+- The shell has ONE shape on every page: **`[ content-area | menu-rail ]`**.
+- **menu-rail** = a thin persistent right column, identical on every page. The menu glyph sits
+  **top-right, `position: sticky`** → always reachable at every scroll position (solves "reach it at the top").
+- **content-area** = the page content: timeline → airy settings zone + wall; plain → heading + text.
+  The settings live INSIDE the content-area, free to move (never tied to the rail).
+- Why it wins: always reachable, independent of settings, works on all pages, conventional (top-right =
+  where people look for nav), robust (real column, no magic number). Cost: a thin rail reserved on every
+  page, even plain (acceptable - it reads as "the shell has a menu rail," not a weird margin).
+- **If confirmed → build order**: plain-page version first (rail beside text, the simpler case), then
+  bring the timeline page into the same `[ content | rail ]` frame.
+
+## The reconciliation insight we finally connected on
+The airy/spacious layout (settings spread as background decoration, "time to breathe") and nav
+functionality do NOT conflict - because the **nav is a separate, minimal, always-present glyph, not part
+of the settings apparatus**. Settings = displayed art (free to sprawl); nav = one tiny persistent trigger.
+**Weird where you're inviting exploration; simple & clear everywhere else** (Derek's rule - the majority
+of pages are plain).
+
+## Open items / still to think through
+- ✅ FIRST: confirm the menu-rail plan above.
+- The exhibit's airy composition needs more design love (proportions, "background-art" feel) to match the
+  real original's spread apparatus (Derek's screenshots of the live site).
+- Page-header treatment: breaks out on timeline, is just a heading on plain - must read well BOTH ways.
+- Plain pages should hide the **Filter** control (it's timeline-specific) - page-conditional form rows.
+- Alignment with the REAL timeline is a BY-EYE port job: the real wall is the lane-dealer (flex lanes),
+  NOT a CSS grid, so the top↔wall alignment won't port as a mechanism. Don't over-engineer grid alignment.
+- Two menus kept separate (Settings + Pages) - toolbox holds N panels, each its own popover mirror.
+- Eventually port the proven shell into the real PHP (`includes/`, `styles/`).
+
+## Key files
+- `layout-sandbox.html` - the lab. Start here.
+- `layout-lab-notes.md` - this file.
+- Real-page reference: `styles/layouts/grid-view.css` (wall geometry + corner island), and the `$todo` in
+  `includes/settings-panel.php` (~lines 184-198) that first diagnosed the overlay-state smear.
+
+## Git checkpoints
+- `9106ad8` - pre-rebuild (exhibit/island/3-col on the OLD one-node approach; fallback if the rebuild goes wrong).
+- (this session's commit) - the mirror-model rebuild.
+
+---
+
 
 ## Why the lab exists
 
