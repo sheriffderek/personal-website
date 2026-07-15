@@ -18,6 +18,9 @@
 	Layout row would be doors to nothing. */ ?>
 <?php $page_has_grid = GRID_VIEW_ENABLED && ($page_controls ?? null) === 'filter-control'; ?>
 
+
+<!-- these buttons/triggers all need to be in a parent so we can style them as a group - or not based on brand -->
+
 <?php /* ---- Grid invite ----
 	A little toggle that only exists where the grid exists (>= 1600px, list
 	view) and pulses "touch me" until first used - discovery for the magic.
@@ -61,12 +64,13 @@
 	aria-label='Display settings'
 >
 	<?= partial('settings/mode-switcher') ?>
-	<?= partial('settings/brand-switcher') ?>
-	<?= partial('settings/emphasis-switcher') ?>
+	<?= partial('settings/character-switcher') ?>
+	<?= partial('settings/mood-switcher') ?>
 	<?php if ($page_has_grid): ?>
 		<?= partial('settings/view-switcher') ?>
 	<?php endif; ?>
 	<?= partial('settings/sound-switcher') ?>
+	<?= partial('settings/red-light-switcher') ?>
 	<?php if (!empty($page_controls)): ?>
 		<?= partial('settings/' . $page_controls) ?>
 	<?php endif; ?>

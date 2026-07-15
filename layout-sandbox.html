@@ -7,123 +7,259 @@
 	<title>Layout sandbox</title>
 
 	<style>
-		/* Least-boilerplate sandbox for the shell switchboard. No framework, no
-		   build - native <popover>, CSS, fake content. Grow the switchboard here,
-		   then port into the real shell. */
+		/* ============================================================
+		   LAYOUT SANDBOX - rebuilt on three principles:
 
-		* {
+		   1. The settings are ONE semantic form (fieldset/legend/radio/range).
+		      The markup carries NO layout - CSS arranges it per situation.
+		   2. MIRROR MODEL: the persistent band and the toolbox popover are
+		      SEPARATE instances of that form. Neither owns state - both are
+		      dumb mirrors of data-* on <html>. Nothing moves or redraws
+		      anything else, so scroll/resize/open-state can't fight.
+		   3. CSS organized by NAMED SITUATION - base first, then one complete
+		      block per situation in ascending width order. "What happens at
+		      width X" reads top to bottom; no source-order surprises.
+
+		   The named situations (see layout-lab-notes.md):
+		     BASE            list-small-over   (menu can only go over content)
+		     >= 1024         list-dedicated-sidebar
+		     >= 1200 (grid)  grid-2-rail-over
+		     >= 1600 (grid)  grid-2-persistent-settings / scrolled
+		     >= 1900 (grid)  grid-3-...
+		     >= 2400 (grid)  grid-3-...-dedicated-sidebar (menu opens right)
+		   ============================================================ */
+
+		*,
+		*::before,
+		*::after {
 			box-sizing: border-box;
 		}
 
-		/* Shell measures as variables, so any threshold (grid's "does the panel
-		   fit in the right space") is calculable from these, never a magic number. */
 		:root {
+			/* shell + wall measures - everything derives from these */
 			--content-max: 720px;
-			--rail-width: 300px;
+			--rail-width: 320px;
 
-			/* the settings panel has known content, so it earns a min width */
-			--panel-min: 280px;
-
-			/* grid-mode wall geometry - matched to the real page (grid-view.css):
-			   wall-column is the designed lane measure (cards never exceed it),
-			   wall-gap the gutter; the wall's max derives from them. */
 			--grid-columns: 2;
 			--wall-column: 36rem;
 			--wall-gap: 4rem;
 			--wall-inset: 4vw;
 			--wall-max: calc(var(--grid-columns) * var(--wall-column) + (var(--grid-columns) - 1) * var(--wall-gap));
 
-			/* the reveal-on-orphan island's footprint - the wall reserves this much
-			   on the right so the buttons are never crowded out (sized to the actual
-			   button, not a glyph). */
+			/* the reveal-on-scroll island's footprint - the wall reserves this on
+			   the right so the trigger is never crowded out. */
 			--island-width: 6rem;
 			--island-reserve: calc(var(--island-width) + 2rem);
 
-			/* the intro reads a little bigger than a grid item - prominence. */
-			--intro-width: calc(var(--wall-column) * 1.2);
+			/* one demo token so you can SEE the mirror sync take effect */
+			--page-bg: #eef3fb;
+		}
+
+		/* a visible reaction to data-scheme, proving both form instances sync */
+		html[data-scheme='dark'] {
+			--page-bg: #2a2d33;
+			color-scheme: dark;
 		}
 
 		body {
 			margin: 0;
 			font-family: system-ui, sans-serif;
 			line-height: 1.5;
+			background: var(--page-bg);
 		}
 
-		/* ---- shell ---- */
+		/* ---- the settings FORM (one partial, mounted twice) ----
+		   Pure semantics + minimal type. NO placement here - situations arrange it. */
+		.settings {
+			margin: 0;
+			border: 0;
+			padding: 0;
+
+			display: flex;
+			flex-direction: column;
+			gap: 0.75rem;
+		}
+
+		.settings .setting {
+			margin: 0;
+			border: 1px solid #ccc;
+			padding: 0.6rem 0.8rem;
+			background: Canvas;
+		}
+
+		.settings legend {
+			padding: 0;
+			font-weight: 600;
+		}
+
+		.settings .options {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.25rem 0.9rem;
+			margin-top: 0.35rem;
+		}
+
+		.settings label {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.35rem;
+		}
+
+		/* ---- the toolbox housing (trigger + popover) ----
+		   Triggers are circular glyph buttons so several (Settings, Pages,
+		   back-to-top) stack cleanly - a text label doesn't scale. */
+		.trigger {
+			width: 2.5rem;
+			height: 2.5rem;
+			padding: 0;
+
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+
+			border: 1px solid var(--stroke, #999);
+			border-radius: 50%;
+			background: Canvas;
+			color: CanvasText;
+			cursor: pointer;
+		}
+
+		.trigger .glyph {
+			width: 1.4rem;
+			height: 1.4rem;
+			fill: none;
+			stroke: currentColor;
+			stroke-width: 2;
+			stroke-linecap: round;
+		}
+
+		.trigger .glyph circle {
+			fill: Canvas;
+		}
+
+		/* the back-to-top arrow is a REVEAL member: it only appears once you've
+		   scrolled past, in the situations that reveal the island (below). Hidden
+		   everywhere else - it has no business in the base top bar. */
+		.trigger[data-to-top] {
+			display: none;
+		}
+
+		/* the grid toggle only exists once grid is available - it's the door in. */
+		.trigger[data-grid-toggle] {
+			display: none;
+		}
+
+		@media (width >= 1200px) {
+			.trigger[data-grid-toggle] {
+				display: inline-flex;
+			}
+		}
+
+		.menu {
+			/* the popover instance. Anchors to the trigger; situations set which
+			   side and whether it dims. */
+			margin: 0;
+			border: 1px solid #333;
+			padding: 1rem;
+			background: Canvas;
+
+			min-width: min(300px, 100vw - 2rem);
+
+			/* default = anchored below the trigger (base / list-small-over) */
+			inset: auto;
+			position-anchor: --trigger;
+			top: anchor(bottom);
+			right: anchor(right);
+			margin-top: 0.5rem;
+		}
+
+		/* over-content by default -> sheer dim */
+		.menu::backdrop {
+			background: rgb(0 0 0 / 0.15);
+		}
+
+		/* ============================================================
+		   BASE  =  list-small-over
+		   Single column. Trigger sits in a sticky top bar. The menu is the
+		   only settings surface, and it can only go OVER content (dim on).
+		   The persistent band does not exist here.
+		   ============================================================ */
+
 		.page-wrapper {
 			display: flex;
 			flex-direction: column;
 			min-height: 100dvh;
 		}
 
-		/* the chrome - site nav. Holds the trigger(s). */
 		.shell-nav {
 			position: sticky;
 			top: 0;
+			z-index: 5;
 
+			/* shell-nav POSITIONS the toolbox (bar / rail / island); the toolbox
+			   itself flexes the triggers. */
 			display: flex;
 			justify-content: flex-end;
-			gap: 0.5rem;
 
 			padding: 0.75rem 1rem;
-
-			/* region tint (debug) */
-			background: #fbf6e6;
+			background: color-mix(in srgb, var(--page-bg), #000 4%);
 		}
 
-		/* the toolbox - the stable trigger CLUSTER. Holds N triggers, placed
-		   right. The panel anchors to this, so both/all triggers share one edge. */
+		/* the trigger cluster - a clear flex parent so any number of triggers
+		   arrange together. Row in the narrow bar, column when stacked in a rail /
+		   island. The popovers anchor to this cluster. */
 		.toolbox {
 			display: flex;
+			flex-direction: row;
 			gap: 0.5rem;
 
-			anchor-name: --toolbox;
-		}
-
-		/* Grid invite appears ONLY at the grid threshold (there's room for the wall).
-		   Room-gated, pure CSS. NOTE: @media conditions can't read custom properties,
-		   so the threshold is a literal here even though the shell measures are
-		   variables - a real platform limit, not an oversight. */
-		.grid-invite {
-			display: none;
-		}
-
-		@media (width >= 1200px) {
-			.grid-invite {
-				display: inline-flex;
-			}
+			anchor-name: --trigger;
 		}
 
 		main {
 			padding: 1rem;
-
-			/* region tint (debug) */
-			background: #eef3fb;
 		}
 
 		.page-header {
-			/* region tint (debug) */
-			background: #f3ecfb;
+			background: color-mix(in srgb, var(--page-bg), violet 8%);
+			padding: 0.5rem 1rem;
+		}
+
+		/* the persistent band is a fancy-grid-only surface - hidden by default */
+		.persistent-settings {
+			display: none;
+		}
+
+		.timeline {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+
+			/* a readable reading column in list mode */
+			max-width: var(--content-max);
+		}
+
+		.block {
+			border: 1px solid #ccc;
+			padding: 1rem;
+			margin-block: 1rem;
+			min-height: 40vh;
+			background: Canvas;
 		}
 
 		.shell-footer {
-			/* region tint (debug) */
-			background: #eaf6ee;
+			padding: 2rem 1rem;
+			background: color-mix(in srgb, var(--page-bg), green 6%);
 		}
 
-		/* SIGNAL 1: Room. Narrow = the shell-nav is a sticky top bar (above).
-		   Wide = the wrapper becomes two columns and the SAME <header> is placed
-		   into a persistent side rail. No DOM move - CSS grid does the placing. */
+		/* ============================================================
+		   list-dedicated-sidebar   (>= 1024)
+		   The shell becomes two columns; the trigger lives in a side rail.
+		   The menu opens into the rail's OWN space -> no dim.
+		   ============================================================ */
 		@media (width >= 1024px) {
 			.page-wrapper {
 				display: grid;
-
-				/* Flexible gutters so the group breathes as it grows, held
-				   off-center to the LEFT: the right gutter (1.5fr) is bigger than
-				   the left (1fr), so the extra width favors the right - the space
-				   the exhibit / menu-revival lives in later. Each gutter keeps a min
-				   so it never fully collapses. Content caps at a readable measure;
-				   rail stays fixed. */
 				grid-template-columns:
 					minmax(1rem, 1fr)
 					minmax(0, var(--content-max))
@@ -146,41 +282,42 @@
 			.shell-nav {
 				grid-column: 3;
 				grid-row: 1 / -1;
-
-				/* only as tall as the toolbox when closed - the rail stays
-				   unoccupied until the panel opens. */
 				align-self: start;
 
-				/* a side column now: stack the toolbox + panel vertically, contents
-				   pulled RIGHT so the toolbox hugs the right edge. */
-				flex-direction: column;
-				align-items: flex-end;
-				gap: 0.75rem;
-				justify-content: flex-start;
+				/* sticky so the toolbox (and its open menu) stay in view as you
+				   scroll - a side column, no background band when unoccupied. */
+				position: sticky;
+				top: 1rem;
+				background: transparent;
 			}
 
-			/* When open here, the panel matches the rail COLUMN width: fill up to
-			   the column measure. One variable (--rail-width) sets both, so they
-			   can't drift. (Anchoring below/right of the toolbox comes from base.) */
-			.panel {
+			/* in this rail the cluster is a horizontal row, hugging the right */
+			.toolbox {
+				flex-direction: row;
+				justify-content: flex-end;
+			}
+
+			/* menu opens in the rail's own space -> drop the dim */
+			.menu::backdrop {
+				background: transparent;
+			}
+
+			/* size the open menu to the rail column */
+			.menu {
 				width: 100%;
 				max-width: var(--rail-width);
 			}
 		}
 
-		/* ---- SIGNAL 2: View = grid (the wall) ----
-		   Opt-in via the Grid button, and only where grid can exist (>=1600, the
-		   invite's gate). Everything keys off the one attribute on <html>. The wall
-		   spans wide (content + rail + a gap) and the timeline lays out as columns.
-		   Off-center left, same as list. Settings placement in grid is a later sub-
-		   step - the toolbox stays in the right region for now. */
+		/* ============================================================
+		   grid-2-rail-over   (>= 1200, data-view='grid')
+		   The wall. A thin trigger rail on the right; the menu opens OVER the
+		   wall (dim). No persistent band yet (that starts at 1600).
+		   ============================================================ */
 		@media (width >= 1200px) {
 			html[data-view='grid'] .page-wrapper {
-				/* the wall MAXIMIZES (1fr, takes as much space as it can); the right
-				   rail is only as wide as its buttons (max-content) - just reserved
-				   button space, not a big empty gutter. Small left inset. */
 				grid-template-columns:
-					minmax(1rem, 4vw)
+					minmax(1rem, var(--wall-inset))
 					1fr
 					max-content;
 			}
@@ -192,83 +329,55 @@
 
 			html[data-view='grid'] .shell-nav {
 				grid-column: 3;
+				align-items: flex-start;
 			}
 
 			html[data-view='grid'] .timeline {
 				display: grid;
-
-				/* real-page approach: cards are 1fr, but the WALL is capped at its
-				   max - so cards top out at the lane measure, extra becomes right
-				   space. Cleaner than a per-column min. */
 				grid-template-columns: repeat(var(--grid-columns), 1fr);
 				gap: var(--wall-gap);
-
 				max-width: var(--wall-max);
 			}
 
-			/* Intro = lane one: constrain it to one column width so it reads as the
-			   first cell of the wall, not a full-width banner. */
+			/* intro reads as lane one */
 			html[data-view='grid'] .page-header {
 				max-width: var(--wall-column);
 			}
 
-			/* Toolbox becomes a THIN vertical trigger rail in the right region
-			   (glyphs stacked), per the notes' "thin rail of triggers only". It
-			   sits at the LEFT of the right region - right next to the wall - not
-			   shoved to the far screen edge (that was the list rail's flex-end). */
-			html[data-view='grid'] .shell-nav {
-				align-items: flex-start;
-			}
-
-			html[data-view='grid'] .toolbox {
-				flex-direction: column;
-			}
-
-			/* In grid the panel opens OVER the wall (over-content) and to the LEFT
-			   of the toolbox - its right edge meets the toolbox's left edge, so it
-			   expands left over the wall rather than dropping below the buttons. The
-			   dim returns; it's no longer sized to the rail column. */
-			html[data-view='grid'] .panel {
+			/* the menu opens over the wall -> dim returns, opens LEFT from the rail */
+			html[data-view='grid'] .menu {
 				top: anchor(top);
 				right: anchor(left);
 				left: auto;
-				width: auto;
 				max-width: min(360px, 40vw);
 				margin: 0 0.5rem 0 0;
 			}
 
-			html[data-view='grid'] .panel::backdrop {
+			html[data-view='grid'] .menu::backdrop {
 				background: rgb(0 0 0 / 0.15);
-			}
-
-			/* The Grid invite is the doorbell IN - once in grid it's done its job,
-			   so it hides. The way back to list is the Layout control in the panel. */
-			html[data-view='grid'] .grid-invite {
-				display: none;
 			}
 		}
 
-		/* ---- EXHIBIT (grid + wide) ----
-		   The settings are DISPLAYED inline as a top band sharing the top row with
-		   the lane-one intro; the wall spans below. On its own (not a popover) ->
-		   no backdrop. JS drops `popover` at this breakpoint so the panel flows into
-		   the exhibit slot. */
-		/* The band styling applies only while the band is IN VIEW (:not orphaned).
-		   Once scrolled past (JS sets data-exhibit-orphaned), all of this drops:
-		   the panel reverts to the over-wall popover and the Settings trigger revives
-		   on the rail. */
+		/* ============================================================
+		   grid-2-persistent-settings / scrolled   (>= 1600, data-view='grid')
+		   The persistent settings BAND appears (a separate mirror instance),
+		   sharing the wall's columns. The shell-nav becomes the reveal ISLAND:
+		   hidden while the band is in view, shown once scrolled past
+		   (data-scrolled). The menu (popover) opens from the island.
+		   ============================================================ */
 		@media (width >= 1600px) {
-			/* reserve the island's column on the right so the wall never grows under
-			   the buttons and crowds them out. */
+			/* reserve the island's column on the right so the wall never grows
+			   under it. */
 			html[data-view='grid'] .page-wrapper {
-				grid-template-columns: minmax(1rem, var(--wall-inset)) 1fr var(--island-reserve);
+				grid-template-columns:
+					minmax(1rem, var(--wall-inset))
+					1fr
+					var(--island-reserve);
 			}
 
-			/* main uses the WALL's own column template, so the intro, the band, and
-			   the cards all share the same grid lines. THIS IS NOT scoped to the
-			   orphan state on purpose: the wall's grid must stay identical whether
-			   the band is shown or scrolled past, or the wall reflows/changes width
-			   as you scroll. Only the PANEL changes with orphan (band <-> popover). */
+			/* main shares the wall's columns so the band + intro + cards align.
+			   NOT tied to scroll: the wall grid is identical whether the band is
+			   in view or scrolled past (that stability is what stopped the reflow). */
 			html[data-view='grid'] main {
 				display: grid;
 				grid-template-columns: repeat(var(--grid-columns), 1fr);
@@ -278,11 +387,27 @@
 				align-items: start;
 			}
 
-			/* intro = the first column; the band takes the rest of the top row. */
 			html[data-view='grid'] .page-header {
 				grid-column: 1 / 2;
 				grid-row: 1;
 				max-width: none;
+			}
+
+			/* the BAND - a separate mirror instance, spread across the top row */
+			html[data-view='grid'] .persistent-settings {
+				display: block;
+				grid-column: 2 / -1;
+				grid-row: 1;
+			}
+
+			html[data-view='grid'] .persistent-settings .settings {
+				flex-direction: row;
+				flex-wrap: wrap;
+				align-items: start;
+			}
+
+			html[data-view='grid'] .persistent-settings .setting {
+				flex: 1 1 12rem;
 			}
 
 			html[data-view='grid'] .timeline {
@@ -290,289 +415,374 @@
 				grid-row: 2;
 			}
 
-			/* The band styling keys off whether the panel is a POPOVER, not the orphan
-			   flag: while it's a displayed band (`:not([popover])`) it stays placed at
-			   the top row - even after you scroll past it - so it never drops a stray
-			   box into the wall. The moment the island turns it into a popover, this
-			   drops and the overlay styling takes over. */
-			html[data-view='grid'] main > .panel:not([popover]) {
-				grid-column: 2 / -1;
-				grid-row: 1;
-				width: auto;
-				max-width: none;
-				margin: 0;
-
-				/* seamless: the band blends into the composition, no box/border -
-				   the control rows are the only visible chrome. */
-				border: none;
-				background: transparent;
-				padding: 0;
-
-				display: flex;
-				flex-wrap: wrap;
-				align-items: start;
-				gap: 0.75rem;
-			}
-
-			html[data-view='grid'] main > .panel:not([popover]) .panel-row {
-				margin: 0;
-				flex: 1 1 12rem;
-			}
-
-			/* in the exhibit the toolbox trigger is never used: the band shows the
-			   controls, and the reveal-on-orphan trigger is the fixed island below. */
-			html[data-view='grid'] .toolbox [popovertarget='settings'] {
-				display: none;
-			}
-
-			/* the rail column is empty in the exhibit - hide it so it doesn't leak
-			   a strip on the right (the island lives in the margin instead). */
+			/* the shell-nav becomes the ISLAND: fixed in the reserved margin past the
+			   wall's right grid line. It is ALWAYS present - the nav (pages) must be
+			   reachable at every scroll position, so the island itself never hides. */
 			html[data-view='grid'] .shell-nav {
+				position: fixed;
+				top: 1rem;
+				left: min(
+					calc(max(1rem, var(--wall-inset)) + var(--grid-columns) * var(--wall-column) + var(--grid-columns) * var(--wall-gap)),
+					calc(100vw - var(--island-width) - 1rem)
+				);
+				grid-column: auto;
+			}
+
+			/* the island stacks its glyphs vertically (per the Figma clusters) */
+			html[data-view='grid'] .toolbox {
+				flex-direction: column;
+				align-items: flex-end;
+			}
+
+			/* Settings, the grid toggle, and back-to-top are REVEAL members here:
+			   the persistent band already shows the settings (incl. Layout) at the
+			   top, so these stay hidden until you scroll past the band - then settings
+			   rejoins the island. Only the NAV (pages) is always visible. */
+			html[data-view='grid'] .trigger[popovertarget='settings-menu'],
+			html[data-view='grid'] .trigger[data-grid-toggle],
+			html[data-view='grid'] .trigger[data-to-top] {
 				display: none;
+			}
+
+			html[data-view='grid'][data-scrolled] .trigger[popovertarget='settings-menu'],
+			html[data-view='grid'][data-scrolled] .trigger[data-grid-toggle],
+			html[data-view='grid'][data-scrolled] .trigger[data-to-top] {
+				display: inline-flex;
 			}
 		}
 
-		/* Next break: 3-column wall on genuinely big monitors (real page uses 1900).
-		   Only --grid-columns changes - the wall, wall-max, intro width, and island
-		   anchor all derive from it, so the whole layout follows and the island's
-		   min() clamp rides the corner once the margin tightens. */
+		/* ============================================================
+		   grid-3-...   (>= 1900, data-view='grid')
+		   Three columns. Only --grid-columns changes; the wall, band, and island
+		   position all derive from it. The margin tightens, so the island's
+		   min() clamp rides the corner.
+		   ============================================================ */
 		@media (width >= 1900px) {
 			:root {
 				--grid-columns: 3;
 			}
 		}
 
-		/* ---- reveal-on-orphan island ----
-		   Matches the real page's .corner-island: fixed in the calm margin just
-		   past the wall's right grid line (--island-anchor), clamped back toward the
-		   edge when that margin is tight. Always present; visibility flips only when
-		   the exhibit band has scrolled away (JS sets data-exhibit-orphaned). */
-		.revival-island {
-			--island-anchor: calc(
-				max(1rem, var(--wall-inset)) + var(--grid-columns) * var(--wall-column)
-				+ (var(--grid-columns) - 1) * var(--wall-gap) + var(--wall-gap)
-			);
-
-			position: fixed;
-			top: 1rem;
-			left: min(var(--island-anchor), calc(100vw - var(--island-width) - 1rem));
-			z-index: 6;
-
-			/* the revived panel anchors to this */
-			anchor-name: --island;
-
-			font: inherit;
-			padding: 0.4rem 0.8rem;
-			cursor: pointer;
-
-			opacity: 0;
-			visibility: hidden;
-			transition:
-				opacity 200ms ease,
-				visibility 200ms;
-		}
-
-		html[data-exhibit-orphaned] .revival-island {
-			opacity: 1;
-			visibility: visible;
-		}
-
-		/* In the EXHIBIT the toolbox is display:none, so a popover panel must anchor
-		   to the ISLAND - always, not only while scrolled. (Keying this to the scroll
-		   state meant that scrolling back up with the popover open reverted it to the
-		   hidden --toolbox anchor, which is invalid, so the popover fell back to its
-		   static position in the top-left corner.) The island is visibility:hidden,
-		   not display:none, so it stays a valid anchor even when unseen.
-		   It sits near the right edge, so the panel opens LEFT - its right edge
-		   meeting the island's left, expanding over the wall. */
-		@media (width >= 1600px) {
-			html[data-view='grid'] .panel[popover] {
-				position-anchor: --island;
-				top: anchor(top);
-				right: anchor(left);
-				left: auto;
-				margin: 0 0.5rem 0 0;
-			}
-		}
-
-		/* Even bigger: once there's room to the RIGHT of the island, the menu opens
-		   into its OWN area (right) instead of over the wall (left) - and own-area
-		   means no dim. Room decides Panel-state. Placed AFTER the open-left rule so
-		   it wins at this width (equal specificity -> source order). Literal
-		   breakpoint because @media can't read the custom-property math. */
+		/* ============================================================
+		   grid-3-...-dedicated-sidebar   (>= 2400, data-view='grid')
+		   Now there's room to the RIGHT of the island, so the menu opens into its
+		   OWN space (right) instead of over the wall - and own-space means no dim.
+		   ============================================================ */
 		@media (width >= 2400px) {
-			html[data-view='grid'] .panel[popover] {
+			html[data-view='grid'] .menu {
 				left: anchor(right);
 				right: auto;
-				top: anchor(top);
 				margin: 0 0 0 0.5rem;
 			}
 
-			/* own area - nothing covered, so drop the dim */
-			html[data-view='grid'] .panel[popover]::backdrop {
+			html[data-view='grid'] .menu::backdrop {
 				background: transparent;
 			}
 		}
 
-		/* the timeline list - reset the <ol> chrome; the layout does the rest.
-		   In LIST mode it's a reading column, capped at the content measure so it
-		   never stretches wide (grid turns this cap off - there it's the wall). */
-		.timeline {
-			margin: 0;
-			padding: 0;
-			list-style: none;
-
-			max-width: var(--content-max);
-		}
-
-		/* a fake milestone block so there's something to scroll past */
-		.block {
-			border: 1px solid #ccc;
-			padding: 1rem;
-			margin-block: 1rem;
-			min-height: 40vh;
-		}
-
-		/* ---- the settings panel (a guest) ---- */
-		.trigger {
-			font: inherit;
-			padding: 0.4rem 0.8rem;
-			cursor: pointer;
-		}
-
-		.panel {
-			/* native popover, anchored to the toolbox cluster. Reset the default
-			   centering inset so anchor positioning takes over. */
-			inset: auto;
-			position-anchor: --toolbox;
-			top: anchor(bottom);
-			right: anchor(right);
-			margin: 0.5rem 0 0;
-
-			/* known content earns a floor; capped so it can't overflow a phone */
-			min-width: min(var(--panel-min), 100vw - 2rem);
-
-			padding: 1rem;
-			border: 1px solid #333;
-
-			/* region tint (debug) */
-			background: #fbeef1;
-
-			/* Fallback where anchor positioning is unsupported: top-right corner. */
-			@supports not (anchor-name: --x) {
-				top: 4rem;
-				right: 1rem;
-			}
-		}
-
-		/* Backdrop = the over-content signal. DEFAULT is NO dim; the dim is added
-		   ONLY where the panel actually covers content: narrow (over content) and
-		   grid (over the wall, see the grid block). At rail width it opens in its
-		   own space, so it stays transparent here - no source-order fragility.
-		   Native ::backdrop exists only while the panel is an open popover, so
-		   backdrop-presence tracks the overlay state for free. */
-		.panel::backdrop {
-			background: transparent;
-		}
-
-		/* Narrow: panel is over content -> sheer dim (never a blackout, so the live
-		   page still shows through). */
-		@media (width < 1024px) {
-			.panel::backdrop {
-				background: rgb(0 0 0 / 0.15);
-			}
-		}
-
-		/* fake control rows - just blocks with height so the panel has realistic
-		   vertical extent (stand-ins for the real control groups). */
-		.panel-row {
+		/* ============================================================
+		   DEBUG - live situation label. Driven by the SAME media queries as the
+		   layout, so it always names the real situation. Remove before ship.
+		   ============================================================ */
+		.situation {
+			display: inline-block;
 			margin: 0 0 0.75rem;
-			padding: 1.5rem 0.75rem;
-			border: 1px solid #ccc;
-			background: #fff;
+
+			padding: 0.45rem 0.7rem;
+			background: #111;
+			color: #4ade80;
+			border: 2px solid #4ade80;
+			font-family: ui-monospace, monospace;
+			font-size: 0.95rem;
+			font-weight: 700;
+			line-height: 1;
+			border-radius: 6px;
+			pointer-events: none;
 		}
 
-		.panel-row:last-child {
-			margin-bottom: 0;
+		.situation::after {
+			content: 'list-small-over';
+		}
+
+		@media (width >= 1024px) {
+			.situation::after {
+				content: 'list-dedicated-sidebar';
+			}
+		}
+
+		@media (width >= 1200px) {
+			html[data-view='grid'] .situation::after {
+				content: 'grid-2-rail-over';
+			}
+		}
+
+		@media (width >= 1600px) {
+			html[data-view='grid'] .situation::after {
+				content: 'grid-2-persistent-settings';
+			}
+
+			html[data-view='grid'][data-scrolled] .situation::after {
+				content: 'grid-2-scrolled-rail-over';
+			}
+		}
+
+		@media (width >= 1900px) {
+			html[data-view='grid'] .situation::after {
+				content: 'grid-3-persistent-settings';
+			}
+
+			html[data-view='grid'][data-scrolled] .situation::after {
+				content: 'grid-3-scrolled-rail-over';
+			}
+		}
+
+		@media (width >= 2400px) {
+			html[data-view='grid'][data-scrolled] .situation::after {
+				content: 'grid-3-scrolled-rail-dedicated-sidebar';
+			}
 		}
 	</style>
 </head>
 
 <body>
 	<div class='page-wrapper'>
-		<!-- role 1: site chrome. Top-level <header> = the banner landmark.
-			Holds site nav (later) + the settings trigger. -->
+		<!-- The toolbox HOUSING: a trigger + one popover instance of the settings
+			form. CSS positions this per situation (sticky bar -> side rail -> thin
+			grid rail -> fixed reveal island); the popover always anchors to it. -->
 		<header class='shell-nav'>
+			<!-- The TOOLBOX: a flex cluster of triggers. Always assume 2+ - each
+				opens its own panel (its own popover instance). Styling is placeholder;
+				what matters is the cluster has a clear parent that flexes them. -->
 			<div class='toolbox'>
-				<!-- Grid invite: the doorbell to grid mode. Exists ONLY at the grid
-					threshold (there's room for the wall), so it's Room-gated in CSS.
-					Below it, grid can't exist, so neither can the button. -->
 				<button
 					type='button'
-					class='trigger grid-invite'
-					data-toggle-view
+					class='trigger'
+					popovertarget='settings-menu'
+					aria-label='Display settings'
 				>
-					Grid
+					<svg
+						class='glyph'
+						viewBox='0 0 24 24'
+						aria-hidden='true'
+						focusable='false'
+					>
+						<line x1='4' y1='8' x2='20' y2='8' />
+						<circle cx='9' cy='8' r='2.5' />
+						<line x1='4' y1='16' x2='20' y2='16' />
+						<circle cx='15' cy='16' r='2.5' />
+					</svg>
+				</button>
+
+				<!-- The grid toggle: the DOOR into grid mode. Appears only once grid
+					is available (>= 1200); flips data-view both ways. Mirrors the
+					in-settings Layout radio (both just write the 'view' state). -->
+				<button
+					type='button'
+					class='trigger'
+					data-grid-toggle
+					aria-label='Toggle grid layout'
+				>
+					<svg
+						class='glyph'
+						viewBox='0 0 24 24'
+						aria-hidden='true'
+						focusable='false'
+					>
+						<rect x='4' y='4' width='7' height='7' rx='1' />
+						<rect x='13' y='4' width='7' height='7' rx='1' />
+						<rect x='4' y='13' width='7' height='7' rx='1' />
+						<rect x='13' y='13' width='7' height='7' rx='1' />
+					</svg>
 				</button>
 
 				<button
 					type='button'
 					class='trigger'
-					popovertarget='settings'
+					popovertarget='pages-menu'
+					aria-label='Pages'
 				>
-					Settings
+					<svg
+						class='glyph'
+						viewBox='0 0 24 24'
+						aria-hidden='true'
+						focusable='false'
+					>
+						<line x1='4' y1='7' x2='20' y2='7' />
+						<line x1='4' y1='12' x2='20' y2='12' />
+						<line x1='4' y1='17' x2='20' y2='17' />
+					</svg>
+				</button>
+
+				<button
+					type='button'
+					class='trigger'
+					data-to-top
+					aria-label='Back to top'
+				>
+					<svg
+						class='glyph'
+						viewBox='0 0 24 24'
+						aria-hidden='true'
+						focusable='false'
+					>
+						<line x1='12' y1='19' x2='12' y2='6' />
+						<polyline points='6 12 12 6 18 12' fill='none' />
+					</svg>
 				</button>
 			</div>
+
+			<div
+				id='settings-menu'
+				popover
+				class='menu'
+			>
+				<!-- SETTINGS FORM - instance B (the toolbox popover). Identical to
+					the band instance below; in the real app both come from one
+					partial. Both are dumb mirrors of data-* on <html>. -->
+				<form class='settings' aria-label='Display settings'>
+					<fieldset class='setting'>
+						<legend>Color scheme</legend>
+
+						<div class='options'>
+							<label><input type='radio' name='scheme' value='system' checked> System</label>
+
+							<label><input type='radio' name='scheme' value='light'> Light</label>
+
+							<label><input type='radio' name='scheme' value='dark'> Dark</label>
+						</div>
+					</fieldset>
+
+					<fieldset class='setting'>
+						<legend>Brand</legend>
+
+						<div class='options'>
+							<label><input type='radio' name='brand' value='personal' checked> Personal</label>
+
+							<label><input type='radio' name='brand' value='marketing'> Marketing</label>
+
+							<label><input type='radio' name='brand' value='product'> Product</label>
+						</div>
+					</fieldset>
+
+					<fieldset class='setting'>
+						<legend>Sound</legend>
+
+						<div class='options'>
+							<label><input type='radio' name='sound' value='off' checked> Off</label>
+
+							<label><input type='radio' name='sound' value='on'> On</label>
+						</div>
+					</fieldset>
+
+					<fieldset class='setting'>
+						<legend>Layout</legend>
+
+						<div class='options'>
+							<label><input type='radio' name='view' value='list' checked> List</label>
+
+							<label><input type='radio' name='view' value='grid'> Grid</label>
+						</div>
+					</fieldset>
+
+					<fieldset class='setting'>
+						<legend>Filter</legend>
+
+						<div class='options'>
+							<label>Depth <input type='range' name='filter' min='1' max='6' value='1'></label>
+						</div>
+					</fieldset>
+				</form>
+			</div>
+
+			<!-- A SECOND panel in the same housing (proves the toolbox holds many).
+				Its own popover instance, anchored to the same cluster. -->
+			<nav
+				id='pages-menu'
+				popover
+				class='menu'
+				aria-label='Pages'
+			>
+				<ul>
+					<li><a href='#'>Home</a></li>
+
+					<li><a href='#'>How I work</a></li>
+
+					<li><a href='#'>Now</a></li>
+
+					<li><a href='#'>Contact</a></li>
+				</ul>
+			</nav>
 		</header>
 
 		<main>
-			<!-- role 2: the page-header (per-page intro). A <header> nested in
-				<main> is NOT a banner (ARIA excludes it), so it reads correctly as
-				this page's introductory content - no landmark clash. -->
 			<header class='page-header'>
+				<!-- DEBUG: live name of the current situation (remove before ship) -->
+				<div class='situation' aria-hidden='true'></div>
+
 				<h1>Layout sandbox</h1>
 
-				<p>Bare test bed for the shell switchboard - nav, settings panel, placement across sizes.</p>
+				<p>Rebuilt: one semantic settings form, mirrored across surfaces that never move each other.</p>
 			</header>
 
-			<!-- role 3: the settings panel (a guest). Lives in `main` (with the
-				intro) so the exhibit can share the top row with it. As a popover it
-				escapes to the top layer, so this DOM home doesn't affect the list/
-				grid overlay modes; the toolbox still precedes it for anchoring. When
-				JS drops `popover` (the exhibit enhancement) it flows here inline. -->
-			<div
-				id='settings'
-				popover
-				class='panel'
-				aria-label='Display settings'
-			>
-				<!-- Layout control: the way BACK to list lives here, inside the
-					panel, once you're in grid (the toolbox Grid button is only the
-					invite IN). -->
-				<p class='panel-row'>
-					<button
-						type='button'
-						data-toggle-view
-					>
-						Layout: List / Grid
-					</button>
-				</p>
+			<!-- The PERSISTENT BAND - instance A of the settings form. Its own node,
+				always in flow, never becomes a popover, never moves. Shown only on
+				fancy grid widths. -->
+			<section class='persistent-settings' aria-label='Settings'>
+				<form class='settings' aria-label='Display settings'>
+					<fieldset class='setting'>
+						<legend>Color scheme</legend>
 
-				<!-- fake control rows, just to give the panel realistic height so it
-					reads as the tall over-wall panel (real controls fill this down). -->
-				<p class='panel-row'>Color scheme</p>
+						<div class='options'>
+							<label><input type='radio' name='scheme' value='system' checked> System</label>
 
-				<p class='panel-row'>Brand</p>
+							<label><input type='radio' name='scheme' value='light'> Light</label>
 
-				<p class='panel-row'>Emphasis</p>
+							<label><input type='radio' name='scheme' value='dark'> Dark</label>
+						</div>
+					</fieldset>
 
-				<p class='panel-row'>Sound</p>
+					<fieldset class='setting'>
+						<legend>Brand</legend>
 
-				<p class='panel-row'>Filter</p>
-			</div>
+						<div class='options'>
+							<label><input type='radio' name='brand' value='personal' checked> Personal</label>
 
-			<!-- the timeline: reverse-chron <ol> of milestones, matching the real
-				structure (grid lane-dealer keys off `.timeline > li`). -->
+							<label><input type='radio' name='brand' value='marketing'> Marketing</label>
+
+							<label><input type='radio' name='brand' value='product'> Product</label>
+						</div>
+					</fieldset>
+
+					<fieldset class='setting'>
+						<legend>Sound</legend>
+
+						<div class='options'>
+							<label><input type='radio' name='sound' value='off' checked> Off</label>
+
+							<label><input type='radio' name='sound' value='on'> On</label>
+						</div>
+					</fieldset>
+
+					<fieldset class='setting'>
+						<legend>Layout</legend>
+
+						<div class='options'>
+							<label><input type='radio' name='view' value='list' checked> List</label>
+
+							<label><input type='radio' name='view' value='grid'> Grid</label>
+						</div>
+					</fieldset>
+
+					<fieldset class='setting'>
+						<legend>Filter</legend>
+
+						<div class='options'>
+							<label>Depth <input type='range' name='filter' min='1' max='6' value='1'></label>
+						</div>
+					</fieldset>
+				</form>
+			</section>
+
 			<ol class='timeline'>
 				<li class='block'>content 1</li>
 
@@ -595,102 +805,109 @@
 		<footer class='shell-footer'>
 			<p>footer</p>
 		</footer>
-
-		<!-- reveal-on-orphan trigger (the real page's "corner island"): ALWAYS in
-			the DOM, fixed in the margin just past the wall's right grid line,
-			visibility hidden until the exhibit band scrolls away. -->
-		<button
-			type='button'
-			class='revival-island'
-			aria-label='Display settings'
-		>
-			Settings
-		</button>
 	</div>
 
 	<script>
-		// SIGNAL 2: View. Grid mode is opt-in - the Grid button toggles data-view
-		// on <html>, and every grid rule keys off that one attribute. This is the
-		// first JS; list mode needed none. If it never runs, the site is list mode.
+		// ------------------------------------------------------------------
+		// MIRROR MODEL - one source of truth, many dumb mirrors.
+		//
+		// State lives on <html> (data-*) + localStorage. Every settings control,
+		// in every instance, is a mirror: on change it writes the state; on write
+		// EVERY instance's matching control is set to match (reflect-all). No node
+		// moves or redraws another - they just all watch the same value.
+		// ------------------------------------------------------------------
 		var root = document.documentElement;
-		var panel = document.getElementById('settings');
-		var pageHeader = document.querySelector('.page-header');
-		var island = document.querySelector('.revival-island');
-		var exhibit = window.matchMedia('(min-width: 1600px)');
 
-		// Is the top band (the intro/exhibit row) still in view? Only the island's
-		// visibility keys off this - NOT the panel's flow state (see below).
-		var bandVisible = true;
+		// "absent = default": for these values we REMOVE the attribute (the default
+		// look is the bare :root), matching the real site's FOUC convention.
+		var DEFAULTS = { scheme: 'system', brand: 'personal', sound: 'off', view: 'list' };
 
-		function inExhibit() {
-			return root.getAttribute('data-view') === 'grid' && exhibit.matches;
-		}
-
-		// The panel is a popover everywhere EXCEPT the exhibit, where it's the
-		// displayed band. CRUCIAL: in the exhibit the band stays in flow on scroll -
-		// it never toggles to a popover as you scroll. (It used to, which reflowed
-		// `main` every scroll tick and fought the observer = jitter.) Scroll only
-		// flips data-exhibit-orphaned, which drives the fixed island's visibility -
-		// a fixed element, so no reflow. The band becomes a popover only on an
-		// island CLICK (below), a one-off, never scroll-driven.
-		function updatePanelMode() {
-			if (inExhibit()) {
-				// Scrolled back to the top: the persistent band is the control surface
-				// again, so close any island popover first - otherwise the node stays
-				// a popover and the band never comes back (the filters "vanish").
-				if (bandVisible && panel.matches(':popover-open')) {
-					panel.hidePopover();
-				}
-
-				if (!panel.matches(':popover-open')) {
-					panel.removeAttribute('popover');
-				}
-			} else if (!panel.hasAttribute('popover')) {
-				panel.setAttribute('popover', '');
-			}
-
-			root.toggleAttribute('data-exhibit-orphaned', inExhibit() && !bandVisible);
-		}
-
-		// The island (visible once orphaned) pops the SAME panel where the reader
-		// is: make it a popover just for that, hand it back to the band on close.
-		island.addEventListener('click', function () {
-			if (!panel.hasAttribute('popover')) {
-				panel.setAttribute('popover', '');
-			}
-			panel.showPopover();
-		});
-
-		panel.addEventListener('toggle', function (event) {
-			if (event.newState === 'closed' && inExhibit()) {
-				panel.removeAttribute('popover');
-			}
-		});
-
-		// Watch the top row leave/enter; flip the orphan state as it crosses.
-		var bandObserver = new IntersectionObserver(function (entries) {
-			bandVisible = entries[0].isIntersecting;
-			updatePanelMode();
-		});
-		bandObserver.observe(pageHeader);
-
-		// Any [data-toggle-view] flips the view: the toolbox Grid invite (list ->
-		// grid) and the Layout control inside the panel (grid -> list) both use it.
-		document.querySelectorAll('[data-toggle-view]').forEach(function (button) {
-			button.addEventListener('click', function () {
-				if (root.getAttribute('data-view') === 'grid') {
-					root.removeAttribute('data-view');
+		function reflectAll(name, value) {
+			document.querySelectorAll('.settings [name="' + name + '"]').forEach(function (input) {
+				if (input.type === 'radio') {
+					input.checked = (input.value === value);
 				} else {
-					root.setAttribute('data-view', 'grid');
+					input.value = value;
 				}
+			});
+		}
 
-				updatePanelMode();
+		function applyState(name, value) {
+			if (DEFAULTS[name] === value) {
+				root.removeAttribute('data-' + name);
+			} else {
+				root.setAttribute('data-' + name, value);
+			}
+
+			try {
+				localStorage.setItem(name, value);
+			} catch (error) {
+				// private-mode storage throw - state still lives on <html>
+			}
+
+			reflectAll(name, value);
+		}
+
+		// One delegated listener covers every instance (the mirror model's payoff -
+		// N copies, one handler, none owning the state).
+		document.addEventListener('change', function (event) {
+			if (!event.target.matches('.settings [name]')) {
+				return;
+			}
+
+			applyState(event.target.name, event.target.value);
+		});
+
+		// Restore saved state on load (dumb mirrors get set from the source).
+		['scheme', 'brand', 'sound', 'view', 'filter'].forEach(function (name) {
+			var saved = null;
+
+			try {
+				saved = localStorage.getItem(name);
+			} catch (error) {
+				// no storage - defaults stand
+			}
+
+			if (saved !== null) {
+				applyState(name, saved);
+			}
+		});
+
+		// ------------------------------------------------------------------
+		// Reveal-on-scroll: when the persistent band scrolls out of view, flip
+		// data-scrolled so the island trigger appears. This touches ONLY a fixed
+		// element's visibility - the band never moves, the popover is a different
+		// node - so there's no reflow, no jitter, no vanishing anything.
+		// ------------------------------------------------------------------
+		var band = document.querySelector('.persistent-settings');
+
+		if (band) {
+			var bandObserver = new IntersectionObserver(function (entries) {
+				// The band is display:none outside the exhibit (offsetParent null),
+				// where "scrolled past" is meaningless - don't let it leak true there.
+				var displayed = band.offsetParent !== null;
+
+				root.toggleAttribute('data-scrolled', displayed && !entries[0].isIntersecting);
+			});
+
+			bandObserver.observe(band);
+		}
+
+		// back-to-top trigger (a toolbox member with no panel)
+		document.querySelectorAll('[data-to-top]').forEach(function (button) {
+			button.addEventListener('click', function () {
+				window.scrollTo({ top: 0, behavior: 'smooth' });
 			});
 		});
 
-		exhibit.addEventListener('change', updatePanelMode);
-		updatePanelMode();
+		// grid toggle - the door in/out. Writes the SAME 'view' state, so the
+		// in-settings Layout radio reflects it (and vice-versa) via reflect-all.
+		document.querySelectorAll('[data-grid-toggle]').forEach(function (button) {
+			button.addEventListener('click', function () {
+				var next = root.getAttribute('data-view') === 'grid' ? 'list' : 'grid';
+				applyState('view', next);
+			});
+		});
 	</script>
-
 </body>
 </html>

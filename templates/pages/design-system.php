@@ -66,14 +66,18 @@
 	// option checked proves nothing the first didn't.
 	$radio_options = ['off' => 'Off', 'on' => 'On'];
 
-	// One inert radio-pill group - the shape behind scheme / sound / layout.
+	// One radio-pill group - the shape behind scheme / sound / layout.
 	// aria-checked marks the active pill (the accent-filled state); the others
-	// show the resting state, so a single group demonstrates both at once.
+	// show the resting state, so a single group demonstrates both at once. The
+	// selected pill carries the group's only tab stop (roving tabindex); from
+	// there scripts/design-system.js takes over the toggling.
 	function demo_switcher($label, $options, $selected) {
 		$pills = '';
 		foreach ($options as $value => $text) {
-			$checked = $value === $selected ? 'true' : 'false';
-			$pills .= "<button type='button' role='radio' aria-checked='{$checked}' tabindex='-1'>{$text}</button>";
+			$is_selected = $value === $selected;
+			$checked = $is_selected ? 'true' : 'false';
+			$tabindex = $is_selected ? '0' : '-1';
+			$pills .= "<button type='button' role='radio' aria-checked='{$checked}' tabindex='{$tabindex}'>{$text}</button>";
 		}
 
 		return "
@@ -91,7 +95,7 @@
 			<div class='demo-switcher'>
 				<p class='app-data-voice'>{$label}: <span>{$value_name}</span></p>
 
-				<input type='range' min='0' max='{$max}' step='1' value='{$value}' class='plain-range' aria-label='{$label}' tabindex='-1'>
+				<input type='range' min='0' max='{$max}' step='1' value='{$value}' class='plain-range' aria-label='{$label}'>
 			</div>";
 	}
 
@@ -145,6 +149,86 @@
 		</ol>
 	</section>
 
+	<?php /* Phase 0 bench: is a palette composable, or must it be hand-authored?
+		Engine lives in styles/modules/design-system.css - bench-local until it
+		earns promotion, same as the grain layers. The reference row reads the
+		REAL [data-flavor] tokens, so the shipped design sits next to the
+		generated one. Rows 3 and 4 are the actual test: they cost one value
+		each, and either they hold up or the model is wrong. */ ?>
+	<section class='ds-section'>
+		<h2 class='attention-voice'>Harmony engine (bench)</h2>
+
+		<p>Band = lightness. Flavor = hue. Theme = the hue set plus a chroma multiplier. Same four slots every row - only the channels change.</p>
+
+		<h3 class='strong-voice'>Hand-tuned - the shipped 70s rainbow</h3>
+
+		<ol class='harmony-reference'>
+			<li data-flavor='rose'><span class='quiet-voice'>rose</span></li>
+
+			<li data-flavor='warm'><span class='quiet-voice'>warm</span></li>
+
+			<li data-flavor='moss'><span class='quiet-voice'>moss</span></li>
+
+			<li data-flavor='cool'><span class='quiet-voice'>cool</span></li>
+		</ol>
+
+		<h3 class='strong-voice'>Generated - Happy (rainbow)</h3>
+
+		<p class='quiet-voice'>Uses the hand-tuned numbers, so this row proves only that the engine can express the design. It is the control, not the test.</p>
+
+		<ol class='harmony'>
+			<li><span class='quiet-voice'>rose</span></li>
+
+			<li><span class='quiet-voice'>warm</span></li>
+
+			<li><span class='quiet-voice'>moss</span></li>
+
+			<li><span class='quiet-voice'>cool</span></li>
+		</ol>
+
+		<h3 class='strong-voice'>Generated - Muted (one value: chroma x 0.25)</h3>
+
+		<p class='quiet-voice'>The whole Muted column, for free. Does it hold up?</p>
+
+		<ol class='harmony' data-harmony='muted'>
+			<li><span class='quiet-voice'>rose</span></li>
+
+			<li><span class='quiet-voice'>warm</span></li>
+
+			<li><span class='quiet-voice'>moss</span></li>
+
+			<li><span class='quiet-voice'>cool</span></li>
+		</ol>
+
+		<h3 class='strong-voice'>Generated - Techy (analogous hue set)</h3>
+
+		<p class='quiet-voice'>Same engine, hues collapsed into one violet neighbourhood instead of spread across the wheel.</p>
+
+		<ol class='harmony' data-harmony='techy'>
+			<li><span class='quiet-voice'>1</span></li>
+
+			<li><span class='quiet-voice'>2</span></li>
+
+			<li><span class='quiet-voice'>3</span></li>
+
+			<li><span class='quiet-voice'>4</span></li>
+		</ol>
+
+		<h3 class='strong-voice'>Generated - Happy, Immersive band (lightness only)</h3>
+
+		<p class='quiet-voice'>The same hues, deep. This is what <code>night</code> was reaching for before it got filed under flavor - and it works on every hue, not just brown.</p>
+
+		<ol class='harmony' data-band='immersive'>
+			<li><span class='quiet-voice'>rose</span></li>
+
+			<li><span class='quiet-voice'>warm</span></li>
+
+			<li><span class='quiet-voice'>moss</span></li>
+
+			<li><span class='quiet-voice'>cool</span></li>
+		</ol>
+	</section>
+
 	<section class='ds-section'>
 		<h2 class='attention-voice'>Voices</h2>
 
@@ -194,12 +278,12 @@
 
 		<div class='settings-panel demo-control demo-filter' data-ui='app'>
 			<div class='filter-control'>
-				<p class='app-data-voice'>Filter: <span class='filter-count'><?= $mini_in ?> / <?= count($mini_weights) ?></span></p>
+				<p class='app-data-voice'>Filter: <span class='filter-count'><span data-demo-filter-count><?= $mini_in ?></span> / <?= count($mini_weights) ?></span></p>
 
 				<div class='filter-body'>
-					<input type='range' min='1' max='6' step='1' value='<?= $mini_tier ?>' class='plain-range' aria-label='Filter level' tabindex='-1'>
+					<input type='range' min='1' max='6' step='1' value='<?= $mini_tier ?>' class='plain-range' aria-label='Filter level' data-demo-filter>
 
-					<p class='filter-level-name app-data-voice'>+ major support</p>
+					<p class='filter-level-name app-data-voice' data-demo-filter-name>+ major support</p>
 
 					<div class='mini-map' aria-hidden='true'>
 						<ol class='mini-map-bars'><?= $mini_bars ?></ol>
@@ -209,6 +293,32 @@
 				</div>
 			</div>
 		</div>
+	</section>
+
+	<section class='ds-section'>
+		<h2 class='attention-voice'>Collage specimen</h2>
+
+		<p>One graphic, three recipes. The markup is <em>identical</em> in every frame - each recipe only turns pieces on/off and swaps fill for outline (via <code>data-recipe</code>). That is the whole idea: add, remove, restyle the same pieces and the same collage feels totally different, with nothing redrawn. Piece colors are placeholders until the palette lands - the mechanic is the point.</p>
+
+		<ol class='collage-recipes'>
+			<li>
+				<?= partial('posters/collage-specimen', ['recipe' => 'expressive', 'uid' => 'ce']) ?>
+
+				<code class='quiet-voice'>expressive · all on, filled, colorful</code>
+			</li>
+
+			<li>
+				<?= partial('posters/collage-specimen', ['recipe' => 'technical', 'uid' => 'ct']) ?>
+
+				<code class='quiet-voice'>technical · outlined subset, one cool accent</code>
+			</li>
+
+			<li>
+				<?= partial('posters/collage-specimen', ['recipe' => 'quiet', 'uid' => 'cq']) ?>
+
+				<code class='quiet-voice'>quiet · one block, one accent, negative space</code>
+			</li>
+		</ol>
 	</section>
 
 	<section class='ds-section'>

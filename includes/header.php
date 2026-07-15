@@ -46,16 +46,20 @@
 				var scheme = localStorage.getItem('scheme-preference');
 				if (scheme && scheme !== 'system') html.setAttribute('data-scheme', scheme);
 
-				/* Brand (type + corners) and emphasis (color) are separate axes.
-				   Absent attribute = the default (Personal / Default palette), so
-				   only a non-default saved choice gets written. Unknown values
-				   (e.g. a stale 'theme-preference'-era slug) are ignored. Keep
-				   these lists matched to BRANDS / EMPHASES in settings-panel.js. */
-				var brand = localStorage.getItem('brand-preference');
-				if (['marketing', 'product', 'documentation'].indexOf(brand) !== -1) html.setAttribute('data-brand', brand);
+				/* Character (type + shape) and mood (color) are separate axes.
+				   Absent attribute = the default (Product character / TODO mood),
+				   so only a non-default saved choice gets written. Unknown values
+				   (e.g. a stale 'brand-preference'-era slug) are ignored. Keep
+				   these lists matched to CHARACTERS / MOODS in settings-panel.js. */
+				var character = localStorage.getItem('character-preference');
+				if (['marketing', 'interface'].indexOf(character) !== -1) html.setAttribute('data-brand-character', character);
 
-				var emphasis = localStorage.getItem('emphasis-preference');
-				if (['muted', 'immersive', 'red-light'].indexOf(emphasis) !== -1) html.setAttribute('data-emphasis', emphasis);
+				var mood = localStorage.getItem('mood-preference');
+				if (['technical', 'quiet'].indexOf(mood) !== -1) html.setAttribute('data-brand-mood', mood);
+
+				/* Red light is a boolean override, its own key - 'on' = a bare
+				   data-red-light attribute (no value). */
+				if (localStorage.getItem('red-light-preference') === 'on') html.setAttribute('data-red-light', '');
 
 				<?php if (GRID_VIEW_ENABLED && ($page_controls ?? null) === 'filter-control'): ?>
 					/* Grid only exists from 1600px (the breakpoint in
@@ -101,6 +105,14 @@
 		freeze is fixed. */ ?>
 	<?php if ($settings_panel_on ?? false): ?>
 		<script src='<?= asset('/scripts/settings-panel.js') ?>' defer></script>
+	<?php endif; ?>
+
+	<?php /* The design-system tester's specimen controls (the inline copies in
+		its "Menus & settings" section) toggle themselves - they drive no site
+		state, but a control that does nothing when clicked reads as broken.
+		Only this page has them. */ ?>
+	<?php if ($slug === 'design-system'): ?>
+		<script src='<?= asset('/scripts/design-system.js') ?>' defer></script>
 	<?php endif; ?>
 
 	<?php /* The tour experiment ships dark: its stylesheet AND scripts only load

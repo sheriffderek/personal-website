@@ -14,6 +14,132 @@
 	   for a fibrous, construction-paper streak. */
 	--grain-fiber: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9 0.16' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.4' intercept='0.58'/%3E%3CfeFuncG type='linear' slope='0.4' intercept='0.58'/%3E%3CfeFuncB type='linear' slope='0.4' intercept='0.58'/%3E%3CfeFuncA type='linear' slope='0' intercept='1'/%3E%3C/feComponentTransfer%3E%3CfeGaussianBlur stdDeviation='0.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
 
+	/* ---- Harmony engine (Phase 0 bench experiment, 2026-07-14) ----
+	   Same posture as the grain layers above: it lives HERE, not settings.css,
+	   until it earns promotion. Nothing on the real site consumes it.
+
+	   The claim being tested (theme-model.md): a palette is not a hand-authored
+	   thing, it is a composition of three channels -
+
+	     BAND (emphasis) -> lightness      the L in oklch
+	     FLAVOR          -> hue            the H
+	     THEME           -> the hue SET + a chroma multiplier
+
+	   The per-hue chroma values below are NOT design choices - they are a gamut
+	   fact (at L ~78% a blue physically cannot hold the chroma an orange can).
+	   They were harvested straight out of the hand-tuned 70s set in settings.css,
+	   which had already discovered them by eye.
+
+	   The test is NOT "can this reproduce Happy" - it uses Happy's own numbers,
+	   so of course it can. The test is whether MUTED and TECHY fall out of the
+	   same engine for free and still look good. If they do, 9 palettes cost
+	   almost nothing and the model is proven. If they don't, we learned it on
+	   four hues instead of a whole system. */
+
+	.harmony {
+		/* BAND - lightness only. Fill and ink. */
+		--fill-l: 78%;
+		--ink-l: 34%;
+
+		/* THEME - chroma multiplier. 1 = full voice. */
+		--chroma: 1;
+
+		/* THEME - the hue set. Happy = rainbow: four hues spread across
+		   the wheel, each with its own gamut ceiling. */
+		--h-1: 20;
+		--c-1: 0.05; /* rose */
+		--h-2: 70;
+		--c-2: 0.085; /* warm - orange holds the most chroma up here */
+		--h-3: 115;
+		--c-3: 0.07; /* moss */
+		--h-4: 240;
+		--c-4: 0.05; /* cool - blue holds the least */
+
+		/* IMMERSIVE band - the same hues, deep. This is what `night` was
+		   trying to be before it got filed under flavor. */
+		&[data-band="immersive"] {
+			--fill-l: 42%;
+			--ink-l: 85%;
+		}
+
+		/* MUTED theme - the SAME hue set, whispered. One value. This is the
+		   whole column, and it costs nothing. */
+		&[data-harmony="muted"] {
+			--chroma: 0.25;
+		}
+
+		/* TECHY theme - analogous: the hues collapse into one violet
+		   neighbourhood instead of spreading. Same engine, different set. */
+		&[data-harmony="techy"] {
+			--h-1: 245;
+			--c-1: 0.07;
+			--h-2: 265;
+			--c-2: 0.085;
+			--h-3: 290;
+			--c-3: 0.09;
+			--h-4: 315;
+			--c-4: 0.08;
+		}
+
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 0.5rem;
+		margin: 0.5rem 0 0;
+		padding: 0;
+		list-style: none;
+
+		li {
+			/* The composition. Every swatch is the same one-line recipe -
+			   only the channel values differ. */
+			background: oklch(var(--fill-l) calc(var(--c) * var(--chroma)) var(--h));
+			color: oklch(var(--ink-l) calc(var(--c) * var(--chroma) * 1.15) var(--h));
+
+			display: grid;
+			place-items: center;
+			aspect-ratio: 16 / 9;
+			border-radius: var(--corners, 0);
+		}
+
+		li:nth-child(1) {
+			--h: var(--h-1);
+			--c: var(--c-1);
+		}
+		li:nth-child(2) {
+			--h: var(--h-2);
+			--c: var(--c-2);
+		}
+		li:nth-child(3) {
+			--h: var(--h-3);
+			--c: var(--c-3);
+		}
+		li:nth-child(4) {
+			--h: var(--h-4);
+			--c: var(--c-4);
+		}
+	}
+
+	/* The hand-tuned reference row - reads the REAL [data-flavor] tokens from
+	   settings.css, so it is the actual shipped design sitting next to the
+	   generated one. */
+	.harmony-reference {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 0.5rem;
+		margin: 0.5rem 0 0;
+		padding: 0;
+		list-style: none;
+
+		li {
+			background: var(--poster-fill);
+			color: var(--poster-ink);
+
+			display: grid;
+			place-items: center;
+			aspect-ratio: 16 / 9;
+			border-radius: var(--corners, 0);
+		}
+	}
+
 	.ds-section {
 		margin-top: calc(var(--gutter) * 3);
 	}
@@ -161,5 +287,140 @@
 
 	.media-sample.vignette {
 		background-image: radial-gradient(circle at 50% 45%, transparent 58%, color-mix(in oklab, var(--ink-primary) 14%, transparent) 100%);
+	}
+
+	/* --- Collage specimen -------------------------------------------------
+	   One graphic (includes/posters/collage-specimen.php), three recipes.
+	   Identical markup each time; only [data-recipe] differs, and these rules
+	   turn pieces on/off and swap fill for outline. Proves the concept: same
+	   pieces, add / remove / restyle -> totally different feel, no redraw. */
+	.collage-recipes {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: var(--gutter);
+		margin-top: var(--gutter);
+		padding: 0;
+		list-style: none;
+	}
+
+	.collage-recipes li {
+		display: grid;
+		gap: calc(var(--gutter) / 3);
+	}
+
+	.collage-frame {
+		aspect-ratio: 16 / 9;
+		border: 1px solid var(--stroke-secondary);
+		background: var(--fill-primary);
+		overflow: hidden;
+	}
+
+	.collage {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	/* Corners are brand-owned; only the block reads them (the one right-angled
+	   mass). rx as a CSS geometry property DOES take a var - the attribute form
+	   does not, which is why it lives here. */
+	.roundable {
+		rx: var(--corners);
+	}
+
+	/* Base look, before a recipe repaints: solid ink pieces, hairline chrome.
+	   Placeholder piece colors are stand-ins until the palette is decided - the
+	   MECHANIC (which pieces show, filled vs outlined) is what this proves. */
+	--piece-mass: var(--color-emerald-400);
+	--piece-block: var(--color-red-400);
+	--piece-wedge: var(--color-amber-400);
+	--piece-orb: var(--color-violet-400);
+	--piece-mark: var(--color-red-500);
+
+	.collage .piece {
+		fill: var(--ink-primary);
+	}
+
+	.collage .connector {
+		fill: none;
+		stroke: var(--ink-primary);
+		stroke-width: 5;
+	}
+
+	.collage .field-frame {
+		stroke: var(--stroke-primary);
+		stroke-width: 3;
+	}
+
+	/* EXPRESSIVE - everything on, filled, colorful, overlapping. */
+	.collage-frame[data-recipe='expressive'] .mass {
+		fill: var(--piece-mass);
+	}
+
+	.collage-frame[data-recipe='expressive'] .block {
+		fill: var(--piece-block);
+	}
+
+	.collage-frame[data-recipe='expressive'] .wedge {
+		fill: var(--piece-wedge);
+	}
+
+	.collage-frame[data-recipe='expressive'] .orb {
+		fill: var(--piece-orb);
+	}
+
+	.collage-frame[data-recipe='expressive'] .mark {
+		fill: var(--piece-mark);
+	}
+
+	.collage-frame[data-recipe='expressive'] .connector {
+		display: none;
+	}
+
+	/* TECHNICAL - outlined subset, one cool accent, precise. Mass/wedge/mark
+	   drop out; the dot field and connector carry the "system" read. */
+	.collage-frame[data-recipe='technical'] .mass,
+	.collage-frame[data-recipe='technical'] .wedge,
+	.collage-frame[data-recipe='technical'] .mark {
+		display: none;
+	}
+
+	.collage-frame[data-recipe='technical'] .block {
+		fill: none;
+		stroke: var(--ink-primary);
+		stroke-width: 5;
+	}
+
+	.collage-frame[data-recipe='technical'] .orb {
+		fill: none;
+		stroke: var(--accent);
+		stroke-width: 5;
+	}
+
+	.collage-frame[data-recipe='technical'] .connector {
+		stroke: var(--ink-secondary);
+	}
+
+	/* QUIET - almost everything hidden. One outlined block, one filled accent,
+	   one line. The empty space IS the composition. */
+	.collage-frame[data-recipe='quiet'] .mass,
+	.collage-frame[data-recipe='quiet'] .wedge,
+	.collage-frame[data-recipe='quiet'] .mark,
+	.collage-frame[data-recipe='quiet'] .field {
+		display: none;
+	}
+
+	.collage-frame[data-recipe='quiet'] .block {
+		fill: none;
+		stroke: var(--ink-primary);
+		stroke-width: 4;
+	}
+
+	.collage-frame[data-recipe='quiet'] .orb {
+		fill: var(--accent);
+	}
+
+	.collage-frame[data-recipe='quiet'] .connector {
+		stroke: var(--ink-primary);
 	}
 }

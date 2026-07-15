@@ -1,5 +1,5 @@
 <div class='mode-switcher'>
-	<p class='app-data-voice' id='mode-switcher-label'>Prefered color scheme</p>
+	<p class='app-data-voice' id='mode-switcher-label'>Preferred color scheme</p>
 
 	<div class='mode-button-group' role='radiogroup' aria-labelledby='mode-switcher-label'>
 		<button type='button' role='radio' aria-checked='false' data-set-scheme='system'>System</button>

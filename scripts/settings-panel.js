@@ -159,7 +159,11 @@
 
 	var SWITCHERS = [
 		{ kind: 'scheme', attr: 'data-scheme', storageKey: 'scheme-preference', defaultValue: 'system' },
-		{ kind: 'sound',  attr: 'data-sound',  storageKey: 'sound-preference',  defaultValue: 'off' }
+		{ kind: 'sound',  attr: 'data-sound',  storageKey: 'sound-preference',  defaultValue: 'off' },
+		/* Red light is a boolean override (Off/On), not a mood. valuelessAttr
+		   means 'on' sets a bare data-red-light attribute (no value); 'off'
+		   removes it. Sits below Mood in the panel - it stomps all color. */
+		{ kind: 'red-light', attr: 'data-red-light', storageKey: 'red-light-preference', defaultValue: 'off', valuelessAttr: true }
 	];
 
 	/* Each switcher is a single-select radiogroup (role=radio buttons). We
@@ -252,17 +256,17 @@
 		});
 	});
 
-	/* Brand + emphasis — the two design-system axes, each a slider (not
+	/* Character + emphasis — the two design-system axes, each a slider (not
 	   buttons). Index maps to a slug. The first slug is the default: it means
 	   "no attribute on <html>" (the :root block in settings.css IS the
 	   default), and no storage key is written for it so first-load defaults
 	   stay clean. Both sliders share one wiring, so they can't drift apart.
 
-	     Brand    (data-brand)    - type pair, corners, scale rhythm.
-	     Emphasis (data-emphasis) - color palette only.
+	     Character (data-brand-character) - type pair, corners, scale rhythm.
+	     Mood      (data-brand-mood)      - color palette only.
 
-	   A brand swap changes the type scale, so both go through syncScroll to
-	   hold the reader's place through the reflow (color-only emphasis swaps
+	   A character swap changes the type scale, so both go through syncScroll to
+	   hold the reader's place through the reflow (color-only mood swaps
 	   don't strictly need it, but the shared path keeps the story simple). */
 	function sliderSwitcher(cfg) {
 		var slider = document.querySelector('[data-set-' + cfg.kind + '-slider]');
@@ -312,26 +316,27 @@
 	}
 
 	/* Keep these lists matched to the FOUC script in includes/header.php and
-	   the sliders' max in includes/settings/{brand,emphasis}-switcher.php. */
-	var BRANDS         = ['personal', 'marketing', 'product', 'documentation'];
-	var BRAND_NAMES    = ['Personal', 'Marketing', 'Product', 'Documentation'];
-	var EMPHASES       = ['default', 'muted', 'immersive', 'red-light'];
-	var EMPHASIS_NAMES = ['Default', 'Muted', 'Immersive', 'Red light'];
+	   the sliders' max in includes/settings/{character,emphasis}-switcher.php.
+	   Index 0 is the default (Product = :root, no attribute written). */
+	var CHARACTERS      = ['product', 'marketing', 'interface'];
+	var CHARACTER_NAMES = ['Product', 'Marketing', 'Interface'];
+	var MOODS           = ['expressive', 'technical', 'quiet'];
+	var MOOD_NAMES      = ['Expressive', 'Technical', 'Quiet'];
 
-	var applyBrand = sliderSwitcher({
-		kind: 'brand',
-		attr: 'data-brand',
-		storageKey: 'brand-preference',
-		values: BRANDS,
-		names: BRAND_NAMES
+	var applyCharacter = sliderSwitcher({
+		kind: 'character',
+		attr: 'data-brand-character',
+		storageKey: 'character-preference',
+		values: CHARACTERS,
+		names: CHARACTER_NAMES
 	});
 
-	var applyEmphasis = sliderSwitcher({
-		kind: 'emphasis',
-		attr: 'data-emphasis',
-		storageKey: 'emphasis-preference',
-		values: EMPHASES,
-		names: EMPHASIS_NAMES
+	var applyMood = sliderSwitcher({
+		kind: 'mood',
+		attr: 'data-brand-mood',
+		storageKey: 'mood-preference',
+		values: MOODS,
+		names: MOOD_NAMES
 	});
 
 	/* Timeline filter — slider sets number of weight tiers shown, cumulative.
@@ -889,20 +894,20 @@
 	   there - any real choice the visitor made mid-tour DID persist, so it
 	   survives; only the tour's own persist:false changes get undone. */
 	function restore() {
-		var savedBrand = null;
-		var savedEmphasis = null;
+		var savedCharacter = null;
+		var savedMood = null;
 		var savedFilter = null;
-		try { savedBrand = localStorage.getItem('brand-preference'); } catch (error) {}
-		try { savedEmphasis = localStorage.getItem('emphasis-preference'); } catch (error) {}
+		try { savedCharacter = localStorage.getItem('character-preference'); } catch (error) {}
+		try { savedMood = localStorage.getItem('mood-preference'); } catch (error) {}
 		try { savedFilter = localStorage.getItem('filter-preference'); } catch (error) {}
 
-		var brandIdx = savedBrand ? BRANDS.indexOf(savedBrand) : 0;
-		if (brandIdx < 0) brandIdx = 0;
-		applyBrand(brandIdx, { persist: false });
+		var characterIdx = savedCharacter ? CHARACTERS.indexOf(savedCharacter) : 0;
+		if (characterIdx < 0) characterIdx = 0;
+		applyCharacter(characterIdx, { persist: false });
 
-		var emphasisIdx = savedEmphasis ? EMPHASES.indexOf(savedEmphasis) : 0;
-		if (emphasisIdx < 0) emphasisIdx = 0;
-		applyEmphasis(emphasisIdx, { persist: false });
+		var moodIdx = savedMood ? MOODS.indexOf(savedMood) : 0;
+		if (moodIdx < 0) moodIdx = 0;
+		applyMood(moodIdx, { persist: false });
 
 		SWITCHERS.forEach(function (cfg) {
 			var apply = applyByKind[cfg.kind];
@@ -926,8 +931,8 @@
 	}
 
 	window.settings = {
-		applyBrand: applyBrand,
-		applyEmphasis: applyEmphasis,
+		applyCharacter: applyCharacter,
+		applyMood: applyMood,
 		applyFilter: applyFilter,
 		set: function (kind, value, opts) {
 			if (applyByKind[kind]) applyByKind[kind](value, opts);

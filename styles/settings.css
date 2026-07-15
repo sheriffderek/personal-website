@@ -1,50 +1,55 @@
 /* Theme tokens - the full design-system API in one place, split into two
    orthogonal axes (plus the scheme):
 
-     BRAND    [data-brand]    - the structural personality: type pair, corner
-                                radius, scale rhythm. Who this surface is.
-                                :root is the default brand (Personal); a
-                                [data-brand='X'] block re-brands. Absent
-                                attribute = Personal.
-     EMPHASIS [data-emphasis] - the paint: a full color palette repainted onto
-                                the same semantic slots. What mood it's in.
-                                :root is the default palette; a
-                                [data-emphasis='X'] block re-paints.
+     CHARACTER [data-brand-character] - the structural personality: type pair,
+                                corner radius, scale rhythm. Who this surface is.
+                                :root is the default (Product); a
+                                [data-brand-character='X'] block re-shapes.
+                                Absent attribute = Product.
+     MOOD     [data-brand-mood] - the paint: a full color palette repainted onto
+                                the same semantic slots. Quiet (:root default),
+                                Expressive, Technical. Each carries both schemes
+                                via light-dark().
      SCHEME   [data-scheme]   - system | light | dark. Absent = system.
+     RED LIGHT [data-red-light] - a boolean override that stomps ALL color; not
+                                on the mood dial.
 
-   Any brand works under any emphasis under either scheme, because components
+   Any character works under any mood under either scheme, because components
    only ever read the semantic slots (--fill-*, --ink-*, --stroke-*, --accent,
-   --corners, the voice tokens) - never a brand or palette directly.
+   --corners, the voice tokens) - never a character or palette directly.
 
-   Colors: every emphasis block restates the FULL set - no chaining, no
-   var-of-var (the top-layer inheritance bug in the house notes forced this).
-   Type/shape: defaults live in :root; a brand overrides only the deltas it
-   needs and the rest falls through (safe - no such inheritance pathology).
+   Colors: every mood block restates the FULL set - no chaining, no var-of-var
+   (the top-layer inheritance bug in the house notes forced this). Type/shape:
+   defaults live in :root; a character overrides only the deltas it needs and
+   the rest falls through (safe - no such inheritance pathology).
 
-   The four brands are surfaces of one organization - the design-system pitch:
-     Personal      (:root)  - Derek's own defaults; this site as itself.
-     Marketing     - the brochure-facing surface: big rounded display type,
-                     soft corners, dramatic scale.
-     Product       - the app surface: one neutral workhorse family, tight
-                     scale, small corners, denser rhythm.
-     Documentation - the technical surface: mono, hard corners, calm.
-   Font pairings are working placeholders until the Figma audition locks them -
-   swap a family here and the whole brand re-pairs. */
+   Three characters (theme-model.md): Product (:root default - the personal /
+   Stripe lane), Marketing (the GoFundMe brochure lane), Interface (the
+   Claude/OpenAI dashboard lane). Font pairings are working placeholders until
+   the Figma audition locks them - swap a family and the whole character
+   re-pairs. */
 
 :root {
-	--fill-primary: white;
-	--fill-secondary: var(--color-stone-100);
-	--fill-auxiliary: var(--color-stone-200);
+	/* :root IS the default MOOD (Expressive - the slider's first stop): fun /
+	   happy / friendly, warm paper + a vivid accent. Each token carries BOTH
+	   schemes via light-dark() (see the scheme-wiring note below), so there are
+	   no generic dark blocks to stomp a mood that doesn't restate dark - that
+	   trap is gone.
+	   $todo PLACEHOLDER COLORS - approximations from the mood board, not the
+	   locked Expressive palette. Swap in the real values. */
+	--fill-primary: light-dark(oklch(98% 0.012 90), oklch(22% 0.02 90));
+	--fill-secondary: light-dark(oklch(95% 0.02 90), oklch(28% 0.02 90));
+	--fill-auxiliary: light-dark(oklch(91% 0.03 90), oklch(34% 0.02 90));
 
-	--ink-primary: var(--color-stone-900);
-	--ink-secondary: var(--color-stone-600);
-	--ink-auxiliary: var(--color-stone-500);
+	--ink-primary: light-dark(oklch(22% 0.03 60), oklch(96% 0.01 90));
+	--ink-secondary: light-dark(oklch(42% 0.04 60), oklch(85% 0.02 90));
+	--ink-auxiliary: light-dark(oklch(56% 0.04 60), oklch(70% 0.02 90));
 
-	--stroke-primary: var(--color-stone-400);
-	--stroke-secondary: var(--color-stone-300);
-	--stroke-auxiliary: var(--color-stone-200);
+	--stroke-primary: light-dark(oklch(80% 0.03 90), oklch(45% 0.02 90));
+	--stroke-secondary: light-dark(oklch(88% 0.02 90), oklch(36% 0.02 90));
+	--stroke-auxiliary: light-dark(oklch(92% 0.02 90), oklch(30% 0.02 90));
 
-	--accent: var(--color-blue-900);
+	--accent: light-dark(oklch(58% 0.16 150), oklch(78% 0.15 150));
 
 	/* Text selection - a calm highlighter yellow. The ink is a LITERAL dark
 	   (not var(--ink-primary)): the marker is light in both schemes, and in
@@ -68,9 +73,9 @@
 	   restating anything. */
 	/* we also need the distance from the line/link here too, right? */
 
-	/* Scrim behind the mobile menu. Scheme-dependent only (not per emphasis),
-	   so it's set at the scheme level and not restated in each palette block. */
-	--scrim: rgb(0 0 0 / 0.15);
+	/* Scrim behind the mobile menu. Scheme-dependent only (not per mood), so it
+	   carries both schemes here and no mood block restates it. */
+	--scrim: light-dark(rgb(0 0 0 / 0.15), rgb(0 0 0 / 0.45));
 
 	/* Pair convention: heading = the display font (left), body = the reading
 	   font (right). Personal pair: Quicksand SemiBold / Spline Sans. Both are
@@ -165,6 +170,12 @@
 	--high-voice-text-transform: uppercase;
 
 	--setting-button-corners: 0px;
+
+	/* toolbox triggers */
+	--toolbox-trigger-fill: red;
+	--toolbox-trigger-hover: blue;
+	--toolbox-trigger-corners: 8px;
+	--toolbox-trigger-border-color: green;
 }
 
 /* ----------------------------------------------------------------------------
@@ -229,98 +240,40 @@
 	--poster-ink: oklch(36% 0.07 15);
 }
 
-/* Muted takes on the flavors - the same 70s rainbow, whispered. The custom
-   near-neutral families (taupe, mist, olive, mauve) ARE those hues with the
-   chroma nearly gone, so each flavor maps to its ghost. The nested
-   descendant selectors beat the one-attribute baselines above by
-   specificity, not order. */
+/* $todo Flavors are PARKED (2026-07-14) until the poster graphics exist - the
+   per-mood flavor overrides (the old muted/immersive takes) were dropped with
+   those emphases. The base flavor set above stays as the seam. When flavors
+   return they compose per mood; nothing rebuilds the old descendant blocks.
 
-[data-emphasis="muted"] {
-	[data-flavor="warm"] {
-		--poster-fill: var(--color-taupe-200);
-		--poster-ink: var(--color-taupe-700);
-	}
+   Red light is the exception that still needs its poster take now: it stomps
+   ALL color, posters included - every poster becomes the same near-black panel
+   with bright red linework, flavored or not. The bare [data-flavor] selector
+   matches every poster, so this one rule is the whole story. */
 
-	[data-flavor="cool"] {
-		--poster-fill: var(--color-mist-200);
-		--poster-ink: var(--color-mist-700);
-	}
-
-	[data-flavor="stone"] {
-		--poster-fill: var(--color-stone-200);
-		--poster-ink: var(--color-stone-700);
-	}
-
-	[data-flavor="night"] {
-		--poster-fill: var(--color-taupe-600);
-		--poster-ink: var(--color-taupe-200);
-	}
-
-	[data-flavor="moss"] {
-		--poster-fill: var(--color-olive-200);
-		--poster-ink: var(--color-olive-700);
-	}
-
-	[data-flavor="rose"] {
-		--poster-fill: var(--color-mauve-200);
-		--poster-ink: var(--color-mauve-700);
-	}
-}
-
-/* Immersive takes on the flavors - the page is a rich blue there, so each
-   flavor keeps its identity but cools toward blue's neighbors and paints a
-   step deeper (200-level fills instead of pastels). */
-
-[data-emphasis="immersive"] {
-	[data-flavor="warm"] {
-		--poster-fill: var(--color-amber-200);
-		--poster-ink: var(--color-orange-950);
-	}
-
-	[data-flavor="cool"] {
-		--poster-fill: var(--color-sky-200);
-		--poster-ink: var(--color-blue-950);
-	}
-
-	[data-flavor="stone"] {
-		--poster-fill: var(--color-slate-200);
-		--poster-ink: var(--color-slate-950);
-	}
-
-	[data-flavor="night"] {
-		--poster-fill: var(--color-indigo-950);
-		--poster-ink: var(--color-sky-300);
-	}
-
-	[data-flavor="moss"] {
-		--poster-fill: var(--color-teal-200);
-		--poster-ink: var(--color-teal-950);
-	}
-
-	[data-flavor="rose"] {
-		--poster-fill: var(--color-fuchsia-200);
-		--poster-ink: var(--color-fuchsia-950);
-	}
-}
-
-/* Red light - the flavors go dark entirely: every poster paints the SAME
-   way, flavored or not. The room is full-on red, so the posters are the
-   near-black pole: black panels with bright red linework glowing in them.
-   The bare [data-flavor] selector already matches every poster, so this
-   one take is the whole story. */
-
-[data-emphasis="red-light"] {
-	[data-flavor] {
-		--poster-fill: oklch(20% 0.07 26);
-		--poster-ink: #ff0004;
-	}
+[data-red-light] [data-flavor] {
+	--poster-fill: oklch(20% 0.07 26);
+	--poster-ink: #ff0004;
 }
 
 /* ----------------------------------------------------------------------------
-   BRANDS - type + corners + rhythm only. Never color: the same brand must
-   work under every emphasis, so color stays the emphasis axis's job. */
+   BRAND CHARACTER - type + corners + rhythm (and, later, the color application
+   policy - WHERE color lands; see theme-model.md). Never names a hue: the same
+   character must work under every mood, so the pigments stay the mood axis's
+   job.
 
-[data-brand="marketing"] {
+   Three characters (2026-07-14): Product / Marketing / Interface.
+     Product     - :root IS Product. Derek's own personal lane, which reads as
+                   the Stripe register too: friendly Quicksand/Spline, soft.
+                   No block here - it's the default, so absent attribute = it.
+     Marketing   - the brochure lane (GoFundMe): big display type, soft corners,
+                   a dramatic scale so headings tower.
+     Interface   - the Claude/OpenAI dashboard lane: one neutral workhorse
+                   family, tight near-uniform scale, small corners - calm,
+                   dense, UI-shaped.
+   (Personal folded into Product; Documentation dropped - it carried the least
+   argument. See the matrix in theme-model.md.) */
+
+[data-brand-character="marketing"] {
 	/* Brochure-facing: big friendly display headings, soft corners, a
 	   dramatic scale so headings tower over the copy. */
 	--font-heading: "Poppins", system-ui, sans-serif;
@@ -345,9 +298,9 @@
 	}
 }
 
-[data-brand="product"] {
-	/* The app surface: one neutral workhorse family doing both jobs, tight
-	   near-uniform scale, small corners - calm, dense, UI-shaped. */
+[data-brand-character="interface"] {
+	/* The app/dashboard surface: one neutral workhorse family doing both jobs,
+	   tight near-uniform scale, small corners - calm, dense, UI-shaped. */
 	--font-heading: "Switzer", system-ui, sans-serif;
 	--font-body: "Switzer", system-ui, sans-serif;
 
@@ -362,107 +315,100 @@
 	--loud-voice-font-weight: 600;
 }
 
-[data-brand="documentation"] {
-	/* The technical surface: mono throughout, hard corners. Menlo ships fixed
-	   400/700 only - no in-between weights. Body at 400, headings and emphasis
-	   at 700; a tight, near-uniform scale for a calm, technical feel; a touch
-	   more leading for wide glyphs. */
-	--font-heading: var(--font-mono);
-	--font-body: var(--font-mono);
+/* ----------------------------------------------------------------------------
+   BRAND MOOD - the color axis. Three moods (theme-model.md): Quiet (the
+   default, = :root above), Expressive, Technical. A mood repaints the semantic
+   slots only - never type or shape, so any character works under any mood. Each
+   token carries BOTH schemes via light-dark(), so a mood is ONE block, not a
+   light block plus dark blocks.
 
-	--corners: 0;
+   Order (2026-07-14): Expressive (default, = :root above) · Technical · Quiet.
 
-	--scale-ratio: 1.2;
-	--font-heading-weight: 700;
+   $todo PLACEHOLDER COLORS - approximations from the mood board, not the locked
+   palettes. Swap in the real values (the whole point of the exercise). Technical
+   is seeded from the old immersive blue (analogous/cold, a good starting point);
+   Quiet holds the former neutral :root palette. The STRUCTURE is what's being
+   proven here, not the exact hues. */
 
-	--calm-voice-font-size: 0.9rem;
+[data-brand-mood="technical"] {
+	/* Techie / cold / cool: an analogous blue spectrum. Seeded from the old
+	   immersive pilot - a clean starting point for the Technical mood. */
+	--fill-primary: light-dark(var(--color-blue-50), var(--color-blue-950));
+	--fill-secondary: light-dark(var(--color-blue-100), var(--color-blue-900));
+	--fill-auxiliary: light-dark(var(--color-blue-200), var(--color-blue-800));
 
-	--calm-voice-font-weight: 400;
-	--calm-voice-line-height: 1.6;
-	--strong-voice-font-weight: 700;
-	--attention-voice-font-weight: 700;
-	--loud-voice-font-weight: 700;
+	--ink-primary: light-dark(var(--color-blue-950), var(--color-blue-50));
+	--ink-secondary: light-dark(var(--color-blue-900), var(--color-blue-200));
+	--ink-auxiliary: light-dark(var(--color-blue-800), var(--color-blue-300));
+
+	--stroke-primary: light-dark(var(--color-blue-300), var(--color-blue-700));
+	--stroke-secondary: light-dark(var(--color-blue-200), var(--color-blue-800));
+	--stroke-auxiliary: light-dark(var(--color-blue-100), var(--color-blue-800));
+
+	--accent: light-dark(var(--color-blue-600), var(--color-blue-300));
+
+	--selection-fill: var(--color-blue-200);
+	--selection-ink: var(--color-blue-950);
+}
+
+[data-brand-mood="quiet"] {
+	/* Muted / minimal / editorial: mostly neutral paper + a single accent, lots
+	   of space. This is the former default :root palette. $todo the board gives
+	   Quiet a rust/sage "little hint" accent - kept blue here as a placeholder. */
+	--fill-primary: light-dark(white, var(--color-stone-900));
+	--fill-secondary: light-dark(var(--color-stone-100), var(--color-stone-800));
+	--fill-auxiliary: light-dark(var(--color-stone-200), var(--color-stone-700));
+
+	--ink-primary: light-dark(var(--color-stone-900), var(--color-stone-50));
+	--ink-secondary: light-dark(var(--color-stone-600), var(--color-stone-300));
+	--ink-auxiliary: light-dark(var(--color-stone-500), var(--color-stone-400));
+
+	--stroke-primary: light-dark(var(--color-stone-400), var(--color-stone-600));
+	--stroke-secondary: light-dark(var(--color-stone-300), var(--color-stone-700));
+	--stroke-auxiliary: light-dark(var(--color-stone-200), var(--color-stone-800));
+
+	--accent: light-dark(var(--color-blue-900), var(--color-blue-300));
 }
 
 /* ----------------------------------------------------------------------------
-   EMPHASIS - the dial runs from soft to theatrical, four stops:
-   Default (the calibrated normal, 70s rainbow posters) · Muted (everything
-   whispers - page and posters both ease off) · Immersive (the paint goes
-   rich blue, flavors cool toward blue's neighbors) · Red light (the
-   theatrical finale - one red theme, two scheme takes). Each level still
-   speaks through the color tokens only - never type or shape, so any brand
-   works at any emphasis. Light values here; dark counterparts below with
-   the scheme blocks. */
+   RED LIGHT - a boolean override, NOT a mood (it left the dial 2026-07-14). It
+   stomps ALL color regardless of mood or character - the theatrical finale, a
+   forced-colors party trick. Placed AFTER the moods so it out-ranks them on
+   source order (every selector here is one attribute - equal specificity), and
+   it reads as "...and this overrides everything."
 
-[data-emphasis="muted"] {
-	--fill-primary: var(--color-stone-100);
-	--fill-secondary: var(--color-stone-200);
-	--fill-auxiliary: var(--color-stone-300);
+   Two takes on one red theme via light-dark():
+     light = the iPhone red-only filter look - the white page becomes FULL-ON
+             red (all the way, not a scale stop), ink near-black;
+     dark  = terminator view - a near-black room where the type glows red out
+             of the dark. */
 
-	--ink-primary: var(--color-stone-600);
-	--ink-secondary: var(--color-stone-500);
-	--ink-auxiliary: var(--color-stone-400);
+[data-red-light] {
+	--fill-primary: light-dark(#fd2222, oklch(16% 0.05 26));
+	--fill-secondary: light-dark(#d40003, oklch(21% 0.07 26));
+	--fill-auxiliary: light-dark(#ff3236, var(--color-red-950));
 
-	--stroke-primary: var(--color-stone-300);
-	--stroke-secondary: var(--color-stone-200);
-	--stroke-auxiliary: var(--color-stone-200);
+	--ink-primary: light-dark(oklch(16% 0.05 26), var(--color-red-300));
+	--ink-secondary: light-dark(var(--color-red-950), var(--color-red-400));
+	--ink-auxiliary: light-dark(var(--color-red-900), var(--color-red-500));
 
-	--accent: var(--color-stone-500);
+	--stroke-primary: light-dark(var(--color-red-800), var(--color-red-800));
+	--stroke-secondary: light-dark(var(--color-red-700), var(--color-red-900));
+	--stroke-auxiliary: light-dark(var(--color-red-700), var(--color-red-950));
 
-	/* The highlighter, whispered. Literal dark ink for the same
-	   scheme-proofing reason as the default's. */
-	--selection-fill: oklch(94% 0.06 102);
-	--selection-ink: var(--color-stone-800);
-
-	.toolbox-panel {
-		border-radius: 12px;
-		border-color: transparent;
-		box-shadow: none;
-	}
-}
-
-/* Immersive has MOVED to the light-dark() model - its one block lives at the
-   bottom of this file (the pilot). Nothing for it here. */
-
-[data-emphasis="red-light"] {
-	/* Two takes on one red theme, picked by the scheme toggle:
-	   light (this block) = the iPhone red-only filter look - brightness
-	   maps to red, so the white page becomes FULL-ON #ff0004 (all the way
-	   red, not a scale stop; support fills are darker/lighter cuts of the
-	   same red) and the ink stays near-black;
-	   dark (the blocks below) = terminator view - a near-black room where
-	   the type glows red out of the dark.
-	   The near-blacks are authored oklch since the scale stops at red-950. */
-	--fill-primary: #fd2222;
-	--fill-secondary: #d40003;
-	--fill-auxiliary: #ff3236;
-
-	--ink-primary: oklch(16% 0.05 26);
-	--ink-secondary: var(--color-red-950);
-	--ink-auxiliary: var(--color-red-900);
-
-	--stroke-primary: var(--color-red-800);
-	--stroke-secondary: var(--color-red-700);
-	--stroke-auxiliary: var(--color-red-700);
-
-	--accent: var(--color-red-950);
+	--accent: light-dark(var(--color-red-950), var(--color-red-500));
 	--scrim: rgb(0 0 0 / 0.6);
 
 	/* The media wash (mechanism in milestone.css): real photos/videos render
-	   as luminosity over full red - brightness maps to red, the same math
-	   the iPhone filter does to a photo. And the carousel dots' difference
-	   ink goes red so the inversion stays in-theme (a white dot's difference
-	   against this red flashes cyan). Declared once here - the dark blocks
-	   below don't need to restate them (the generic dark recipes never touch
-	   these tokens, so there's nothing to out-rank). */
+	   as luminosity over full red - brightness maps to red, the same math the
+	   iPhone filter does to a photo. Carousel dots' difference ink goes red so
+	   the inversion stays in-theme. */
 	--media-blend: luminosity;
 	--media-blend-fill: #ff0004;
 	--dot-ink: #ff0004;
 
-	/* Selection RESTATES the inversion recipe: without this the default's
-	   highlighter yellow inherits in and breaks the two-color room. The
-	   vars resolve per scheme, so both the #ff0004 room and the terminator
-	   view invert correctly. */
+	/* Selection restates the inversion recipe (else the default highlighter
+	   inherits in and breaks the two-color room). Resolves per scheme. */
 	--selection-fill: color-mix(in oklab, var(--ink-primary) 80%, transparent);
 	--selection-ink: var(--fill-primary);
 }
@@ -501,145 +447,10 @@ html {
 	color-scheme: dark;
 }
 
-/* Dark scheme — system preference OR explicit data-scheme='dark'.
-
-   $refactor (light-dark migration, in progress): these generic blocks are the
-   OLD model - the same dark values restated for the media query and for the
-   toggle. They also silently STOMP any emphasis that doesn't define its own
-   dark blocks (they out-rank a bare [data-emphasis] selector), which is the
-   trap that motivated the migration. Immersive has already moved to
-   light-dark() (see the pilot block at the bottom of this file); when the rest
-   follow, everything from here down gets deleted. */
-
-@media (prefers-color-scheme: dark) {
-	:root:not([data-scheme="light"]) {
-		--fill-primary: var(--color-stone-900);
-		--fill-secondary: var(--color-stone-800);
-		--fill-auxiliary: var(--color-stone-700);
-		--ink-primary: var(--color-stone-50);
-		--ink-secondary: var(--color-stone-300);
-		--ink-auxiliary: var(--color-stone-400);
-		--stroke-primary: var(--color-stone-600);
-		--stroke-secondary: var(--color-stone-700);
-		--stroke-auxiliary: var(--color-stone-800);
-		--accent: var(--color-blue-300);
-		--scrim: rgb(0 0 0 / 0.45);
-	}
-	[data-emphasis="muted"]:not([data-scheme="light"]) {
-		--fill-primary: var(--color-stone-800);
-		--fill-secondary: var(--color-stone-700);
-		--fill-auxiliary: var(--color-stone-600);
-		--ink-primary: var(--color-stone-300);
-		--ink-secondary: var(--color-stone-400);
-		--ink-auxiliary: var(--color-stone-500);
-		--stroke-primary: var(--color-stone-600);
-		--stroke-secondary: var(--color-stone-700);
-		--stroke-auxiliary: var(--color-stone-700);
-		--accent: var(--color-stone-400);
-	}
-	/* (immersive's dark block is gone - it's light-dark() now, see the bottom.) */
-
-	/* Red light, dark scheme = terminator view: a near-black red room where
-	   the type glows out of the dark. (Light scheme is the full-on #ff0004
-	   room - see the base block.) */
-	[data-emphasis="red-light"]:not([data-scheme="light"]) {
-		--fill-primary: oklch(16% 0.05 26);
-		--fill-secondary: oklch(21% 0.07 26);
-		--fill-auxiliary: var(--color-red-950);
-		--ink-primary: var(--color-red-300);
-		--ink-secondary: var(--color-red-400);
-		--ink-auxiliary: var(--color-red-500);
-		--stroke-primary: var(--color-red-800);
-		--stroke-secondary: var(--color-red-900);
-		--stroke-auxiliary: var(--color-red-950);
-		--accent: var(--color-red-500);
-	}
-}
-
-[data-scheme="dark"] {
-	--fill-primary: var(--color-stone-900);
-	--fill-secondary: var(--color-stone-800);
-	--fill-auxiliary: var(--color-stone-700);
-	--ink-primary: var(--color-stone-50);
-	--ink-secondary: var(--color-stone-300);
-	--ink-auxiliary: var(--color-stone-400);
-	--stroke-primary: var(--color-stone-600);
-	--stroke-secondary: var(--color-stone-700);
-	--stroke-auxiliary: var(--color-stone-800);
-	--accent: var(--color-blue-300);
-	--scrim: rgb(0 0 0 / 0.45);
-}
-
-[data-emphasis="muted"][data-scheme="dark"] {
-	--fill-primary: var(--color-stone-800);
-	--fill-secondary: var(--color-stone-700);
-	--fill-auxiliary: var(--color-stone-600);
-	--ink-primary: var(--color-stone-300);
-	--ink-secondary: var(--color-stone-400);
-	--ink-auxiliary: var(--color-stone-500);
-	--stroke-primary: var(--color-stone-600);
-	--stroke-secondary: var(--color-stone-700);
-	--stroke-auxiliary: var(--color-stone-700);
-	--accent: var(--color-stone-400);
-}
-
-/* (immersive's toggle-dark block is gone too - light-dark() covers both.) */
-
-/* Terminator view - keep matched to the prefers-dark counterpart above. */
-[data-emphasis="red-light"][data-scheme="dark"] {
-	--fill-primary: oklch(16% 0.05 26);
-	--fill-secondary: oklch(21% 0.07 26);
-	--fill-auxiliary: var(--color-red-950);
-	--ink-primary: var(--color-red-300);
-	--ink-secondary: var(--color-red-400);
-	--ink-auxiliary: var(--color-red-500);
-	--stroke-primary: var(--color-red-800);
-	--stroke-secondary: var(--color-red-900);
-	--stroke-auxiliary: var(--color-red-950);
-	--accent: var(--color-red-500);
-}
-
-/* ----------------------------------------------------------------------------
-   PILOT - the light-dark() model, proven on ONE theme before the rest follow.
-
-   Immersive used to be THREE blocks: a light base, a dark block for the media
-   query, and an identical dark block for the toggle. It is now ONE. Each token
-   states its light value and its dark value on a single line, and light-dark()
-   picks between them by reading the used color-scheme - which the wiring above
-   drives from BOTH the OS preference and our data-scheme toggle. So the two
-   dark blocks aren't merged, they're gone: there was only ever one dark design,
-   and now it's written once. The pairing is also readable for the first time
-   (blue-50 -> blue-950 sits on one line; before, you had to scroll between
-   three blocks to learn what a token even became in dark).
-
-   A token with NO dark variant simply doesn't call light-dark() - see the
-   selection pair below, which is blue in both schemes and says so by just being
-   a value. Under the old model that same "don't change" had to be RESTATED in
-   both dark blocks purely to stop the generic ones from overwriting it.
-
-   $todo - SCAFFOLDING, remove at full migration: the `:root` prefix and this
-   block's position at the bottom of the file are here only to out-rank the
-   generic dark blocks above, which still stomp any bare [data-emphasis]
-   selector. They are the reason the trap exists. When every emphasis has moved
-   and those blocks are deleted, this becomes a plain [data-emphasis='immersive']
-   block sitting with its siblings, and the specificity bump goes away. */
-
-:root[data-emphasis="immersive"] {
-	--fill-primary: light-dark(var(--color-blue-50), var(--color-blue-950));
-	--fill-secondary: light-dark(var(--color-blue-100), var(--color-blue-900));
-	--fill-auxiliary: light-dark(var(--color-blue-200), var(--color-blue-800));
-
-	--ink-primary: light-dark(var(--color-blue-950), var(--color-blue-50));
-	--ink-secondary: light-dark(var(--color-blue-900), var(--color-blue-200));
-	--ink-auxiliary: light-dark(var(--color-blue-800), var(--color-blue-300));
-
-	--stroke-primary: light-dark(var(--color-blue-300), var(--color-blue-700));
-	--stroke-secondary: light-dark(var(--color-blue-200), var(--color-blue-800));
-	--stroke-auxiliary: light-dark(var(--color-blue-100), var(--color-blue-800));
-
-	--accent: light-dark(var(--color-blue-600), var(--color-blue-300));
-
-	/* Selection stays in the blue world, both schemes - so no light-dark(). */
-	--selection-fill: var(--color-blue-200);
-	--selection-ink: var(--color-blue-950);
-}
+/* The generic dark blocks (a @media prefers-dark set AND a [data-scheme=dark]
+   set, each restating every token) are GONE as of the mood migration
+   (2026-07-14). Every palette above - :root/Quiet, the moods, red-light -
+   carries its own light-dark() pairs, so there is nothing left to restate and,
+   crucially, nothing left to STOMP a palette that doesn't define dark. That
+   was the whole trap the migration removed. The scheme wiring above (data-scheme
+   -> color-scheme) is all dark mode needs now. */

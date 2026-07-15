@@ -35,13 +35,21 @@ The naming is deliberate: `brand-character` and `brand-color` are two **facets o
 
 ### The matrix (2026-07-14)
 
-Rows are **brand-character**, columns are **brand-color**.
+Rows are **brand-character**, columns are **brand-color**. **Three brands, scoped 2026-07-14** - Documentation is dropped (it carried the least argument), and Personal is not a separate brand: **Personal IS Product.**
+
+| Brand | Register |
+|---|---|
+| **Marketing** | the GoFundMe lane - big display type, chips, bold stacked bands |
+| **Product** | **Derek's own personal lane**, which is also the Stripe register - clean sans, soft corners, friendly |
+| **Interface** | the Claude / OpenAI dashboard register - calm, dense, quiet chrome |
 
 | | **Happy** *(rainbow)* | **Techy** *(analogous)* | **Muted** *(desaturated)* | **Dark** *(where applicable)* |
 |---|---|---|---|---|
-| **Product** | *stripe-ish* | | | |
-| **Marketing** | *gofundme-ish* | | | |
-| **Interface** | *anthropic-ish* | | | |
+| **Marketing** | | | | |
+| **Product** | | | | |
+| **Interface** | | | | |
+
+**Flavors are parked** (2026-07-14) until the poster graphics exist - flavor paints individual posters, so it has nothing to act on yet. This does NOT block themes: a theme paints the *page* (fills, inks, strokes, accent, and the emphasis bands), and that is legible with no flavors at all. The hue channel stays in the token design as a seam.
 
 **On the real-company names.** The cells were sketched against real products (Claude, Stripe, Linear, OpenAI, Glitch, Lemonaid). Those are **internal shorthand for a direction only** - they are NOT targets to replicate, NOT things the palettes must match, and NOT public labels. Public copy uses the registers (Happy / Techy / Muted). A portfolio that labels a theme with another company's name reads badly to anyone who works there, and the resemblance lands harder when the visitor arrives at it themselves.
 
@@ -240,12 +248,32 @@ Casualties, all of them good:
 
 ---
 
-## Open question: do Brand and Theme travel together?
+## DECIDED: two switches (2026-07-14)
 
-The four current "brands" (Personal / Marketing / Product / Documentation) differ in **both** shape and color - so they are really **arms**. Two options:
+**Brand character** and **Brand color** are two separate controls, deliberately.
 
-- **One switch, two axes.** The UI offers "arm," which moves brand + theme together. The CSS keeps them separate (so the system can *prove* it could split them) but the switcher never invites garbage. **Recommended.**
-- **Two sliders.** Expressive, and immediately re-opens the unvetted cross-product.
+The reason is the demo itself: a visitor needs to see **"Marketing" in many different colors** to connect it to the real brands they already know. If the two moved together, that beat is impossible - you could never hold the character still and watch the color change, which is the whole *"that's almost GoFundMe... now purple"* moment. The cross-product is not an accident here; it IS the exhibit.
+
+**Naming, UI and DOM (settled 2026-07-14):**
+
+| Axis | Label | Attribute | Values |
+|---|---|---|---|
+| type, space, shape | **Character** | `data-brand-character` | Marketing · Product · Interface |
+| color | **Mood** | `data-brand-mood` | Happy · Techy · Muted |
+
+Both live on `<html>`, written in exactly two places (the FOUC script and the JS), so the verbosity is free and the DOM self-documents. (House rule: lean and clear, even verbose - no golf.)
+
+**"Mood" was suggested and adopted** - Happy / Techy / Muted literally *are* moods, and nothing else in the system claims the word.
+
+**"Voice" was suggested for the type/space axis and REJECTED - do not revisit.** `voice` is already a hard-defined term at three levels: ~30 tokens and 8 classes in this repo (`--calm-voice-font-size`, `attention-voice`, …), the house CLAUDE.md across every project, and **pssst-css itself** - the public methodology repo, which states *"voices carry font/size/rhythm, never color."* Three fatal problems:
+
+1. **Collision** - "is a voice a type pattern or a brand?" becomes a real question.
+2. **Level error** - a brand *sets* the voice tokens (`[data-brand]` blocks declare `--calm-voice-font-weight`), so a brand **contains** voices; it is not one. Naming the container after its contents inverts the hierarchy.
+3. **Space is not voice's job** - voices carry font/size/rhythm, not spacing (that is `space-scales.css`). "Voice for type and space" would be a *third* meaning.
+
+And the sharpest reason: this site exists to prove Derek can run a design system. Redefining his own foundational vocabulary *inside the demo* is exactly the bug a design-systems interviewer would catch.
+
+This also retires the earlier "one switch, two axes" recommendation - it is two switches (see above).
 
 ---
 
