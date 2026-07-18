@@ -1,0 +1,66 @@
+/* ============================================================================
+   FLAVORS  [data-flavor]  - the per-milestone poster palette (data-flavor on the
+   article). A poster-only concern: it sets --poster-fill / --poster-ink, which
+   only milestone.css consumes. Kept out of the page-token path deliberately.
+
+   The bare [data-flavor] block is the safety net and MUST come first, so the
+   named flavors beat it by source order (every selector here is one attribute -
+   equal specificity). It covers data-flavor='default' and any unknown value:
+   those posters paint with the page's own fill/ink. Don't restate these tokens
+   in milestone.css - a same-specificity rule in a later module file would
+   silently flatten every flavor (that regression has happened once already).
+
+   $todo Flavors are PARKED (2026-07-14) until the poster graphics exist - the
+   per-mood flavor overrides (the old muted/immersive takes) were dropped with
+   those emphases. This base set stays as the seam; when flavors return they
+   compose per mood. (Red light's poster take lives in red-light.css.)
+   ========================================================================== */
+
+[data-flavor] {
+	--poster-fill: var(--fill-primary);
+	--poster-ink: var(--ink-primary);
+}
+
+/* The default set is a 70s muted rainbow - classy, not costume: harvest gold,
+   dusty blue, greige, espresso, avocado, dusty rose. The scale files don't carry
+   these mid-chroma period tones, so like stone's greige they're authored oklch
+   here - this block IS the token layer for posters. */
+
+[data-flavor="warm"] {
+	/* harvest gold, leaning burnt orange */
+	--poster-fill: oklch(80% 0.085 70);
+	--poster-ink: oklch(36% 0.09 45);
+}
+
+[data-flavor="cool"] {
+	/* dusty blue */
+	--poster-fill: oklch(78% 0.05 240);
+	--poster-ink: oklch(33% 0.06 250);
+}
+
+[data-flavor="stone"] {
+	/* the original greige, already period-correct */
+	--poster-fill: #c9c9be;
+	--poster-ink: var(--color-stone-900);
+}
+
+[data-flavor="night"] {
+	/* milk-chocolate brown with a gold ink - deliberately a MID tone, not
+	   espresso: a near-black card in a light wall of muted pastels reads as a
+	   hole (seen in the grid). Truly dark posters are red-light's whole thing;
+	   the default set stays in one tonal family. */
+	--poster-fill: oklch(42% 0.045 55);
+	--poster-ink: oklch(85% 0.06 85);
+}
+
+[data-flavor="moss"] {
+	/* avocado */
+	--poster-fill: oklch(76% 0.07 115);
+	--poster-ink: oklch(33% 0.06 120);
+}
+
+[data-flavor="rose"] {
+	/* dusty rose */
+	--poster-fill: oklch(80% 0.05 20);
+	--poster-ink: oklch(36% 0.07 15);
+}

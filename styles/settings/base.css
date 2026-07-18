@@ -1,0 +1,139 @@
+/* ============================================================================
+   BASE - structure only. :root carries the STRUCTURAL defaults (type, scale,
+   corners, grain, voices) and the color-WIRING that derives from the palette
+   (links, scrim). It deliberately holds NO palette values (--fill/--ink/
+   --stroke/--accent/--selection) - those live in moods.css, so :root wears one
+   hat: "the base shape of the site," never "the default color."
+
+   The default MOOD (Expressive) binds its palette to :root over in moods.css
+   (`:root, [data-brand-mood="expressive"]`), so the page still paints by
+   default - but the palette is findable there, as a named block, not hidden
+   here. See settings.css for the whole-system map.
+   ========================================================================== */
+
+:root {
+	/* --- Color WIRING (derives from whatever mood is active; not palette) --- */
+
+	--link-color: var(--accent);
+	/* Underline color, independent of the link text. Defaults to the link color
+	   (tracks the mood since it reads --link-color); change this one line to any
+	   token for a differently-colored underline. */
+	--link-underline-color: var(--link-color);
+	/* The subtle link (a.relaxed, setup.css) has two OPTIONAL tokens a mood may
+	   declare: --link-relaxed-color (else it inherits the surrounding text) and
+	   --link-relaxed-underline-color (else the scope's --stroke-primary).
+	   Deliberately not declared here - the fallbacks ARE the default design, so
+	   every mood re-themes both links without restating anything. */
+
+	/* Scrim behind the mobile menu. Scheme-dependent only (not per mood), so it
+	   carries both schemes here and no mood block restates it. */
+	--scrim: light-dark(rgb(0 0 0 / 0.15), rgb(0 0 0 / 0.45));
+
+	/* --- Type families (Product character defaults; a character re-pairs) ---
+	   Pair convention: heading = the display font (left), body = the reading
+	   font (right). Product pair: Quicksand SemiBold / Spline Sans. Both are
+	   sans, named directly rather than routed through the sans/serif audition
+	   stacks. --font-heading-weight carries the "SemiBold". */
+	--font-heading: "Quicksand", system-ui, sans-serif;
+	--font-body: "Spline Sans", system-ui, sans-serif;
+	--font-heading-weight: 600;
+
+	/* Font role aliases: UI chrome + code. Scheme/character-invariant by default. */
+	--font-ui: var(--font-sans);
+	--font-code: var(--font-mono);
+
+	/* Corner radius for the milestone media frames (consumed in milestone.css).
+	   Each character states its own corner personality; the panel chrome keeps
+	   its own literal radii on purpose, so switching never morphs the panel. */
+	--corners: 0;
+
+	/* Grain finish tile - one feTurbulence noise SVG, generated once and reused
+	   as a background layer under the grain-* finish classes. It's blended INTO
+	   the fill (background-blend-mode), so color still comes from the fill token
+	   and only texture is added. Set to 'none' to disable (solid fill). Nothing
+	   consumes it yet outside the design-system tester, so it's inert elsewhere. */
+	--grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.5' intercept='0.5'/%3E%3CfeFuncG type='linear' slope='0.5' intercept='0.5'/%3E%3CfeFuncB type='linear' slope='0.5' intercept='0.5'/%3E%3CfeFuncA type='linear' slope='0' intercept='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+
+	/* Modular scale - base size + step contrast (the ladder is in
+	   font-scales.css). Each character owns its rhythm; bigger ratio = more
+	   dramatic size jumps. Named ratios: minor-third 1.2 · major-third 1.25 ·
+	   perfect-fourth 1.333 · augmented-fourth 1.414 · perfect-fifth 1.5 ·
+	   golden 1.618. */
+	--type-anchor: 1rem;
+	--scale-ratio: 1.25;
+
+	/* --- Voices - every voice's every font property (Product defaults).
+	   A [data-brand-character] block overrides any of these to re-shape; the
+	   voice classes in typography.css read these tokens only, never a raw value.
+	   Voices carry font/size/rhythm, NEVER color (house rule). Off-step weights
+	   (330, 530) are variable-font fine-tuning. --- */
+
+	/* calm-voice - default body copy (and bare <p>), incl. its em / strong */
+	--calm-voice-font-family: var(--font-body);
+	--calm-voice-font-size: 1.1rem;
+	--calm-voice-font-weight: 300;
+	--calm-voice-line-height: 1.5;
+	--calm-voice-em-font-style: italic; /* not sure if this is the best way - we can revisit */
+	--calm-voice-strong-font-weight: 410;
+
+	/* strong-voice */
+	--strong-voice-font-family: var(--font-heading);
+	--strong-voice-font-size: var(--step-up-1);
+	--strong-voice-font-weight: 500;
+	--strong-voice-line-height: 1.2;
+
+	/* attention-voice - milestone headings */
+	--attention-voice-font-family: var(--font-heading);
+	--attention-voice-font-size: var(--step-up-3);
+	--attention-voice-font-weight: 530;
+	--attention-voice-line-height: 1.2;
+
+	/* loud-voice - page titles */
+	--loud-voice-font-family: var(--font-heading);
+	--loud-voice-font-size: var(--step-up-4);
+	--loud-voice-font-weight: 500;
+	--loud-voice-line-height: 1.2;
+
+	/* quiet-voice */
+	--quiet-voice-font-family: var(--font-ui);
+	--quiet-voice-font-size: var(--step-down-1);
+	--quiet-voice-font-weight: 300;
+	--quiet-voice-line-height: 1.3;
+
+	/* data-voice - numbers, timestamps */
+	--data-voice-font-family: var(--font-code);
+	--data-voice-font-size: calc(var(--step-0) * 0.85);
+	--data-voice-font-weight: 400;
+	--data-voice-line-height: 1.4;
+	--data-voice-letter-spacing: 0.01em;
+
+	/* label-voice - form labels */
+	--label-voice-font-family: var(--font-ui);
+	--label-voice-font-size: var(--step-down-1);
+	--label-voice-font-weight: 500;
+	--label-voice-line-height: 1.3;
+
+	/* high-voice - uppercase eyebrows */
+	--high-voice-font-family: var(--font-ui);
+	--high-voice-font-size: var(--step-down-1);
+	--high-voice-font-weight: 400;
+	--high-voice-line-height: 1.2;
+	--high-voice-letter-spacing: 0.08em;
+	--high-voice-text-transform: uppercase;
+
+	--setting-button-corners: 0px;
+
+	/* $todo WIP (Derek) - toolbox trigger hover-theming experiment; red/blue/
+	   green are debug placeholders. These want to become --app-* chrome tokens
+	   (settings-panel.css) once the hover design lands. */
+	--toolbox-trigger-fill: red;
+	--toolbox-trigger-hover: blue;
+	--toolbox-trigger-corners: 8px;
+	--toolbox-trigger-border-color: green;
+}
+
+/* Apply the resolved base tokens to the page. Reads whatever mood is active. */
+html {
+	background-color: var(--fill-primary);
+	color: var(--ink-primary);
+}

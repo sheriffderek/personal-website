@@ -1,0 +1,54 @@
+/* ============================================================================
+   RED LIGHT  [data-red-light]  - a boolean override, NOT a mood (it left the
+   dial 2026-07-14). It stomps ALL color regardless of mood or character - the
+   theatrical finale, a forced-colors party trick.
+
+   Loaded AFTER moods.css so it out-ranks every mood on source order (each
+   selector is one attribute - equal specificity), reading as "...and this
+   overrides everything." Follows the same MOOD CONTRACT slot order so it diffs
+   cleanly against the moods.
+
+   Two takes on one red theme via light-dark():
+     light = the iPhone red-only filter look - the white page becomes FULL-ON
+             red (all the way, not a scale stop), ink near-black;
+     dark  = terminator view - a near-black room where the type glows red out
+             of the dark.
+   ========================================================================== */
+
+[data-red-light] {
+	--fill-primary: light-dark(#fd2222, oklch(16% 0.05 26));
+	--fill-secondary: light-dark(#d40003, oklch(21% 0.07 26));
+	--fill-auxiliary: light-dark(#ff3236, var(--color-red-950));
+
+	--ink-primary: light-dark(oklch(16% 0.05 26), var(--color-red-300));
+	--ink-secondary: light-dark(var(--color-red-950), var(--color-red-400));
+	--ink-auxiliary: light-dark(var(--color-red-900), var(--color-red-500));
+
+	--stroke-primary: light-dark(var(--color-red-800), var(--color-red-800));
+	--stroke-secondary: light-dark(var(--color-red-700), var(--color-red-900));
+	--stroke-auxiliary: light-dark(var(--color-red-700), var(--color-red-950));
+
+	--accent: light-dark(var(--color-red-950), var(--color-red-500));
+	--scrim: rgb(0 0 0 / 0.6);
+
+	/* The media wash (mechanism in milestone.css): real photos/videos render as
+	   luminosity over full red - brightness maps to red, the same math the iPhone
+	   filter does to a photo. Carousel dots' difference ink goes red so the
+	   inversion stays in-theme. */
+	--media-blend: luminosity;
+	--media-blend-fill: #ff0004;
+	--dot-ink: #ff0004;
+
+	/* Selection restates the inversion recipe (else the default highlighter
+	   inherits in and breaks the two-color room). Resolves per scheme. */
+	--selection-fill: color-mix(in oklab, var(--ink-primary) 80%, transparent);
+	--selection-ink: var(--fill-primary);
+}
+
+/* Posters too: red light stomps every flavor to the same near-black panel with
+   bright red linework. Descendant selector (0,2,0) out-specifies the base
+   [data-flavor] (0,1,0) in flavors.css regardless of load order. */
+[data-red-light] [data-flavor] {
+	--poster-fill: oklch(20% 0.07 26);
+	--poster-ink: #ff0004;
+}

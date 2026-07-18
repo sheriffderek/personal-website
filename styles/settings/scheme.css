@@ -1,0 +1,34 @@
+/* ============================================================================
+   SCHEME  [data-scheme]  - maps our attribute onto the native color-scheme
+   property. Two jobs, one line each:
+
+     1. Tells the browser to theme its OWN ui (scrollbars, form controls, the
+        canvas) to match, instead of leaving them light on a dark page.
+     2. It is the switch light-dark() reads. A token written light-dark(a, b)
+        resolves to `a` under `color-scheme: light` and `b` under
+        `color-scheme: dark` - so the SYSTEM preference and OUR toggle both flow
+        through one mechanism, and a scheme-varying token is declared exactly
+        once instead of in a media-query block AND a data-scheme block.
+
+   'system' is the absent/default case: `light dark` means "defer to the OS",
+   which is precisely what that row of the switcher promises. (Three states is
+   deliberate - see the Theme system section of CLAUDE.md.)
+
+   The generic dark blocks (a @media prefers-dark set AND a [data-scheme=dark]
+   set, each restating every token) are GONE as of the mood migration - every
+   palette carries its own light-dark() pairs, so there is nothing left to
+   restate and nothing left to STOMP a palette that doesn't define dark. That
+   was the whole trap the migration removed; this wiring is all dark mode needs.
+   ========================================================================== */
+
+:root {
+	color-scheme: light dark;
+}
+
+[data-scheme="light"] {
+	color-scheme: light;
+}
+
+[data-scheme="dark"] {
+	color-scheme: dark;
+}
