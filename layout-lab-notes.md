@@ -6,7 +6,99 @@ old `/layout-lab` PHP page. It will port into the real shell once proven.
 
 ---
 
+# ✅ CANONICAL SPEC (consolidated 2026-07-16) - read this first
+
+The single clean statement of the shell. Everything below this section is the dated *history* (the
+reasoning record); when they disagree, this section wins. This is what ports to the real site.
+
+## Vocabulary + naming (dashboard/app-shell terms, on purpose)
+
+The site is a personal portfolio used as a **playground to demonstrate application-grade UI**, so the
+names are the industry-standard ones a design-systems person recognises. Prefixes mark the layer:
+
+| prefix | layer | members |
+|---|---|---|
+| `shell-` | persistent app chrome (same every page) | `shell-tray` (the morphing control strip: top bar ↔ side strip), `shell-footer`, `shell-shade` (the dim layer we render ourselves) |
+| `page-` | per-page content | `page-wrapper`, `page-header` |
+| *(none)* | reusable components that slot in | `toolbar` (the group of icon buttons), `trigger` (one icon button), `panel` (a popover surface), `settings` (the display-settings form), `settings-band` (the inline exhibit instance of that form) |
+
+- **`panel`** is the popover surface (both menus share it). Roles by id: `#pages-menu` (a **menu** = a
+  simple nav list) and `#settings-panel` (the settings **form/panel**). "menu" = nav only; the settings are
+  a panel, never a "menu". "cluster"/"toolbox"/"dimmer"/"rail" are RETIRED words.
+- Names are **claims we then back**: a thing called `toolbar` should eventually carry `role="toolbar"` +
+  roving focus; `menu` its semantics; `shell-shade` a focus-trap. Name now, make-the-name-true as a
+  named later layer (not yet wired).
+
+## Variables: `--layout-<system>-<measure>` = "this is a structure knob"
+
+Any layout/structure-critical value carries the `--layout-` prefix so the structural surface reads as one
+block you can scan/grep - and know you're moving layout, not painting. Paint/theme tokens stay OUT of it
+(`--page-bg` now; `--fill-*`/`--ink-*` later) - that mirrors the theme system's structure-vs-color split.
+
+| system | tokens |
+|---|---|
+| `--layout-wall-*` | `-columns` (count 2→3), `-lane` (one lane), `-gap`, `-inset`, `-max` |
+| `--layout-list-*` | `-column` (reading col) |
+| `--layout-tray-*` | `-width` (glyph strip), `-reserve` (grid margin col), `-sidebar` (list sidebar col) |
+| `--layout-panel-*` | `-gap`, `-edge`, `-min`, `-max` — **read by placePanel via getComputedStyle**, so the JS re-encodes NO numbers. CSS is the single source for every layout constant. |
+
+## The axes (inputs → everything derives)
+
+**Independent inputs:** viewport width · `data-view` (list/grid, grid gated ≥1200) · `data-page`
+(timeline/plain, plain forces list) · open panel (none/pages/settings). Orthogonal: `data-scheme`
+(color only) · reduced-motion (shade fade only).
+
+**Derived (nothing re-encodes a breakpoint - the JS reads rendered geometry):**
+- **situation** ← width×view×page (base `list-small-over` · ≥1024 `list-dedicated-sidebar` · ≥1200
+  grid · ≥1450 grid+band · ≥1600 grid-3). Collapses for orientation to: **list→below, grid→beside.**
+- **menu open-direction** ← the toolbar's `flex-direction` (row→below, column→beside) + geometry (side).
+- **side** ← room vs the shared `--layout-panel-max` cap (all panels on a tray agree).
+- **align** ← the toolbar's box (panels share one corner edge, not the individual trigger).
+- **over/dim** ← does the placed rect overlap `<main>` (`data-over`) - pure geometry, not situation.
+
+## Locked rules (distilled)
+
+1. **Mirror model** - state on `<html>` + localStorage; N dumb form instances; one delegated `change`
+   + reflect-all. Nothing moves anything else.
+2. **shell-tray** = ONE sticky strip, positioned per situation; the glyph pins to the top (no magic
+   number). Primary (menu) takes the corner-most slot (row→`row-reverse` right; column→top).
+3. **Menu placement is JS** (`placePanel`), not CSS anchor positioning (Chrome-only) - cross-browser,
+   clamped inside the viewport always. Placed on open; re-placed live on width-resize; stays put on scroll.
+4. **A panel may not outlive its trigger** (state change hides trigger → close). **Grid toggle = door
+   IN only** (list-view only; way out is the Layout row).
+5. **shell-shade** = our own dim element (not native `::backdrop`, which blinks on menu-switch). One
+   rAF reconcile coalesces a switch's close+open: `want&&!shown`→in · `want&&shown`→hold · else→out.
+   z-index below the tray so triggers stay clickable over the dim.
+6. **Sidebar constraint** - in `list-dedicated-sidebar`, panels cap to `--layout-tray-sidebar` so both
+   fit the dedicated column consistently (list only; grid keeps the 360 cap).
+
+## Status
+Swept to this vocabulary 2026-07-16 (JS parses, zero stray old identifiers, braces balance). **Fable
+audit done** - cross-reference sound (no broken selector/id/token; declarative chain wired right);
+punch-list cleared (prose sweep rail→tray / cluster→toolbar, placeMenu→placePanel, grid-area
+filters→settings, filter DEFAULTS gap). **Browser-QA'd by Derek 2026-07-16 - all working, Safari
+included** (agent tooling couldn't verify; Derek confirmed by hand). The cross-browser claim is
+CONFIRMED - the JS-placement rework does what it was built for: the menu places correctly in Safari
+where CSS anchor positioning would have failed. Zero verification debt.
+
+**Bare-min standalone EXTRACTED 2026-07-16 → `experiments/shell.html`** - the sandbox minus the debug
+aids (situation badge, page-type toggle, violet/green region tints). JS parses, braces balance. Plain-
+page CSS + content kept (real feature; set `data-page='plain'` to exercise - no toggle). The shell-tray's
+subtle top-bar bg (`#000 4%`) kept (reads as real chrome, not a debug tint). This is the artifact that
+ports; `layout-sandbox.html` stays as the working lab.
+
+Next: commit, then port to the real PHP shell (re-fit to the lane-dealer, not a CSS grid; FOUC + state
+wiring).
+
+---
+
 ## ⏭ SESSION HANDOFF / NEXT UP (last worked 2026-07-14)
+
+> **SUPERSEDED (2026-07-16) — read the ✅ CANONICAL SPEC at the top instead.** This block predates the
+> naming sweep, the JS-placement rework, the shade, and the browser QA. Everything it lists as "open"
+> (menu-button placement, popover overflow, the dim question) is RESOLVED and captured in the spec.
+> Kept below as history only. Current state: swept to the new vocabulary, Safari-verified, standalone
+> extracted to `experiments/shell.html`. Next up = **port to the real PHP shell.**
 
 **WHERE WE ARE.** This session we REBUILT the sandbox on the **mirror model** after the old
 "one moving node" approach caused a cascade of bugs (anchor-jump, jitter, width-reflow,
@@ -37,23 +129,132 @@ pass at the airy "time to breathe" exhibit.
 | base | `list-small-over` | menu only goes over content (dim) |
 | >=1024 | `list-dedicated-sidebar` | menu in the rail's own space (no dim) |
 | >=1200 grid | `grid-2-rail-over` | thin trigger rail, menu over wall |
-| >=1450 grid | `grid-2-persistent-settings` | the airy band; scrolled -> island reveals |
-| >=1900 grid | `grid-3-...` | 3 columns |
-| >=2400 grid | `grid-3-...-dedicated-sidebar` | menu opens RIGHT into own space (no dim) |
+| >=1450 grid | `grid-2-persistent-settings` | airy band; sticky menu-rail, scrolled -> settings rejoin the rail |
+| >=1600 grid | `grid-3-...` | 3 columns (moved 1900->1600, 2026-07-16) |
 
-**THE OPEN QUESTION WE STOPPED MID-WALKTHROUGH: the MENU BUTTON (island) placement.**
-Established so far (resume here):
-- The button MUST be **independent of the settings/filters**. Tying it to them fails twice:
-  (1) it locks the settings' freedom to be re-composed, (2) it has no home on plain pages (no
-  filters exist there). "Works on all pages" is the hard test, and the tied option fails it.
-- So it wants its **own consistent, page-independent spot** (the reserved right edge / corner).
-  Pro: same place every page (learn it once), settings stay free, robust. Con: free-floating -
-  its vertical position is a CHOICE, not a derivation.
-- Current code uses `top: 13rem` - a HARDCODED guess ("below the filters"). That IS the
-  "leaning on things we can't count on" fragility Derek flagged. Leaning fix: pin to a stable
-  CORNER (`top: 1rem`), accept it's "the persistent corner trigger," not tied to content.
-- **STILL TO DECIDE:** where does an always-there, page-independent button live so it reads as
-  *intentional*, not orphaned? Derek was walking through options with pictures - pick up there.
+(`>=2400 grid-3-...-dedicated-sidebar` was retired 2026-07-16 - the menu now prefers the free side
+at every width and flips only when it must, so the breakpoint had no job left.)
+
+**RESOLVED (2026-07-15): the MENU BUTTON lives in a sticky MENU-RAIL.** We tried all three
+placements live in the sandbox (debug cycle, since removed) and Derek picked the rail by feel -
+the sticky travel is what won it:
+- **rail (A) - CHOSEN.** The shell-nav is a real column in the reserved right lane
+  (`grid-column: 3`), `position: sticky; top: 1rem`. It rides the page in flow and **pins to the
+  top as you scroll** - so it's always reachable, reads as intentional (owns a lane, aligns with
+  the top composition), and has **no magic number**. The two things the island couldn't do at once.
+- ~~island (`top: 13rem`)~~ REMOVED - the hardcoded "below the filters" guess, the fragility.
+- ~~corner (fixed, floats top-right)~~ - works but floats over the wall's edge; rail owns space.
+- **Works on plain pages too (confirmed):** at wide widths a plain page is already in
+  `list-dedicated-sidebar` (the rail column exists there independent of any band/filter), so the
+  same sticky menu rail carries over with no filter present. "Works on all pages" test PASSED.
+- **Below the rail widths** the honest fallback is the base sticky top bar (phones can't spare a
+  rail column) - unchanged.
+- Code: the `>=1450` block's shell-nav is now `sticky/top:1rem/grid-column:3`; the debug cycle
+  (button + JS + `data-menu` CSS) is gone; the reserved-column tokens renamed
+  `--island-*` -> `--menu-rail-*` to match the decision.
+
+**RAIL HORIZONTAL PLACEMENT (2026-07-16): hug the wall, not the viewport edge.**
+First rail cut pinned the glyph to the far viewport-right - Derek: "way out there, people
+won't see it." Fixed at >=1450: the wall column is sized to content (`minmax(0, var(--wall-max))`)
+with a trailing `1fr` soaking leftover width, and `shell-nav` gets `justify-content: flex-start`
+so the toolbox sits at the rail's INNER edge, right beside the cards. Derek: "working well."
+STILL TODO: propagate the same hug to the 1200-1450 (`grid-2-rail-over`) block - it still has the
+old `1fr max-content` far-right template.
+
+**LOCKED RULE (2026-07-16): THE MENU OPENS INTO THE FREE SPACE - WHICH SIDE IS NOT A BREAKPOINT.**
+
+Rule 1 says the axis picks *below vs beside*. This says which side of *beside*:
+**prefer the empty side, cover content only as the fallback.** The rail hugs the wall, so the free
+margin is to its RIGHT -> the grid menu prefers RIGHT at EVERY width and falls back to
+left-over-the-wall only where there's no room right (the 1200-1450 template puts the rail hard
+against the viewport edge; it flips there). (Mechanism note: this WAS CSS `left: anchor(right)` +
+`position-try-fallbacks: flip-inline`; since 2026-07-16 it's `placePanel()` in JS - the rule is
+unchanged, only who computes it. See the anchor-removal note below.)
+
+**Retired: the `>= 2400` situation.** Its whole job was "now there's room on the right, so open
+right" - a width standing in for a room measurement we can answer exactly. Gone from the CSS, the
+situations table, and the debug badge. Don't re-add a 2400 situation for a reason that is "how much
+room is there".
+
+**RESOLVED (2026-07-16): dropped CSS anchor positioning entirely; the menu is placed by JS.**
+Derek's requirement: "work 1000% of the time - exactly as we've decided - on all browsers." CSS
+anchor positioning is Chrome/Edge only (NOT Baseline - I'd wrongly claimed it was), so it could
+never meet that; in Safari/Firefox it no-ops and the popover lands centred. Polyfill
+(`@oddbird/css-anchor-positioning`) is partial + a runtime dep against house "least machinery" -
+rejected. So: the native `popover` stays (top layer, light-dismiss, focus - all Baseline), but
+WHERE it lands is now `placePanel()` in the script.
+- **The locked rules are its inputs, not CSS:** reads the cluster's `flex-direction` (below vs
+  beside - one source of truth), prefers the free side (right) and flips left only with no room,
+  and **clamps into the viewport unconditionally** - that clamp IS the "1000%".
+- **Placed on open** (`toggle`), hidden via `beforetoggle` until placed so it never flashes at an
+  unplaced spot (JS-only, so the no-JS floor is still a centred popover). Positions once - the
+  trigger is sticky, so an open menu stays aligned on scroll (Derek's choice).
+- **This deleted a whole pile of anchor workarounds:** the `position-try` flip, the flip-inline/
+  flip-block agonising, the resize hide+show reopen. On resize we now just re-run `placePanel` -
+  LIVE re-placement, no flash, no debounce (the demo Derek wanted, for free).
+- **Bugs it also fixed:** each menu now lands by ITS OWN trigger (anchor-name on the cluster made
+  both open at the cluster top); and it works in Safari/iOS - the recruiters' browsers.
+- **UNVERIFIED end-to-end:** browser CDP kept hanging (2 calls then 300s timeout). Confirmed only
+  that the pages trigger is visible + menu opens in grid. Derek to eyeball: open each menu at each
+  width, resize with one open (should follow live), check Safari.
+
+**Sidebar constraint (2026-07-16, Derek flagged): menus are capped to the rail column there.**
+`list-dedicated-sidebar` (>=1024, list) has a DEDICATED column (`--rail-width` 320). The JS-placement
+refactor had deleted the old `.menu { max-width: var(--rail-width) }`, so the wide Settings menu
+(360) spilled past the content edge and dimmed while narrow Pages (280) fit - the rail behaving two
+ways. Restored, scoped `html:not([data-view='grid']) .menu { max-width: var(--rail-width) }` (grid
+still wants the 360 cap beside the wall). Measured at 1280: main ends 811, cluster.right 1139; capped
+Settings lands at 819 -> clears 811 -> both menus fit the sidebar, neither dims. Consistent.
+
+**Side consistency (2026-07-16, Derek flagged): the SIDE is decided per-RAIL, not per-menu.**
+Edge case: at a wide window the Pages menu (280px) opened right into the margin while the wider
+Settings menu (360px) flipped left over content - same rail, two behaviours. Cause: the room check
+used each panel's OWN width, so they split whenever the right margin fell between the two widths
+(~280-360px). Fix: decide the side from a SHARED reference - `parseFloat(getComputedStyle(panel)
+.maxWidth)`, the menu's max-width CAP (360), same for every menu - so a rail commits to one side and
+all its menus follow. Each panel's real width still drives exact left/top + the viewport clamp.
+Verified: Pages at 1999px -> LEFT (roomRight 96 < 360); Settings runs the identical check -> LEFT
+too. (The cap is read from computed style, so it auto-tracks the CSS - no hardcoded 360 in JS.)
+
+**Alignment (2026-07-16, Derek flagged): menus align to the CLUSTER, not the trigger.** `placePanel`
+now positions against the toolbox's bounding box, so the pages menu and the settings menu share one
+clean edge (the corner-most edge of the rail) instead of stepping inboard to whichever glyph opened
+them. Trade-off accepted: the menu no longer points at the exact glyph clicked - fine, because the
+panels are mirrors and the cluster is tiny. (UNVERIFIED - Derek to eyeball; if he wanted per-glyph
+tethering instead, revert to `trigger.getBoundingClientRect()`.)
+
+**Mistakes not to repeat (all mine, all from the anchor era now deleted):**
+1. Claimed anchor positioning was Baseline. It is Chrome/Edge only. Check support before "safe".
+2. The preference was the bug, not the overflow - "left until 2400" was written for the old
+   far-edge rail; adding a flip just made a wrong preference flip sometimes.
+3. Shipped `flip-block` blind (browser was hung) - it caused Derek's "intermittent" report. Overlay
+   positioning is exactly the thing not to ship without eyes on it.
+
+**The DIM SIGNAL is derived, declared off `[data-over]`.** `placePanel` tests the placed panel's
+rect against `<main>` and sets `data-over` (over content -> dim; own space -> no dim). Why geometric
+overlap-with-`main` and not a per-branch flag: the "below" branch is over in the base bar but NOT
+over in the list sidebar (drops into the empty rail column), so side/axis alone can't tell - the
+rect test is the one signal right everywhere. **This still decides WHETHER to dim; what changed is
+how the dim is RENDERED (below).**
+
+**RESOLVED (2026-07-16): we render the dim with our OWN element, not the native `::backdrop`.**
+Derek's reason: the native `::backdrop` belongs to EACH popover, so switching menu A -> B destroys
+A's backdrop and builds B's -> it BLINKS. To animate the dim AND hold it steady across a switch, we
+need one persistent element we own (`.dimmer`, a fixed div; native `::backdrop` kept transparent).
+- **Three cases, and a single toggle can't tell them apart** (a switch fires a close AND an open):
+  initialising (closed -> a dimming menu opens) = fade IN · switching (dimming menu -> another) =
+  HOLD, no re-animate · closing (last -> none) = fade OUT. So we don't react per-event: every toggle
+  (and resize) SCHEDULES one `requestAnimationFrame` reconcile, which coalesces the switch's
+  close+open into ONE look at the settled state. Then: `want && !shown` -> in · `!want && shown` ->
+  out · `want && shown` -> the switch, a deliberate no-op (never blinks). `want` = any
+  `.menu[data-over]:popover-open`.
+- **z-index 4 (BELOW the shell-nav's 5):** content dims but the triggers stay bright and clickable
+  ON TOP of the dim, so you can switch straight from one menu to the next (that one-click switch is
+  the whole thing that must not blink). The open menu is a top-layer popover, always above both.
+- Policy still one place: reconcile ignores `data-over` = always dim; never add `is-shown` = never.
+  Fade is `opacity` transition, dropped under `prefers-reduced-motion` (dim stays, animation goes).
+- **UNVERIFIED** (CDP hung): needs Derek to eyeball the no-blink on an A->B switch, and that the
+  triggers stay clickable over the dim.
 
 **OTHER OPEN THREADS (taste-led, Derek's calls):**
 - **Airy exhibit:** match the real page's spacious, un-boxed apparatus + big negative space
@@ -71,6 +272,104 @@ Established so far (resume here):
   (deliberate), and it's a per-page-type choice.
 - **Filter is page-specific** (home/style-guide only) - on plain pages it shouldn't appear even
   in the toolbox popover (conditional row; not yet handled).
+
+**LOCKED RULE (2026-07-16): THE CLUSTER'S AXIS DECIDES WHERE THE MENU OPENS.**
+
+| toolbox axis | menu opens | why |
+|---|---|---|
+| `row` | **BELOW** | a row sits ABOVE the content, so the menu drops down |
+| `column` | **BESIDE** | a column sits BESIDE the content, so it opens sideways |
+
+The axis already encodes where the content is - so the open-direction is **derived** from it,
+never picked per breakpoint. Same move as the menu-rail itself: **derive, don't guess.**
+- **The pairing is the contract:** a block that sets the cluster's `flex-direction` has thereby
+  ALREADY decided the menu's direction - set both in that same block so they can't drift.
+- `position-try-fallbacks` on `.menu` is only the safety net for "this side has no room." It is
+  NOT how the side gets chosen. Don't let a fallback become the de-facto placement.
+- **Audit + fix applied:** base (row/below) OK · >=1024 (row/below) OK · **>=1200 grid was the one
+  violation** (row cluster but opened beside) -> the cluster is now a `column` there, which is also
+  what it visually is (a thin rail beside the wall) · >=1450 + >=2400 (column/beside) OK.
+
+**LOCKED RULE (2026-07-16): THE PRIMARY TAKES THE CORNER-MOST SLOT + THE RANK.**
+
+The cluster's *order* derives from the axis exactly like its open-direction does:
+
+| toolbox axis | primary sits | mechanism |
+|---|---|---|
+| `row` | at the **RIGHT** end | `row-reverse` |
+| `column` | at the **TOP** | plain `column` (free) |
+
+Both land the primary nearest the **top-right corner** - where the eye and hand already go for
+nav. Derive, don't place by hand.
+
+**The rank (Derek, 2026-07-16):**
+1. **MENU (pages) - PRIMARY.** The most important trigger, and on **all pages**. The one member
+   that never has to earn its slot (everything else answers the orphaned-job membership test).
+2. **Filters / settings - secondary.** "For fun," and page-specific (timeline only).
+3. **Contextual extras - LAST.** Grid-mode toggle, back-to-top arrow, etc.
+
+- **DOM order IS importance order, primary first** (menu, settings, grid, back-to-top) - so the
+  keyboard reaches the primary first. `row-reverse` puts it in the corner WITHOUT reordering the
+  source. A new trigger is inserted at the rank it earns, never appended to the end.
+- **Was violated:** the DOM had settings, grid, **pages(3rd)**, back-to-top. Reordered.
+- a11y note: in the row, visual order runs opposite tab order. Acceptable here - independent icon
+  buttons, no meaning rides on their sequence, and source order keeps the PRIMARY first.
+
+**LOCKED RULE (2026-07-16): A PANEL MAY NOT OUTLIVE ITS TRIGGER.**
+Derek caught it: open the settings popover in `grid-2-rail-over`, widen past 1450, and the panel
+would be stranded on screen - the settings trigger hides (it becomes a reveal member once the
+band takes over), but a popover lives in the TOP LAYER, so hiding its trigger does NOT close it.
+Result: an orphaned panel over the wall, duplicating the band that just appeared.
+- **The condition is not a breakpoint - it's "is my trigger rendered?"** (`getComputedStyle(trigger)
+  .display === 'none'` -> `panel.hidePopover()`). Derive, don't guess: ask the trigger, and every
+  future toolbox member is covered for free.
+- **Closing loses nothing** - the mirror model means the band is already showing the same controls
+  with the same state. The two surfaces make the transition graceful instead of lossy.
+- Covered doors: resize (breakpoint crossing) · `applyState` (e.g. view -> grid) · the band
+  observer (scrolling the band back into view re-hides the reveal members) · page-type switch.
+- `closeOrphanedPanels()` in the sandbox script. **UNVERIFIED** (browser CDP still hung).
+
+**LOCKED RULE (2026-07-16): THE GRID BUTTON IS THE DOOR *IN*, NOT A TWO-WAY SWITCH.**
+It renders only where grid exists (`>= 1200`) **AND only in LIST view** - once you're in grid it's
+gone. Why: the settings panel already carries the Layout row, so a grid glyph in the rail would be
+a second control for a job already covered, and the rank says contextual extras only hold a slot
+while they *have* a job. (Independently confirms the real site's 2026-07-11 finding: every glyph
+tried for a layout switch just read as "menu" - hence NO layout member on the corner island.)
+- Selector: `html:not([data-view='grid']) .trigger[data-grid-toggle]`. The plain-page rule sits
+  later in source at equal specificity, so plain pages still hide it - **don't reorder those two.**
+- Dropped from the `>= 1450` reveal lists - nothing to reveal if it never exists in grid.
+- Knock-ons (the button must stop *claiming* to be a toggle): `aria-label` is now **"View as grid"**,
+  not "Toggle grid layout"; the JS handler just does `applyState('view', 'grid')` instead of reading
+  the current view to pick a direction - a branch that can't happen is a false story.
+- **The way OUT of grid is the settings panel's Layout row.** That's the only door, by design.
+
+**LOCKED RULE (2026-07-16): AN OPEN PANEL STAYS OPEN ACROSS A RESIZE AND RE-PLACES LIVE.**
+The menu re-placing itself as the viewport changes IS the demo (Derek: closing it is a valid fix
+but "not as nice for demonstrating it" - same spirit as the motion policy, the system performing
+itself is the pitch). Since the JS placement rewrite (see the anchor-removal note above) this is
+trivial: on each width-changing resize, re-run `placePanel` on every open panel - LIVE re-placement,
+no flash, no debounce, no hide/show. If a resize hides the trigger (settings -> band past 1450) the
+panel closes instead (a panel may not outlive its trigger).
+- **WIDTH only:** mobile fires resize when the URL bar collapses on scroll - height, not a reason
+  to disturb an open menu.
+- (History, so it isn't reintroduced: this went close-on-resize -> debounced hide/show reopen ->
+  this. The first two were workarounds for `position-try` not reverting while open; owning
+  placement in JS deleted the need. Don't add a debounce or a reopen back.)
+
+**STILL OPEN - THE BIG ONE: anchor positioning is Chrome/Edge only, NOT Baseline.**
+(I had claimed it was Baseline - **that was wrong**, corrected 2026-07-16 via modern-web-guidance.)
+Safari + Firefox ship none of it, so `anchor-name` / `position-anchor` / `anchor()` /
+`position-try-*` all no-op there and the popover lands **centered on screen**. Derek's recruiters
+are on Safari/iOS - that IS the "visitor sees a broken state" the lab's gate forbids, so this must
+be settled before the port. Options:
+1. **Polyfill** `@oddbird/css-anchor-positioning` - note it does NOT support `position-area` on
+   popovers (must use `anchor()` insets - what we already have) and needs explicit anchor names
+   (we have those too). So our current shape is already the polyfill-compatible one.
+2. **Position from the layout instead** - the rail is a REAL grid column we own; placing the panel
+   with the grid needs no anchor at all. Most consistent with everything else locked this arc
+   (derive from what we control). **Agent's lean.**
+3. **Accept centered-popover** as the Safari floor (the notes do call the overlay popover the
+   no-JS default).
 
 **PRINCIPLES LOCKED THIS ARC:**
 - Weird nav is fine on a page or two (the exploration/flagship pages); the MAJORITY are simple +
@@ -107,8 +406,9 @@ cause, now abandoned).
   - `list-dedicated-sidebar` (≥1024) - menu in the rail's own space, no dim. Toolbox is a horizontal row.
   - `grid-2-rail-over` (≥1200, grid) - 2-col wall, thin trigger rail, menu over wall.
   - `grid-2-persistent-settings` / `scrolled` (≥1450, grid) - the airy exhibit band + reveal-on-scroll.
-  - `grid-3-…` (≥1900) - 3 columns.
-  - `grid-3-…-dedicated-sidebar` (≥2400) - menu opens right into its own space.
+  - `grid-3-…` (≥1600) - 3 columns.
+  - (`grid-3-…-dedicated-sidebar` ≥2400 was retired 2026-07-16 - menu now prefers the free side at
+    every width and flips only when it must.)
 - **Grid toggle** glyph (appears ≥1200; the door in/out; mirrors the Layout radio).
 - **Plain-page toggle** (debug button in the intro) - flips to a plain page: no band, no wall, no grid
   toggle; just the shell + text, forced to list.
@@ -116,23 +416,24 @@ cause, now abandoned).
 - **The exhibit is airy now**: intro breaks out (3fr/2fr top), settings un-boxed + quiet labels,
   generous "time to breathe" gap before the wall.
 
-## 🔑 THE BIG OPEN DECISION (decide this FIRST next time)
-**Where the MENU BUTTON lives.** We walked through 3 options with pictures:
-1. Viewport corner (`top: 13rem`) - REJECTED: magic number, fragile.
-2. Tied to the settings block - REJECTED: locks the settings' freedom AND has no home on plain pages.
-3. **A persistent right MENU-RAIL beside the content** - the PROPOSED direction (not yet built).
+## 🔑 THE BIG DECISION - RESOLVED (2026-07-15): the sticky MENU-RAIL
+**Where the MENU BUTTON lives.** Tried all 3 live in the sandbox; Derek picked the rail by feel -
+the **sticky travel** is what sold it (glyph rides the page up and pins to the top).
+1. ~~Viewport corner (`top: 13rem`)~~ - REJECTED: magic number, fragile. REMOVED from code.
+2. ~~Tied to the settings block~~ - REJECTED: locks the settings' freedom AND no home on plain pages.
+3. **A persistent right MENU-RAIL beside the content - CHOSEN + BUILT.**
 
-**Proposed plan (confirm/refine before building):**
-- The shell has ONE shape on every page: **`[ content-area | menu-rail ]`**.
-- **menu-rail** = a thin persistent right column, identical on every page. The menu glyph sits
-  **top-right, `position: sticky`** → always reachable at every scroll position (solves "reach it at the top").
+**What shipped in the sandbox:**
+- The shell has ONE shape on wide pages: **`[ content-area | menu-rail ]`**.
+- **menu-rail** = the shell-nav as a real reserved right column (`grid-column: 3`), the glyph
+  **`position: sticky; top: 1rem`** → rides in flow, pins to the top at every scroll depth.
 - **content-area** = the page content: timeline → airy settings zone + wall; plain → heading + text.
-  The settings live INSIDE the content-area, free to move (never tied to the rail).
-- Why it wins: always reachable, independent of settings, works on all pages, conventional (top-right =
-  where people look for nav), robust (real column, no magic number). Cost: a thin rail reserved on every
-  page, even plain (acceptable - it reads as "the shell has a menu rail," not a weird margin).
-- **If confirmed → build order**: plain-page version first (rail beside text, the simpler case), then
-  bring the timeline page into the same `[ content | rail ]` frame.
+  Settings live INSIDE the content-area, free to move (never tied to the rail).
+- **Confirmed on plain pages (no filter):** a wide plain page is already `list-dedicated-sidebar`,
+  whose rail column exists independent of any band/filter - the same sticky menu rail carries over.
+- Why it won: always reachable, independent of settings, works on all pages, no magic number.
+- **Next: port the proven rail into the real PHP shell** (`includes/`, `styles/`) - same
+  `[ content | rail ]` frame, sticky glyph, list + grid + plain.
 
 ## The reconciliation insight we finally connected on
 The airy/spacious layout (settings spread as background decoration, "time to breathe") and nav
@@ -142,7 +443,7 @@ of the settings apparatus**. Settings = displayed art (free to sprawl); nav = on
 of pages are plain).
 
 ## Open items / still to think through
-- ✅ FIRST: confirm the menu-rail plan above.
+- ✅ DONE: menu-rail decided + built (sticky rail, no magic number; confirmed on plain pages).
 - The exhibit's airy composition needs more design love (proportions, "background-art" feel) to match the
   real original's spread apparatus (Derek's screenshots of the live site).
 - Page-header treatment: breaks out on timeline, is just a heading on plain - must read well BOTH ways.

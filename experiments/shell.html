@@ -4,11 +4,16 @@
 <head>
 	<meta charset='utf-8'>
 	<meta name='viewport' content='width=device-width, initial-scale=1'>
-	<title>Layout sandbox</title>
+	<title>Shell</title>
 
 	<style>
 		/* ============================================================
-		   LAYOUT SANDBOX - rebuilt on three principles:
+		   SHELL - the bare-min standalone extracted from layout-sandbox.html
+		   (debug aids stripped: situation badge, page-type toggle, region tints).
+		   This is the proven shell that ports to the real site. Canonical spec +
+		   axis map: layout-lab-notes.md.
+
+		   Built on three principles:
 
 		   1. The settings are ONE semantic form (fieldset/legend/radio/range).
 		      The markup carries NO layout - CSS arranges it per situation.
@@ -306,7 +311,6 @@
 		}
 
 		.page-header {
-			background: color-mix(in srgb, var(--page-bg), violet 8%);
 			padding: 0.5rem 1rem;
 		}
 
@@ -334,7 +338,6 @@
 
 		.shell-footer {
 			padding: 2rem 1rem;
-			background: color-mix(in srgb, var(--page-bg), green 6%);
 		}
 
 		/* ============================================================
@@ -641,65 +644,6 @@
 		html[data-page='plain'] .plain-content {
 			display: block;
 		}
-
-		/* ============================================================
-		   DEBUG - live situation label. Driven by the SAME media queries as the
-		   layout, so it always names the real situation. Remove before ship.
-		   ============================================================ */
-		.situation {
-			display: inline-block;
-			margin: 0 0 0.75rem;
-
-			padding: 0.45rem 0.7rem;
-			background: #111;
-			color: #4ade80;
-			border: 2px solid #4ade80;
-			font-family: ui-monospace, monospace;
-			font-size: 0.95rem;
-			font-weight: 700;
-			line-height: 1;
-			border-radius: 6px;
-			pointer-events: none;
-		}
-
-		.situation::after {
-			content: 'list-small-over';
-		}
-
-		@media (width >= 1024px) {
-			.situation::after {
-				content: 'list-dedicated-sidebar';
-			}
-		}
-
-		@media (width >= 1200px) {
-			html[data-view='grid'] .situation::after {
-				content: 'grid-2-tray-over';
-			}
-		}
-
-		@media (width >= 1450px) {
-			html[data-view='grid'] .situation::after {
-				content: 'grid-2-settings-band';
-			}
-
-			html[data-view='grid'][data-scrolled] .situation::after {
-				content: 'grid-2-scrolled-tray-over';
-			}
-		}
-
-		@media (width >= 1600px) {
-			html[data-view='grid'] .situation::after {
-				content: 'grid-3-settings-band';
-			}
-
-			html[data-view='grid'][data-scrolled] .situation::after {
-				content: 'grid-3-scrolled-tray-over';
-			}
-		}
-
-		/* no >= 2400 badge: that situation is retired (see the RETIRED block above).
-		   The badge must only ever name situations that really exist. */
 	</style>
 </head>
 
@@ -897,18 +841,6 @@
 
 		<main>
 			<header class='page-header'>
-				<!-- DEBUG: live name of the current situation + a page-type switch
-					(both remove before ship). -->
-				<div class='situation' aria-hidden='true'></div>
-
-				<button
-					type='button'
-					class='page-toggle'
-					data-page-toggle
-				>
-					Switch page type (timeline / plain)
-				</button>
-
 				<h1>Layout sandbox</h1>
 
 				<p>Rebuilt: one semantic settings form, mirrored across surfaces that never move each other.</p>
@@ -1366,23 +1298,9 @@
 			});
 		});
 
-		// DEBUG page-type switch: flip between the timeline page and a plain page,
-		// so we can design the shell/header against both. Plain pages are never
-		// grid, so entering plain forces list.
-		document.querySelectorAll('[data-page-toggle]').forEach(function (button) {
-			button.addEventListener('click', function () {
-				if (root.getAttribute('data-page') === 'plain') {
-					root.removeAttribute('data-page');
-				} else {
-					root.setAttribute('data-page', 'plain');
-					applyState('view', 'list');
-				}
-
-				// the new page type may not have this trigger at all - a panel may
-				// not outlive its trigger.
-				closeOrphanedPanels();
-			});
-		});
+		// Page type (timeline vs plain) is set by the real router via data-page on
+		// <html> - there's no toggle here. The plain-page CSS + content stay so the
+		// shell's plain mode is portable; flip data-page='plain' to exercise it.
 	</script>
 </body>
 </html>

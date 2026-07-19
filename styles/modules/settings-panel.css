@@ -85,6 +85,17 @@
 /* ----------------------------------------------------------------------------
    2. Toolbox primitive — trigger, glyph, popover panel */
 
+/* The trigger group. One flex parent so the glyphs arrange as a set, and so the
+   panel-placement script has a single element whose AXIS says where panels open
+   (row -> the group sits above content, panels drop BELOW; column -> it sits
+   beside, panels open BESIDE). The rail owns placement, the toolbar owns
+   arrangement - which is also what the $refactor note on .page-rail is after. */
+.toolbar {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
 button.toolbox-trigger {
 	all: unset;
 

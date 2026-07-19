@@ -19,7 +19,21 @@
 <?php $page_has_grid = GRID_VIEW_ENABLED && ($page_controls ?? null) === 'filter-control'; ?>
 
 
-<!-- these buttons/triggers all need to be in a parent so we can style them as a group - or not based on brand -->
+<?php /* ---- The toolbar ----
+	One flex parent for the trigger glyphs so they arrange as a GROUP (this is
+	the "these all need to be in a parent" note that used to live here).
+
+	It earns its keep twice over: it lets the triggers be styled/spaced as a set
+	independent of the rail, and it gives the panel-placement script a single
+	element whose axis (flex-direction) says where panels should open - row means
+	the group sits above the content so panels drop BELOW it; column means it sits
+	beside, so panels open BESIDE. The rail keeps PLACEMENT; the toolbar owns
+	ARRANGEMENT.
+
+	The panel and the corner island stay OUTSIDE it on purpose: the panel goes to
+	the top layer (or renders inline in grid view), and the island is its own
+	floating cluster. */ ?>
+<div class='toolbar'>
 
 <?php /* ---- Grid invite ----
 	A little toggle that only exists where the grid exists (>= 1600px, list
@@ -55,6 +69,8 @@
 		</svg>
 	</span>
 </button>
+
+</div><?php /* end .toolbar */ ?>
 
 <div
 	id='menu-settings'
