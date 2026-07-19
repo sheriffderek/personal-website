@@ -186,7 +186,7 @@
 	   warms the AudioContext (browsers require a user gesture). After that,
 	   any click warms it too, but only when sound is on. */
 	document.addEventListener('click', function (e) {
-		if (e.target.closest('.toolbox-trigger, .read-more')) { ensureContext(); return; }
+		if (e.target.closest('.trigger, .read-more')) { ensureContext(); return; }
 		if (isOn()) ensureContext();
 	});
 	document.addEventListener('input', function () { if (isOn()) ensureContext(); });

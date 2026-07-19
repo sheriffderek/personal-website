@@ -1,8 +1,10 @@
-/* Display settings toolbox
-   ------------------------
-   Generic toolbox primitive (trigger + popover panel) + settings-specific rows.
+/* Display settings
+   ----------------
+   Generic trigger + panel primitive (a glyph button opening a popover) +
+   settings-specific rows.
    Native HTML popover handles open/close, Esc, and light-dismiss.
-   CSS anchor positioning pins the panel to the trigger — no JS measurement.
+   Panel PLACEMENT is JS (placePanel, settings-panel.js) - cross-browser,
+   clamped inside the viewport; CSS owns only size and skin.
 
    Chrome lives inside [data-ui='app'] so a brand's font families
    don't leak into the panel chrome. Token names map to the project's
@@ -11,8 +13,8 @@
 
    Sections follow the DOM, outside in:
      1. App chrome scope ([data-ui='app'] tokens + .app-data-voice)
-     2. Toolbox primitive (.toolbox-trigger, .toolbox-glyph, .toolbox-panel)
-     3. Menu scrim (.menu-scrim)
+     2. Trigger + panel primitive (.trigger, .glyph, .panel)
+     3. Site shade (.site-shade)
      4. Settings menu (.settings-trigger, .settings-panel rows and pills)
      5. Slider primitive (.plain-range)
      6. Timeline filter (.filter-control, .mini-map) */
@@ -75,28 +77,42 @@
    inherited, so covering only the buttons leaves the gaps (glyph, labels,
    panel background) able to trigger zoom on a stray double-tap. Scoped to the
    bar + panels, so the carousel's own touch handling stays untouched. */
-.page-rail,
-.page-rail *,
-.toolbox-panel,
-.toolbox-panel * {
+.site-tray,
+.site-tray *,
+.panel,
+.panel * {
 	touch-action: manipulation;
 }
 
 /* ----------------------------------------------------------------------------
-   2. Toolbox primitive — trigger, glyph, popover panel */
+   2. Trigger + panel primitive — trigger, glyph, popover panel */
 
 /* The trigger group. One flex parent so the glyphs arrange as a set, and so the
    panel-placement script has a single element whose AXIS says where panels open
    (row -> the group sits above content, panels drop BELOW; column -> it sits
-   beside, panels open BESIDE). The rail owns placement, the toolbar owns
-   arrangement - which is also what the $refactor note on .page-rail is after. */
+   beside, panels open BESIDE). The tray owns placement, the toolbar owns
+   arrangement.
+
+   Two locked rules ride on the axis (see the lab spec, layout-lab-notes.md):
+
+     1. THE AXIS DECIDES WHERE PANELS OPEN - placePanel reads this very
+        flex-direction, so a block that sets the axis has thereby already
+        decided the open direction. One source of truth.
+     2. THE PRIMARY TAKES THE CORNER-MOST SLOT - DOM order is importance
+        order, primary first (pages menu when it returns, then settings,
+        then contextual extras). row-REVERSE lands the first DOM member at
+        the visual right end - the corner where the eye and hand go - without
+        reordering the source, so the keyboard still reaches it first. (The
+        visual order running opposite tab order is fine here: independent
+        icon buttons, no meaning in their sequence.) */
 .toolbar {
 	display: flex;
+	flex-direction: row-reverse;
 	align-items: center;
 	gap: 0.5rem;
 }
 
-button.toolbox-trigger {
+button.trigger {
 	all: unset;
 
 	/* all: unset wipes the setup.css defaults on button too, so restore the
@@ -127,7 +143,7 @@ button.toolbox-trigger {
 	}
 }
 
-.toolbox-glyph {
+.glyph {
 	--glyph-size: 1.25rem;
 
 	width: var(--glyph-size);
@@ -143,28 +159,27 @@ button.toolbox-trigger {
 	pointer-events: none;
 }
 
-.toolbox-panel {
-	/* Anchor to the menu bar (.page-rail), not the trigger button, so both
-	   menus align to the bar's edges. Using top + right (not position-area)
-	   means only one end of each axis is pinned, so the panel sizes to its
-	   content instead of stretching to fill an inset region. */
-	position-anchor: --menu-bar;
+.panel {
+	/* WHERE the panel lands is set by JS (placePanel, settings-panel.js) - NOT
+	   by CSS anchor positioning, which is Chrome/Edge only and so could never
+	   be bulletproof on every browser (in Safari/Firefox it no-ops and the
+	   popover lands centred - on exactly the phones recruiters use). CSS here
+	   owns only the panel's SIZE and skin; the script reads the toolbar's rect
+	   on open, sets top/left, and clamps inside the viewport - identical in
+	   every browser. Fixed from the start so there's never a flow-positioned
+	   first frame; the script writes the position before paint. */
+	position: fixed;
 	inset: auto;
-	top: anchor(bottom);
-
-	/* Line the panel's right edge up with the header's right PADDING (where the
-	   trigger buttons sit), not the header's border edge — so it reads as tucked
-	   under the buttons rather than flush to the screen. */
-	right: calc(anchor(right) + var(--gutter));
-	margin: 0.5rem 0 0 0;
+	margin: 0;
 
 	width: max-content;
 
-	/* Never wider than the screen. Right-inset by a gutter, so the cap leaves a
-	   matching gutter on the LEFT - 360px on roomy screens, viewport-minus-two-
-	   gutters on small ones. min() also caps the min-width against overflow. */
-	min-width: min(280px, 100vw - var(--gutter) * 2);
-	max-width: min(360px, 100vw - var(--gutter) * 2);
+	/* Size caps come from the shared --layout-panel-* tokens (default-layout
+	   .css); placePanel reads the same tokens, so structure and behaviour agree
+	   by construction. The viewport term keeps a gutter each side on screens
+	   narrower than the caps. */
+	min-width: min(var(--layout-panel-min), 100vw - var(--gutter) * 2);
+	max-width: min(var(--layout-panel-max), 100vw - var(--gutter) * 2);
 
 	/* Never taller than the space below the bar - scroll inside if the content
 	   still doesn't fit, so the panel can't run off the bottom of the screen. */
@@ -202,53 +217,48 @@ button.toolbox-trigger {
 			opacity: 0;
 		}
 	}
+}
 
-	/* Fallback for browsers without anchor positioning: drop the popover
-	   into the viewport's top-right and let the rail's stacking pin it. */
-	@supports not (anchor-name: --x) {
-		top: 4rem;
-		right: 1rem;
+/* The dedicated sidebar (>= 1024, list view) is its own column
+   (--layout-tray-sidebar). Cap the panels to it so they live in that space
+   CONSISTENTLY - otherwise a wide panel spills past the content edge and dims
+   while a narrow one fits, and the same tray behaves two ways. placePanel
+   reads this cap as its shared side reference, so geometry and dim follow.
+   List only - the grid keeps the full --layout-panel-max beside the wall. */
+@media (width >= 1024px) {
+	html:not([data-view='grid']) .panel {
+		max-width: min(var(--layout-tray-sidebar), 100vw - var(--gutter) * 2);
 	}
 }
 
 /* ----------------------------------------------------------------------------
-   3. Menu scrim */
+   3. Site shade */
 
-/* Small screens: an open menu reads as a modal over live content, so dim the
-   page behind it for focus and legibility. Desktop keeps the anchored dropdown
-   with no dim.
+/* An open panel dims the page behind it ONLY when it actually covers content.
+   That condition is named ONCE: placePanel (settings-panel.js) tests the
+   placed panel's rect against <main> and writes [data-over] on the panel -
+   pure geometry, not a breakpoint. The shade is a CONSUMER of that flag (the
+   fix the old $todo here prescribed): a panel dropping into the tray's own
+   sidebar column isn't over content, so no dim - no `@media` display:none
+   guessing at when that happens.
 
-   ONE scrim for BOTH menus - deliberately NOT a per-popover `::backdrop`. A
+   ONE shade for ALL panels - deliberately NOT a per-popover `::backdrop`. A
    `::backdrop` belongs to a single popover, so switching Settings <-> Pages
    hands one popover's backdrop off to the other's, and that handoff always
-   flashes (a gap or a double-dim, depending how you tune it - you can't make
-   two independent backdrops behave as one continuous dim). This single element
-   belongs to neither menu: settings-panel.js shows it when ANY menu opens and
-   hides it when ALL close, so a switch never touches it and there's nothing to
-   flash. Tapping it dismisses via the document-level handler in that same file.
-
-   $todo (design note, menu currently disabled 2026-07-13): the scrim's
-   `.is-visible` is impersonating a state it doesn't own. The real condition
-   isn't "a menu is open" - it's "a menu is open AND presented as an OVERLAY."
-   Two axes, not one: open/closed, and presentation (OVERLAY = popover in the top
-   layer, on top of content, wants a scrim; PLACED = has its own column - the
-   sticky rail in desktop list view, or the inline strip at the top in grid
-   view). A placed menu is open and overlays nothing, so it wants no scrim. That
-   fact is currently smeared across three spots that only happen to agree: this
-   `.is-visible`, the `@media (width >= 1024px)` display:none below, and the JS
-   that adds/removes the `popover` attribute when the panel goes inline for grid.
-   When the menu comes back: name it once as a presentation flag on <html>
-   (`data-menu='overlay'`, same shelf as data-view/data-brand), set where the
-   rail-vs-inline-vs-popover decision is already made, and make the scrim (plus
-   any future scroll-lock / background inert / page-blur) a CONSUMER of it rather
-   than each re-deriving "are we overlaying?" on its own. */
-.menu-scrim {
+   flashes (a gap or a double-dim - you can't make two independent backdrops
+   behave as one continuous dim). This single element belongs to neither:
+   settings-panel.js reconciles it once per frame against the settled state,
+   so a switch never touches it and there's nothing to flash. Tapping it
+   dismisses via the document-level handler in that same file. */
+.site-shade {
 	position: fixed;
 	inset: 0;
 
-	/* Above the page and the sticky rail. The menu panels are popovers (top
-	   layer), so they always paint above this regardless of z-index. */
-	z-index: 900;
+	/* BELOW the tray (z-index 5): content dims, but the triggers stay bright
+	   and clickable ON TOP of the dim, so you can switch straight from one
+	   panel to the next without dismissing first. The open panel is a popover
+	   in the top layer - always above both, regardless of z-index. */
+	z-index: 4;
 
 	background: var(--scrim, rgb(0 0 0 / 0.15));
 
@@ -264,9 +274,10 @@ button.toolbox-trigger {
 		opacity: 1;
 	}
 
-	/* Desktop shows an anchored dropdown, never a modal dim. */
-	@media (width >= 1024px) {
-		display: none;
+	/* The fade is polish; the dim state itself is functional. Reduced motion
+	   keeps the dim, drops the animation. */
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
 	}
 }
 
@@ -282,7 +293,7 @@ button.toolbox-trigger {
 
 /* ----------------------------------------------------------------------------
    4. Settings menu — visible chrome on the trigger (project override of the
-   intentionally-minimal toolbox primitive), row spacing, radio pills */
+   intentionally-minimal trigger primitive), row spacing, radio pills */
 
 button.settings-trigger {
 	width: 2.25rem;
@@ -444,36 +455,23 @@ button.settings-trigger {
 		margin: 0.5rem 0 0;
 	}
 
-	/* The tier's descriptive name, under the slider. Only where there's room:
-	   shown from the SAME 1024px breakpoint as the minimap's two-column mode,
-	   hidden on the narrow popover where it would wrap. */
+	/* The tier's descriptive name, under the slider. Subtle support, not real
+	   info - a quiet aside, smaller than the count label and faded. Hidden by
+	   default: every POPOVER is too narrow for it (it wraps at any viewport
+	   width, so a media query can't gate it). The one surface with room is
+	   the settings BAND, which shows it (grid-view.css, >= 1450). */
 	.filter-level-name {
 		display: none;
 		margin: 0;
 
-		/* Subtle support, not real info: smaller than the count label and faded,
-		   so it reads as a quiet aside under the slider rather than a headline. */
 		font-size: calc(var(--app-data-voice-font-size) * 0.85);
 		color: color-mix(in oklch, var(--app-ink-secondary) 65%, transparent);
-
-		@media (width >= 1024px) {
-			display: block;
-		}
-	}
-
-	/* ...but any POPOVER state (the list dropdown, the grid island) is too
-	   narrow for the aside - it wraps, which is what the rule above was trying
-	   to avoid by viewport but couldn't (a popover is narrow at every width).
-	   Gate on the state, not the width: it shows only in the wide inline grid
-	   panel. */
-	&[popover] .filter-level-name {
-		display: none;
 	}
 }
 
 /* The minimap is a scaled schematic of the page itself. One column of bars
    (the milestone list) on phones; on large screens it gains a fake settings
-   panel on the right, mirroring the real layout's rail. It flips at the SAME
+   panel on the right, mirroring the real layout's tray. It flips at the SAME
    1024px breakpoint as the page grid (default-layout.css), so the diagram
    always matches the layout it depicts - keep the two breakpoints in sync.
    Its own root (not nested under .filter-control) to keep the bars within
@@ -503,7 +501,7 @@ button.settings-trigger {
 		}
 	}
 
-	/* The fake panel exists only where the real layout grows its rail. */
+	/* The fake panel exists only where the real layout grows its tray. */
 	.mini-map-panel {
 		display: none;
 		border: var(--app-border-width) solid var(--app-stroke-secondary);

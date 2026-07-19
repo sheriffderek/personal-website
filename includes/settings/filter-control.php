@@ -1,5 +1,5 @@
-<div class='filter-control' role='group' aria-labelledby='filter-control-label'>
-	<p class='app-data-voice' id='filter-control-label'>Filter: <span class='filter-count'><span data-filter-count>0</span> / <span data-filter-total>0</span></span></p>
+<div class='filter-control' role='group' aria-labelledby='filter-control-label<?= $id_suffix ?? '' ?>'>
+	<p class='app-data-voice' id='filter-control-label<?= $id_suffix ?? '' ?>'>Filter: <span class='filter-count'><span data-filter-count>0</span> / <span data-filter-total>0</span></span></p>
 
 	<div class='filter-body'>
 		<input type='range' min='1' max='6' step='1' value='1' data-set-filter class='plain-range' aria-label='Filter level'>
@@ -11,7 +11,7 @@
 
 		<?php /* Scaled schematic of the page itself: one column of bars (the
 		         milestone list) on phones; on large screens it gains a fake
-		         settings panel on the right, mirroring the real layout's rail.
+		         settings panel on the right, mirroring the real layout's tray.
 		         JS fills .mini-map-bars, one bar per milestone. */ ?>
 		<div class='mini-map' aria-hidden='true'>
 			<ol class='mini-map-bars'></ol>

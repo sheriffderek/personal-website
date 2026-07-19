@@ -123,13 +123,13 @@
 
 	--setting-button-corners: 0px;
 
-	/* $todo WIP (Derek) - toolbox trigger hover-theming experiment; red/blue/
+	/* $todo WIP (Derek) - trigger hover-theming experiment; red/blue/
 	   green are debug placeholders. These want to become --app-* chrome tokens
 	   (settings-panel.css) once the hover design lands. */
-	--toolbox-trigger-fill: red;
-	--toolbox-trigger-hover: blue;
-	--toolbox-trigger-corners: 8px;
-	--toolbox-trigger-border-color: green;
+	--trigger-fill: red;
+	--trigger-hover: blue;
+	--trigger-corners: 8px;
+	--trigger-border-color: green;
 }
 
 /* Apply the resolved base tokens to the page. Reads whatever mood is active. */

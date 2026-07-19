@@ -62,13 +62,13 @@
 				if (localStorage.getItem('red-light-preference') === 'on') html.setAttribute('data-red-light', '');
 
 				<?php if (GRID_VIEW_ENABLED && ($page_controls ?? null) === 'filter-control'): ?>
-					/* Grid only exists from 1600px (the breakpoint in
+					/* Grid only exists from 1200px (the breakpoint in
 					   styles/layouts/grid-view.css - keep the two matched); below
 					   it the preference waits, unapplied, and settings-panel.js
 					   re-checks on resize. Gated to the timeline page - a saved
 					   grid preference means nothing anywhere else. */
 					var view = localStorage.getItem('view-preference');
-					if (view === 'grid' && window.matchMedia('(min-width: 1600px)').matches) html.setAttribute('data-view', 'grid');
+					if (view === 'grid' && window.matchMedia('(min-width: 1200px)').matches) html.setAttribute('data-view', 'grid');
 				<?php endif; ?>
 			} catch (error) {
 				/* private-mode storage throw — the defaults need no attributes. */
@@ -98,11 +98,9 @@
 	<script src='https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js' defer></script>
 	<script src='https://player.vimeo.com/api/player.js' defer></script>
 	<script src='<?= asset('/scripts/audio.js') ?>' defer></script>
-	<?php /* Settings menu OFF site-wide (temporary - mobile scroll-freeze hunt).
-		The panel markup is likewise gated in <body> below. Both re-enable
-		together, only where $settings_panel_on is set (the design-system tester
-		today - see index.php). Restore site-wide by dropping the flag once the
-		freeze is fixed. */ ?>
+	<?php /* The settings script and the panel markup (in <body> below) gate
+		together on $settings_panel_on (index.php) - one flag to pull the whole
+		apparatus if it ever needs to go dark again. */ ?>
 	<?php if ($settings_panel_on ?? false): ?>
 		<script src='<?= asset('/scripts/settings-panel.js') ?>' defer></script>
 	<?php endif; ?>
@@ -164,24 +162,24 @@
 	</div>
 
 	<div class='page-wrapper'>
-		<?php /* Zero-height marker: once it scrolls out the top, the rail is
+		<?php /* Zero-height marker: once it scrolls out the top, the tray is
 			stuck. sticky-header.js watches it and toggles .is-stuck. */ ?>
-		<div class='rail-sentinel' aria-hidden='true'></div>
+		<div class='tray-sentinel' aria-hidden='true'></div>
 
-		<header class='page-rail'>
+		<header class='site-tray'>
 			<!--<a class='site-name' href='<?= '/' . ($target_query ?? '') ?>'>Derek Wood</a>-->
 
-			<?php /* Settings menu OFF site-wide (see the settings-panel.js gate in
-				<head>); on only where $settings_panel_on is set. */ ?>
+			<?php /* Gates together with the settings-panel.js <link> in <head>
+				via $settings_panel_on (index.php). */ ?>
 			<?php if ($settings_panel_on ?? false): ?>
 				<?php include INCLUDES_DIR . '/settings-panel.php'; ?>
 			<?php endif; ?>
 		</header>
 
 		<?php /* One dim behind an open menu (phones/tablets). Root-level so it
-			isn't trapped in the rail's stacking context. Shown/hidden by
-			settings-panel.js; see .menu-scrim in modules/settings-panel.css for
+			isn't trapped in the tray's stacking context. Shown/hidden by
+			settings-panel.js; see .site-shade in modules/settings-panel.css for
 			why it's one shared element and not a per-popover ::backdrop. */ ?>
-		<div class='menu-scrim' aria-hidden='true'></div>
+		<div class='site-shade' aria-hidden='true'></div>
 
 		<main>

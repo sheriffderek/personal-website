@@ -30,13 +30,12 @@ define('SITE_SHARE_IMAGE', '/default-meta.jpg');
    choreo.js + tour.js). Work in progress - off for now, flip to true to resume. */
 define('TOUR_ENABLED', false);
 
-/* GRID_VIEW_ENABLED - the List/Grid view axis: on big screens (>= 1600px) a
+/* GRID_VIEW_ENABLED - the List/Grid view axis: on big screens (>= 1200px) a
    Grid option turns the timeline into a multi-column wall of work, with the
-   settings panel inline at the top of the page. Off = the toggle never
+   settings BAND on the top composition from 1450 up. Off = the toggle never
    renders, the grid stylesheet never loads, and the FOUC script never sets
-   data-view - the site is exactly the single-column list. Trying it out -
-   flip to false to pull it. */
-define('GRID_VIEW_ENABLED', false);
+   data-view - the site is exactly the single-column list. */
+define('GRID_VIEW_ENABLED', true);
 
 /* SLIDER_HINT_ENABLED - the carousel-affordance nudge: the first carousel to
    scroll into view slides itself a little toward slide 2 and settles back,

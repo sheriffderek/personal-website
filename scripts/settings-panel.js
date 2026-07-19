@@ -1,5 +1,5 @@
-/* Display settings toolbox — single data-driven loop for switcher rows,
-   plus the timeline filter slider (its own shape, not a switcher).
+/* Display settings (triggers + panels) — single data-driven loop for switcher
+   rows, plus the timeline filter slider (its own shape, not a switcher).
    Native <popover> handles open/close, Esc, and light-dismiss. */
 (function () {
 	var html = document.documentElement;
@@ -238,7 +238,7 @@
 		}
 		reflect(current);
 
-		buttons.forEach(function (button, index) {
+		buttons.forEach(function (button) {
 			button.addEventListener('click', function () {
 				choose(button, false);
 			});
@@ -250,8 +250,16 @@
 				if (!step) return;
 
 				event.preventDefault();
-				var next = (index + step + buttons.length) % buttons.length;
-				choose(buttons[next], true);
+
+				/* Arrow keys move within THIS surface's radiogroup only. The
+				   mirror model renders the same controls on several surfaces
+				   (panel + band); stepping through the flat all-instances
+				   list would hop the focus between surfaces. */
+				var group = button.closest('[role="radiogroup"]') || button.parentElement;
+				var siblings = group.querySelectorAll('[data-set-' + cfg.kind + ']');
+				var position = Array.prototype.indexOf.call(siblings, button);
+				var next = siblings[(position + step + siblings.length) % siblings.length];
+				choose(next, true);
 			});
 		});
 	});
@@ -269,8 +277,10 @@
 	   hold the reader's place through the reflow (color-only mood swaps
 	   don't strictly need it, but the shared path keeps the story simple). */
 	function sliderSwitcher(cfg) {
-		var slider = document.querySelector('[data-set-' + cfg.kind + '-slider]');
-		var nameEl = document.querySelector('[data-' + cfg.kind + '-name]');
+		/* All instances, on every surface (mirror model: panel + band render
+		   the same slider; apply() reflects them all, none owns the state). */
+		var sliders = document.querySelectorAll('[data-set-' + cfg.kind + '-slider]');
+		var nameEls = document.querySelectorAll('[data-' + cfg.kind + '-name]');
 
 		function apply(idx, opts) {
 			var clamped = Math.max(0, Math.min(cfg.values.length - 1, idx));
@@ -289,26 +299,32 @@
 					}
 				} catch (error) {}
 			}
-			if (nameEl) nameEl.textContent = cfg.names[clamped];
-			if (slider) slider.value = String(clamped);
+			nameEls.forEach(function (nameEl) {
+				nameEl.textContent = cfg.names[clamped];
+			});
+			sliders.forEach(function (slider) {
+				slider.value = String(clamped);
+			});
 		}
 
 		applyByKind[cfg.kind] = apply;
 
-		if (slider) {
+		if (sliders.length) {
 			var saved = null;
 			try { saved = localStorage.getItem(cfg.storageKey); } catch (error) {}
 			var initialIdx = saved ? cfg.values.indexOf(saved) : 0;
 			if (initialIdx < 0) initialIdx = 0;
 			apply(initialIdx, { persist: false });
-			slider.addEventListener('input', function () {
-				syncScroll(function () {
-					apply(parseInt(slider.value, 10) || 0);
+			sliders.forEach(function (slider) {
+				slider.addEventListener('input', function () {
+					syncScroll(function () {
+						apply(parseInt(slider.value, 10) || 0);
+					});
+					if (window.ui && window.ui.sound) {
+						var t = parseFloat(slider.value) / (cfg.values.length - 1);
+						window.ui.sound('tick', t);
+					}
 				});
-				if (window.ui && window.ui.sound) {
-					var t = parseFloat(slider.value) / (cfg.values.length - 1);
-					window.ui.sound('tick', t);
-				}
 			});
 		}
 
@@ -354,11 +370,14 @@
 		5: '+ craft & tooling',
 		6: '+ other influences'
 	};
-	var filterSlider = document.querySelector('[data-set-filter]');
-	var miniMap      = document.querySelector('.mini-map-bars');
-	var filterName   = document.querySelector('[data-filter-name]');
-	var filterCount  = document.querySelector('[data-filter-count]');
-	var filterTotal  = document.querySelector('[data-filter-total]');
+	/* All plural (mirror model): the filter renders on every settings surface
+	   (panel + band), so every slider, label, and minimap is a dumb mirror
+	   that applyFilter reflects together. */
+	var filterSliders = document.querySelectorAll('[data-set-filter]');
+	var miniMaps      = document.querySelectorAll('.mini-map-bars');
+	var filterNames   = document.querySelectorAll('[data-filter-name]');
+	var filterCounts  = document.querySelectorAll('[data-filter-count]');
+	var filterTotals  = document.querySelectorAll('[data-filter-total]');
 	/* Both depths on purpose: in grid view the lane dealer re-parents the
 	   items into .timeline-lane wrappers. A bare '.timeline li' would also
 	   catch list items INSIDE card content (tag lists, document links). */
@@ -367,15 +386,19 @@
 
 	/* Total is the count in this tag lane (what actually rendered), so the
 	   label reads e.g. "14 / 35" and tops out at "35 / 35". */
-	if (filterTotal) { filterTotal.textContent = String(entries.length); }
+	filterTotals.forEach(function (filterTotal) {
+		filterTotal.textContent = String(entries.length);
+	});
 
-	if (miniMap && entries.length) {
-		entries.forEach(function (li) {
-			var article = li.querySelector('[data-weight]');
-			var weight = article ? parseInt(article.getAttribute('data-weight'), 10) : MAX_WEIGHT;
-			var bar = document.createElement('li');
-			bar.setAttribute('data-weight', String(weight));
-			miniMap.appendChild(bar);
+	if (entries.length) {
+		miniMaps.forEach(function (miniMap) {
+			entries.forEach(function (li) {
+				var article = li.querySelector('[data-weight]');
+				var weight = article ? parseInt(article.getAttribute('data-weight'), 10) : MAX_WEIGHT;
+				var bar = document.createElement('li');
+				bar.setAttribute('data-weight', String(weight));
+				miniMap.appendChild(bar);
+			});
 		});
 	}
 
@@ -416,7 +439,6 @@
 	}
 
 	function applyFilter(tiersShown, opts) {
-		var bars = miniMap ? miniMap.children : [];
 		var inCount = 0;
 		entries.forEach(function (li, i) {
 			var article = li.querySelector('[data-weight]');
@@ -424,16 +446,22 @@
 			var isIn = weight <= tiersShown;
 			if (isIn) inCount++;
 			li.style.display = isIn ? '' : 'none';
-			if (bars[i]) bars[i].setAttribute('data-state', isIn ? 'in' : 'out');
+			miniMaps.forEach(function (miniMap) {
+				if (miniMap.children[i]) miniMap.children[i].setAttribute('data-state', isIn ? 'in' : 'out');
+			});
 			if (isIn) ensureCarousels(li);
 		});
-		if (filterName) filterName.textContent = FILTER_NAMES[tiersShown] || '';
-		if (filterCount) filterCount.textContent = String(inCount);
+		filterNames.forEach(function (filterName) {
+			filterName.textContent = FILTER_NAMES[tiersShown] || '';
+		});
+		filterCounts.forEach(function (filterCount) {
+			filterCount.textContent = String(inCount);
+		});
 		/* The visible tier name is decorative (small, hidden on narrow screens),
 		   so the slider itself announces the tier for assistive tech. */
-		if (filterSlider) {
+		filterSliders.forEach(function (filterSlider) {
 			filterSlider.setAttribute('aria-valuetext', (FILTER_NAMES[tiersShown] || String(tiersShown)) + ', ' + inCount + ' entries shown');
-		}
+		});
 		if (shouldPersist(opts)) {
 			try {
 				if (tiersShown === FILTER_DEFAULT) {
@@ -453,7 +481,9 @@
 				history.replaceState(null, '', window.location.pathname + window.location.search);
 			}
 		}
-		if (filterSlider) filterSlider.value = String(tiersShown);
+		filterSliders.forEach(function (filterSlider) {
+			filterSlider.value = String(tiersShown);
+		});
 
 		/* Announce the new visible set - the grid's lane dealer re-deals on
 		   this (a filter change is a deliberate re-setup moment). */
@@ -470,7 +500,7 @@
 		return article ? parseInt(article.getAttribute('data-weight'), 10) : MAX_WEIGHT;
 	}
 
-	if (filterSlider) {
+	filterSliders.forEach(function (filterSlider) {
 		filterSlider.addEventListener('input', function () {
 			var tiersShown = parseInt(filterSlider.value, 10);
 
@@ -488,7 +518,7 @@
 				window.ui.sound('tick', t);
 			}
 		});
-	}
+	});
 
 	/* Deep-link vs. filter: a shared link like /#pe-figure-cms-options can point
 	   at a milestone the default filter (weight 1 only) hides. At load that
@@ -548,18 +578,20 @@
 	   GRID_VIEW_ENABLED (config.php); when the flag is off the buttons don't
 	   exist and this whole section stands down.
 
-	   It looks like the SWITCHERS radios above but earns its own wiring for
-	   two reasons: the saved PREFERENCE and the APPLIED state differ (grid
-	   only exists from 1600px - below that a saved grid choice waits,
-	   unapplied, for the next big screen), and applying it swaps real chrome
-	   (the settings panel leaves its popover and sits inline at the top of
-	   the page). Keep GRID_MIN matched to the breakpoint in
-	   styles/layouts/grid-view.css and the FOUC script in header.php. */
+	   It looks like the SWITCHERS radios above but earns its own wiring: the
+	   saved PREFERENCE and the APPLIED state differ - grid only exists from
+	   1200px, below that a saved grid choice waits, unapplied, for the next
+	   big screen. Keep GRID_MIN matched to the breakpoint in
+	   styles/layouts/grid-view.css and the FOUC script in header.php.
+
+	   (The panel stays a POPOVER in both views now - the persistent surface
+	   in grid view is the settings BAND, a separate mirror instance, so
+	   there's no popover-attribute swapping and nothing to strand.) */
 	var viewButtons = document.querySelectorAll('[data-set-view]');
-	var GRID_MIN = window.matchMedia('(min-width: 1600px)');
+	var GRID_MIN = window.matchMedia('(min-width: 1200px)');
 	var currentView = 'list';
 
-	/* The grid invite (rail button, markup in settings-panel.php) pulses
+	/* The grid invite (tray button, markup in settings-panel.php) pulses
 	   until the visitor has entered grid view once - by any door, the invite
 	   or the panel's Grid pill - then settles into a plain toggle forever
 	   (localStorage breadcrumb, same pattern as the passkey button). */
@@ -580,40 +612,16 @@
 		   the grid never showed) doesn't count as having seen it. */
 		if (applied === 'grid' && shouldPersist(opts)) markInviteSeen();
 
-		/* Suppress the panel's open/close opacity transition across the swap.
-		   grid<->list flips the panel between its inline and popover styling in
-		   one tick; without this, the list popover's opacity:0 target would FADE
-		   from the visible grid state - a boxed panel briefly fading out where it
-		   should never be seen. Cleared next frame, so the trigger-driven
-		   open/close animation still plays normally. */
-		html.classList.add('is-switching-view');
-
 		if (applied === 'grid') {
 			html.setAttribute('data-view', 'grid');
 		} else {
 			html.removeAttribute('data-view');
 		}
 
-		/* The panel is a popover in list view, a plain inline top bar in grid
-		   view. Removing the attribute is what makes it a normal, always-
-		   visible div; grid-view.css handles everything visual. */
-		var panel = document.getElementById('menu-settings');
-		if (panel) {
-			if (applied === 'grid') {
-				panel.removeAttribute('popover');
-			} else if (!panel.hasAttribute('popover')) {
-				panel.setAttribute('popover', '');
-			}
-		}
-
-		/* Re-enable transitions once the transition-free swap has painted (double
-		   rAF: the first frame commits the new state instantly, the second lets
-		   normal open/close animations resume). */
-		requestAnimationFrame(function () {
-			requestAnimationFrame(function () {
-				html.classList.remove('is-switching-view');
-			});
-		});
+		/* The view swap moves the whole shell (toolbar axis, tray column) -
+		   an open panel either re-places against the new layout or, if its
+		   trigger just hid (the band took over past 1450), closes. */
+		reconcilePanelsToLayout();
 
 		if (shouldPersist(opts)) {
 			try {
@@ -666,7 +674,7 @@
 		   "where I was" means nothing across the change - and in grid view the
 		   top is where the control bar lives. Only real clicks scroll; the
 		   resize/media-query re-applies above never move the reader. */
-		viewButtons.forEach(function (button, index) {
+		viewButtons.forEach(function (button) {
 			button.addEventListener('click', function () {
 				applyView(button.getAttribute('data-set-view'));
 				window.scrollTo(0, 0);
@@ -679,13 +687,19 @@
 				if (!step) return;
 
 				event.preventDefault();
-				var next = viewButtons[(index + step + viewButtons.length) % viewButtons.length];
+
+				/* Within this surface's radiogroup only - the same mirror-
+				   instance rule as the SWITCHERS keydown above. */
+				var group = button.closest('[role="radiogroup"]') || button.parentElement;
+				var siblings = group.querySelectorAll('[data-set-view]');
+				var position = Array.prototype.indexOf.call(siblings, button);
+				var next = siblings[(position + step + siblings.length) % siblings.length];
 				applyView(next.getAttribute('data-set-view'));
 				next.focus();
 			});
 		});
 
-		/* Crossing 1600px re-resolves the same preference: a saved grid choice
+		/* Crossing 1200px re-resolves the same preference: a saved grid choice
 		   engages on growing past it and falls back to list on shrinking. The
 		   debounced resize listener covers environments where the media-query
 		   change event doesn't fire; re-applying an unchanged state is a no-op
@@ -709,72 +723,37 @@
 		   works. Removed 2026-07-12; don't re-add without a rethink. */
 	}
 
-	/* Corner island (grid view only - markup in settings-panel.php, chrome in
-	   grid-view.css, design spec in CLAUDE.md). Visible only while the inline
-	   settings panel is off-screen: that is exactly the moment its jobs are
-	   orphaned, so panel-exit IS the condition - no magic scroll depth. The
-	   observer just reports the truth; the CSS gates it to grid view. */
-	var island = document.querySelector('.corner-island');
-	if (island) {
-		var islandSettings = island.querySelector('[data-island-settings]');
-		var islandTop = island.querySelector('[data-island-top]');
-		var islandPanel = document.getElementById('menu-settings');
+	/* Reveal-on-scroll (replaced the corner island in the lab port): when the
+	   settings BAND - the persistent mirror instance on the grid's top
+	   composition - leaves the viewport, flip data-scrolled on <html> so the
+	   tray's reveal members (settings, back-to-top; visibility in
+	   grid-view.css) appear. Band-exit IS the condition: it's exactly the
+	   moment those jobs are orphaned, no magic scroll depth. This touches
+	   only trigger visibility - the band never moves, the popover is a
+	   different node - so there's no reflow, no jitter.
 
-		if (islandPanel && 'IntersectionObserver' in window) {
-			new IntersectionObserver(function (observed) {
-				/* Only the INLINE panel's visibility is the condition. In
-				   popover mode (opened from the island) the same node is
-				   suddenly "visible" again - acting on that would hide the
-				   island out from under its own open popover. Hold state
-				   until the panel is back in its inline home. */
-				if (islandPanel.hasAttribute('popover')) return;
+	   Off the grid the band is display:none (offsetParent null), where
+	   "scrolled past" is meaningless - don't let it leak true there. */
+	var band = document.querySelector('.settings-band');
+	if (band && 'IntersectionObserver' in window) {
+		new IntersectionObserver(function (entriesObserved) {
+			var displayed = band.offsetParent !== null;
 
-				/* Gate on grid view, don't lean on the CSS display:none to
-				   mask a wrong class. In list view the panel is a CLOSED
-				   popover (display:none = "not intersecting"), which would set
-				   is-visible=true and carry over the moment you toggle to grid -
-				   the island flashing at the top. data-view is the one switch. */
-				var inGrid = html.getAttribute('data-view') === 'grid';
+			html.toggleAttribute('data-scrolled', displayed && !entriesObserved[0].isIntersecting);
 
-				island.classList.toggle('is-visible', inGrid && !observed[0].isIntersecting);
-			}).observe(islandPanel);
-		}
-
-		/* Settings: re-add the popover attribute to the SAME panel node and
-		   pop it beside the island (positioning in grid-view.css). One panel
-		   instance, never a duplicate. Closing (Esc, light-dismiss, or the
-		   toggle below) returns it to its inline home at the top. */
-		if (islandSettings && islandPanel) {
-			islandSettings.addEventListener('click', function () {
-				if (islandPanel.hasAttribute('popover')) {
-					islandPanel.hidePopover();
-					return;
-				}
-				islandPanel.setAttribute('popover', '');
-				islandPanel.showPopover();
-				islandSettings.setAttribute('aria-expanded', 'true');
-			});
-
-			islandPanel.addEventListener('toggle', function (event) {
-				if (event.newState !== 'closed') return;
-				islandSettings.setAttribute('aria-expanded', 'false');
-
-				/* Only strip the attribute while the grid is applied - in
-				   list view the panel is SUPPOSED to be a popover, and
-				   applyView owns that state. */
-				if (html.getAttribute('data-view') === 'grid') {
-					islandPanel.removeAttribute('popover');
-				}
-			});
-		}
-
-		if (islandTop) {
-			islandTop.addEventListener('click', function () {
-				var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-				window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
-			});
-		}
+			/* Scrolling the band back into view re-hides the reveal members -
+			   and a panel may not outlive its trigger. */
+			reconcilePanelsToLayout();
+		}).observe(band);
 	}
+
+	/* Back-to-top - a toolbar member with no panel. */
+	document.querySelectorAll('[data-to-top]').forEach(function (button) {
+		button.addEventListener('click', function () {
+			var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+		});
+	});
 
 	/* Outside-tap dismiss, for BOTH menus (Settings + Pages). Native popover
 	   light-dismiss is unreliable on iOS Safari (a styled ::backdrop swallows
@@ -786,47 +765,215 @@
 	   the event target (a ::backdrop tap reports the popover itself as target,
 	   so a contains() check would wrongly keep it open). Any trigger is skipped
 	   so its own tap toggles natively without a close-then-reopen race. */
-	var toolboxTriggers = document.querySelectorAll('.toolbox-trigger');
-	var toolboxPanels = document.querySelectorAll('.toolbox-panel');
+	var triggers = document.querySelectorAll('.trigger');
+	var panels = document.querySelectorAll('.panel');
 	var openPanel = null;
 
-	/* One shared dim behind whichever menu is open (see .menu-scrim in
-	   modules/settings-panel.css for why it's one element, not per-popover
-	   ::backdrop). We track the set of open panels rather than a single flag so a
-	   SWITCH reconciles correctly.
+	/* One shared dim behind an open panel - but only when that panel is OVER
+	   content ([data-over], written by placePanel from real geometry; see
+	   .site-shade in modules/settings-panel.css). A panel opening into the
+	   tray's own sidebar column covers nothing, so it gets no dim.
 
-	   The switch is the whole reason for the rAF: tapping the other menu fires
-	   two toggle events - the open one closes, the new one opens. If we set the
-	   scrim on each event it would blink off then on. Instead each toggle just
-	   marks the set and queues one reconcile for the next frame; by then the set
-	   holds the final state, so a switch (still one panel open) leaves the scrim
-	   on and untouched. Only a real full-close empties the set and fades it out. */
-	var scrim = document.querySelector('.menu-scrim');
+	   We track the set of open panels rather than a single flag so a SWITCH
+	   reconciles correctly - that's also the whole reason for the rAF: tapping
+	   the other menu fires two toggle events (the open one closes, the new one
+	   opens). If we set the shade on each event it would blink off then on.
+	   Instead each toggle just marks the set and queues one reconcile for the
+	   next frame; by then the set holds the settled state, so a switch (still
+	   one dimming panel open) leaves the shade on and untouched. Only a real
+	   full-close fades it out. (The set, not :popover-open in a selector -
+	   that pseudo-class can throw on older Safari.) */
+	var shade = document.querySelector('.site-shade');
 	var openPanels = new Set();
-	var scrimSyncQueued = false;
+	var shadeSyncQueued = false;
 
-	function syncScrim() {
-		scrimSyncQueued = false;
-		if (scrim) {
-			scrim.classList.toggle('is-visible', openPanels.size > 0);
-		}
-	}
-
-	function queueScrimSync() {
-		if (scrimSyncQueued) {
+	function syncShade() {
+		shadeSyncQueued = false;
+		if (!shade) {
 			return;
 		}
-		scrimSyncQueued = true;
-		requestAnimationFrame(syncScrim);
+
+		var wantDim = false;
+		openPanels.forEach(function (panel) {
+			if (panel.hasAttribute('data-over')) {
+				wantDim = true;
+			}
+		});
+
+		shade.classList.toggle('is-visible', wantDim);
 	}
 
-	toolboxPanels.forEach(function (panel) {
+	function queueShadeSync() {
+		if (shadeSyncQueued) {
+			return;
+		}
+		shadeSyncQueued = true;
+		requestAnimationFrame(syncShade);
+	}
+
+	/* --- Panel placement (placePanel) ---
+	   CSS anchor positioning is Chrome/Edge only, so it could never be
+	   bulletproof on every browser - in Safari/Firefox it silently no-ops and
+	   the popover lands centred, on exactly the phones recruiters use. So WHERE
+	   a panel lands is computed here: on open, read the toolbar's rect and set
+	   top/left, identically in every browser. The locked rules are the inputs:
+
+	     - the toolbar's AXIS decides below vs beside (read live from its
+	       flex-direction - one source of truth, no second place to sync)
+	     - BESIDE prefers the free side (right, the tray's margin) and flips
+	       left only when there's no room - judged from the shared
+	       --layout-panel-max cap, NOT this panel's own width, so every panel
+	       on a tray picks the SAME side
+	     - the result is CLAMPED inside the viewport unconditionally - that
+	       clamp is the "works every time on every browser"
+
+	   Placed once on open; the tray is sticky, so an open panel stays aligned
+	   as you scroll. A width resize re-places live (listener below). The
+	   numbers come from the --layout-panel-* tokens in default-layout.css -
+	   the JS re-encodes nothing. */
+	var rootStyle = getComputedStyle(html);
+	var PANEL_GAP = parseFloat(rootStyle.getPropertyValue('--layout-panel-gap')) || 8;
+	var PANEL_EDGE = parseFloat(rootStyle.getPropertyValue('--layout-panel-edge')) || 8;
+
+	function triggerFor(panel) {
+		return document.querySelector('.trigger[popovertarget="' + panel.id + '"]');
+	}
+
+	function triggerIsRendered(trigger) {
+		return !!trigger && getComputedStyle(trigger).display !== 'none';
+	}
+
+	function placePanel(panel, trigger) {
+		/* Align to the TOOLBAR's box, not the individual trigger, so every
+		   panel shares one clean edge (the corner-most edge of the tray)
+		   instead of stepping inboard to whichever glyph opened it. The
+		   trigger only tells us which toolbar; its box is what we align to. */
+		var toolbar = trigger.closest('.toolbar') || trigger;
+		var beside = getComputedStyle(toolbar).flexDirection.indexOf('column') === 0;
+
+		var box = toolbar.getBoundingClientRect();
+		var width = panel.offsetWidth;
+		var height = panel.offsetHeight;
+		var viewportWidth = document.documentElement.clientWidth;
+		var viewportHeight = document.documentElement.clientHeight;
+
+		var top;
+		var left;
+
+		if (beside) {
+			/* BESIDE: align to the toolbar's top, prefer the free margin
+			   to the right of the tray. */
+			top = box.top;
+
+			var sideReference = parseFloat(getComputedStyle(panel).maxWidth) || width;
+
+			if (viewportWidth - box.right >= sideReference + PANEL_GAP + PANEL_EDGE) {
+				left = box.right + PANEL_GAP;
+			} else {
+				left = box.left - PANEL_GAP - width;
+			}
+		} else {
+			/* BELOW: drop under the toolbar, right edges aligned. */
+			top = box.bottom + PANEL_GAP;
+			left = box.right - width;
+		}
+
+		/* Bulletproof: never let any edge cross the viewport, whatever the
+		   math above said. */
+		left = Math.max(PANEL_EDGE, Math.min(left, viewportWidth - width - PANEL_EDGE));
+		top = Math.max(PANEL_EDGE, Math.min(top, viewportHeight - height - PANEL_EDGE));
+
+		panel.style.left = Math.round(left) + 'px';
+		panel.style.top = Math.round(top) + 'px';
+		panel.style.right = 'auto';
+
+		/* "Over content" is derived, not declared per situation: the panel
+		   covers content exactly when its placed rect overlaps <main>.
+		   Dropping into the tray's own sidebar column does NOT overlap main
+		   -> not over; the phone top bar dropping onto the page DOES -> over.
+		   We only write the boolean; the shade reads it to decide the dim. */
+		var mainElement = document.querySelector('main');
+		var over = false;
+
+		if (mainElement) {
+			var m = mainElement.getBoundingClientRect();
+			over = left < m.right && left + width > m.left && top < m.bottom && top + height > m.top;
+		}
+
+		panel.toggleAttribute('data-over', over);
+	}
+
+	/* One reconcile for every "the layout just moved" door: re-place each
+	   open panel against the new geometry, or close it if its trigger is no
+	   longer rendered - A PANEL MAY NOT OUTLIVE ITS TRIGGER (closing loses
+	   nothing: the mirror model means another surface already shows the same
+	   controls with the same state). Callers: the width-resize listener,
+	   applyView, and the settings-band observer (data-scrolled re-hides the
+	   reveal members).
+
+	   Guarded on openPanels existing because applyView runs once at init,
+	   before the panel wiring below has assigned it - nothing can be open
+	   that early, so there's nothing to reconcile. */
+	function reconcilePanelsToLayout() {
+		if (!openPanels || !openPanels.size) {
+			return;
+		}
+
+		openPanels.forEach(function (panel) {
+			var trigger = triggerFor(panel);
+
+			if (!trigger) {
+				return;
+			}
+
+			if (!triggerIsRendered(trigger)) {
+				panel.hidePopover();
+				return;
+			}
+
+			placePanel(panel, trigger);
+		});
+
+		/* A re-place can flip a panel over <-> not-over; the shade re-checks
+		   itself (a steady state is a no-op, never a blink). */
+		queueShadeSync();
+	}
+
+	panels.forEach(function (panel) {
+		/* No flash of an unplaced panel: the popover's `toggle` event is
+		   queued (async), so a frame could paint between show and placement.
+		   `beforetoggle` fires synchronously before it shows, so we hide
+		   there and reveal once placed. Done in JS, not CSS, so with no JS
+		   the popover still shows - the no-JS floor stays intact. */
+		panel.addEventListener('beforetoggle', function (event) {
+			if (event.newState === 'open') {
+				panel.style.visibility = 'hidden';
+			}
+		});
+
 		panel.addEventListener('toggle', function (event) {
 			var isOpen = event.newState === 'open';
 
 			if (isOpen) {
 				openPanel = panel;
 				openPanels.add(panel);
+
+				var placeTrigger = triggerFor(panel);
+
+				if (triggerIsRendered(placeTrigger)) {
+					placePanel(panel, placeTrigger);
+				} else {
+					/* Safety net only - a panel opens by its trigger, so a
+					   hidden trigger shouldn't get here. If it somehow does,
+					   clear any stale inline position so the CSS floor (a
+					   centred popover) applies instead of last week's spot. */
+					panel.style.left = '';
+					panel.style.top = '';
+					panel.style.right = '';
+					panel.removeAttribute('data-over');
+				}
+
+				panel.style.visibility = '';
 			} else {
 				openPanels.delete(panel);
 				if (openPanel === panel) {
@@ -834,7 +981,7 @@
 				}
 			}
 
-			queueScrimSync();
+			queueShadeSync();
 
 			/* Keep the trigger's disclosure state in sync for assistive tech. */
 			var trigger = document.querySelector('[popovertarget="' + panel.id + '"]');
@@ -844,9 +991,28 @@
 		});
 	});
 
+	/* An open panel stays open across a resize and RE-PLACES live - the panel
+	   following the layout as the viewport changes is part of the demo (same
+	   spirit as the motion policy: the system performing itself is the pitch).
+	   If the resize hid the panel's trigger, it closes instead - a panel may
+	   not outlive its trigger, and the mirror model means nothing is lost.
+	   WIDTH only: phones fire resize when the URL bar collapses on scroll -
+	   a height change is no reason to disturb an open panel. */
+	var lastViewportWidth = window.innerWidth;
+
+	window.addEventListener('resize', function () {
+		if (window.innerWidth === lastViewportWidth) {
+			return;
+		}
+
+		lastViewportWidth = window.innerWidth;
+
+		reconcilePanelsToLayout();
+	});
+
 	function tapIsOnTrigger(target) {
-		for (var i = 0; i < toolboxTriggers.length; i++) {
-			if (toolboxTriggers[i].contains(target)) {
+		for (var i = 0; i < triggers.length; i++) {
+			if (triggers[i].contains(target)) {
 				return true;
 			}
 		}
@@ -938,6 +1104,6 @@
 			if (applyByKind[kind]) applyByKind[kind](value, opts);
 		},
 		restore: restore,
-		panel: document.getElementById('menu-settings')
+		panel: document.getElementById('settings-panel')
 	};
 })();

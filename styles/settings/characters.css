@@ -39,7 +39,7 @@
 	--loud-voice-font-weight: 700;
 	--loud-voice-line-height: 1;
 
-	.toolbox-panel {
+	.panel {
 		border-radius: 12px;
 	}
 }

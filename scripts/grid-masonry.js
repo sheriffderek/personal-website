@@ -36,7 +36,7 @@
 	}
 
 	function laneCount() {
-		return parseInt(getComputedStyle(html).getPropertyValue('--grid-columns'), 10) || 1;
+		return parseInt(getComputedStyle(html).getPropertyValue('--layout-wall-columns'), 10) || 1;
 	}
 
 	/* Put every card back in the timeline itself, in source order. The

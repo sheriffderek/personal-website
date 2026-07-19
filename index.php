@@ -89,11 +89,11 @@ $page_title = $current['title'];
 $page_description = $current['description'];
 $page_controls = $current['controls'] ?? null;
 
-// The settings panel is off site-wide right now (mobile scroll-freeze hunt -
-// see the gates in includes/header.php). The design-system tester is the one
-// exception: the brand/emphasis/scheme controls ARE its job, and it's an
-// internal desktop page the freeze doesn't reach. One flag, read in header.php.
-$settings_panel_on = ($slug === 'design-system');
+// The settings panel is back on site-wide with the lab-port shell (JS panel
+// placement + the data-over shade replaced the machinery the old mobile
+// scroll-freeze was suspected to live in - watch for it on phones). One
+// flag, read in header.php; set per-slug to gate it again if needed.
+$settings_panel_on = true;
 
 // Build the page: shared header, this page's body, shared footer.
 require __DIR__ . '/includes/header.php';

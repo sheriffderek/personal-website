@@ -4,9 +4,9 @@ body {
 
 /* Site shell.
    Mobile: flex column. Aside is sticky to viewport top throughout the page.
-   Desktop: 4-column grid — gutter | content (720) | rail (300) | gutter.
-   Aside contents are right-aligned so the popover panel
-   (position-area: bottom span-left) lands inside the rail, not in content. */
+   Desktop: 4-column grid — gutter | content | tray | gutter (measures are
+   the --layout-* tokens below). Aside contents are right-aligned so the
+   popover panel lands inside the tray, not in content. */
 .page-wrapper {
 	display: flex;
 	flex-direction: column;
@@ -20,6 +20,27 @@ body {
 	--page-top: 80px;
 }
 
+/* Layout tokens. Every structure-critical measure wears the --layout-
+   prefix (--layout-<system>-<measure>), so the structural surface reads
+   as one scannable block - moving one of these moves layout, never paint.
+   Paint/theme tokens stay out (they live in styles/settings/). The wall's
+   --layout-wall-* set lives in grid-view.css beside the grid it sizes.
+     --layout-list-column   the reading column in list view
+     --layout-tray-sidebar  the dedicated control column from 1024 up
+     --layout-panel-*       popover panel placement + size caps. placePanel
+                            (settings-panel.js) READS these via getComputedStyle,
+                            so the JS re-encodes no numbers - CSS is the single
+                            source for every layout constant. */
+:root {
+	--layout-list-column: 720px;
+	--layout-tray-sidebar: 300px;
+
+	--layout-panel-gap: 8px;
+	--layout-panel-edge: 8px;
+	--layout-panel-min: 280px;
+	--layout-panel-max: 360px;
+}
+
 main {
 	padding: var(--gutter);
 	padding-top: var(--page-top);
@@ -31,27 +52,21 @@ main {
 	}
 }
 
-.rail-sentinel {
+.tray-sentinel {
 	height: 0;
 }
 
-/* $refactor: "rail" is a look-name for the desktop shape only. This element's
-   role is the site nav - a right column on large screens, a sticky top bar on
-   small. The tag is already <header> and sticky-header.js already calls it
-   "header", so the name has drifted. Better: it doesn't need a positional class
-   at all - make it <nav>, let the grid place it (grid-template-areas), and
-   delete .page-rail / .rail-sentinel / .is-stuck. A component shouldn't name or
-   set its own placement. Do it in passing next time we're in this layout, not a
-   dedicated pass. */
-.page-rail {
+/* The site-tray: the one persistent control strip, morphing per situation -
+   a sticky top bar on small screens, a side column on large (the lab spec's
+   shell-tray, wearing the house's site- prefix). The old $refactor complaint
+   here ("rail is a look-name") is resolved by the rename; what remains of it:
+   the tag could still become <nav>, and the sentinel/.is-stuck machinery is
+   phone-only by design (the lab keeps it that way). */
+.site-tray {
 	position: sticky;
 	top: 0;
 
 	z-index: 5;
-
-	/* The menu popovers anchor to this bar (not their trigger buttons), so
-	   they align to the bar's edges instead of dangling off a small glyph. */
-	anchor-name: --menu-bar;
 
 	background-color: var(--fill-primary);
 
@@ -68,12 +83,12 @@ main {
 	margin-inline-end: auto;
 }
 
-/* Small screens only: once the rail pins to the top, give it a bottom
+/* Small screens only: once the tray pins to the top, give it a bottom
    border so it reads as a header. sticky-header.js sets .is-stuck. The border
    AND its transition live only here - at large widths there's no border box,
    so a grid<->list toggle can't flash a transitioning border on recompute. */
 @media (width < 1024px) {
-	.page-rail {
+	.site-tray {
 		border-bottom: 1px solid transparent;
 		transition: border-color 1s;
 
@@ -86,7 +101,7 @@ main {
 @media (width >= 1024px) {
 	.page-wrapper {
 		display: grid;
-		grid-template-columns: 1fr minmax(0, 720px) 300px 1fr;
+		grid-template-columns: 1fr minmax(0, var(--layout-list-column)) var(--layout-tray-sidebar) 1fr;
 		grid-template-rows: 1fr auto;
 		column-gap: 1.5rem;
 	}
@@ -101,10 +116,17 @@ main {
 		grid-row: 2;
 	}
 
-	.page-wrapper > .page-rail {
+	.page-wrapper > .site-tray {
 		grid-column: 3;
 		grid-row: 1 / -1;
 		align-self: start;
+
+		/* A side column now, not a bar: no background band when unoccupied,
+		   and a breath of offset when it pins on scroll. The toolbar (and an
+		   open panel with it) rides the page and stays reachable at every
+		   scroll depth - it owns a real lane, no magic offset. */
+		top: 1rem;
+		background-color: transparent;
 	}
 }
 

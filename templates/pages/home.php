@@ -7,16 +7,12 @@ $all_milestones = load_json('milestones.json');
 // Which lane of the timeline? Defaults to job-relevant entries.
 $filter_tag = isset($_GET['filter']) ? $_GET['filter'] : 'job';
 
-// TEMPORARY - paired with the settings menu being OFF (header.php): the weight
-// filter is normally the JS slider, which renders all weights and hides the
-// lower tiers. With the menu disabled nothing trims the list, so we cap to the
-// weight-1 spine here in PHP to keep the curated default view.
-// RE-ENABLING THE MENU: drop the weight check below - the slider needs every
-// weight present in the HTML to reveal the lower tiers.
+// The weight filter is the JS slider (settings-panel.js): every weight
+// renders in the HTML and the slider reveals tiers by hiding the rest,
+// defaulting to the weight-1 spine.
 $milestones = array_filter($all_milestones, function ($m) use ($filter_tag) {
 	$tags = isset($m['tags']) ? $m['tags'] : [];
-	$weight = isset($m['weight']) ? $m['weight'] : 6;
-	return in_array($filter_tag, $tags) && $weight <= 1;
+	return in_array($filter_tag, $tags);
 });
 
 // A ?target=companyname loads tailored notes for specific milestones.
@@ -33,12 +29,12 @@ $target_notes = $target['milestones'] ?? [];
 	.page-wrapper {
 		border: 4px solid orange;
 
-		> 	.page-rail {
+		> 	.site-tray {
 			border: 4px solid blue;
 		}
 	}
 
-	.rail-sentinel {
+	.tray-sentinel {
 		border: 4px solid green;
 	}
 
@@ -138,6 +134,25 @@ $target_notes = $target['milestones'] ?? [];
 		</text-content>
 	</details>
 </header>
+
+<?php /* ---- The settings band ----
+	The SECOND rendered instance of the settings rows (the first is the panel
+	popover in the tray - includes/settings-panel.php). Shown only on the grid's
+	wide top composition (>= 1450, grid-view.css); display:none everywhere else.
+	The mirror model makes two instances free: neither owns state, both reflect
+	data-* on <html> via settings-panel.js, so they can never disagree. The
+	'-band' id suffix keeps its labels' aria wiring valid beside the panel's. */ ?>
+<?php if (($settings_panel_on ?? false) && GRID_VIEW_ENABLED && ($page_controls ?? null) === 'filter-control'): ?>
+	<section class='settings-band' data-ui='app' aria-label='Display settings'>
+		<div class='settings-panel'>
+			<?= partial('settings-rows', [
+				'id_suffix' => '-band',
+				'page_has_grid' => true,
+				'page_controls' => $page_controls,
+			]) ?>
+		</div>
+	</section>
+<?php endif; ?>
 
 <ul class='timeline' role='list'>
 	<?php foreach ($milestones as $milestone):

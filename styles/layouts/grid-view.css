@@ -2,9 +2,9 @@
    Loaded only when GRID_VIEW_ENABLED (config.php); the toggle lives in
    includes/settings/view-switcher.php and the wiring in settings-panel.js.
 
-   The whole file is gated to >= 1600px: below that the grid doesn't exist and
+   The whole file is gated to >= 1200px: below that the grid doesn't exist and
    everyone gets the list, so a phone can never render a one-column "grid"
-   that's just a worse list. Keep the 1600 here, in the FOUC script
+   that's just a worse list. Keep the 1200 here, in the FOUC script
    (includes/header.php), and in GRID_MIN (settings-panel.js) in sync.
 
    List view is the argument (a readable spine); grid view is the evidence
@@ -13,39 +13,54 @@
    stands down: loops don't autoplay in the grid (the guard is in
    includes/footer.php), stills carry the wall.
 
-   In grid view the settings panel leaves its popover and sits UNBOXED on
-   the wall's last lane - same width, same grid line, top shared with the
-   intro in lane one - at regular scroll, so the controls and the first
-   grid rows share the viewport and the playground moment (drag a slider,
-   watch the wall respond) needs no sticky chrome. The JS swaps the popover
-   attribute; everything visual lives here. */
+   The named situations (lab spec, layout-lab-notes.md), ascending width:
 
-/* The wall's geometry is three shared tokens, so every consumer (lanes,
-   intro, minimap) reads the same truth instead of hand-syncing:
-     --grid-columns  lane count - 2 from 1600, 3 on genuinely big monitors
-     --wall-column   the designed lane measure; cards never stretch past it
-     --wall-gap      the gutter between lanes
+     >= 1200 grid-2-tray-over        2 lanes; the tray is a thin sticky
+                                     column beside the wall; the settings
+                                     stay a popover, placed beside it
+     >= 1450 grid-2-settings-band    the persistent settings BAND joins the
+                                     top composition (a second mirror
+                                     instance - templates/pages/home.php);
+                                     settings/back-to-top become reveal
+                                     members on data-scrolled
+     >= 1600 grid-3-...              3 lanes; only --layout-wall-columns
+                                     changes, everything derives */
+
+/* The wall's geometry is shared --layout-wall-* tokens, so every consumer
+   (lanes, intro, minimap, the dealer's lane count) reads the same truth
+   instead of hand-syncing:
+     --layout-wall-columns  lane count - 2 from 1200, 3 from 1600
+     --layout-wall-lane     the designed lane measure; cards never stretch past it
+     --layout-wall-gap      the gutter between lanes
+     --layout-wall-max      the whole wall: count x lane + the gaps between
+     --layout-tray-*        the tray's reserved column beside the wall
    Clear column widths constrain the layout: the wall's max-width derives
    from count x measure, so growing the window past a breakpoint adds a lane
    rather than inflating the cards. */
-@media (width >= 1600px) {
+@media (width >= 1200px) {
 	:root {
-		--grid-columns: 2;
-		--wall-column: 36rem;
-		--wall-gap: 4rem;
+		--layout-wall-columns: 2;
+		--layout-wall-lane: 36rem;
+		--layout-wall-gap: 4rem;
+		--layout-wall-max: calc(var(--layout-wall-columns) * var(--layout-wall-lane) + (var(--layout-wall-columns) - 1) * var(--layout-wall-gap));
 
-		/* The wall's left rail: proportional, so the content isn't pinned
+		/* The wall's left inset: proportional, so the content isn't pinned
 		   tight to the viewport edge on big screens. Extra width beyond the
 		   constrained columns falls to the RIGHT (never a wider wall) - at
-		   huge sizes a fourth column would also fit, but breathing room
+		   huge sizes another column would also fit, but breathing room
 		   beats being in their face; deliberate choice, revisit knowingly. */
-		--wall-inset: 4vw;
+		--layout-wall-inset: 4vw;
+
+		/* The tray's footprint from 1450 up: the wall reserves this column
+		   on its right so the sticky trigger tray always has its own lane. */
+		--layout-tray-width: 6rem;
+		--layout-tray-reserve: calc(var(--layout-tray-width) + 2rem);
 	}
 }
 
-@media (width >= 1900px) {
+@media (width >= 1600px) {
 	:root {
-		--grid-columns: 3;
+		--layout-wall-columns: 3;
 	}
 }
 
@@ -53,42 +68,39 @@
 .view-switcher {
 	display: none;
 
-	@media (width >= 1600px) {
+	@media (width >= 1200px) {
 		display: block;
 	}
 }
 
-/* The grid invite - a one-tap door into grid view, sitting beside the
-   settings trigger in the rail. Only exists where the grid exists, and only
-   in list view (in grid view the rail's triggers hide wholesale). Until
-   first used it pulses a soft accent halo - "touch me" - then settles into
-   a plain toggle. The seen-state class comes from settings-panel.js
-   (grid-invite-seen in localStorage). */
-/* button-qualified to tie button.toolbox-trigger's display (settings-panel
-   .css) so this later-loading hide wins - a bare .grid-invite loses on
-   specificity and the invite leaks onto phones. */
+/* The grid invite - the one-tap door INTO grid view, beside the settings
+   trigger in the tray. One-way by design: it only exists where the grid
+   exists AND in list view (the way back out is the settings panel's Layout
+   row - a grid glyph in the grid would be a second control for a covered
+   job). Until first used it pulses a soft accent halo - "touch me" - then
+   settles into a plain toggle. The seen-state class comes from
+   settings-panel.js (grid-invite-seen in localStorage). */
+/* button-qualified to tie button.trigger's display (settings-panel.css) so
+   this later-loading hide wins - a bare .grid-invite loses on specificity
+   and the invite leaks onto phones. */
 button.grid-invite {
 	display: none;
 }
 
-/* The corner island renders in the rail wherever the grid CAN exist, but it
-   only ever SHOWS in grid view (rules in the [data-view='grid'] block below)
-   - in list view the toolbox row already does its jobs. */
-.corner-island {
+/* Back-to-top is a REVEAL member: it appears only in the scrolled grid
+   situation (>= 1450 block below) where its job exists. Hidden everywhere
+   else - it has no business in the top bar or the list sidebar. */
+button.trigger[data-to-top] {
 	display: none;
 }
 
-/* Kill the settings panel's open/close opacity transition for the one frame
-   the view swaps (settings-panel.js adds .is-switching-view around the
-   attribute flip, drops it next frame). Top-level, NOT under [data-view]: on
-   grid->list that attribute is already gone while the swap is mid-flight, so a
-   scoped rule wouldn't match. Without this the list popover fades out from the
-   visible grid state - the flash. */
-.is-switching-view .toolbox-panel {
-	transition: none;
+/* The settings band (the second mirror instance of the settings rows, in
+   main's top composition on the timeline page) is a wide-grid-only surface. */
+.settings-band {
+	display: none;
 }
 
-@media (width >= 1600px) {
+@media (width >= 1200px) {
 	/* List view = no data-view attribute (data-view is the single switch;
 	   'grid' is its only value). In grid view the invite's job is done. */
 	:root:not([data-view="grid"]) .grid-invite {
@@ -124,202 +136,67 @@ button.grid-invite {
 	}
 }
 
-@media (width >= 1600px) {
+/* ============================================================
+   grid-2-tray-over   (>= 1200, data-view='grid')
+   The wall at 2 lanes. The shell keeps the same [content | tray] frame as
+   the list sidebar - only the columns change: the wall takes the room, and
+   the tray is a thin sticky column beside it. The settings stay a POPOVER
+   (no persistent band yet - that starts at 1450), placed by placePanel:
+   the toolbar's column axis means panels open BESIDE, preferring the free
+   margin and flipping over the wall only when there's no room - where they
+   dim, because [data-over] says they cover content. Nothing here re-states
+   where panels go; the axis and the geometry decide.
+   ============================================================ */
+@media (width >= 1200px) {
 	[data-view="grid"] {
-		/* --- Page shell: the rail stops being a bar and parks its panel as a
-		   card in the page's top-right corner, beside the intro (which keeps
-		   its normal top-left position inside main). --- */
-
 		.page-wrapper {
-			display: block;
-			position: relative;
+			grid-template-columns:
+				minmax(1rem, var(--layout-wall-inset))
+				1fr
+				max-content;
 		}
 
-		.page-rail {
-			position: absolute;
+		/* main and footer keep grid-column 2 from the 1024 shell; the tray
+		   keeps column 3 (its sticky, transparent column form carries over
+		   from default-layout.css unchanged). */
 
-			/* Pinned to the same line the intro starts on (--page-top,
-			   default-layout.css), and the LEFT edge sits on the wall's last
-			   lane's grid line - the same arithmetic as the wall itself (its
-			   inset start plus the lanes before the last one) - so the
-			   controls are ON the grid, not floating at the viewport edge. */
-			inset-block-start: var(--page-top);
-			inset-inline-start: calc(max(var(--gutter), var(--wall-inset)) + (var(--grid-columns) - 1) * (var(--wall-column) + var(--wall-gap)));
-			z-index: 5;
-			padding: 0;
-			background: none;
-			border: 0;
-		}
-
-		/* The panel is inline now - its trigger has nothing to do. */
-		.settings-trigger {
-			display: none;
-		}
-
-		/* The panel: settings-panel.js removes the popover attribute in grid
-		   view, making it a plain always-visible div. The popover styling in
-		   settings-panel.css still applies (same class), so un-anchor it,
-		   size it to exactly one lane, and UNBOX it - no fill, border, or
-		   shadow; in the grid the controls sit on the page like content, the
-		   lane alignment does the framing. opacity must be forced: a
-		   non-popover never matches :popover-open, so the panel's
-		   `&:not(:popover-open) { opacity: 0 }` would hide it.
-		   :not([popover]) scopes all of this to the INLINE state - when the
-		   island re-adds the attribute, the module's card chrome returns. */
-		.toolbox-panel:not([popover]) {
-			position: static;
-			inset: auto;
-			opacity: 1;
-			width: var(--wall-column);
-			min-width: 0;
-			max-width: none;
-			max-height: none;
-			margin: 0;
-			padding: 0;
-			background: none;
-			border: 0;
-			border-radius: 0;
-			box-shadow: none;
-		}
-
-		/* The island-opened popover: the module css would anchor it to the
-		   rail (parked at the page TOP in grid view - off-screen once you've
-		   scrolled), so pin it to the viewport beside the island instead. */
-		.toolbox-panel[popover] {
-			position: fixed;
-			top: var(--page-top);
-			right: calc(var(--gutter) + 3.5rem);
-		}
-
-		/* Inside the inline panel: the small controls stack in a left
-		   column, the filter (slider + minimap schematic) takes a right
-		   column at full height. The right column flexes because the panel
-		   is a fixed lane width - a rigid minmax floor could overflow the
-		   lane. The span count = the panel's control rows; a new row in
-		   settings-panel.php means bumping it. The island-opened popover is
-		   excluded - it keeps the module's single-column stack. */
-		.settings-panel:not([popover]) {
-			display: grid;
-			grid-template-columns: max-content minmax(0, 1fr);
-			gap: 1.25rem 2.5rem;
-			align-items: start;
-		}
-
-		.settings-panel:not([popover]) .filter-control {
-			grid-column: 2;
-			grid-row: 1 / span 5;
-		}
-
-		/* --- The corner island: the conditional cluster (CLAUDE.md spec).
-		   Exists only in grid view, and only while the inline panel is off
-		   screen (.is-visible from the IntersectionObserver in
-		   settings-panel.js). Fixed in the right margin the wall already
-		   leaves empty - vertical, one circular button per job. Reserved
-		   slots: members never appear/disappear individually, the whole
-		   island does. --- */
-		.corner-island {
-			/* Live out in the calm margin the wall leaves to its right (see the
-			   --wall-inset note above): anchor the island's left edge just past
-			   the wall's right grid line. The min() clamps it back toward the
-			   viewport edge when that margin is tight - the ~1900px band where
-			   the 3-column wall fills the width - so it rides the corner there
-			   and floats into the margin only when there's room for it. */
-			--island-width: 3.2rem;
-			--island-anchor: calc(
-				max(var(--gutter), var(--wall-inset)) + var(--grid-columns) *
-					var(--wall-column) + (var(--grid-columns) - 1) *
-					var(--wall-gap) + var(--wall-gap)
-			);
-
-			position: fixed;
-			top: var(--page-top);
-			left: min(var(--island-anchor), calc(100vw - var(--island-width) - var(--gutter)));
-			z-index: 6;
-
-			display: flex;
+		/* The toolbar is a COLUMN here - a thin tray BESIDE the wall, not a
+		   bar above it. Per the locked axis rule that ALSO aims the panels
+		   (placePanel reads this very flex-direction): column -> beside.
+		   Plain column (not reverse) IS the corner rule on this axis: DOM is
+		   importance-first, so the primary lands at the TOP for free. */
+		.toolbar {
 			flex-direction: column;
-			gap: 0.4rem;
-			padding: 0.4rem;
-
-			background: var(--app-fill);
-			border: var(--app-border-width) solid var(--app-stroke);
-			border-radius: 1.25rem;
-
-			opacity: 0;
-			visibility: hidden;
-			transition:
-				opacity 200ms ease,
-				visibility 200ms;
-
-			&.is-visible {
-				opacity: 1;
-				visibility: visible;
-			}
+			align-items: flex-end;
 		}
 
-		.corner-island .island-button {
-			width: 2.4rem;
-			height: 2.4rem;
-			padding: 0;
-			border-radius: 50%;
-			border: var(--app-border-width) solid var(--app-stroke-secondary);
-		}
-
-		/* Intro, wall, and footer share one left edge, inset by the
-		   proportional rail - everything on the page keeps the same width
-		   situation, not just the timeline. */
-		main,
-		.site-footer {
-			padding-inline-start: max(var(--gutter), var(--wall-inset));
-		}
-
-		/* The intro gets a reading measure (75ch), capped so it can never
-		   cross into the panel's lane - the panel sits on the wall's LAST
-		   lane and wears no card chrome, so an overrun doesn't stack behind
-		   it, it interleaves with it (seen at the 2-column stage, where one
-		   lane plus a gutter is narrower than 75ch). The cap is the room
-		   before that lane starts, minus one gap of breathing space. */
+		/* The intro reads as lane one. */
 		.page-header {
-			max-width: min(75ch, calc((var(--grid-columns) - 1) * (var(--wall-column) + var(--wall-gap)) - var(--wall-gap)));
+			max-width: var(--layout-wall-lane);
 		}
 
 		/* --- The wall itself. Cells keep the full card at column width. ---
 
 		   Cards vary a lot in height (media vs text-only), and the wall must
 		   read in a Z (row-major) - the reverse-chronology walks across the
-		   columns, then down. CSS alone can't do both yet: multi-column packs
-		   tight but flows DOWN each lane, and an aligned-rows grid keeps Z
-		   order but leaves craters under short cards. So the packing is the
-		   measured-row-span technique: this grid uses 1px auto-rows, and
-		   scripts/grid-masonry.js gives each card a row span matching its
-		   height (a ResizeObserver keeps spans true when brand scales, media
-		   loads, or an unfolding read-more change heights). Grid
-		   auto-placement then walks the cards left-to-right - the Z.
-
-		   Without the script (its .is-packed class), the fallback is the
-		   aligned-rows grid: correct order, craters accepted. When native
-		   masonry ("grid lanes") ships, it replaces the script wholesale. */
-
+		   columns, then down. This base grid is the no-JS fallback: aligned
+		   rows, correct order, craters under short cards accepted (approved
+		   as fallback-only, 2026-07-12). The real wall is the lane dealer
+		   (scripts/grid-masonry.js) - the .is-laned mode below. */
 		[role="list"].timeline {
 			display: grid;
-			grid-template-columns: repeat(var(--grid-columns), 1fr);
-			column-gap: var(--wall-gap);
+			grid-template-columns: repeat(var(--layout-wall-columns), 1fr);
+			column-gap: var(--layout-wall-gap);
 			row-gap: 4rem;
 
 			/* Count x measure: lanes hold the designed width instead of
 			   stretching to fill whatever screen this is. */
-			max-width: calc(var(--grid-columns) * var(--wall-column) + (var(--grid-columns) - 1) * var(--wall-gap));
+			max-width: var(--layout-wall-max);
 
-			/* Clearance for the absolute panel above-right: the first row
-			   must start below it, and the intro alone isn't reliably
-			   taller than the panel (brand scales move both). HEURISTIC -
-			   the panel is absolute so nothing pushes; this token is sized
-			   against the tallest current panel plus breathing room before
-			   the wall. If the panel grows a row, re-check it. The honest
-			   fix (top section as a real grid row that owns its height) is
-			   sketched in the session notes - do that before this number
-			   bites a third time. */
-			margin-top: var(--wall-clearance, 12rem);
+			/* Breathing room after the intro - honest flow spacing (the old
+			   12rem absolute-panel clearance heuristic died with the parked
+			   panel; nothing floats over the wall's first row anymore). */
+			margin-top: 4rem;
 		}
 
 		/* Laned mode (grid-masonry.js dealt the cards into real lane
@@ -331,7 +208,7 @@ button.grid-invite {
 		[role="list"].timeline.is-laned {
 			display: flex;
 			align-items: flex-start;
-			column-gap: var(--wall-gap);
+			column-gap: var(--layout-wall-gap);
 		}
 
 		.timeline.is-laned .timeline-lane {
@@ -349,9 +226,8 @@ button.grid-invite {
 
 		/* Read-more unfolds INLINE in the grid too - same as list view. A
 		   floating-panel version was tried (2026-07-12) and read as a weird
-		   box pasted over the wall; natural push-down wins. With the
-		   masonry's per-lane packing, an unfold grows only its own lane -
-		   the other lanes never move. */
+		   box pasted over the wall; natural push-down wins. With the lanes'
+		   independent stacks, an unfold grows only its own lane. */
 
 		/* --- Minimap: the faithful schematic follows the layout it depicts
 		   (same contract as its 1024px two-column flip): panel strip on top,
@@ -373,12 +249,124 @@ button.grid-invite {
 		   4px tall; these stay in that register, just wider than tall so the
 		   grid reads as a grid without the schematic towering over the bar). */
 		.mini-map .mini-map-bars {
-			grid-template-columns: repeat(var(--grid-columns), 1fr);
+			grid-template-columns: repeat(var(--layout-wall-columns), 1fr);
 			gap: 3px;
 
 			li {
 				height: 9px;
 			}
+		}
+	}
+}
+
+/* ============================================================
+   grid-2-settings-band / scrolled   (>= 1450, data-view='grid')
+   The persistent settings BAND appears - a separate mirror instance of the
+   settings rows (templates/pages/home.php), sharing main's top composition
+   with the intro: intro takes presence on the left, the apparatus decorates
+   the top-right, the wall spans below with time to breathe. The tray gets
+   its reserved column hugging the wall's right edge (leftover width falls
+   further right), stays sticky, and slims to reveal members: while the band
+   is in view only always-there members show; scrolling past it
+   (data-scrolled, from the band observer in settings-panel.js) rejoins
+   settings and back-to-top to the tray - the moment their jobs are
+   orphaned, no magic scroll depth.
+   ============================================================ */
+@media (width >= 1450px) {
+	[data-view="grid"] {
+		/* The tray HUGS the wall, not the viewport edge: the wall column is
+		   sized to content (wall-max) instead of greedily filling 1fr, the
+		   tray's reserved column sits right beside it, and a trailing
+		   flexible column soaks up whatever width is left over. */
+		.page-wrapper {
+			grid-template-columns:
+				minmax(1rem, var(--layout-wall-inset))
+				minmax(0, var(--layout-wall-max))
+				var(--layout-tray-reserve)
+				minmax(0, 1fr);
+		}
+
+		/* The TOP is its own composition: the intro breaks out wide (3fr,
+		   past the wall's lane line) for presence, and the settings band
+		   decorates the top-right negative space (2fr). The wall spans below
+		   on its own tracks. row-gap is the "time to breathe" before the
+		   work starts. */
+		main {
+			display: grid;
+			grid-template-columns: 3fr 2fr;
+			grid-template-areas:
+				"intro settings"
+				"wall  wall";
+			column-gap: var(--layout-wall-gap);
+			row-gap: 6rem;
+			align-items: start;
+		}
+
+		.page-header {
+			grid-area: intro;
+			max-width: none;
+		}
+
+		.settings-band {
+			display: block;
+			grid-area: settings;
+		}
+
+		[role="list"].timeline {
+			grid-area: wall;
+
+			/* main's row-gap owns the breathing room now. */
+			margin-top: 0;
+		}
+
+		/* The band's rows are UNBOXED - no fill, border, or shadow; the
+		   controls sit on the page like content, ambient texture rather than
+		   a card. Small controls stack in a left column; the filter (slider
+		   + minimap schematic) takes the right column at full height. */
+		.settings-band .settings-panel {
+			display: grid;
+			grid-template-columns: max-content minmax(0, 1fr);
+			gap: 1.25rem 2.5rem;
+			align-items: start;
+		}
+
+		.settings-band .filter-control {
+			grid-column: 2;
+			grid-row: 1 / span 6;
+		}
+
+		/* The band is the one surface wide enough for the tier-name aside
+		   (hidden everywhere else - see .filter-level-name in
+		   modules/settings-panel.css). */
+		.settings-band .filter-level-name {
+			display: block;
+		}
+
+		/* The toolbar hugs the tray's INNER edge, beside the wall where the
+		   eye already is - not out in the right margin (the tray's base
+		   justify-content: flex-end is the top bar's right-alignment; in the
+		   reserved column the near side is the LEFT). */
+		.site-tray {
+			justify-content: flex-start;
+		}
+
+		.toolbar {
+			align-items: flex-start;
+		}
+
+		/* Settings and back-to-top are the REVEAL members: the band already
+		   shows the settings (incl. Layout) at the top, so they stay hidden
+		   until you scroll past it - then they rejoin the tray. (The grid
+		   invite isn't listed: it doesn't exist in grid at all.) */
+		button.trigger[popovertarget="settings-panel"] {
+			display: none;
+		}
+	}
+
+	[data-view="grid"][data-scrolled] {
+		button.trigger[popovertarget="settings-panel"],
+		button.trigger[data-to-top] {
+			display: inline-flex;
 		}
 	}
 }

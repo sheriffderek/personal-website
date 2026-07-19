@@ -146,7 +146,7 @@
 	}
 
 	var optOutTargets = [panel].concat(
-		Array.prototype.slice.call(document.querySelectorAll('.toolbox-trigger'))
+		Array.prototype.slice.call(document.querySelectorAll('.trigger'))
 	);
 
 	optOutTargets.forEach(function (el) {
