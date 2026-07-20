@@ -1265,6 +1265,14 @@
 				var panel = targetId ? document.getElementById(targetId) : null;
 
 				if (panel) {
+					/* The click can also arrive LATE - iOS after a scroll-stop
+					   tap can deliver it beyond the wait window (seen in the
+					   field 2026-07-20: fallback opened at 150ms, a straggler
+					   click toggled it shut again - "tap does nothing", third
+					   disguise). The fallback has acted for this tap, so any
+					   straggler must be swallowed, not allowed to undo. The
+					   next gesture's pointerdown clears the flag regardless. */
+					suppressToggleOf = trigger;
 					panel.togglePopover();
 				} else {
 					/* The panel-less members (grid invite, back-to-top) act
@@ -1276,8 +1284,8 @@
 		});
 
 		/* THE CLICK - the real actor whenever it arrives: disarms the
-		   fallback, and swallows only the one toggle a switch already
-		   performed. */
+		   fallback, and swallows only the one toggle a switch or a fired
+		   fallback already performed. */
 		trigger.addEventListener('click', function (event) {
 			if (pendingFallback) {
 				clearTimeout(pendingFallback);
@@ -1290,6 +1298,52 @@
 			}
 		});
 	});
+
+	/* --- QA instrument: tap-event readout (?debug=taps) ---
+	   The tap choreography above is iOS-only behavior that no desktop
+	   browser can exercise, and every blind fix costs a phone round-trip.
+	   With ?debug=taps in the URL, every trigger gesture event and panel
+	   toggle is written to a small on-page readout with the ms gap between
+	   events - so a phone report can say exactly WHAT fired and WHEN
+	   instead of "nothing happened". Renders nothing without the param;
+	   inline styles are fine here, it's a labeled instrument, not chrome. */
+	if (window.location.search.indexOf('debug=taps') !== -1) {
+		var tapLog = document.createElement('ol');
+		tapLog.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:9999;margin:0;padding:6px 8px;list-style:none;font:11px/1.5 Menlo,monospace;background:rgba(0,0,0,0.85);color:#9f9;max-width:70vw;pointer-events:none;';
+		document.body.appendChild(tapLog);
+
+		var lastTapEventAt = 0;
+
+		var logTap = function (label) {
+			var now = Date.now();
+			var gap = lastTapEventAt ? '+' + (now - lastTapEventAt) + 'ms' : '';
+			lastTapEventAt = now;
+
+			var line = document.createElement('li');
+			line.textContent = label + ' ' + gap;
+			tapLog.appendChild(line);
+
+			while (tapLog.children.length > 8) {
+				tapLog.removeChild(tapLog.firstChild);
+			}
+		};
+
+		triggers.forEach(function (trigger) {
+			var name = trigger.getAttribute('aria-label') || 'trigger';
+
+			['pointerdown', 'touchstart', 'touchend', 'click'].forEach(function (type) {
+				trigger.addEventListener(type, function () {
+					logTap(name + ': ' + type);
+				});
+			});
+		});
+
+		panels.forEach(function (panel) {
+			panel.addEventListener('toggle', function (event) {
+				logTap(panel.id + ': ' + event.newState);
+			});
+		});
+	}
 
 	/* --- Guided-tour control surface (spike, see scripts/tour.js) ---
 	   The tour drives the real UI with {persist:false}, then calls restore()
