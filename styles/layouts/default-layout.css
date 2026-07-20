@@ -91,6 +91,15 @@ main {
 	margin-inline-end: auto;
 }
 
+/* The dev stamp (non-production serves only - header.php) borrows the
+   site-name's left slot: a quiet corner readout of the code's freshness,
+   never competing with the toolbar. */
+.dev-stamp {
+	margin-block: 0;
+	margin-inline-end: auto;
+	color: var(--ink-auxiliary);
+}
+
 /* Small screens only: once the tray pins to the top, give it a bottom
    border so it reads as a header. sticky-header.js sets .is-stuck. The border
    AND its transition live only here - at large widths there's no border box,

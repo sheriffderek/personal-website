@@ -169,6 +169,16 @@
 		<header class='site-tray'>
 			<!--<a class='site-name' href='<?= '/' . ($target_query ?? '') ?>'>Derek Wood</a>-->
 
+			<?php /* Dev stamp - which code am I looking at, at a glance. Top-left
+				so phone QA never scrolls to the footer's version line: commit hash
+				plus the clock time of the newest code-file save (an uncommitted
+				save bumps it too - see dev_stamp() in render.php). The host check
+				IS the gate: renders on every serve that isn't production, no flag
+				to forget. */ ?>
+			<?php if (strpos($_SERVER['HTTP_HOST'] ?? '', 'derekthomaswood.com') === false): ?>
+				<p class='dev-stamp data-voice'><?= dev_stamp() ?></p>
+			<?php endif; ?>
+
 			<?php /* Gates together with the settings-panel.js <link> in <head>
 				via $settings_panel_on (index.php). */ ?>
 			<?php if ($settings_panel_on ?? false): ?>

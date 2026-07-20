@@ -188,6 +188,40 @@ function stylesheet_paths($web_path = '/styles/index.css') {
 	return [$web_path];
 }
 
+/* The dev stamp: "<hash> · <H:MM>" where the time is the NEWEST save across
+   every code file - so a just-saved, not-yet-committed change still bumps it.
+   Phone QA reads the corner instead of guessing about caches: if the stamp
+   matches what was just changed, the page is fresh. Rendered only off
+   production (the host gate lives at the call site in header.php). */
+function dev_stamp() {
+	$patterns = [
+		SITE_ROOT . '/index.php',
+		SITE_ROOT . '/includes/*.php',
+		SITE_ROOT . '/includes/*/*.php',
+		SITE_ROOT . '/templates/*.php',
+		SITE_ROOT . '/templates/*/*.php',
+		SITE_ROOT . '/scripts/*.js',
+		SITE_ROOT . '/styles/*.css',
+		SITE_ROOT . '/styles/*/*.css',
+	];
+
+	$newest = 0;
+
+	foreach ($patterns as $pattern) {
+		foreach (glob($pattern) as $file) {
+			$time = filemtime($file);
+
+			if ($time > $newest) {
+				$newest = $time;
+			}
+		}
+	}
+
+	$version = deployed_version();
+
+	return ($version['hash'] ? $version['hash'] . ' · ' : '') . date('G:i', $newest);
+}
+
 /* Version stamp for the footer — confirms which commit is actually live, so a
    stale cache can't quietly lie about what's deployed. Reads .git directly
    (loose ref, then packed-refs) so it needs no git binary and no build step.
