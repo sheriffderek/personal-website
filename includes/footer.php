@@ -344,6 +344,34 @@
 				scrollRaf = requestAnimationFrame(() => { scrollRaf = null; runChecks(); });
 			}, { passive: true });
 
+			// ---- The axis lock ----
+			// A diagonal touch near a carousel used to move BOTH the page and
+			// the slider ("loosey goosey", iOS QA 2026-07-19): the browser
+			// pans vertically per touch-action while Flickity translates
+			// horizontally, and neither ever yields. So the FIRST real
+			// movement of each drag decides the gesture's axis, once: more
+			// vertical than horizontal means the visitor is scrolling the
+			// page, and the carousel sits the whole gesture out (its own
+			// dragMove is skipped; the few px it may have moved snap back on
+			// release). Horizontal-intent drags behave exactly as before.
+			// Taught to Flickity's prototype so every carousel - including
+			// any re-created later - disambiguates the same way.
+			const flickityDragStart = Flickity.prototype.dragStart;
+			const flickityDragMove = Flickity.prototype.dragMove;
+
+			Flickity.prototype.dragStart = function (event, pointer) {
+				this.pageOwnsGesture = null;
+				return flickityDragStart.call(this, event, pointer);
+			};
+
+			Flickity.prototype.dragMove = function (event, pointer, moveVector) {
+				if (this.pageOwnsGesture === null) {
+					this.pageOwnsGesture = Math.abs(moveVector.y) > Math.abs(moveVector.x);
+				}
+				if (this.pageOwnsGesture) return;
+				return flickityDragMove.call(this, event, pointer, moveVector);
+			};
+
 			// Carousels (2+ items): Flickity, with the selected slide's loop
 			// autoplaying on scroll/settle.
 			document.querySelectorAll('.carousel').forEach(el => {
