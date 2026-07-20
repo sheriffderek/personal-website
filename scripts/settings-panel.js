@@ -1115,6 +1115,74 @@
 		}
 	}, { passive: true });
 
+	/* --- Tap-during-glide (iOS) ---
+	   A tap during momentum scrolling is consumed by iOS as "stop the
+	   scroll": deceleration halts and NO click is delivered to what's under
+	   the finger. Native apps behave the same, on purpose - during a fast
+	   glide a tap often means "catch the page," so acting on it risks ghost
+	   presses. We WEIGHED accepting that as native feel and Derek overruled
+	   it for the TRIGGERS specifically (2026-07-19): the tray is pinned
+	   chrome, a press on the menu button is unambiguous - the visitor asked
+	   for the menu, not a scroll brake. Page content keeps the native
+	   stop-first behavior; only the triggers act on a swallowed tap.
+
+	   Mechanism: iOS keeps firing scroll events through the glide, so a
+	   touchstart within GLIDE_MS of the last scroll tick is mid-glide and
+	   its click is doomed. On that tap's clean release (finger didn't
+	   wander) we run the trigger's job ourselves and preventDefault() -
+	   which per spec cancels any click that might still arrive, so this can
+	   never double-fire against the native path.
+
+	   REVISIT: if anyone ever reports menus popping open when they only
+	   meant to catch the page, delete this whole block - the native
+	   first-tap-stops behavior returns on its own. */
+	var GLIDE_MS = 100;
+	var TAP_SLOP_PX = 10;
+	var lastScrollTick = 0;
+
+	window.addEventListener('scroll', function () {
+		lastScrollTick = Date.now();
+	}, { passive: true });
+
+	triggers.forEach(function (trigger) {
+		var glideTapStart = null;
+
+		trigger.addEventListener('touchstart', function (event) {
+			var touch = event.touches[0];
+			var midGlide = Date.now() - lastScrollTick < GLIDE_MS;
+			glideTapStart = midGlide && touch ? { x: touch.clientX, y: touch.clientY } : null;
+		}, { passive: true });
+
+		trigger.addEventListener('touchend', function (event) {
+			if (!glideTapStart) {
+				return;
+			}
+
+			var touch = event.changedTouches[0];
+			var start = glideTapStart;
+			glideTapStart = null;
+
+			/* A wandering finger is a drag, not a press. */
+			if (!touch || Math.abs(touch.clientX - start.x) > TAP_SLOP_PX || Math.abs(touch.clientY - start.y) > TAP_SLOP_PX) {
+				return;
+			}
+
+			event.preventDefault();
+
+			var panelId = trigger.getAttribute('popovertarget');
+			var panel = panelId ? document.getElementById(panelId) : null;
+
+			if (panel) {
+				panel.togglePopover();
+			} else {
+				/* The panel-less members (grid invite, back-to-top) act via
+				   their click handlers - the native click died with the
+				   glide, so send our own. */
+				trigger.click();
+			}
+		});
+	});
+
 	/* --- Guided-tour control surface (spike, see scripts/tour.js) ---
 	   The tour drives the real UI with {persist:false}, then calls restore()
 	   to snap the view back to the visitor's saved prefs. Because the tour
