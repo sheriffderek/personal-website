@@ -1149,26 +1149,97 @@
 		lastScrollTick = Date.now();
 	}, { passive: true });
 
+	/* --- Panel-to-panel switch: one move, one surface ---
+	   Natively, tapping trigger B while panel A is open is TWO moments:
+	   light-dismiss closes A on the pointer's way down, the invoker opens B
+	   only when the click lands - a flash of nothing between two
+	   different-sized boxes, which is the "junky menu to menu" feel
+	   (2026-07-20). So a switch is taken over on pointerdown: close A, open
+	   B, and place B in the SAME breath - one paint, no gap. Where the
+	   browser has View Transitions the swap rides one: both panels share a
+	   transition name (settings-panel.css), only one is rendered per
+	   snapshot, so they pair as old/new and the open box MORPHS into the
+	   next one's size and place - one surface changing shape. No support =
+	   the atomic swap alone, which is most of the fix. Plain opening and
+	   closing stay instant snaps (the "panels snap" decision) - only the
+	   switch animates, because only the switch is a continuity. */
+	var suppressToggleOf = null;
+
+	function performSwitch(fromPanel, toPanel, toTrigger) {
+		function swap() {
+			if (fromPanel.matches(':popover-open')) {
+				fromPanel.hidePopover();
+			}
+
+			if (!toPanel.matches(':popover-open')) {
+				toPanel.showPopover();
+			}
+
+			/* showPopover's beforetoggle hid the panel (the no-flash rule);
+			   place and reveal synchronously so this paint - and a view
+			   transition's snapshot - sees the settled state. */
+			if (triggerIsRendered(toTrigger)) {
+				placePanel(toPanel, toTrigger);
+			}
+
+			toPanel.style.visibility = '';
+		}
+
+		if (document.startViewTransition) {
+			document.startViewTransition(swap);
+		} else {
+			swap();
+		}
+	}
+
+	/* ONE choreography per trigger - the switch and the glide fallback
+	   share each gesture's state on purpose: a mid-glide tap on the other
+	   menu's trigger would otherwise switch on pointerdown AND arm the
+	   fallback on touchend, and with the click swallowed nothing disarms
+	   the timer - it would toggle the just-opened panel shut 150ms later.
+	   switchedThisGesture is the handshake: the tap already acted, so the
+	   fallback stands down. */
 	triggers.forEach(function (trigger) {
+		var targetId = trigger.getAttribute('popovertarget');
 		var glideTapStart = null;
 		var pendingFallback = null;
+		var switchedThisGesture = false;
 
+		/* THE SWITCH - pointerdown is the earliest hook, so the swap is done
+		   before native light-dismiss or the invoker get a say. Also resets
+		   the per-gesture state, so a stale flag from an abandoned gesture
+		   (finger dragged away, click never came) can't eat a later tap. */
+		trigger.addEventListener('pointerdown', function () {
+			suppressToggleOf = null;
+			switchedThisGesture = false;
+
+			if (!targetId || !openPanel) {
+				return;
+			}
+
+			var toPanel = document.getElementById(targetId);
+
+			if (!toPanel || openPanel === toPanel) {
+				return;
+			}
+
+			/* The native click that follows still wants to toggle B - mark
+			   it handled so the click handler cancels the invoker's default
+			   instead of closing what this just opened. */
+			suppressToggleOf = trigger;
+			switchedThisGesture = true;
+			performSwitch(openPanel, toPanel, trigger);
+		});
+
+		/* THE GLIDE ARM - was this tap born mid-momentum-scroll? */
 		trigger.addEventListener('touchstart', function (event) {
 			var touch = event.touches[0];
 			var midGlide = Date.now() - lastScrollTick < GLIDE_MS;
 			glideTapStart = midGlide && touch ? { x: touch.clientX, y: touch.clientY } : null;
 		}, { passive: true });
 
-		/* The native click is the real actor whenever it arrives - it also
-		   disarms the fallback, so the swallowed-tap path can never stack a
-		   second toggle on top of it. */
-		trigger.addEventListener('click', function () {
-			if (pendingFallback) {
-				clearTimeout(pendingFallback);
-				pendingFallback = null;
-			}
-		});
-
+		/* THE FALLBACK - runs the trigger's job only when the native click
+		   provably never comes (see the block comment above). */
 		trigger.addEventListener('touchend', function (event) {
 			if (!glideTapStart) {
 				return;
@@ -1178,6 +1249,11 @@
 			var start = glideTapStart;
 			glideTapStart = null;
 
+			/* The pointerdown switch already did this tap's job. */
+			if (switchedThisGesture) {
+				return;
+			}
+
 			/* A wandering finger is a drag, not a press. */
 			if (!touch || Math.abs(touch.clientX - start.x) > TAP_SLOP_PX || Math.abs(touch.clientY - start.y) > TAP_SLOP_PX) {
 				return;
@@ -1186,8 +1262,7 @@
 			pendingFallback = setTimeout(function () {
 				pendingFallback = null;
 
-				var panelId = trigger.getAttribute('popovertarget');
-				var panel = panelId ? document.getElementById(panelId) : null;
+				var panel = targetId ? document.getElementById(targetId) : null;
 
 				if (panel) {
 					panel.togglePopover();
@@ -1198,6 +1273,21 @@
 					trigger.click();
 				}
 			}, CLICK_WAIT_MS);
+		});
+
+		/* THE CLICK - the real actor whenever it arrives: disarms the
+		   fallback, and swallows only the one toggle a switch already
+		   performed. */
+		trigger.addEventListener('click', function (event) {
+			if (pendingFallback) {
+				clearTimeout(pendingFallback);
+				pendingFallback = null;
+			}
+
+			if (suppressToggleOf === trigger) {
+				suppressToggleOf = null;
+				event.preventDefault();
+			}
 		});
 	});
 

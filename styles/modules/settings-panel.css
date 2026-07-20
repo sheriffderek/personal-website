@@ -212,6 +212,13 @@ button.trigger {
 	border-radius: 0px;
 	box-shadow: var(--app-shadow);
 
+	/* A panel-to-panel switch rides a View Transition (settings-panel.js).
+	   Both panels share this one name on purpose: only one is ever rendered
+	   per snapshot (closed popovers are display:none), so the browser pairs
+	   them as old/new and the open box morphs into the next one's size and
+	   place. Browsers without support just get the atomic swap. */
+	view-transition-name: menu-panel;
+
 	/* A closed popover MUST be display:none in AUTHOR css. The UA's
 	   closed-popover display:none is a normal UA-origin rule, so ANY author
 	   display on the same node beats it - and the settings panel carries
