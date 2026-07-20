@@ -1,16 +1,17 @@
 <?php /*
-	Two menus, two triggers, two popovers (native <popover>, CSS anchor-positioned):
+	Two menus, two triggers, two popovers (native <popover>, placed by
+	placePanel in scripts/settings-panel.js):
 
-	  Settings (sliders glyph) — theme/scheme/sound + per-page contextual controls
-	    (the timeline filter rides here on the home page).
-	  Pages (hamburger glyph) — site navigation + (future) per-page contextual links.
+	  Pages (hamburger glyph) — site navigation. The PRIMARY member: every
+	    page, every scroll depth, first in the toolbar's DOM so the corner
+	    rules land it corner-most. The hamburger glyph is reserved for it -
+	    only real navigation may wear it.
+	  Settings (sliders glyph) — theme/scheme/sound + per-page contextual
+	    controls (the timeline filter rides here on the home page).
 
-	Split out of one panel because page links + settings + filter together got too
-	tall. Each row inside a menu is its own partial in includes/settings/.
-
-	The Pages menu is commented out for now: How I work / Now / Contact are still
-	placeholders, so home is the only finished page and a nav to it is noise. The
-	routes and templates are untouched - uncomment when those pages are real.
+	Split into two panels because page links + settings + filter together got
+	too tall. Each row inside the settings is its own partial in
+	includes/settings/.
 */ ?>
 
 <?php /* Grid view exists only where the timeline does - the page carrying
@@ -37,15 +38,30 @@
 <?php /* DOM order is IMPORTANCE order, primary first (the toolbar's
 	row-reverse puts the first member in the corner-most slot - see the locked
 	rules on .toolbar in styles/modules/settings-panel.css). The rank: pages
-	menu (primary, when it returns) > settings (secondary) > contextual extras
-	(grid invite). A new trigger is inserted at the rank it earns, never
+	menu (primary) > settings (secondary) > contextual extras (grid invite,
+	back-to-top). A new trigger is inserted at the rank it earns, never
 	appended to the end. */ ?>
+
+<?php /* ---- Pages menu (PRIMARY) ---- */ ?>
+<button
+	type='button'
+	popovertarget='pages-menu'
+	class='trigger'
+	aria-expanded='false'
+	aria-label='Pages'
+>
+	<span aria-hidden='true'>
+		<svg class='glyph' viewBox='0 0 24 24' focusable='false'>
+			<path d='M21 12C21 12.1989 20.921 12.3897 20.7803 12.5303C20.6397 12.671 20.4489 12.75 20.25 12.75H3.75C3.55109 12.75 3.36032 12.671 3.21967 12.5303C3.07902 12.3897 3 12.1989 3 12C3 11.8011 3.07902 11.6103 3.21967 11.4697C3.36032 11.329 3.55109 11.25 3.75 11.25H20.25C20.4489 11.25 20.6397 11.329 20.7803 11.4697C20.921 11.6103 21 11.8011 21 12ZM3.75 6.75H20.25C20.4489 6.75 20.6397 6.67098 20.7803 6.53033C20.921 6.38968 21 6.19891 21 6C21 5.80109 20.921 5.61032 20.7803 5.46967C20.6397 5.32902 20.4489 5.25 20.25 5.25H3.75C3.55109 5.25 3.36032 5.32902 3.21967 5.46967C3.07902 5.61032 3 5.80109 3 6C3 6.19891 3.07902 6.38968 3.21967 6.53033C3.36032 6.67098 3.55109 6.75 3.75 6.75ZM20.25 17.25H3.75C3.55109 17.25 3.36032 17.329 3.21967 17.4697C3.07902 17.6103 3 17.8011 3 18C3 18.1989 3.07902 18.3897 3.21967 18.5303C3.36032 18.671 3.55109 18.75 3.75 18.75H20.25C20.4489 18.75 20.6397 18.671 20.7803 18.5303C20.921 18.3897 21 18.1989 21 18C21 17.8011 20.921 17.6103 20.7803 17.4697C20.6397 17.329 20.4489 17.25 20.25 17.25Z' />
+		</svg>
+	</span>
+</button>
 
 <?php /* ---- Settings menu ---- */ ?>
 <button
 	type='button'
 	popovertarget='settings-panel'
-	class='trigger settings-trigger'
+	class='trigger'
 	aria-expanded='false'
 	aria-label='Display settings'
 >
@@ -65,7 +81,7 @@
 <?php if ($page_has_grid): ?>
 	<button
 		type='button'
-		class='trigger settings-trigger grid-invite'
+		class='trigger grid-invite'
 		data-grid-invite
 		aria-label='View as grid'
 	>
@@ -85,7 +101,7 @@
 <?php if ($page_has_grid): ?>
 	<button
 		type='button'
-		class='trigger settings-trigger'
+		class='trigger'
 		data-to-top
 		aria-label='Back to top'
 	>
@@ -98,6 +114,20 @@
 <?php endif; ?>
 
 </div><?php /* end .toolbar */ ?>
+
+<?php /* ---- The panels ----
+	One popover per menu, both wearing the same .panel chrome, both placed by
+	placePanel against the toolbar's box (so they share one clean edge). The
+	pages panel is a plain container - the nav landmark lives in the partial. */ ?>
+
+<div
+	id='pages-menu'
+	popover
+	class='panel'
+	data-ui='app'
+>
+	<?= partial('settings/page-menu', ['pages' => $pages, 'slug' => $slug, 'target_query' => $target_query ?? '']) ?>
+</div>
 
 <div
 	id='settings-panel'
@@ -118,31 +148,3 @@
 	the page, and settings / back-to-top are REVEAL members that appear via
 	data-scrolled once the settings band leaves the viewport. Same conditional-
 	cluster idea, no second floating chrome to maintain.) */ ?>
-
-<?php /* ---- Pages menu - disabled until the sub-pages are real ----
-
-<button
-	type='button'
-	popovertarget='pages-menu'
-	class='trigger settings-trigger'
-	aria-expanded='false'
-	aria-label='Pages'
->
-	<span aria-hidden='true'>
-		<svg class='glyph' viewBox='0 0 24 24' focusable='false'>
-			<path d='M21 12C21 12.1989 20.921 12.3897 20.7803 12.5303C20.6397 12.671 20.4489 12.75 20.25 12.75H3.75C3.55109 12.75 3.36032 12.671 3.21967 12.5303C3.07902 12.3897 3 12.1989 3 12C3 11.8011 3.07902 11.6103 3.21967 11.4697C3.36032 11.329 3.55109 11.25 3.75 11.25H20.25C20.4489 11.25 20.6397 11.329 20.7803 11.4697C20.921 11.6103 21 11.8011 21 12ZM3.75 6.75H20.25C20.4489 6.75 20.6397 6.67098 20.7803 6.53033C20.921 6.38968 21 6.19891 21 6C21 5.80109 20.921 5.61032 20.7803 5.46967C20.6397 5.32902 20.4489 5.25 20.25 5.25H3.75C3.55109 5.25 3.36032 5.32902 3.21967 5.46967C3.07902 5.61032 3 5.80109 3 6C3 6.19891 3.07902 6.38968 3.21967 6.53033C3.36032 6.67098 3.55109 6.75 3.75 6.75ZM20.25 17.25H3.75C3.55109 17.25 3.36032 17.329 3.21967 17.4697C3.07902 17.6103 3 17.8011 3 18C3 18.1989 3.07902 18.3897 3.21967 18.5303C3.36032 18.671 3.55109 18.75 3.75 18.75H20.25C20.4489 18.75 20.6397 18.671 20.7803 18.5303C20.921 18.3897 21 18.1989 21 18C21 17.8011 20.921 17.6103 20.7803 17.4697C20.6397 17.329 20.4489 17.25 20.25 17.25Z' />
-		</svg>
-	</span>
-</button>
-
-<div
-	id='pages-menu'
-	popover
-	class='panel settings-panel'
-	data-ui='app'
-	aria-label='Pages'
->
-	<?= partial('settings/page-menu', ['pages' => $pages, 'slug' => $slug, 'target_query' => $target_query ?? '']) ?>
-</div>
-
----- end Pages menu ---- */ ?>
