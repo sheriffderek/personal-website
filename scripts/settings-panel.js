@@ -1126,18 +1126,23 @@
 	   for the menu, not a scroll brake. Page content keeps the native
 	   stop-first behavior; only the triggers act on a swallowed tap.
 
-	   Mechanism: iOS keeps firing scroll events through the glide, so a
-	   touchstart within GLIDE_MS of the last scroll tick is mid-glide and
-	   its click is doomed. On that tap's clean release (finger didn't
-	   wander) we run the trigger's job ourselves and preventDefault() -
-	   which per spec cancels any click that might still arrive, so this can
-	   never double-fire against the native path.
+	   Mechanism - a FALLBACK, never a race. The first version acted on
+	   touchend and trusted preventDefault() to suppress the synthesized
+	   click; in the field iOS still delivered clicks after ordinary
+	   scrolling, and the pair toggled the panel open-and-shut in one frame -
+	   "nothing happens." So now the native click stays the one true actor:
+	   a clean tap that began mid-glide (scroll ticked within GLIDE_MS of
+	   touchstart) arms a short timer, an arriving native click disarms it
+	   and acts natively, and only when the click provably never comes does
+	   the timer run the trigger's job. The two paths cannot both fire by
+	   construction - one always cancels the other.
 
 	   REVISIT: if anyone ever reports menus popping open when they only
 	   meant to catch the page, delete this whole block - the native
 	   first-tap-stops behavior returns on its own. */
 	var GLIDE_MS = 100;
 	var TAP_SLOP_PX = 10;
+	var CLICK_WAIT_MS = 150;
 	var lastScrollTick = 0;
 
 	window.addEventListener('scroll', function () {
@@ -1146,12 +1151,23 @@
 
 	triggers.forEach(function (trigger) {
 		var glideTapStart = null;
+		var pendingFallback = null;
 
 		trigger.addEventListener('touchstart', function (event) {
 			var touch = event.touches[0];
 			var midGlide = Date.now() - lastScrollTick < GLIDE_MS;
 			glideTapStart = midGlide && touch ? { x: touch.clientX, y: touch.clientY } : null;
 		}, { passive: true });
+
+		/* The native click is the real actor whenever it arrives - it also
+		   disarms the fallback, so the swallowed-tap path can never stack a
+		   second toggle on top of it. */
+		trigger.addEventListener('click', function () {
+			if (pendingFallback) {
+				clearTimeout(pendingFallback);
+				pendingFallback = null;
+			}
+		});
 
 		trigger.addEventListener('touchend', function (event) {
 			if (!glideTapStart) {
@@ -1167,19 +1183,21 @@
 				return;
 			}
 
-			event.preventDefault();
+			pendingFallback = setTimeout(function () {
+				pendingFallback = null;
 
-			var panelId = trigger.getAttribute('popovertarget');
-			var panel = panelId ? document.getElementById(panelId) : null;
+				var panelId = trigger.getAttribute('popovertarget');
+				var panel = panelId ? document.getElementById(panelId) : null;
 
-			if (panel) {
-				panel.togglePopover();
-			} else {
-				/* The panel-less members (grid invite, back-to-top) act via
-				   their click handlers - the native click died with the
-				   glide, so send our own. */
-				trigger.click();
-			}
+				if (panel) {
+					panel.togglePopover();
+				} else {
+					/* The panel-less members (grid invite, back-to-top) act
+					   via their click handlers - this synthesized click runs
+					   them, and harmlessly disarms the already-fired timer. */
+					trigger.click();
+				}
+			}, CLICK_WAIT_MS);
 		});
 	});
 
