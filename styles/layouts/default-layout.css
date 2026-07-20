@@ -68,6 +68,14 @@ main {
 
 	z-index: 5;
 
+	/* Own compositor layer, for iOS: during programmatic scroll corrections
+	   (the filter's keep-your-place scrollBy in settings-panel.js) iOS
+	   repaints sticky elements a frame late, so the bar flickered between
+	   its background and the content beneath it. Composited, it just moves.
+	   Safe for the panel inside: when open it lives in the top layer, which
+	   an ancestor transform doesn't reach. */
+	transform: translateZ(0);
+
 	background-color: var(--fill-primary);
 
 	padding: 0.5rem var(--gutter);
