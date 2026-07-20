@@ -3,6 +3,18 @@
 	gap: 5rem;
 
 	margin-top: 5rem;
+
+	/* Grid items carry an implicit min-width: auto floor of their content's
+	   min-content size - so one long unbreakable heading word (at a bigger
+	   character scale, worse with iOS font metrics) silently inflates the
+	   whole card PAST its track, and the media's edge-to-edge bleed then
+	   overhangs the screen (the marketing-only side gap on phones,
+	   2026-07-19). Zeroing the floor keeps every card exactly track-sized;
+	   long words wrap or overflow their own line instead of resizing the
+	   layout. Same rule the grid view's .timeline-lane already carries. */
+	> li {
+		min-width: 0;
+	}
 }
 
 .milestone {
@@ -53,6 +65,14 @@
 	   heading isn't jammed against the top of the viewport on landing. */
 	scroll-margin-top: 80px;
 
+	/* Same min-content guard as the timeline's items (see the note there):
+	   the card is a grid too, so without this one long heading word at a big
+	   character scale widens the card's own track - and the media bleed
+	   (track + gutters) then pokes past the screen edge on phones. */
+	> * {
+		min-width: 0;
+	}
+
 	.setup {
 		.year {
 			color: var(--ink-auxiliary);
@@ -61,10 +81,17 @@
 		.heading {
 			margin-top: 0.14em;
 
+			/* Emergency break only: a heading word that can't fit its line at
+			   all ("Designer/Founding" at a big character scale on a 320px
+			   phone) would otherwise paint past the card and widen the whole
+			   page sideways. Normal wrapping is untouched - this fires only
+			   when a single word exceeds the line. */
+			overflow-wrap: break-word;
+
 			/* The title is a bare hash-link (deep-link to this milestone), so it
 			   reads as plain heading text - no link color or underline. */
 			a {
-				color: inherit;
+				color: var(--milestone-heading-color, inherit);
 				text-decoration: none;
 			}
 		}
@@ -462,15 +489,19 @@
 
 /* Phones: the media squares up and breaks out to both screen edges for a more
    immersive frame, while the text blocks stay in their column. The negative
-   inline margin pulls the frame exactly to the viewport edges (50% of the
-   column minus 50% of the viewport), so there's no horizontal scroll. */
+   inline margin undoes main's own padding - the card sits exactly one gutter
+   from each screen edge at these widths, so backing out the gutter reaches
+   the edges precisely. (This replaced calc(50% - 50vw), 2026-07-19: vw units
+   re-derive the viewport, and iOS Safari's shifting notion of it left the
+   frame asymmetric - a bare gap on one side. The gutter is the truth the
+   layout actually built with; no re-derivation, no drift.) */
 @media (width <= 600px) {
 	.milestone {
 		--media-ratio: 1 / 1;
 	}
 
 	.milestone .media {
-		margin-inline: calc(50% - 50vw);
+		margin-inline: calc(var(--gutter) * -1);
 		border-width: 0;
 		border-radius: 0;
 
