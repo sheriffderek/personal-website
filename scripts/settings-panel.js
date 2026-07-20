@@ -854,8 +854,18 @@
 		var box = toolbar.getBoundingClientRect();
 		var width = panel.offsetWidth;
 		var height = panel.offsetHeight;
-		var viewportWidth = document.documentElement.clientWidth;
-		var viewportHeight = document.documentElement.clientHeight;
+
+		/* The VISIBLE box, in the same layout-viewport coordinates the rects
+		   and position:fixed use. On desktop this is just the viewport. On
+		   iOS the layout viewport is taller than what's on screen (the URL
+		   bar overlays it) and can be panned/zoomed - visualViewport is the
+		   truth of what the visitor can actually see, so the clamp keeps the
+		   panel inside THAT, never half-hidden behind Safari's chrome. */
+		var visual = window.visualViewport;
+		var viewLeft = visual ? visual.offsetLeft : 0;
+		var viewTop = visual ? visual.offsetTop : 0;
+		var viewportWidth = visual ? visual.width : document.documentElement.clientWidth;
+		var viewportHeight = visual ? visual.height : document.documentElement.clientHeight;
 
 		var top;
 		var left;
@@ -867,7 +877,7 @@
 
 			var sideReference = parseFloat(getComputedStyle(panel).maxWidth) || width;
 
-			if (viewportWidth - box.right >= sideReference + PANEL_GAP + PANEL_EDGE) {
+			if (viewLeft + viewportWidth - box.right >= sideReference + PANEL_GAP + PANEL_EDGE) {
 				left = box.right + PANEL_GAP;
 			} else {
 				left = box.left - PANEL_GAP - width;
@@ -878,10 +888,10 @@
 			left = box.right - width;
 		}
 
-		/* Bulletproof: never let any edge cross the viewport, whatever the
+		/* Bulletproof: never let any edge leave the VISIBLE box, whatever the
 		   math above said. */
-		left = Math.max(PANEL_EDGE, Math.min(left, viewportWidth - width - PANEL_EDGE));
-		top = Math.max(PANEL_EDGE, Math.min(top, viewportHeight - height - PANEL_EDGE));
+		left = Math.max(viewLeft + PANEL_EDGE, Math.min(left, viewLeft + viewportWidth - width - PANEL_EDGE));
+		top = Math.max(viewTop + PANEL_EDGE, Math.min(top, viewTop + viewportHeight - height - PANEL_EDGE));
 
 		panel.style.left = Math.round(left) + 'px';
 		panel.style.top = Math.round(top) + 'px';
@@ -962,6 +972,24 @@
 
 				if (triggerIsRendered(placeTrigger)) {
 					placePanel(panel, placeTrigger);
+
+					/* Settle pass: the first placement measured the panel the
+					   instant it became renderable, and that first measure can
+					   be off (fonts landing, iOS finishing a URL-bar or zoom
+					   transition mid-open). One more placement on the next
+					   frame reads the settled layout and corrects invisibly -
+					   on desktop it lands on the same pixels. */
+					requestAnimationFrame(function () {
+						if (!openPanels.has(panel)) {
+							return;
+						}
+
+						var settleTrigger = triggerFor(panel);
+
+						if (triggerIsRendered(settleTrigger)) {
+							placePanel(panel, settleTrigger);
+						}
+					});
 				} else {
 					/* Safety net only - a panel opens by its trigger, so a
 					   hidden trigger shouldn't get here. If it somehow does,
@@ -1010,28 +1038,39 @@
 		reconcilePanelsToLayout();
 	});
 
-	/* Re-place on scroll too (rAF-coalesced, and a fast no-op while nothing
-	   is open). On desktop this changes nothing - the tray is sticky, so the
-	   toolbar's rect holds still and re-placing lands on the same pixels. It
-	   exists for iOS Safari, where the collapsing/expanding URL bar slides
-	   the visual viewport around the layout viewport mid-scroll and a
-	   panel placed once on open drifts away from its toolbar. Gluing the
-	   panel to the toolbar's live rect every scroll frame is what makes the
-	   placement hold still THERE. */
-	var scrollReplaceQueued = false;
+	/* Re-place on every viewport disturbance (rAF-coalesced, and a fast
+	   no-op while nothing is open). On desktop these all land on the same
+	   pixels - the tray is sticky, so the toolbar's rect holds still. They
+	   exist for iOS Safari, where the VISUAL viewport slides around the
+	   layout viewport (the URL bar collapsing/expanding, pinch zoom, the
+	   keyboard) - often without firing the window events desktop code
+	   listens to - and a panel placed once on open drifts away from its
+	   toolbar. Gluing the panel to the toolbar's live rect on every one of
+	   these signals is what makes placement hold still on a phone:
 
-	window.addEventListener('scroll', function () {
-		if (scrollReplaceQueued || !openPanels.size) {
+	     - window scroll (the sticky toolbar's rect is live-tracked)
+	     - visualViewport resize + scroll (the iOS-only movements above) */
+	var panelReconcileQueued = false;
+
+	function schedulePanelReconcile() {
+		if (panelReconcileQueued || !openPanels.size) {
 			return;
 		}
 
-		scrollReplaceQueued = true;
+		panelReconcileQueued = true;
 
 		requestAnimationFrame(function () {
-			scrollReplaceQueued = false;
+			panelReconcileQueued = false;
 			reconcilePanelsToLayout();
 		});
-	}, { passive: true });
+	}
+
+	window.addEventListener('scroll', schedulePanelReconcile, { passive: true });
+
+	if (window.visualViewport) {
+		window.visualViewport.addEventListener('resize', schedulePanelReconcile);
+		window.visualViewport.addEventListener('scroll', schedulePanelReconcile);
+	}
 
 	function tapIsOnTrigger(target) {
 		for (var i = 0; i < triggers.length; i++) {
