@@ -148,7 +148,7 @@ button.trigger {
 }
 
 .glyph {
-	--glyph-size: 1.25rem;
+	--glyph-size: 1.65rem;
 
 	width: var(--glyph-size);
 	height: var(--glyph-size);
@@ -197,11 +197,11 @@ button.trigger {
 	line-height: var(--app-data-voice-line-height);
 	letter-spacing: var(--app-data-voice-letter-spacing);
 
-	opacity: 1;
-
-	transition:
-		opacity 120ms ease,
-		display 120ms allow-discrete;
+	/* The panel arrives and leaves INSTANTLY - no transition, on purpose. It
+	   is opaque chrome, and an opacity ramp lets the page ghost through it
+	   mid-fade (Derek, 2026-07-19). The soft edge of the choreography is the
+	   SHADE's job - it fades on its own clock (section 3); the panel just
+	   appears, already solid, on top of it. */
 
 	/* Chrome reads --app-* only (the sealed-scope contract at the top of this
 	   file). Color slots are free; the border stays 1px and fakes "no border"
@@ -218,17 +218,9 @@ button.trigger {
 	   .settings-panel's rows grid. Without this, the "closed" panel sits as
 	   an invisible fixed box over the toolbar, eating every click on the
 	   triggers (and, as an invisible overflow-y:auto layer over content, it
-	   is the best suspect yet for the old mobile scroll-freeze). The
-	   allow-discrete display transition above keeps the exit fade intact. */
+	   is the best suspect yet for the old mobile scroll-freeze). */
 	&:not(:popover-open) {
 		display: none;
-		opacity: 0;
-	}
-
-	@starting-style {
-		&:popover-open {
-			opacity: 0;
-		}
 	}
 }
 
@@ -239,7 +231,7 @@ button.trigger {
    reads this cap as its shared side reference, so geometry and dim follow.
    List only - the grid keeps the full --layout-panel-max beside the wall. */
 @media (width >= 1024px) {
-	html:not([data-view='grid']) .panel {
+	html:not([data-view="grid"]) .panel {
 		max-width: min(var(--layout-tray-sidebar), 100vw - var(--gutter) * 2);
 	}
 }
@@ -281,7 +273,10 @@ button.trigger {
 	   document, so a tap on the dimmed area still closes the open menu. */
 	pointer-events: none;
 
-	transition: opacity 150ms ease;
+	/* The shade owns the choreography's soft edge: a clear, legible fade in
+	   AND out, under an instant panel (see .panel - it deliberately has no
+	   transition of its own). */
+	transition: opacity 250ms ease;
 
 	&.is-visible {
 		opacity: 1;
