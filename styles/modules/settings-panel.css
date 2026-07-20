@@ -405,6 +405,18 @@ button.trigger {
 	margin: 0;
 	cursor: pointer;
 
+	/* iOS Safari ZOOMS the page when a focused form control's font-size is
+	   under 16px - a range is a form control, and the zoomed-in page then
+	   pans horizontally behind the open panel (the "brittle on phones"
+	   report, 2026-07-19). A range renders no text, so 16px is invisible -
+	   it exists purely to clear the zoom threshold. */
+	font-size: 16px;
+
+	/* The drag belongs to the SLIDER: without this, iOS treats a slightly
+	   diagonal thumb-drag as a page pan and scrolls the timeline under the
+	   open panel mid-adjustment. */
+	touch-action: none;
+
 	&::-webkit-slider-runnable-track {
 		height: 4px;
 		background: var(--app-stroke-secondary);

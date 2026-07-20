@@ -1010,6 +1010,29 @@
 		reconcilePanelsToLayout();
 	});
 
+	/* Re-place on scroll too (rAF-coalesced, and a fast no-op while nothing
+	   is open). On desktop this changes nothing - the tray is sticky, so the
+	   toolbar's rect holds still and re-placing lands on the same pixels. It
+	   exists for iOS Safari, where the collapsing/expanding URL bar slides
+	   the visual viewport around the layout viewport mid-scroll and a
+	   panel placed once on open drifts away from its toolbar. Gluing the
+	   panel to the toolbar's live rect every scroll frame is what makes the
+	   placement hold still THERE. */
+	var scrollReplaceQueued = false;
+
+	window.addEventListener('scroll', function () {
+		if (scrollReplaceQueued || !openPanels.size) {
+			return;
+		}
+
+		scrollReplaceQueued = true;
+
+		requestAnimationFrame(function () {
+			scrollReplaceQueued = false;
+			reconcilePanelsToLayout();
+		});
+	}, { passive: true });
+
 	function tapIsOnTrigger(target) {
 		for (var i = 0; i < triggers.length; i++) {
 			if (triggers[i].contains(target)) {
