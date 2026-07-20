@@ -366,6 +366,11 @@
 
 			Flickity.prototype.dragMove = function (event, pointer, moveVector) {
 				if (this.pageOwnsGesture === null) {
+					// $todo (2026-07-19): a dead-on 45° drag ties here and the
+					// carousel claims it while the browser also pans - still
+					// both. If it keeps grating, bias the split so the page
+					// wins anything NEAR diagonal (e.g. y > x * 0.6: only
+					// clearly-sideways drags reach the carousel).
 					this.pageOwnsGesture = Math.abs(moveVector.y) > Math.abs(moveVector.x);
 				}
 				if (this.pageOwnsGesture) return;
