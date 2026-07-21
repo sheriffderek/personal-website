@@ -1115,190 +1115,25 @@
 		}
 	}, { passive: true });
 
-	/* --- Tap-during-glide (iOS) ---
-	   A tap during momentum scrolling is consumed by iOS as "stop the
-	   scroll": deceleration halts and NO click is delivered to what's under
-	   the finger. Native apps behave the same, on purpose - during a fast
-	   glide a tap often means "catch the page," so acting on it risks ghost
-	   presses. We WEIGHED accepting that as native feel and Derek overruled
-	   it for the TRIGGERS specifically (2026-07-19): the tray is pinned
-	   chrome, a press on the menu button is unambiguous - the visitor asked
-	   for the menu, not a scroll brake. Page content keeps the native
-	   stop-first behavior; only the triggers act on a swallowed tap.
+	/* --- Trigger taps are NATIVE - parked cleverness, 2026-07-20 ---
+	   The triggers ran three rounds of custom tap choreography (a mid-glide
+	   tap fallback so a tap during iOS momentum scrolling opened the menu
+	   instead of just stopping the scroll, and a pointerdown panel-to-panel
+	   switch with a View Transition morph). All three rounds shipped a
+	   variant of the same bug - iOS delivered or withheld the click on its
+	   own schedule, our synthesized action collided with it, and the panel
+	   toggled open-and-shut in one frame: "the menu button does nothing,"
+	   on exactly the surface whose job is proving interface craft. The
+	   machinery was inference about event timing we never observed; git has
+	   it all (2ebb263, 5747db1, 0b2d492, 9bd4f1d) if it's ever re-earned.
 
-	   Mechanism - a FALLBACK, never a race. The first version acted on
-	   touchend and trusted preventDefault() to suppress the synthesized
-	   click; in the field iOS still delivered clicks after ordinary
-	   scrolling, and the pair toggled the panel open-and-shut in one frame -
-	   "nothing happens." So now the native click stays the one true actor:
-	   a clean tap that began mid-glide (scroll ticked within GLIDE_MS of
-	   touchstart) arms a short timer, an arriving native click disarms it
-	   and acts natively, and only when the click provably never comes does
-	   the timer run the trigger's job. The two paths cannot both fire by
-	   construction - one always cancels the other.
+	   The floor won: buttons must work. Native popover behavior only -
+	   every tap opens the menu, a mid-glide tap stops the scroll first
+	   (what native apps do), a menu switch is an instant swap.
 
-	   REVISIT: if anyone ever reports menus popping open when they only
-	   meant to catch the page, delete this whole block - the native
-	   first-tap-stops behavior returns on its own. */
-	var GLIDE_MS = 100;
-	var TAP_SLOP_PX = 10;
-	var CLICK_WAIT_MS = 150;
-	var lastScrollTick = 0;
-
-	window.addEventListener('scroll', function () {
-		lastScrollTick = Date.now();
-	}, { passive: true });
-
-	/* --- Panel-to-panel switch: one move, one surface ---
-	   Natively, tapping trigger B while panel A is open is TWO moments:
-	   light-dismiss closes A on the pointer's way down, the invoker opens B
-	   only when the click lands - a flash of nothing between two
-	   different-sized boxes, which is the "junky menu to menu" feel
-	   (2026-07-20). So a switch is taken over on pointerdown: close A, open
-	   B, and place B in the SAME breath - one paint, no gap. Where the
-	   browser has View Transitions the swap rides one: both panels share a
-	   transition name (settings-panel.css), only one is rendered per
-	   snapshot, so they pair as old/new and the open box MORPHS into the
-	   next one's size and place - one surface changing shape. No support =
-	   the atomic swap alone, which is most of the fix. Plain opening and
-	   closing stay instant snaps (the "panels snap" decision) - only the
-	   switch animates, because only the switch is a continuity. */
-	var suppressToggleOf = null;
-
-	function performSwitch(fromPanel, toPanel, toTrigger) {
-		function swap() {
-			if (fromPanel.matches(':popover-open')) {
-				fromPanel.hidePopover();
-			}
-
-			if (!toPanel.matches(':popover-open')) {
-				toPanel.showPopover();
-			}
-
-			/* showPopover's beforetoggle hid the panel (the no-flash rule);
-			   place and reveal synchronously so this paint - and a view
-			   transition's snapshot - sees the settled state. */
-			if (triggerIsRendered(toTrigger)) {
-				placePanel(toPanel, toTrigger);
-			}
-
-			toPanel.style.visibility = '';
-		}
-
-		if (document.startViewTransition) {
-			document.startViewTransition(swap);
-		} else {
-			swap();
-		}
-	}
-
-	/* ONE choreography per trigger - the switch and the glide fallback
-	   share each gesture's state on purpose: a mid-glide tap on the other
-	   menu's trigger would otherwise switch on pointerdown AND arm the
-	   fallback on touchend, and with the click swallowed nothing disarms
-	   the timer - it would toggle the just-opened panel shut 150ms later.
-	   switchedThisGesture is the handshake: the tap already acted, so the
-	   fallback stands down. */
-	triggers.forEach(function (trigger) {
-		var targetId = trigger.getAttribute('popovertarget');
-		var glideTapStart = null;
-		var pendingFallback = null;
-		var switchedThisGesture = false;
-
-		/* THE SWITCH - pointerdown is the earliest hook, so the swap is done
-		   before native light-dismiss or the invoker get a say. Also resets
-		   the per-gesture state, so a stale flag from an abandoned gesture
-		   (finger dragged away, click never came) can't eat a later tap. */
-		trigger.addEventListener('pointerdown', function () {
-			suppressToggleOf = null;
-			switchedThisGesture = false;
-
-			if (!targetId || !openPanel) {
-				return;
-			}
-
-			var toPanel = document.getElementById(targetId);
-
-			if (!toPanel || openPanel === toPanel) {
-				return;
-			}
-
-			/* The native click that follows still wants to toggle B - mark
-			   it handled so the click handler cancels the invoker's default
-			   instead of closing what this just opened. */
-			suppressToggleOf = trigger;
-			switchedThisGesture = true;
-			performSwitch(openPanel, toPanel, trigger);
-		});
-
-		/* THE GLIDE ARM - was this tap born mid-momentum-scroll? */
-		trigger.addEventListener('touchstart', function (event) {
-			var touch = event.touches[0];
-			var midGlide = Date.now() - lastScrollTick < GLIDE_MS;
-			glideTapStart = midGlide && touch ? { x: touch.clientX, y: touch.clientY } : null;
-		}, { passive: true });
-
-		/* THE FALLBACK - runs the trigger's job only when the native click
-		   provably never comes (see the block comment above). */
-		trigger.addEventListener('touchend', function (event) {
-			if (!glideTapStart) {
-				return;
-			}
-
-			var touch = event.changedTouches[0];
-			var start = glideTapStart;
-			glideTapStart = null;
-
-			/* The pointerdown switch already did this tap's job. */
-			if (switchedThisGesture) {
-				return;
-			}
-
-			/* A wandering finger is a drag, not a press. */
-			if (!touch || Math.abs(touch.clientX - start.x) > TAP_SLOP_PX || Math.abs(touch.clientY - start.y) > TAP_SLOP_PX) {
-				return;
-			}
-
-			pendingFallback = setTimeout(function () {
-				pendingFallback = null;
-
-				var panel = targetId ? document.getElementById(targetId) : null;
-
-				if (panel) {
-					/* The click can also arrive LATE - iOS after a scroll-stop
-					   tap can deliver it beyond the wait window (seen in the
-					   field 2026-07-20: fallback opened at 150ms, a straggler
-					   click toggled it shut again - "tap does nothing", third
-					   disguise). The fallback has acted for this tap, so any
-					   straggler must be swallowed, not allowed to undo. The
-					   next gesture's pointerdown clears the flag regardless. */
-					suppressToggleOf = trigger;
-					panel.togglePopover();
-				} else {
-					/* The panel-less members (grid invite, back-to-top) act
-					   via their click handlers - this synthesized click runs
-					   them, and harmlessly disarms the already-fired timer. */
-					trigger.click();
-				}
-			}, CLICK_WAIT_MS);
-		});
-
-		/* THE CLICK - the real actor whenever it arrives: disarms the
-		   fallback, and swallows only the one toggle a switch or a fired
-		   fallback already performed. */
-		trigger.addEventListener('click', function (event) {
-			if (pendingFallback) {
-				clearTimeout(pendingFallback);
-				pendingFallback = null;
-			}
-
-			if (suppressToggleOf === trigger) {
-				suppressToggleOf = null;
-				event.preventDefault();
-			}
-		});
-	});
-
+	   REVISIT only via the house method that built the shell: prove the
+	   mechanic on a REAL device in the layout lab first (?debug=taps below
+	   is the flight recorder), then port. Never again by desktop inference. */
 	/* --- QA instrument: tap-event readout (?debug=taps) ---
 	   The tap choreography above is iOS-only behavior that no desktop
 	   browser can exercise, and every blind fix costs a phone round-trip.
