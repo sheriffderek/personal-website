@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang='en'>
+
+<head>
+	<meta charset='utf-8'>
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+	<title>Tap lab</title>
+
+	<style>
+		/* ============================================================
+		   TAP LAB - proves ONE mechanic on a real phone before it may
+		   touch the shell (the rule in scripts/settings-panel.js: never
+		   again by desktop inference).
+
+		   The mechanic: FastClick-style trigger activation. On touch,
+		   touchend IS the activation - always, no conditions - and any
+		   click that follows a touch-handled gesture is suppressed. One
+		   actor per modality, so the open-then-shut race that killed
+		   three rounds of cleverness cannot exist. Mouse and keyboard
+		   never enter the touch path and stay fully native.
+
+		   THE TEST, on the phone:
+		     1. Flick-scroll hard, then tap a corner button while the
+		        page is still gliding - the panel must open on THAT tap.
+		     2. Tap a button with the page still - opens once, no blink.
+		     3. Tap the same button again - closes.
+		     4. With one panel open, tap the other button - switches.
+		     5. Repeat all of it fast and sloppy. The readout at the
+		        bottom shows every event with ms gaps if anything lies.
+		   ============================================================ */
+
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			font-family: system-ui, sans-serif;
+			line-height: 1.5;
+		}
+
+		.tray {
+			position: sticky;
+			top: 0;
+			z-index: 5;
+			display: flex;
+			justify-content: flex-end;
+			gap: 0.5rem;
+			padding: 0.75rem 1rem;
+			background: #f6f3ea;
+		}
+
+		.trigger {
+			width: 2.5rem;
+			height: 2.5rem;
+			border: 1px solid #999;
+			border-radius: 50%;
+			background: #fff;
+			font-size: 1rem;
+			cursor: pointer;
+			touch-action: manipulation;
+			-webkit-tap-highlight-color: transparent;
+		}
+
+		.panel {
+			position: fixed;
+			inset: auto;
+			top: 4rem;
+			right: 1rem;
+			margin: 0;
+			width: min(280px, calc(100vw - 2rem));
+			padding: 1rem;
+			border: 1px solid #333;
+			background: #fff;
+		}
+
+		.panel:not(:popover-open) {
+			display: none;
+		}
+
+		main {
+			padding: 1rem;
+		}
+
+		.block {
+			border: 1px solid #ccc;
+			padding: 1rem;
+			margin-block: 1rem;
+			min-height: 40vh;
+			background: #fafafa;
+		}
+
+		.readout {
+			position: fixed;
+			left: 8px;
+			bottom: 8px;
+			z-index: 9;
+			margin: 0;
+			padding: 6px 8px;
+			list-style: none;
+			font: 11px/1.5 Menlo, monospace;
+			background: rgb(0 0 0 / 0.85);
+			color: #9f9;
+			max-width: 70vw;
+			pointer-events: none;
+		}
+	</style>
+</head>
+
+<body>
+	<header class='tray'>
+		<button type='button' class='trigger' popovertarget='panel-a' aria-label='Panel A'>A</button>
+
+		<button type='button' class='trigger' popovertarget='panel-b' aria-label='Panel B'>B</button>
+	</header>
+
+	<div id='panel-a' popover class='panel'>
+		<p><strong>Panel A.</strong> If you can read this, the tap that opened it worked.</p>
+	</div>
+
+	<div id='panel-b' popover class='panel'>
+		<p><strong>Panel B.</strong> Tapped over from A? That's the switch working.</p>
+	</div>
+
+	<main>
+		<h1>Tap lab</h1>
+
+		<p>Flick-scroll, then tap A or B while the page is still moving. The panel must open on that first tap, every time.</p>
+
+		<div class='block'>scroll fodder 1</div>
+
+		<div class='block'>scroll fodder 2</div>
+
+		<div class='block'>scroll fodder 3</div>
+
+		<div class='block'>scroll fodder 4</div>
+
+		<div class='block'>scroll fodder 5</div>
+
+		<div class='block'>scroll fodder 6</div>
+
+		<div class='block'>scroll fodder 7</div>
+
+		<div class='block'>scroll fodder 8</div>
+
+		<div class='block'>scroll fodder 9</div>
+
+		<div class='block'>scroll fodder 10</div>
+	</main>
+
+	<ol class='readout' aria-hidden='true'></ol>
+
+	<script>
+		/* THE MECHANIC UNDER TEST - port this, verbatim in shape, if the
+		   phone test passes.
+
+		   On touch, touchend is the activation - unconditionally. A click
+		   that follows a touch-handled gesture is suppressed - also
+		   unconditionally (within a generous window, so keyboard clicks,
+		   which have no preceding touch, pass untouched). There is no
+		   "did iOS swallow the click?" question anywhere: on touch WE are
+		   the only actor, on mouse/keyboard the browser is. */
+		var TAP_SLOP_PX = 12;
+		var SUPPRESS_CLICK_MS = 700;
+
+		document.querySelectorAll('.trigger').forEach(function (trigger) {
+			var tapStart = null;
+			var touchActedAt = 0;
+
+			trigger.addEventListener('touchstart', function (event) {
+				var touch = event.touches[0];
+				tapStart = touch ? { x: touch.clientX, y: touch.clientY } : null;
+			}, { passive: true });
+
+			trigger.addEventListener('touchend', function (event) {
+				if (!tapStart) {
+					return;
+				}
+
+				var touch = event.changedTouches[0];
+				var start = tapStart;
+				tapStart = null;
+
+				/* A wandering finger is a drag, not a press. */
+				if (!touch || Math.abs(touch.clientX - start.x) > TAP_SLOP_PX || Math.abs(touch.clientY - start.y) > TAP_SLOP_PX) {
+					return;
+				}
+
+				touchActedAt = Date.now();
+
+				var panel = document.getElementById(trigger.getAttribute('popovertarget'));
+				panel.togglePopover();
+				log(trigger.textContent + ': ACT on touchend');
+			});
+
+			trigger.addEventListener('click', function (event) {
+				/* Any click this soon after a touch-activation is the same
+				   gesture echoing - suppress it. Keyboard activation has no
+				   preceding touch, so it passes through untouched. */
+				if (Date.now() - touchActedAt < SUPPRESS_CLICK_MS) {
+					event.preventDefault();
+					log(trigger.textContent + ': click suppressed');
+				}
+			});
+		});
+
+		/* --- flight recorder (same shape as ?debug=taps on the site) --- */
+		var readout = document.querySelector('.readout');
+		var lastAt = 0;
+
+		function log(label) {
+			var now = Date.now();
+			var line = document.createElement('li');
+			line.textContent = label + (lastAt ? ' +' + (now - lastAt) + 'ms' : '');
+			lastAt = now;
+			readout.appendChild(line);
+
+			while (readout.children.length > 9) {
+				readout.removeChild(readout.firstChild);
+			}
+		}
+
+		document.querySelectorAll('.trigger').forEach(function (trigger) {
+			['touchstart', 'touchend', 'click'].forEach(function (type) {
+				trigger.addEventListener(type, function () {
+					log(trigger.textContent + ': ' + type);
+				});
+			});
+		});
+
+		document.querySelectorAll('.panel').forEach(function (panel) {
+			panel.addEventListener('toggle', function (event) {
+				log(panel.id + ': ' + event.newState);
+			});
+		});
+	</script>
+</body>
+</html>
