@@ -1094,7 +1094,18 @@
 			clientY <= box.bottom;
 
 		if (!insidePanel && openPanel.hidePopover) {
-			openPanel.hidePopover();
+			var dismissed = openPanel;
+
+			/* Clear the trackers SYNCHRONOUSLY, before hiding. One iOS tap
+			   fires this via pointerdown AND touchstart; the toggle handler
+			   that normally clears openPanel is queued (async), so without
+			   this the second pass saw the stale reference and called
+			   hidePopover on an already-hidden popover - an uncaught
+			   InvalidStateError on every outside tap (2026-07-20 audit). */
+			openPanel = null;
+			openPanels.delete(dismissed);
+
+			dismissed.hidePopover();
 
 			/* A softer click than the trigger's — half volume (gated by
 			   data-sound like every other UI sound). */
