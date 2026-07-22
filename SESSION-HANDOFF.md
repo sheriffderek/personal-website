@@ -1,4 +1,17 @@
-# Session Handoff (July 3, 2026, updated July 10)
+# Session Handoff (July 3, 2026, updated July 20)
+
+## Current focus (2026-07-20): VIDEO CONTENT, not the shell
+
+Derek is making the site's actual video content until it's 100% done, then returning to the shell. Do not resume shell/layout work unprompted. Parked, deliberately:
+
+- **Phone panel presentation**: floating panels behave the same on phone and desktop (Derek's call - the panels demo layering, and the page must stay visible so settings changes can be seen). A bottom sheet is the parked alternative if the phone card ever feels cramped. Undecided; he slept on it and chose to build content first.
+- **Tap lab** (`experiments/tap-lab.html`): FastClick-style touchend activation, built but NOT ported. Recommendation on record (independent audit + assistant): don't port - mid-glide tap-to-stop is accepted OS behavior everywhere. Verdict not yet written into the parked note in settings-panel.js.
+- **Audit prunes** (small, from the 2026-07-20 independent audit): delete the `hover:none` body-cursor hack in settings-panel.css, collapse the `openPanel`/`openPanels` double-tracking, trim the mostly-dead visualViewport re-place narrative, one VoiceOver pass. None urgent.
+- Shell state: lab port complete and committed through `322befd`; trigger taps are pure native (`659897c` has the history). Local URL is now **http://derek.local:8888/** (host renamed from `derek`; CLAUDE.md not yet updated).
+
+The section below is the COPY-WORK protocol - it still applies whenever card-by-card copy work resumes.
+
+---
 
 **Read this before doing anything. The previous session failed badly; this file exists so you don't repeat it.**
 
