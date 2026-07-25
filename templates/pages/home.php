@@ -9,10 +9,13 @@ $filter_tag = isset($_GET['filter']) ? $_GET['filter'] : 'job';
 
 // The weight filter is the JS slider (settings-panel.js): every weight
 // renders in the HTML and the slider reveals tiers by hiding the rest,
-// defaulting to the weight-1 spine.
+// defaulting to the weight-1 spine. With the slider off (FILTER_ENABLED,
+// config.php - the lean v1) nothing would trim the list, so PHP serves only
+// the weight-1 spine: same default view, no dead weight in the HTML.
 $milestones = array_filter($all_milestones, function ($m) use ($filter_tag) {
 	$tags = isset($m['tags']) ? $m['tags'] : [];
-	return in_array($filter_tag, $tags);
+	$weight = isset($m['weight']) ? $m['weight'] : 6;
+	return in_array($filter_tag, $tags) && (FILTER_ENABLED || $weight <= 1);
 });
 
 // A ?target=companyname loads tailored notes for specific milestones.

@@ -44,3 +44,12 @@ define('GRID_VIEW_ENABLED', true);
    grid invite). Off = the script never loads. Trying it out - flip to false
    to pull it. */
 define('SLIDER_HINT_ENABLED', true);
+
+/* FILTER_ENABLED - the timeline weight-filter slider (and its minimap).
+   Off for v1 (2026-07-22): the site ships lean with just the weight-1 spine
+   while the per-project graphics get made - the slider row never renders and
+   home.php serves ONLY weight-1 entries, so the curated default view holds
+   with no JS trimming. All the slider code (filter-control partial, the
+   filter section of settings-panel.js, the minimap CSS) stays in place,
+   untouched - flip to true and the full timeline + slider come back. */
+define('FILTER_ENABLED', false);

@@ -19,6 +19,8 @@
 <?php endif; ?>
 <?= partial('settings/sound-switcher', ['id_suffix' => $id_suffix]) ?>
 <?= partial('settings/red-light-switcher', ['id_suffix' => $id_suffix]) ?>
-<?php if (!empty($page_controls)): ?>
+<?php /* The page's own controls row (the timeline filter) sits behind
+	FILTER_ENABLED - v1 ships without the slider; config.php has the story. */ ?>
+<?php if (!empty($page_controls) && FILTER_ENABLED): ?>
 	<?= partial('settings/' . $page_controls, ['id_suffix' => $id_suffix]) ?>
 <?php endif; ?>
