@@ -1,6 +1,49 @@
-# Session Handoff (July 3, 2026, updated July 20)
+# Session Handoff (July 3, 2026, updated July 28)
 
-## Current focus (2026-07-20): VIDEO CONTENT, not the shell
+## Current focus (2026-07-28): THE POSTER LANGUAGE LAB
+
+The milestone poster covers are being designed in `experiments/posters.html`
+(view at http://derek.local:8888/experiments/posters.html - MAMP host renamed
+to `derek.local`, CLAUDE.md already updated). All 36 milestones have a drafted
+poster; several review rounds are done and committed (`7d05750` through
+`3b4acb7` on `fixing-grid-and-reworking-theme`).
+
+**The lab file's header comment IS the spec - read it before touching any
+poster.** It carries the family law (alignment, padding, equilateral
+triangles, optical bump, no tangents), THE SCALE (line weights 5/10/30, the
+20-ladder for circles, bar heights, gap semantics: 20 breathing / 40
+separation, constant sibling steps), the roundness law (corners axis drives
+rect rx AND stroke caps/joins), the 3-wide phone-crop system (large 3:3,
+medium 3:2, small 3:1 - milestone.css adopts it at graduation), and the open
+question (per-poster dark/inverted variety - recorded, deliberately not acted
+on). Every poster's own comment documents its geometry against the ladders.
+
+**The working process that works:** Derek posts a marked-up screenshot or a
+one-line note per poster; rework that poster in place (geometry derived, not
+eyeballed - document the numbers in its comment); verify in the browser pane;
+he says "save" and the batch commits as one slice. Do not batch-redesign
+unprompted.
+
+Things to know:
+- Poster sizes are AUTHORED in `content/milestones.json` (`poster` key);
+  several changed this session - the JSON is already correct.
+- The steps/staircase motif is parked for a future PE card (geometry at
+  `35f57b2`); pe-founded wears the target now.
+- Coverage audited: all 36 JSON milestones have lab posters, 1:1. Two stale
+  doc refs found (timeline-content-plan still lists the removed
+  crowdfunding-competitor as a must-have; milestone-tuneup-notes still
+  reviews the deleted pe-redesign-dashboard) - one-line cleanups, unclaimed.
+- Next when Derek says so: remaining misses; the dark/inverted question;
+  grain as a FRAME finish (the texture bench lives on /design-system -
+  posters themselves stay filter-free per poster-system.md); graduating
+  winners into `includes/posters/` per poster-system.md's checklist
+  (slug-prefixed ids; site wiring needs the 3-wide crops in milestone.css,
+  per-brand corners/caps tokens, and the poster-space corner-unit multiplier
+  flagged in the lab).
+- `styles/settings/moods.css` has Derek's own uncommitted working diff -
+  never stage it.
+
+## Previous focus (2026-07-20): VIDEO CONTENT, not the shell
 
 Derek is making the site's actual video content until it's 100% done, then returning to the shell. Do not resume shell/layout work unprompted. Parked, deliberately:
 
