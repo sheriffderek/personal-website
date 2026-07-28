@@ -6,7 +6,7 @@ derekthomaswood.com is Derek's personal "hire me" site for full-time/salary role
 
 ## Local development
 
-Served locally by **MAMP at `http://derek:8888/`** (plain PHP, no build step - the router is `index.php`). So the design-system tester is `http://derek:8888/design-system`, a target preview is `http://derek:8888/?target=gofundme`, and so on. This is the URL to hit for any browser verification - don't guess `.test`/Herd, this project isn't on Herd. Derek runs MAMP himself; agents never start or stop it.
+Served locally by **MAMP at `http://derek.local:8888/`** (plain PHP, no build step - the router is `index.php`). So the design-system tester is `http://derek.local:8888/design-system`, a target preview is `http://derek.local:8888/?target=gofundme`, and so on. This is the URL to hit for any browser verification - don't guess `.test`/Herd, this project isn't on Herd. Derek runs MAMP himself; agents never start or stop it.
 
 ## Related projects
 
