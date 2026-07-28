@@ -1,0 +1,1199 @@
+<!doctype html>
+<html lang='en'>
+<head>
+	<meta charset='utf-8'>
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+	<title>Poster language lab</title>
+
+	<style>
+		/*
+			Poster language lab (standalone, like shell.html / tap-lab.html).
+
+			The FULL set: one poster per milestone, in timeline order, wearing each
+			card's real flavor and real poster size from content/milestones.json.
+
+			Treatment (poster-tech-brief.md): token colors only, two line weights
+			(10 bold / 5 fine, fine thins to 3 on hover) plus a "chunk" weight
+			(calc primary x 3) for the fat round-capped marks - if the chunk stays,
+			the brief gains it officially. Round joins and caps everywhere.
+
+			Ratios work exactly like the real cards (milestone.css): every SVG is
+			authored at 1600x900 and slice-crops to its frame. So:
+			  large/true -> 16:9 frame, squares up on phones (safe x: 350-1250)
+			  medium     -> 16:6 frame, shows y 150-750, keeps ratio at all widths
+			  small      -> 16:3 frame, shows y 300-600, keeps ratio at all widths
+			The phone-crop toggle squares ONLY the large frames, same as the site.
+
+			Flavor pairs are copied from styles/settings/flavors.css (the 70s set).
+			Winners graduate to includes/posters/ as real per-milestone SVGs with
+			slug-prefixed ids (poster-system.md checklist).
+		*/
+
+		:root {
+			/* Stand-in for the mood-owned --accent (green in the default mood).
+			   The posters only ever say var(--accent); the page decides. */
+			--accent: oklch(52% 0.16 145);
+		}
+
+		body {
+			margin: 0;
+			padding: 3rem clamp(1rem, 4vw, 4rem);
+			background: #f4f4f1;
+			color: #333;
+			font-family: system-ui, sans-serif;
+		}
+
+		header p {
+			max-width: 60ch;
+			line-height: 1.5;
+		}
+
+		.controls {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 1rem 1.5rem;
+			align-items: center;
+			margin: 2rem 0;
+			font-size: 0.9rem;
+			position: sticky;
+			top: 0;
+			background: #f4f4f1;
+			padding: 0.75rem 0;
+			z-index: 2;
+		}
+
+		.controls label {
+			display: flex;
+			gap: 0.35rem;
+			align-items: center;
+		}
+
+		.posters {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+			gap: 2rem;
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			align-items: start;
+		}
+
+		.posters figure {
+			margin: 0;
+			display: grid;
+			gap: 0.5rem;
+		}
+
+		figcaption {
+			font-size: 0.8rem;
+			color: #777;
+		}
+
+		figcaption strong {
+			color: #333;
+			font-weight: 600;
+		}
+
+		/* --- The poster frame: same token plumbing as .poster-art on the site.
+		   A flavor hands us the two-tone pair; the two -secondary tokens derive
+		   from it, exactly like milestone.css does. --- */
+
+		.poster-frame {
+			--fill-primary: var(--poster-fill);
+			--ink-primary: var(--poster-ink);
+			--fill-secondary: color-mix(in oklch, var(--poster-fill) 70%, var(--poster-ink));
+			--ink-secondary: color-mix(in oklch, var(--poster-ink) 55%, var(--poster-fill));
+			--line-width-primary: 10;
+			--line-width-secondary: 5;
+
+			aspect-ratio: 16 / 9;
+			overflow: hidden;
+			border: 1px solid #ddd;
+		}
+
+		.poster-frame[data-size='medium'] {
+			aspect-ratio: 16 / 6;
+		}
+
+		.poster-frame[data-size='small'] {
+			aspect-ratio: 16 / 3;
+		}
+
+		/* The "breathing" layer: fine strokes thin on hover, bold stays put. */
+		.poster-frame:hover {
+			--line-width-secondary: 3;
+		}
+
+		.poster-frame svg {
+			display: block;
+			width: 100%;
+			height: 100%;
+		}
+
+		.poster-frame svg * {
+			transition: stroke-width 300ms;
+		}
+
+		/* Phone-crop preview: only the full covers square up (milestone.css rule -
+		   medium/small are heading graphics and keep their ratio at every width). */
+		body[data-crop='square'] .poster-frame[data-size='large'] {
+			aspect-ratio: 1 / 1;
+			max-width: 340px;
+		}
+
+		/* --- Flavors, copied from styles/settings/flavors.css. Source of truth
+		   stays there; this lab restates values only because it is standalone. --- */
+
+		[data-flavor] {
+			--poster-fill: #ffffff;
+			--poster-ink: #2b2b28;
+		}
+
+		[data-flavor='warm'] {
+			--poster-fill: oklch(80% 0.085 70);
+			--poster-ink: oklch(36% 0.09 45);
+		}
+
+		[data-flavor='cool'] {
+			--poster-fill: oklch(78% 0.05 240);
+			--poster-ink: oklch(33% 0.06 250);
+		}
+
+		[data-flavor='stone'] {
+			--poster-fill: #c9c9be;
+			--poster-ink: oklch(30% 0.01 90);
+		}
+
+		[data-flavor='night'] {
+			--poster-fill: oklch(42% 0.045 55);
+			--poster-ink: oklch(85% 0.06 85);
+		}
+
+		[data-flavor='moss'] {
+			--poster-fill: oklch(76% 0.07 115);
+			--poster-ink: oklch(33% 0.06 120);
+		}
+
+		[data-flavor='rose'] {
+			--poster-fill: oklch(80% 0.05 20);
+			--poster-ink: oklch(36% 0.07 15);
+		}
+	</style>
+</head>
+<body>
+
+	<header>
+		<h1>Poster language lab - the full wall</h1>
+
+		<p>
+			One poster per milestone, timeline order, each wearing its card's real
+			flavor and real ratio (full 16:9, medium 16:6 band, small 16:3 band).
+			Hover a poster to see the fine strokes thin. Force a flavor to watch
+			the family repaint. Phone crop squares only the full covers, like the
+			real cards.
+		</p>
+	</header>
+
+	<div class='controls'>
+		<span>Flavor:</span>
+
+		<label><input type='radio' name='flavor' value='' checked> mixed (as dealt)</label>
+
+		<label><input type='radio' name='flavor' value='default'> default</label>
+
+		<label><input type='radio' name='flavor' value='warm'> warm</label>
+
+		<label><input type='radio' name='flavor' value='cool'> cool</label>
+
+		<label><input type='radio' name='flavor' value='stone'> stone</label>
+
+		<label><input type='radio' name='flavor' value='night'> night</label>
+
+		<label><input type='radio' name='flavor' value='moss'> moss</label>
+
+		<label><input type='radio' name='flavor' value='rose'> rose</label>
+
+		<label style='margin-left: auto'><input type='checkbox' id='crop-toggle'> phone crop (square)</label>
+	</div>
+
+	<ul class='posters'>
+
+		<!-- 1. 2026-job-search - HORIZON. The calibration card: dome, air, one accent. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='stone' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<defs>
+							<pattern id='job-search-tex' width='56' height='56' patternUnits='userSpaceOnUse'>
+								<g fill='none' stroke='var(--ink-secondary)' style='stroke-width: var(--line-width-secondary)' stroke-linecap='round' opacity='0.35'>
+									<path d='M12,16 L20,8'/>
+									<path d='M38,44 L46,36'/>
+								</g>
+							</pattern>
+						</defs>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<path d='M250,900 A550,550 0 0 1 1350,900 Z' fill='var(--fill-secondary)'/>
+
+						<path d='M250,900 A550,550 0 0 1 1350,900 Z' fill='url(#job-search-tex)'/>
+
+						<circle cx='1130' cy='210' r='55' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>2026-job-search</strong> - horizon (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 2. 2026-portfolio-site - CASCADE. Frames of work stacking forward:
+		     this site holding the whole history. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='stone' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<rect x='430' y='190' width='560' height='315' fill='none'/>
+							<rect x='510' y='270' width='560' height='315' fill='var(--fill-secondary)'/>
+							<rect x='590' y='350' width='560' height='315' fill='var(--fill-primary)'/>
+						</g>
+
+						<circle cx='1080' cy='600' r='30' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>2026-portfolio-site</strong> - cascade (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 3. pe-self-paced - CHECKPOINTS. The drip: done, done, you are here.
+		     Small band: everything lives in y 300-600. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='moss' data-size='small'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<rect x='330' y='390' width='120' height='120' fill='var(--fill-secondary)'/>
+							<rect x='530' y='390' width='120' height='120' fill='var(--fill-secondary)'/>
+							<rect x='730' y='390' width='120' height='120' fill='none'/>
+							<rect x='930' y='390' width='120' height='120' fill='none'/>
+							<rect x='1130' y='390' width='120' height='120' fill='none'/>
+						</g>
+
+						<circle cx='790' cy='450' r='34' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>pe-self-paced</strong> - checkpoints (16:3 small)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 4. pe-figure-cms-options - FIGURE. The framed image pictogram,
+		     abstracted: mountain, sun, corner tab. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='warm' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<rect x='450' y='200' width='700' height='500' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+
+						<rect x='450' y='200' width='160' height='110' fill='var(--fill-secondary)'/>
+
+						<path d='M600,640 L800,380 L1000,640' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round'/>
+
+						<circle cx='950' cy='320' r='55' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>pe-figure-cms-options</strong> - figure (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 5. pe-code-editor - CARET. Prompt, cursor, two lines of code.
+		     Medium band: y 150-750. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='cool' data-size='medium'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<path d='M520,330 L700,450 L520,570' fill='none' stroke='var(--ink-primary)' style='stroke-width: calc(var(--line-width-primary) * 2)' stroke-linecap='round'/>
+
+						<rect x='780' y='360' width='54' height='180' fill='var(--accent)'/>
+
+						<g fill='none' stroke='var(--ink-secondary)' style='stroke-width: calc(var(--line-width-primary) * 2)' stroke-linecap='round'>
+							<path d='M920,410 L1180,410'/>
+							<path d='M920,490 L1080,490'/>
+						</g>
+					</svg>
+				</div>
+
+				<figcaption><strong>pe-code-editor</strong> - caret (16:6 medium)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 6. world-ia-day-2026 - RIPPLE. One voice, carrying. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='warm' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<circle cx='500' cy='450' r='140'/>
+							<circle cx='500' cy='450' r='280'/>
+						</g>
+
+						<g fill='none' stroke='var(--ink-secondary)' style='stroke-width: var(--line-width-secondary)'>
+							<circle cx='500' cy='450' r='420'/>
+							<circle cx='500' cy='450' r='560'/>
+						</g>
+
+						<circle cx='500' cy='450' r='48' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>world-ia-day-2026</strong> - ripple (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 7. smart-text-editor - LINE-NODE. A line of text becomes a thing you
+		     can hold: one bar grows a node. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='cool' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g fill='var(--fill-secondary)'>
+							<rect x='380' y='300' width='480' height='56'/>
+							<rect x='380' y='420' width='560' height='56'/>
+							<rect x='380' y='540' width='400' height='56'/>
+						</g>
+
+						<path d='M940,448 L1040,448' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round'/>
+
+						<circle cx='1115' cy='448' r='75' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+
+						<circle cx='1115' cy='448' r='26' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>smart-text-editor</strong> - line-node (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 8. midi-sequencing - SEQUENCE. The sequencer row, one voice picked out. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='night' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: calc(var(--line-width-primary) * 3)' stroke-linecap='round'>
+							<path d='M400,380 L400,520'/>
+							<path d='M500,320 L500,580'/>
+							<path d='M600,400 L600,500'/>
+							<path d='M700,280 L700,620'/>
+							<path d='M800,360 L800,540'/>
+							<path d='M1000,340 L1000,560'/>
+							<path d='M1100,300 L1100,600'/>
+							<path d='M1200,390 L1200,510'/>
+						</g>
+
+						<path d='M900,250 L900,650' fill='none' stroke='var(--accent)' style='stroke-width: calc(var(--line-width-primary) * 3)' stroke-linecap='round'/>
+
+						<path d='M340,720 L1260,720' fill='none' stroke='var(--ink-secondary)' style='stroke-width: var(--line-width-secondary)' stroke-linecap='round' stroke-dasharray='2 40'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>midi-sequencing</strong> - sequence (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 9. outside-insights-turing - OVERLAP. Two schools of thought comparing
+		     notes; the accent lives where they agree. Medium band. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='night' data-size='medium'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<circle cx='660' cy='450' r='170'/>
+							<circle cx='940' cy='450' r='170'/>
+						</g>
+
+						<circle cx='800' cy='450' r='34' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>outside-insights-turing</strong> - overlap (16:6 medium)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 10. list-at-ease - PARTS BIN. The component library: a grid of parts,
+		     one of them a different kind of part. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='moss' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<rect x='460' y='240' width='190' height='190'/>
+							<rect x='705' y='240' width='190' height='190' fill='var(--fill-secondary)'/>
+							<circle cx='1045' cy='335' r='95'/>
+							<rect x='460' y='485' width='190' height='190' fill='var(--fill-secondary)'/>
+							<circle cx='800' cy='580' r='95'/>
+						</g>
+
+						<circle cx='1045' cy='580' r='95' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>list-at-ease</strong> - parts bin (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 11. aicad-2024 - DELEGATION. Many schools, different shapes, marching
+		     together. Small band. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='night' data-size='small'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<circle cx='430' cy='450' r='75'/>
+							<rect x='610' y='375' width='150' height='150'/>
+							<path d='M790,525 L865,375 L940,525 Z'/>
+							<rect x='1015' y='375' width='150' height='150' fill='var(--fill-secondary)'/>
+						</g>
+
+						<circle cx='1250' cy='450' r='40' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>aicad-2024</strong> - delegation (16:3 small)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 12. open-office-hours - ORBIT. Voices around a call, one of them lit. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='rose' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<circle cx='800' cy='460' r='290' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+
+						<circle cx='595' cy='255' r='62' fill='var(--ink-primary)'/>
+
+						<circle cx='800' cy='750' r='62' fill='var(--ink-primary)'/>
+
+						<circle cx='1005' cy='255' r='62' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>open-office-hours</strong> - orbit (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 13. don-podcast-gap - THE GAP. A line interrupted; the accent sits in
+		     the missing part, which is the whole conversation. Medium band. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='warm' data-size='medium'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: calc(var(--line-width-primary) * 3)' stroke-linecap='round'>
+							<path d='M280,450 L700,450'/>
+							<path d='M900,450 L1320,450'/>
+						</g>
+
+						<circle cx='800' cy='450' r='40' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>don-podcast-gap</strong> - the gap (16:6 medium)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 14. better-life - NETWORK. Three nodes, connected; the community is
+		     the product. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='rose' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<path d='M665,365 L935,365'/>
+							<path d='M655,390 L750,555'/>
+							<path d='M945,390 L850,555'/>
+						</g>
+
+						<circle cx='600' cy='320' r='80' fill='var(--ink-primary)'/>
+
+						<circle cx='1000' cy='320' r='80' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+
+						<circle cx='800' cy='620' r='80' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>better-life</strong> - network (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 15. pe-syntax-highlighting - TOKENS. Lines of code broken into pieces,
+		     one piece highlighted - which is literally the product. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='night' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g fill='var(--fill-secondary)'>
+							<rect x='430' y='330' width='220' height='56'/>
+							<rect x='830' y='330' width='320' height='56'/>
+							<rect x='620' y='450' width='280' height='56'/>
+							<rect x='430' y='570' width='300' height='56'/>
+						</g>
+
+						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-secondary)'>
+							<rect x='680' y='330' width='120' height='56'/>
+							<rect x='430' y='450' width='160' height='56'/>
+							<rect x='760' y='570' width='180' height='56'/>
+						</g>
+
+						<rect x='930' y='450' width='140' height='56' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>pe-syntax-highlighting</strong> - tokens (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 16. equivalent-design - SPLIT. The same mark on two grounds, surviving
+		     both - the whole accessibility/theming story. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='cool' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<rect x='0' y='0' width='800' height='900' fill='var(--fill-secondary)'/>
+
+						<circle cx='420' cy='450' r='150' fill='var(--ink-primary)'/>
+
+						<circle cx='1180' cy='450' r='150' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+
+						<circle cx='800' cy='170' r='36' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>equivalent-design</strong> - split (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 17. pe-calendar-milestones - DATES. A dotted timeline of days, one
+		     of them ringed. Small band. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='cool' data-size='small'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<path d='M300,450 L1300,450' fill='none' stroke='var(--ink-secondary)' style='stroke-width: var(--line-width-secondary)' stroke-linecap='round' stroke-dasharray='2 46'/>
+
+						<g fill='var(--ink-primary)'>
+							<circle cx='400' cy='450' r='22'/>
+							<circle cx='600' cy='450' r='22'/>
+							<circle cx='800' cy='450' r='22'/>
+							<circle cx='1200' cy='450' r='22'/>
+						</g>
+
+						<circle cx='1000' cy='450' r='44' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+
+						<circle cx='1000' cy='450' r='22' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>pe-calendar-milestones</strong> - dates (16:3 small)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 18. dondev-podcast-2021 - TWO VOICES. Two people talking, one idea
+		     rising off the conversation. Medium band. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='moss' data-size='medium'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: calc(var(--line-width-primary) * 3)' stroke-linecap='round'>
+							<path d='M700,330 L700,570'/>
+							<path d='M900,380 L900,520'/>
+						</g>
+
+						<circle cx='800' cy='260' r='34' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>dondev-podcast-2021</strong> - two voices (16:6 medium)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 19. pe-study-hall - THE ROOM. Everyone at their desks, one hand up. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='moss' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g fill='var(--fill-secondary)'>
+							<circle cx='520' cy='300' r='26'/>
+							<circle cx='660' cy='300' r='26'/>
+							<circle cx='800' cy='300' r='26'/>
+							<circle cx='940' cy='300' r='26'/>
+							<circle cx='1080' cy='300' r='26'/>
+							<circle cx='520' cy='450' r='26'/>
+							<circle cx='660' cy='450' r='26'/>
+							<circle cx='940' cy='450' r='26'/>
+							<circle cx='1080' cy='450' r='26'/>
+							<circle cx='520' cy='600' r='26'/>
+							<circle cx='660' cy='600' r='26'/>
+							<circle cx='800' cy='600' r='26'/>
+							<circle cx='940' cy='600' r='26'/>
+							<circle cx='1080' cy='600' r='26'/>
+						</g>
+
+						<circle cx='800' cy='450' r='42' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>pe-study-hall</strong> - the room (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 20. pssst-css - LAYERS. The import order as shingles: preset under
+		     setup under settings. Order IS the methodology. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='cool' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<rect x='400' y='540' width='560' height='90' fill='var(--ink-primary)'/>
+
+						<rect x='460' y='410' width='560' height='90' fill='var(--fill-secondary)'/>
+
+						<rect x='520' y='280' width='560' height='90' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+
+						<circle cx='1160' cy='325' r='30' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>pssst-css</strong> - layers (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 21. css-tricks-article - SPECIMEN. A drop cap and two lines of type:
+		     the article is about type patterns. Medium band. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='warm' data-size='medium'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<circle cx='520' cy='450' r='130' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+
+						<g fill='var(--fill-secondary)'>
+							<rect x='720' y='350' width='480' height='54'/>
+							<rect x='720' y='470' width='380' height='54'/>
+						</g>
+
+						<circle cx='1160' cy='497' r='27' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>css-tricks-article</strong> - specimen (16:6 medium)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 22. pe-page-modules - SECTIONS. One page, stacked modules, one of
+		     them doing something different. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='warm' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<rect x='560' y='340' width='480' height='140' fill='var(--fill-secondary)'/>
+
+						<rect x='560' y='180' width='480' height='560' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+
+						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<path d='M560,340 L1040,340'/>
+							<path d='M560,480 L1040,480'/>
+							<path d='M560,610 L1040,610'/>
+						</g>
+
+						<rect x='950' y='650' width='44' height='44' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>pe-page-modules</strong> - sections (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 23. freelancing-2019 - EDGE-WALK. A perimeter mostly explored: dotted
+		     square, one side made solid. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='stone' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<rect x='560' y='210' width='480' height='480' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round' stroke-dasharray='2 40'/>
+
+						<path d='M560,690 L1040,690' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round'/>
+
+						<circle cx='1040' cy='210' r='36' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>freelancing-2019</strong> - edge-walk (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 24. pe-founded - STEPS. Leveling up; the next level floats just above
+		     the last step. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='moss' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<rect x='420' y='560' width='200' height='140'/>
+							<rect x='620' y='460' width='200' height='240'/>
+							<rect x='820' y='360' width='200' height='340' fill='var(--fill-secondary)'/>
+						</g>
+
+						<circle cx='920' cy='260' r='45' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>pe-founded</strong> - steps (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 25. pxl - TWO SCREENS. The site and the phone game, side by side. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='night' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<rect x='430' y='260' width='540' height='340'/>
+							<rect x='1050' y='240' width='190' height='380'/>
+						</g>
+
+						<circle cx='1145' cy='560' r='28' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>pxl</strong> - two screens (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 26. mentoring - ONE-ON-ONE. A big circle and a small one, connected;
+		     the small one is the point. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='rose' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<circle cx='680' cy='450' r='180' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+
+						<path d='M860,450 L990,450' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round'/>
+
+						<circle cx='1060' cy='450' r='70' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>mentoring</strong> - one-on-one (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 27. niagen-bioscience - THE WALL. Sticky notes and the thread through
+		     them ("chasing a murderer"). -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='cool' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<defs>
+							<marker id='niagen-arrow' viewBox='0 0 3 4.5' refX='0' refY='2.25'
+								markerWidth='3' markerHeight='4.5' markerUnits='strokeWidth' orient='auto'>
+								<path d='M0,0 L3,2.25 L0,4.5 Z' fill='context-stroke'/>
+							</marker>
+						</defs>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g fill='var(--fill-secondary)'>
+							<rect x='480' y='280' width='70' height='70'/>
+							<rect x='640' y='360' width='70' height='70'/>
+							<rect x='560' y='520' width='70' height='70'/>
+							<rect x='900' y='480' width='70' height='70'/>
+						</g>
+
+						<rect x='820' y='300' width='70' height='70' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-secondary)'/>
+
+						<path d='M515,315 L675,395 L595,555 L935,515 L1080,420' fill='none' stroke='var(--ink-primary)'
+							style='stroke-width: var(--line-width-secondary)' stroke-linecap='round'
+							stroke-dasharray='2 28' marker-end='url(#niagen-arrow)'/>
+
+						<circle cx='935' cy='515' r='24' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>niagen-bioscience</strong> - the wall (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 28. sheriffderek-consulting - ZOOM OUT. The same small square seen
+		     from further and further back: coder to bigger picture. Medium band. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='stone' data-size='medium'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<rect x='660' y='410' width='80' height='80' fill='var(--fill-secondary)'/>
+
+						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<rect x='580' y='330' width='240' height='240'/>
+							<rect x='480' y='230' width='440' height='440'/>
+						</g>
+
+						<path d='M960,450 L1100,450' fill='none' stroke='var(--ink-secondary)' style='stroke-width: var(--line-width-secondary)' stroke-linecap='round' stroke-dasharray='2 30'/>
+
+						<circle cx='1160' cy='450' r='36' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>sheriffderek-consulting</strong> - zoom out (16:6 medium)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 29. school-loop - FRAMES. Systems inside systems; the audit finds the
+		     small thing in the corner. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='stone' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<rect x='400' y='150' width='800' height='600'/>
+							<rect x='540' y='260' width='520' height='380'/>
+						</g>
+
+						<rect x='400' y='150' width='210' height='150' fill='var(--fill-secondary)'/>
+
+						<rect x='1000' y='580' width='60' height='60' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>school-loop</strong> - frames (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 30. agency-work - SCATTER. Range: different kinds of shapes, one hand. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='warm' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<defs>
+							<pattern id='agency-tex' width='56' height='56' patternUnits='userSpaceOnUse'>
+								<g fill='none' stroke='var(--ink-secondary)' style='stroke-width: var(--line-width-secondary)' stroke-linecap='round'>
+									<path d='M12,16 L20,8'/>
+									<path d='M38,44 L46,36'/>
+								</g>
+							</pattern>
+						</defs>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<rect x='880' y='480' width='300' height='240' fill='url(#agency-tex)'/>
+
+						<circle cx='520' cy='320' r='110' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+
+						<rect x='860' y='200' width='150' height='150' fill='var(--fill-secondary)' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+
+						<path d='M480,690 L600,530 L720,690 Z' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+
+						<circle cx='1150' cy='330' r='40' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>agency-work</strong> - scatter (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 31. shoutq - BROADCAST. One voice, arcs carrying it outward, the
+		     audience dot riding the far edge. Medium band. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='cool' data-size='medium'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<circle cx='480' cy='450' r='56' fill='var(--ink-primary)'/>
+
+						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round'>
+							<path d='M560,310 A170,170 0 0 1 560,590'/>
+							<path d='M640,250 A250,250 0 0 1 640,650'/>
+						</g>
+
+						<path d='M720,190 A330,330 0 0 1 720,710' fill='none' stroke='var(--ink-secondary)' style='stroke-width: var(--line-width-secondary)' stroke-linecap='round'/>
+
+						<circle cx='1120' cy='450' r='34' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>shoutq</strong> - broadcast (16:6 medium)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 32. nouveau-studios - ARRIVAL. The dotted road into the first real
+		     door. Small band. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='warm' data-size='small'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<defs>
+							<marker id='nouveau-arrow' viewBox='0 0 3 4.5' refX='0' refY='2.25'
+								markerWidth='3' markerHeight='4.5' markerUnits='strokeWidth' orient='auto'>
+								<path d='M0,0 L3,2.25 L0,4.5 Z' fill='context-stroke'/>
+							</marker>
+						</defs>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<path d='M320,450 L800,450' fill='none' stroke='var(--ink-primary)'
+							style='stroke-width: var(--line-width-primary)' stroke-linecap='round'
+							stroke-dasharray='2 44' marker-end='url(#nouveau-arrow)'/>
+
+						<rect x='900' y='370' width='160' height='160' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+
+						<circle cx='320' cy='450' r='30' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>nouveau-studios</strong> - arrival (16:3 small)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 33. fundamonium - VIEWPORTS. The same thing at three sizes: early
+		     responsive web. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='warm' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<rect x='380' y='270' width='460' height='300'/>
+							<rect x='890' y='310' width='190' height='260'/>
+							<rect x='1120' y='350' width='100' height='220'/>
+						</g>
+
+						<circle cx='1170' cy='530' r='22' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>fundamonium</strong> - viewports (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 34. holloys - STRINGS. Four strings, one strum, one note.
+		     Medium band, default flavor (the card has none). -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='default' data-size='medium'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g fill='none' stroke='var(--ink-secondary)' style='stroke-width: var(--line-width-secondary)' stroke-linecap='round'>
+							<path d='M360,360 L1240,360'/>
+							<path d='M360,420 L1240,420'/>
+							<path d='M360,480 L1240,480'/>
+							<path d='M360,540 L1240,540'/>
+						</g>
+
+						<path d='M950,330 L1050,570' fill='none' stroke='var(--ink-primary)' style='stroke-width: calc(var(--line-width-primary) * 3)' stroke-linecap='round'/>
+
+						<circle cx='620' cy='420' r='34' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>holloys</strong> - strings (16:6 medium)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 35. pizzaiolo - THE SLICE. A pie with one wedge accounted for, and
+		     an olive. Small band, default flavor. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='default' data-size='small'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<circle cx='700' cy='450' r='130' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+
+						<path d='M700,450 L830,450 A130,130 0 0 0 792,358 Z' fill='var(--fill-secondary)'/>
+
+						<circle cx='920' cy='400' r='22' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>pizzaiolo</strong> - the slice (16:3 small)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 36. cca-bfa - FOUNDATIONS. Circle, square, triangle overlapping: art
+		     school, where the shapes started. Default flavor. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='default' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<circle cx='720' cy='400' r='150'/>
+							<rect x='820' y='380' width='220' height='220'/>
+							<path d='M520,650 L660,410 L800,650 Z'/>
+						</g>
+
+						<circle cx='1090' cy='300' r='34' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>cca-bfa</strong> - foundations (16:9)</figcaption>
+			</figure>
+		</li>
+
+	</ul>
+
+	<script>
+		/*
+			Flavor forcing: "mixed" leaves each frame's authored data-flavor
+			alone (the as-dealt wall); picking a flavor stamps it onto every
+			frame. The authored value is kept in data-home-flavor so mixed can
+			restore it.
+		*/
+		var frames = document.querySelectorAll('.poster-frame');
+
+		frames.forEach(function (frame) {
+			frame.dataset.homeFlavor = frame.dataset.flavor;
+		});
+
+		document.querySelectorAll('input[name="flavor"]').forEach(function (radio) {
+			radio.addEventListener('change', function () {
+				frames.forEach(function (frame) {
+					frame.dataset.flavor = radio.value || frame.dataset.homeFlavor;
+				});
+			});
+		});
+
+		document.getElementById('crop-toggle').addEventListener('change', function () {
+			document.body.dataset.crop = this.checked ? 'square' : '';
+		});
+	</script>
+
+</body>
+</html>
