@@ -19,10 +19,12 @@
 
 			Ratios work exactly like the real cards (milestone.css): every SVG is
 			authored at 1600x900 and slice-crops to its frame. So:
-			  large/true -> 16:9 frame, squares up on phones (safe x: 350-1250)
-			  medium     -> 16:6 frame, shows y 150-750, keeps ratio at all widths
-			  small      -> 16:3 frame, shows y 300-600, keeps ratio at all widths
-			The phone-crop toggle squares ONLY the large frames, same as the site.
+			  large/true -> 16:9 frame; 3:3 on phones (safe x: 350-1250)
+			  medium     -> 16:6 frame (shows y 150-750); 3:2 on phones
+			  small      -> 16:3 frame (shows y 300-600); 3:1 on phones
+			Phone ratios are the 3-wide system (Derek 2026-07-28) - every size
+			relaxes toward square on small screens; the toggle previews all
+			three. Site-side milestone.css adopts this at graduation.
 
 			Flavor pairs are copied from styles/settings/flavors.css (the 70s set).
 			Winners graduate to includes/posters/ as real per-milestone SVGs with
@@ -72,6 +74,23 @@
 			  - Fills carry role, not decoration: outline = a thing; secondary
 			    fill = a quiet mass; ink fill = a loud mass; accent = exactly
 			    one focal element per poster.
+			  - Stroke weights carry role too: bold = outlines, structure, and
+			    DIRECT relationships (a connector between two things); fine =
+			    the supporting voice - textures, interior rules, quiet halos,
+			    AMBIENT relationships (spokes, stems), fading edges; chunk =
+			    only a mark that is itself the subject (glyphs, voices, the
+			    strum).
+			  - Roundness is ONE decision, theme-owned: the corners axis drives
+			    rect corners AND stroke caps/joins together (sharp = butt caps,
+			    miter joins, rx 0; soft/round = round everything). Round is the
+			    family's default posture; a brand opting into sharp gets hard
+			    chevron points and square-ended chunk marks - that IS the brand
+			    speaking. One caveat carried in the geometry docs: cap-inclusive
+			    extents (two-voices) are measured under round caps.
+			  - Every distance is explicitly decided - even messy is a decision
+			    (Derek, 2026-07-28). When siblings step or cascade, the step is
+			    CONSTANT (viewport tops step 60, sheet offsets repeat); no
+			    mixed steps that nobody chose.
 
 			OPEN QUESTION (Derek, 2026-07-28 - deliberately NOT acted on yet):
 			should some posters run inverted (dark fill, light ink) to keep the
@@ -187,13 +206,27 @@
 		/* Theme-owned corners (planned axis, Derek 2026-07-28): every content
 		   rect wears .roundable and reads --corners, same mechanic the collage
 		   bench proved (rx as a CSS property takes a var; the attribute form
-		   does not). Backgrounds and the midi pills (deliberate full-round,
-		   attribute rx) stay out. On the real site this becomes the brand's
+		   does not). Only backgrounds stay out - the midi pills joined the
+		   axis 2026-07-28 (their full-round rx=20 was an undecided default;
+		   now they start hard and round with the theme, matching the
+		   roundness law). On the real site this becomes the brand's
 		   --corners - note the unit question for graduation: brand corners are
 		   authored in px against the card, but rx here lives in 1600-wide user
 		   units, so the value likely needs a poster-space multiplier. */
 		.poster-frame svg .roundable {
 			rx: var(--corners, 0);
+		}
+
+		/* Roundness is ONE theme decision (Derek's question, 2026-07-28): the
+		   corners axis drives rect rx AND stroke caps/joins. Round was the
+		   inherited tech-brief default; now sharp = butt caps + miter joins,
+		   soft/round = round everything. CSS here outranks the SVGs' own
+		   presentation attributes, so the per-element linecaps become the
+		   fallback posture. */
+		.poster-frame svg,
+		.poster-frame svg * {
+			stroke-linecap: var(--stroke-ends, round);
+			stroke-linejoin: var(--stroke-joins, round);
 		}
 
 		/* The "breathing" layer: fine strokes thin on hover, bold stays put. */
@@ -211,11 +244,28 @@
 			transition: stroke-width 300ms;
 		}
 
-		/* Phone-crop preview: only the full covers square up (milestone.css rule -
-		   medium/small are heading graphics and keep their ratio at every width). */
-		body[data-crop='square'] .poster-frame[data-size='large'] {
-			aspect-ratio: 1 / 1;
+		/* Phone-crop preview - the 3-wide system (Derek, 2026-07-28): on small
+		   screens every size relaxes to a 3-wide ratio - large 16:9 -> 3:3,
+		   medium 16:6 -> 3:2, small 16:3 -> 3:1. (Supersedes the old rule where
+		   only larges squared and the bands kept ratio; the site's
+		   milestone.css adopts this when the posters graduate.) Slice-crop
+		   safe zones that fall out: large x 350-1250 (unchanged); medium
+		   crops sides to x 125-1475 and shows full height; small shows
+		   y 183-717, gaining air around its y 300-600 band. */
+		body[data-crop='phone'] .poster-frame {
 			max-width: 340px;
+		}
+
+		body[data-crop='phone'] .poster-frame[data-size='large'] {
+			aspect-ratio: 3 / 3;
+		}
+
+		body[data-crop='phone'] .poster-frame[data-size='medium'] {
+			aspect-ratio: 3 / 2;
+		}
+
+		body[data-crop='phone'] .poster-frame[data-size='small'] {
+			aspect-ratio: 3 / 1;
 		}
 
 		/* --- Flavors, copied from styles/settings/flavors.css. Source of truth
@@ -300,7 +350,7 @@
 
 		<label><input type='checkbox' id='border-toggle'> frame border</label>
 
-		<label style='margin-left: auto'><input type='checkbox' id='crop-toggle'> phone crop (square)</label>
+		<label style='margin-left: auto'><input type='checkbox' id='crop-toggle'> phone crop (3:3 / 3:2 / 3:1)</label>
 	</div>
 
 	<ul class='posters'>
@@ -543,9 +593,12 @@
 		</li>
 
 		<!-- 8. midi-sequencing - PHRASES. The step grid from the actual product:
-		     rows of quiet pills, a few active steps, one accent step. Components
-		     and layers, NOT a waveform - the waveform take read as audio, which
-		     is the opposite of how the sequencing works. -->
+		     rows of quiet steps, a few active, one accent. Components and
+		     layers, NOT a waveform - the waveform take read as audio, which is
+		     the opposite of how the sequencing works. Steps are 80x40 rects on
+		     the roundness axis (hard by default, pill-ish under a round brand -
+		     they joined the axis 2026-07-28 when full-round proved to be an
+		     undecided default). -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='night' data-size='large'>
@@ -556,62 +609,62 @@
 
 						<!-- phrase 1 -->
 						<g fill='var(--fill-secondary)'>
-							<rect x='384' y='260' width='80' height='40' rx='20'/>
-							<rect x='492' y='260' width='80' height='40' rx='20'/>
-							<rect x='708' y='260' width='80' height='40' rx='20'/>
-							<rect x='816' y='260' width='80' height='40' rx='20'/>
-							<rect x='924' y='260' width='80' height='40' rx='20'/>
-							<rect x='1032' y='260' width='80' height='40' rx='20'/>
-							<rect x='1140' y='260' width='80' height='40' rx='20'/>
-							<rect x='384' y='316' width='80' height='40' rx='20'/>
-							<rect x='492' y='316' width='80' height='40' rx='20'/>
-							<rect x='600' y='316' width='80' height='40' rx='20'/>
-							<rect x='708' y='316' width='80' height='40' rx='20'/>
-							<rect x='816' y='316' width='80' height='40' rx='20'/>
-							<rect x='924' y='316' width='80' height='40' rx='20'/>
-							<rect x='1032' y='316' width='80' height='40' rx='20'/>
-							<rect x='1140' y='316' width='80' height='40' rx='20'/>
+							<rect class='roundable' x='384' y='260' width='80' height='40'/>
+							<rect class='roundable' x='492' y='260' width='80' height='40'/>
+							<rect class='roundable' x='708' y='260' width='80' height='40'/>
+							<rect class='roundable' x='816' y='260' width='80' height='40'/>
+							<rect class='roundable' x='924' y='260' width='80' height='40'/>
+							<rect class='roundable' x='1032' y='260' width='80' height='40'/>
+							<rect class='roundable' x='1140' y='260' width='80' height='40'/>
+							<rect class='roundable' x='384' y='316' width='80' height='40'/>
+							<rect class='roundable' x='492' y='316' width='80' height='40'/>
+							<rect class='roundable' x='600' y='316' width='80' height='40'/>
+							<rect class='roundable' x='708' y='316' width='80' height='40'/>
+							<rect class='roundable' x='816' y='316' width='80' height='40'/>
+							<rect class='roundable' x='924' y='316' width='80' height='40'/>
+							<rect class='roundable' x='1032' y='316' width='80' height='40'/>
+							<rect class='roundable' x='1140' y='316' width='80' height='40'/>
 						</g>
 
-						<rect x='600' y='260' width='80' height='40' rx='20' fill='var(--ink-primary)'/>
+						<rect class='roundable' x='600' y='260' width='80' height='40' fill='var(--ink-primary)'/>
 
 						<!-- phrase 2 -->
 						<g fill='var(--fill-secondary)'>
-							<rect x='492' y='440' width='80' height='40' rx='20'/>
-							<rect x='600' y='440' width='80' height='40' rx='20'/>
-							<rect x='708' y='440' width='80' height='40' rx='20'/>
-							<rect x='924' y='440' width='80' height='40' rx='20'/>
-							<rect x='1032' y='440' width='80' height='40' rx='20'/>
-							<rect x='1140' y='440' width='80' height='40' rx='20'/>
-							<rect x='384' y='496' width='80' height='40' rx='20'/>
-							<rect x='492' y='496' width='80' height='40' rx='20'/>
-							<rect x='708' y='496' width='80' height='40' rx='20'/>
-							<rect x='816' y='496' width='80' height='40' rx='20'/>
-							<rect x='924' y='496' width='80' height='40' rx='20'/>
-							<rect x='1140' y='496' width='80' height='40' rx='20'/>
+							<rect class='roundable' x='492' y='440' width='80' height='40'/>
+							<rect class='roundable' x='600' y='440' width='80' height='40'/>
+							<rect class='roundable' x='708' y='440' width='80' height='40'/>
+							<rect class='roundable' x='924' y='440' width='80' height='40'/>
+							<rect class='roundable' x='1032' y='440' width='80' height='40'/>
+							<rect class='roundable' x='1140' y='440' width='80' height='40'/>
+							<rect class='roundable' x='384' y='496' width='80' height='40'/>
+							<rect class='roundable' x='492' y='496' width='80' height='40'/>
+							<rect class='roundable' x='708' y='496' width='80' height='40'/>
+							<rect class='roundable' x='816' y='496' width='80' height='40'/>
+							<rect class='roundable' x='924' y='496' width='80' height='40'/>
+							<rect class='roundable' x='1140' y='496' width='80' height='40'/>
 						</g>
 
-						<rect x='384' y='440' width='80' height='40' rx='20' fill='var(--ink-primary)'/>
+						<rect class='roundable' x='384' y='440' width='80' height='40' fill='var(--ink-primary)'/>
 
-						<rect x='816' y='440' width='80' height='40' rx='20' fill='var(--accent)'/>
+						<rect class='roundable' x='816' y='440' width='80' height='40' fill='var(--accent)'/>
 
-						<rect x='600' y='496' width='80' height='40' rx='20' fill='var(--ink-primary)'/>
+						<rect class='roundable' x='600' y='496' width='80' height='40' fill='var(--ink-primary)'/>
 
-						<rect x='1032' y='496' width='80' height='40' rx='20' fill='var(--ink-primary)'/>
+						<rect class='roundable' x='1032' y='496' width='80' height='40' fill='var(--ink-primary)'/>
 
 						<!-- phrase 3 -->
 						<g fill='var(--fill-secondary)'>
-							<rect x='384' y='620' width='80' height='40' rx='20'/>
-							<rect x='600' y='620' width='80' height='40' rx='20'/>
-							<rect x='708' y='620' width='80' height='40' rx='20'/>
-							<rect x='816' y='620' width='80' height='40' rx='20'/>
-							<rect x='1032' y='620' width='80' height='40' rx='20'/>
-							<rect x='1140' y='620' width='80' height='40' rx='20'/>
+							<rect class='roundable' x='384' y='620' width='80' height='40'/>
+							<rect class='roundable' x='600' y='620' width='80' height='40'/>
+							<rect class='roundable' x='708' y='620' width='80' height='40'/>
+							<rect class='roundable' x='816' y='620' width='80' height='40'/>
+							<rect class='roundable' x='1032' y='620' width='80' height='40'/>
+							<rect class='roundable' x='1140' y='620' width='80' height='40'/>
 						</g>
 
-						<rect x='492' y='620' width='80' height='40' rx='20' fill='var(--ink-primary)'/>
+						<rect class='roundable' x='492' y='620' width='80' height='40' fill='var(--ink-primary)'/>
 
-						<rect x='924' y='620' width='80' height='40' rx='20' fill='var(--ink-primary)'/>
+						<rect class='roundable' x='924' y='620' width='80' height='40' fill='var(--ink-primary)'/>
 					</svg>
 				</div>
 
@@ -823,7 +876,7 @@
 		     one piece highlighted - which is literally the product. -->
 		<li>
 			<figure>
-				<div class='poster-frame' data-flavor='night' data-size='large'>
+				<div class='poster-frame' data-flavor='night' data-size='medium'>
 					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
 						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
 
@@ -851,7 +904,7 @@
 					</svg>
 				</div>
 
-				<figcaption><strong>pe-syntax-highlighting</strong> - tokens (16:9)</figcaption>
+				<figcaption><strong>pe-syntax-highlighting</strong> - tokens (16:6 medium)</figcaption>
 			</figure>
 		</li>
 
@@ -871,7 +924,14 @@
 
 						<circle cx='1180' cy='450' r='150' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
 
-						<circle cx='800' cy='170' r='70' fill='var(--accent)'/>
+						<!-- The accent is built as two half circles meeting FLUSH on
+						     the seam (Derek 2026-07-28): one circle, but each half takes
+						     its side's treatment - the RIGHT half (light ground) runs at
+						     80% (same mark, read through its context), which is the
+						     poster's whole thesis. r70, flat edges at x=800. -->
+						<path d='M800,100 A70,70 0 0 0 800,240 Z' fill='var(--accent)'/>
+
+						<path d='M800,100 A70,70 0 0 1 800,240 Z' fill='var(--accent)' fill-opacity='0.8'/>
 					</svg>
 				</div>
 
@@ -1061,9 +1121,11 @@
 		     (per Derek's markup 2026-07-28). One module is filled (a different
 		     kind of section); one contains a little dome rising from its floor -
 		     the horizon motif living inside a module. Grid: modules 480x120 on
-		     a 140 pitch (gap 20), span y 180-720 / x 560-1040 centered on
-		     800/450; dome r60 based on its module's bottom edge, 60 clear of
-		     every module edge. -->
+		     a 160 pitch (gap 40 - widened 2026-07-28 with the viewports:
+		     modules are siblings, so their gaps are separations, not
+		     breathing), span y 150-750 / x 560-1040 centered on 800/450; dome
+		     r60 based on its module's bottom edge, 60 clear of every module
+		     edge. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='warm' data-size='large'>
@@ -1075,13 +1137,13 @@
 						<!-- The dome paints BEFORE the modules so the module's floor
 						     line crosses its base crisply (it rises from behind the
 						     line, never eats the border - Derek's catch 2026-07-28). -->
-						<path d='M860,580 A60,60 0 0 1 980,580 Z' fill='var(--accent)'/>
+						<path d='M860,590 A60,60 0 0 1 980,590 Z' fill='var(--accent)'/>
 
 						<g stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
-							<rect class='roundable' x='560' y='180' width='480' height='120' fill='none'/>
-							<rect class='roundable' x='560' y='320' width='480' height='120' fill='var(--fill-secondary)'/>
-							<rect class='roundable' x='560' y='460' width='480' height='120' fill='none'/>
-							<rect class='roundable' x='560' y='600' width='480' height='120' fill='none'/>
+							<rect class='roundable' x='560' y='150' width='480' height='120' fill='none'/>
+							<rect class='roundable' x='560' y='310' width='480' height='120' fill='var(--fill-secondary)'/>
+							<rect class='roundable' x='560' y='470' width='480' height='120' fill='none'/>
+							<rect class='roundable' x='560' y='630' width='480' height='120' fill='none'/>
 						</g>
 					</svg>
 				</div>
@@ -1455,10 +1517,13 @@
 		     (screens grow upward as the era progresses), accent floating above
 		     the desktop.
 
-		     Grid: widths double (120 / 240 / 480), heights step +80 (240 / 320 /
-		     400), gaps 20, shared baseline y=650. Span x 360-1240 -> centered on
-		     800 and inside the phone crop. Dot d100 on the desktop's center
-		     axis (x=1000), 20 above its top edge. -->
+		     Grid (every distance explicitly decided, Derek 2026-07-28): widths
+		     double (100 / 200 / 400), gaps 40, shared baseline y=680; heights
+		     200 / 260 / 320 so the screen TOPS step by a constant 60 (they
+		     stepped 60-then-40 before, which was never decided); desktop is
+		     5:4, an honest monitor. Dot d100 on the desktop's center axis
+		     (x=990), a 40 separation above its top edge. Span x 410-1190 /
+		     y 220-680 centered on 800/450, inside the phone crop. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='warm' data-size='large'>
@@ -1473,12 +1538,12 @@
 						     step). Existing slots only, and the gradation stays
 						     monotonic under every flavor including inverted night. -->
 						<g stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
-							<rect class='roundable' x='360' y='410' width='120' height='240' fill='none'/>
-							<rect class='roundable' x='500' y='330' width='240' height='320' fill='var(--fill-secondary)'/>
-							<rect class='roundable' x='760' y='250' width='480' height='400' fill='var(--ink-secondary)'/>
+							<rect class='roundable' x='410' y='480' width='100' height='200' fill='none'/>
+							<rect class='roundable' x='550' y='420' width='200' height='260' fill='var(--fill-secondary)'/>
+							<rect class='roundable' x='790' y='360' width='400' height='320' fill='var(--ink-secondary)'/>
 						</g>
 
-						<circle cx='1000' cy='180' r='50' fill='var(--accent)'/>
+						<circle cx='990' cy='270' r='50' fill='var(--accent)'/>
 					</svg>
 				</div>
 
@@ -1541,7 +1606,14 @@
 		</li>
 
 		<!-- 36. cca-bfa - FOUNDATIONS. Circle, square, triangle overlapping: art
-		     school, where the shapes started. Default flavor. -->
+		     school, where the shapes started. Default flavor. (Accent moved
+		     below the square per Derek's markup 2026-07-28, and the poster got
+		     its grid pass at the same time - it predated the law.) Grid:
+		     circle d300 at (760,370); square 220 at 860,360 - the circle
+		     reaches 50 into it; triangle base 300 / height 260 (equilateral),
+		     apex 47 inside the circle; accent d60 below the square (40 gap),
+		     its underside sharing the triangle's y=680 baseline. Span
+		     x 520-1080 / y 220-680 centered on 800/450. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='default' data-size='large'>
@@ -1551,12 +1623,12 @@
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
 						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
-							<circle cx='720' cy='400' r='150'/>
-							<rect class='roundable' x='820' y='380' width='220' height='220'/>
-							<path d='M510,650 L660,390 L810,650 Z'/>
+							<circle cx='760' cy='370' r='150'/>
+							<rect class='roundable' x='860' y='360' width='220' height='220'/>
+							<path d='M520,680 L670,420 L820,680 Z'/>
 						</g>
 
-						<circle cx='1090' cy='300' r='30' fill='var(--accent)'/>
+						<circle cx='930' cy='650' r='30' fill='var(--accent)'/>
 					</svg>
 				</div>
 
@@ -1598,7 +1670,7 @@
 		});
 
 		document.getElementById('crop-toggle').addEventListener('change', function () {
-			document.body.dataset.crop = this.checked ? 'square' : '';
+			document.body.dataset.crop = this.checked ? 'phone' : '';
 		});
 
 		/* Corners preview: stands in for the brand-owned --corners axis.
@@ -1606,11 +1678,22 @@
 		   1px = 1 unit. One knob drives inner-rect rx AND the frame's
 		   border-radius (same brand token on the site) - note they won't match
 		   optically until the poster-space multiplier question is settled. */
+		function applyCorners(value) {
+			document.body.style.setProperty('--corners', value + 'px');
+
+			/* Caps and joins ride the same decision: sharp = hard ends. */
+			var sharp = value === '0';
+			document.body.style.setProperty('--stroke-ends', sharp ? 'butt' : 'round');
+			document.body.style.setProperty('--stroke-joins', sharp ? 'miter' : 'round');
+		}
+
 		document.querySelectorAll('input[name="corners"]').forEach(function (radio) {
 			radio.addEventListener('change', function () {
-				document.body.style.setProperty('--corners', radio.value + 'px');
+				applyCorners(radio.value);
 			});
 		});
+
+		applyCorners(document.querySelector('input[name="corners"]:checked').value);
 
 		document.getElementById('border-toggle').addEventListener('change', function () {
 			if (this.checked) {

@@ -356,7 +356,7 @@
 			"dev"
 		],
 		"flavor": "night",
-		"poster": true,
+		"poster": "medium",
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
