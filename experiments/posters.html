@@ -27,6 +27,31 @@
 			Flavor pairs are copied from styles/settings/flavors.css (the 70s set).
 			Winners graduate to includes/posters/ as real per-milestone SVGs with
 			slug-prefixed ids (poster-system.md checklist).
+
+			ALIGNMENT RULE (Derek, 2026-07-28 - long-term, applies to every poster):
+			perfectly aligned, clearly reused space. No eyeballed coordinates.
+			  - Module grid: sizes in multiples of 100; breathing gaps of 20.
+			  - Reuse measures: if two elements are nearly the same size, make them
+			    exactly the same size (dot diameter = slab height, etc).
+			  - Shared axes are exact: an element "above" another sits on its
+			    center line, edges that look aligned ARE aligned.
+			  - Compositions center on the frame axes (x=800; y=450, or the band's
+			    visible center) unless the design deliberately says otherwise.
+			  - Fair padding from the frame: art never crowds the visible edges -
+			    keep at least 50 clear inside a band's visible slice (and respect
+			    the phone-crop zone on full covers). A shape touching the frame
+			    is a deliberate act (the horizon dome), never an accident.
+			  - Triangles are equilateral. Always (Derek, 2026-07-28).
+			  - Nothing tangent or tight (Derek, 2026-07-28): shapes either keep a
+			    real gap (20+) or overlap decisively - an edge grazing another
+			    edge, or a curve kissing a line, is always wrong.
+			  - Optical size beats mathematical size across shape kinds: a circle
+			    sitting next to a square of "the same size" reads smaller, so the
+			    circle gets ~3% more diameter. Within a shape kind, exact reuse
+			    still rules.
+			The steps poster (pe-founded) is the worked reference for this rule.
+			Full-family alignment sweep happens once the miss list settles - no
+			point precision-polishing a poster that may still be redrawn.
 		*/
 
 		:root {
@@ -109,6 +134,19 @@
 			aspect-ratio: 16 / 9;
 			overflow: hidden;
 			border: 1px solid #ddd;
+
+			/* Frame-level axes (Derek 2026-07-28): the POSTER ITSELF can wear a
+			   border and corners, theme-decided - the site's seam is --corners +
+			   --border-width on the media frame (poster-system.md). Corners here
+			   ride the same --corners knob as the inner rects' rx; with
+			   overflow hidden they clip the art, which is why the 50-padding
+			   rule matters (deliberate bleeds like the dome clip gracefully). */
+			border-radius: var(--corners, 0);
+		}
+
+		/* Design border: ink-colored, replaces the bench hairline when on. */
+		body[data-frame-border] .poster-frame {
+			border: 3px solid var(--poster-ink);
 		}
 
 		.poster-frame[data-size='medium'] {
@@ -117,6 +155,18 @@
 
 		.poster-frame[data-size='small'] {
 			aspect-ratio: 16 / 3;
+		}
+
+		/* Theme-owned corners (planned axis, Derek 2026-07-28): every content
+		   rect wears .roundable and reads --corners, same mechanic the collage
+		   bench proved (rx as a CSS property takes a var; the attribute form
+		   does not). Backgrounds and the midi pills (deliberate full-round,
+		   attribute rx) stay out. On the real site this becomes the brand's
+		   --corners - note the unit question for graduation: brand corners are
+		   authored in px against the card, but rx here lives in 1600-wide user
+		   units, so the value likely needs a poster-space multiplier. */
+		.poster-frame svg .roundable {
+			rx: var(--corners, 0);
 		}
 
 		/* The "breathing" layer: fine strokes thin on hover, bold stays put. */
@@ -197,9 +247,9 @@
 	<div class='controls'>
 		<span>Flavor:</span>
 
-		<label><input type='radio' name='flavor' value='' checked> mixed (as dealt)</label>
+		<label><input type='radio' name='flavor' value=''> mixed (as dealt)</label>
 
-		<label><input type='radio' name='flavor' value='default'> default</label>
+		<label><input type='radio' name='flavor' value='default' checked> default</label>
 
 		<label><input type='radio' name='flavor' value='warm'> warm</label>
 
@@ -213,12 +263,29 @@
 
 		<label><input type='radio' name='flavor' value='rose'> rose</label>
 
+		<span>Corners:</span>
+
+		<label><input type='radio' name='corners' value='0' checked> sharp</label>
+
+		<label><input type='radio' name='corners' value='8'> soft</label>
+
+		<label><input type='radio' name='corners' value='16'> round</label>
+
+		<label><input type='checkbox' id='border-toggle'> frame border</label>
+
 		<label style='margin-left: auto'><input type='checkbox' id='crop-toggle'> phone crop (square)</label>
 	</div>
 
 	<ul class='posters'>
 
-		<!-- 1. 2026-job-search - HORIZON. The calibration card: dome, air, one accent. -->
+		<!-- 1. 2026-job-search - HORIZON. The calibration card: dome, air, one
+		     accent. The dome is a TRUE circle cresting through the frame, not a
+		     half-circle glued to the edge (per Derek's trace 2026-07-28 - the
+		     flat side coinciding with the frame was a tangent coincidence).
+		     Grid: circle center (800,1050) r600, so it crests exactly to the
+		     frame's y=450 midline and the frame honestly crops it. Dot d100 on
+		     the frame's upper-third line (y=300, lowered from 200 per Derek's
+		     markup 2026-07-28). -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='stone' data-size='large'>
@@ -236,11 +303,11 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<path d='M250,900 A550,550 0 0 1 1350,900 Z' fill='var(--fill-secondary)'/>
+						<circle cx='800' cy='1050' r='600' fill='var(--fill-secondary)'/>
 
-						<path d='M250,900 A550,550 0 0 1 1350,900 Z' fill='url(#job-search-tex)'/>
+						<circle cx='800' cy='1050' r='600' fill='url(#job-search-tex)'/>
 
-						<circle cx='1130' cy='210' r='55' fill='var(--accent)'/>
+						<circle cx='1100' cy='300' r='50' fill='var(--accent)'/>
 					</svg>
 				</div>
 
@@ -249,31 +316,38 @@
 		</li>
 
 		<!-- 2. 2026-portfolio-site - CASCADE. Frames of work stacking forward:
-		     this site holding the whole history. -->
+		     this site holding the whole history. Medium band (sized 2026-07-28;
+		     was text-only). On the grid: frames 600x200, offset 100 both axes,
+		     composition spans x 400-1200 / y 250-650 - centered on 800/450. Dot
+		     d100 = half the frame height, centered on the front frame's y axis. -->
 		<li>
 			<figure>
-				<div class='poster-frame' data-flavor='stone' data-size='large'>
+				<div class='poster-frame' data-flavor='stone' data-size='medium'>
 					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
 						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
 						<g stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
-							<rect x='430' y='190' width='560' height='315' fill='none'/>
-							<rect x='510' y='270' width='560' height='315' fill='var(--fill-secondary)'/>
-							<rect x='590' y='350' width='560' height='315' fill='var(--fill-primary)'/>
+							<rect class='roundable' x='400' y='250' width='600' height='200' fill='none'/>
+							<rect class='roundable' x='500' y='350' width='600' height='200' fill='var(--fill-secondary)'/>
+							<rect class='roundable' x='600' y='450' width='600' height='200' fill='var(--fill-primary)'/>
 						</g>
 
-						<circle cx='1080' cy='600' r='30' fill='var(--accent)'/>
+						<circle cx='1100' cy='550' r='50' fill='var(--accent)'/>
 					</svg>
 				</div>
 
-				<figcaption><strong>2026-portfolio-site</strong> - cascade (16:9)</figcaption>
+				<figcaption><strong>2026-portfolio-site</strong> - cascade (16:6 medium)</figcaption>
 			</figure>
 		</li>
 
-		<!-- 3. pe-self-paced - CHECKPOINTS. The drip: done, done, you are here.
-		     Small band: everything lives in y 300-600. -->
+		<!-- 3. pe-self-paced - THE DRIP. A dotted timeline of days, one of them
+		     ringed: go at your own pace, you are here. (Motif moved over from
+		     pe-calendar-milestones 2026-07-28 - Derek: this is what self-paced
+		     looks like; the checkpoint squares went to better-life.) Grid: days
+		     at 200 intervals on the y=450 axis, day dots d50, the ringed day
+		     d100. Small band. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='moss' data-size='small'>
@@ -282,43 +356,56 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<g stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
-							<rect x='330' y='390' width='120' height='120' fill='var(--fill-secondary)'/>
-							<rect x='530' y='390' width='120' height='120' fill='var(--fill-secondary)'/>
-							<rect x='730' y='390' width='120' height='120' fill='none'/>
-							<rect x='930' y='390' width='120' height='120' fill='none'/>
-							<rect x='1130' y='390' width='120' height='120' fill='none'/>
+						<path d='M300,450 L1300,450' fill='none' stroke='var(--ink-secondary)' style='stroke-width: var(--line-width-secondary)' stroke-linecap='round' stroke-dasharray='2 46'/>
+
+						<g fill='var(--ink-primary)'>
+							<circle cx='400' cy='450' r='25'/>
+							<circle cx='600' cy='450' r='25'/>
+							<circle cx='800' cy='450' r='25'/>
+							<circle cx='1200' cy='450' r='25'/>
 						</g>
 
-						<circle cx='790' cy='450' r='34' fill='var(--accent)'/>
+						<circle cx='1000' cy='450' r='50' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+
+						<circle cx='1000' cy='450' r='25' fill='var(--accent)'/>
 					</svg>
 				</div>
 
-				<figcaption><strong>pe-self-paced</strong> - checkpoints (16:3 small)</figcaption>
+				<figcaption><strong>pe-self-paced</strong> - the drip (16:3 small)</figcaption>
 			</figure>
 		</li>
 
-		<!-- 4. pe-figure-cms-options - FIGURE. The framed image pictogram,
-		     abstracted: mountain, sun, corner tab. -->
+		<!-- 4. pe-figure-cms-options - FRAME OPTIONS. The product is the frames
+		     themselves: the same figure wearing three nested frames at once,
+		     like mat options around a print (per Derek 2026-07-28; sized to
+		     medium the same day - the outer frame at y 200-700 sits with the
+		     band's exact 50 padding, so the composition ported unchanged).
+		     Grid: exact 40 insets between frames (inner 500x340, middle
+		     580x420, outer 660x500, all centered on 800/450); weights alternate
+		     fine / bold / fine so the outer and inner frames breathe on hover.
+		     Mountain is equilateral (base 300, height 260) with symmetric 40s
+		     above the apex and below the base; sun d100, clear of everything. -->
 		<li>
 			<figure>
-				<div class='poster-frame' data-flavor='warm' data-size='large'>
+				<div class='poster-frame' data-flavor='warm' data-size='medium'>
 					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
 						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<rect x='450' y='200' width='700' height='500' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+						<g fill='none' stroke='var(--ink-primary)'>
+							<rect class='roundable' x='470' y='200' width='660' height='500' style='stroke-width: var(--line-width-secondary)'/>
+							<rect class='roundable' x='510' y='240' width='580' height='420' style='stroke-width: var(--line-width-primary)'/>
+							<rect class='roundable' x='550' y='280' width='500' height='340' style='stroke-width: var(--line-width-secondary)'/>
+						</g>
 
-						<rect x='450' y='200' width='160' height='110' fill='var(--fill-secondary)'/>
+						<path d='M650,580 L800,320 L950,580' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round'/>
 
-						<path d='M600,640 L800,380 L1000,640' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round'/>
-
-						<circle cx='950' cy='320' r='55' fill='var(--accent)'/>
+						<circle cx='960' cy='380' r='50' fill='var(--accent)'/>
 					</svg>
 				</div>
 
-				<figcaption><strong>pe-figure-cms-options</strong> - figure (16:9)</figcaption>
+				<figcaption><strong>pe-figure-cms-options</strong> - frame options (16:6 medium)</figcaption>
 			</figure>
 		</li>
 
@@ -334,7 +421,7 @@
 
 						<path d='M520,330 L700,450 L520,570' fill='none' stroke='var(--ink-primary)' style='stroke-width: calc(var(--line-width-primary) * 2)' stroke-linecap='round'/>
 
-						<rect x='780' y='360' width='54' height='180' fill='var(--accent)'/>
+						<rect class='roundable' x='780' y='360' width='54' height='180' fill='var(--accent)'/>
 
 						<g fill='none' stroke='var(--ink-secondary)' style='stroke-width: calc(var(--line-width-primary) * 2)' stroke-linecap='round'>
 							<path d='M920,410 L1180,410'/>
@@ -374,8 +461,21 @@
 			</figure>
 		</li>
 
-		<!-- 7. smart-text-editor - LINE-NODE. A line of text becomes a thing you
-		     can hold: one bar grows a node. -->
+		<!-- 7. smart-text-editor - ECOSYSTEM. Panes coming together dynamically:
+		     four panes overlap the central one's corners, all transparent so the
+		     overlaps read as intermixing, accent at the convergence point.
+		     (Replaced line-node per Derek 2026-07-28 - the idea is bringing the
+		     panes together, not annotating a line. Refined per Derek's second
+		     sketch 2026-07-28: the central pane goes OPAQUE and paints on top -
+		     the satellites tuck behind it - and satellites come in two sizes.)
+
+		     Grid: central pane 400x300 opaque on the frame center, painted
+		     last; satellites in two reused measures - large 300x200 (TR/BL),
+		     small 200x140 (TL/BR, nouveau's panel measure) - placed with
+		     180-degree rotational symmetry, so the layout is dynamic but
+		     self-centers on 800/450. Overlaps into the central pane are
+		     decisive (40-80); satellite-to-satellite clearances 180+. Span
+		     x 360-1240 sits inside the phone crop. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='cool' data-size='large'>
@@ -384,25 +484,27 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<g fill='var(--fill-secondary)'>
-							<rect x='380' y='300' width='480' height='56'/>
-							<rect x='380' y='420' width='560' height='56'/>
-							<rect x='380' y='540' width='400' height='56'/>
+						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<rect class='roundable' x='480' y='200' width='200' height='140'/>
+							<rect class='roundable' x='940' y='180' width='300' height='200'/>
+							<rect class='roundable' x='920' y='560' width='200' height='140'/>
+							<rect class='roundable' x='360' y='520' width='300' height='200'/>
 						</g>
 
-						<path d='M940,448 L1040,448' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round'/>
+						<rect class='roundable' x='600' y='300' width='400' height='300' fill='var(--fill-primary)' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
 
-						<circle cx='1115' cy='448' r='75' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
-
-						<circle cx='1115' cy='448' r='26' fill='var(--accent)'/>
+						<circle cx='800' cy='450' r='50' fill='var(--accent)'/>
 					</svg>
 				</div>
 
-				<figcaption><strong>smart-text-editor</strong> - line-node (16:9)</figcaption>
+				<figcaption><strong>smart-text-editor</strong> - ecosystem (16:9)</figcaption>
 			</figure>
 		</li>
 
-		<!-- 8. midi-sequencing - SEQUENCE. The sequencer row, one voice picked out. -->
+		<!-- 8. midi-sequencing - PHRASES. The step grid from the actual product:
+		     rows of quiet pills, a few active steps, one accent step. Components
+		     and layers, NOT a waveform - the waveform take read as audio, which
+		     is the opposite of how the sequencing works. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='night' data-size='large'>
@@ -411,29 +513,146 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: calc(var(--line-width-primary) * 3)' stroke-linecap='round'>
-							<path d='M400,380 L400,520'/>
-							<path d='M500,320 L500,580'/>
-							<path d='M600,400 L600,500'/>
-							<path d='M700,280 L700,620'/>
-							<path d='M800,360 L800,540'/>
-							<path d='M1000,340 L1000,560'/>
-							<path d='M1100,300 L1100,600'/>
-							<path d='M1200,390 L1200,510'/>
+						<!-- phrase 1 -->
+						<g fill='var(--fill-secondary)'>
+							<rect x='384' y='260' width='80' height='40' rx='20'/>
+							<rect x='492' y='260' width='80' height='40' rx='20'/>
+							<rect x='708' y='260' width='80' height='40' rx='20'/>
+							<rect x='816' y='260' width='80' height='40' rx='20'/>
+							<rect x='924' y='260' width='80' height='40' rx='20'/>
+							<rect x='1032' y='260' width='80' height='40' rx='20'/>
+							<rect x='1140' y='260' width='80' height='40' rx='20'/>
+							<rect x='384' y='316' width='80' height='40' rx='20'/>
+							<rect x='492' y='316' width='80' height='40' rx='20'/>
+							<rect x='600' y='316' width='80' height='40' rx='20'/>
+							<rect x='708' y='316' width='80' height='40' rx='20'/>
+							<rect x='816' y='316' width='80' height='40' rx='20'/>
+							<rect x='924' y='316' width='80' height='40' rx='20'/>
+							<rect x='1032' y='316' width='80' height='40' rx='20'/>
+							<rect x='1140' y='316' width='80' height='40' rx='20'/>
 						</g>
 
-						<path d='M900,250 L900,650' fill='none' stroke='var(--accent)' style='stroke-width: calc(var(--line-width-primary) * 3)' stroke-linecap='round'/>
+						<rect x='600' y='260' width='80' height='40' rx='20' fill='var(--ink-primary)'/>
 
-						<path d='M340,720 L1260,720' fill='none' stroke='var(--ink-secondary)' style='stroke-width: var(--line-width-secondary)' stroke-linecap='round' stroke-dasharray='2 40'/>
+						<!-- phrase 2 -->
+						<g fill='var(--fill-secondary)'>
+							<rect x='492' y='440' width='80' height='40' rx='20'/>
+							<rect x='600' y='440' width='80' height='40' rx='20'/>
+							<rect x='708' y='440' width='80' height='40' rx='20'/>
+							<rect x='924' y='440' width='80' height='40' rx='20'/>
+							<rect x='1032' y='440' width='80' height='40' rx='20'/>
+							<rect x='1140' y='440' width='80' height='40' rx='20'/>
+							<rect x='384' y='496' width='80' height='40' rx='20'/>
+							<rect x='492' y='496' width='80' height='40' rx='20'/>
+							<rect x='708' y='496' width='80' height='40' rx='20'/>
+							<rect x='816' y='496' width='80' height='40' rx='20'/>
+							<rect x='924' y='496' width='80' height='40' rx='20'/>
+							<rect x='1140' y='496' width='80' height='40' rx='20'/>
+						</g>
+
+						<rect x='384' y='440' width='80' height='40' rx='20' fill='var(--ink-primary)'/>
+
+						<rect x='816' y='440' width='80' height='40' rx='20' fill='var(--accent)'/>
+
+						<rect x='600' y='496' width='80' height='40' rx='20' fill='var(--ink-primary)'/>
+
+						<rect x='1032' y='496' width='80' height='40' rx='20' fill='var(--ink-primary)'/>
+
+						<!-- phrase 3 -->
+						<g fill='var(--fill-secondary)'>
+							<rect x='384' y='620' width='80' height='40' rx='20'/>
+							<rect x='600' y='620' width='80' height='40' rx='20'/>
+							<rect x='708' y='620' width='80' height='40' rx='20'/>
+							<rect x='816' y='620' width='80' height='40' rx='20'/>
+							<rect x='1032' y='620' width='80' height='40' rx='20'/>
+							<rect x='1140' y='620' width='80' height='40' rx='20'/>
+						</g>
+
+						<rect x='492' y='620' width='80' height='40' rx='20' fill='var(--ink-primary)'/>
+
+						<rect x='924' y='620' width='80' height='40' rx='20' fill='var(--ink-primary)'/>
 					</svg>
 				</div>
 
-				<figcaption><strong>midi-sequencing</strong> - sequence (16:9)</figcaption>
+				<figcaption><strong>midi-sequencing</strong> - phrases (16:9)</figcaption>
 			</figure>
 		</li>
 
-		<!-- 9. outside-insights-turing - OVERLAP. Two schools of thought comparing
-		     notes; the accent lives where they agree. Medium band. -->
+		<!-- 9. outside-insights-turing - OVERLAP. Two schools of thought in
+		     conversation; the accent observes from beside the pair (moved out of
+		     the intersection per Derek's markup 2026-07-28). Small band. Grid:
+		     circles d200 (the plate measure), centers 120 apart for the venn
+		     lens, dot d100 at a 40 gap, span x 570-1030 centered on 800, 50 of
+		     band padding. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='night' data-size='small'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<circle cx='620' cy='450' r='50' fill='var(--accent)'/>
+
+						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<circle cx='810' cy='450' r='100'/>
+							<circle cx='930' cy='450' r='100'/>
+						</g>
+					</svg>
+				</div>
+
+				<figcaption><strong>outside-insights-turing</strong> - overlap (16:3 small)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 10. list-at-ease - CHECKLIST. The product: a complex form crossed
+		     with education, walking a homeowner through the sale step by step.
+		     Top-down rows of checkbox + line: done, done, you are here, still
+		     ahead. (Replaced the parts bin per Derek 2026-07-28; bars made even
+		     and ink-solid per his markup the same day.) Grid: boxes 80 on a 140
+		     row pitch (rows y 200/340/480/620, span centered on 450); bars all
+		     400x40 ink - h40 = half the box, 40 gap from the box; the current
+		     step's dot d40 = half the box. Span x 540-1060, centered on 800. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='moss' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<rect class='roundable' x='540' y='200' width='80' height='80' fill='var(--fill-secondary)'/>
+							<rect class='roundable' x='540' y='340' width='80' height='80' fill='var(--fill-secondary)'/>
+							<rect class='roundable' x='540' y='480' width='80' height='80' fill='none'/>
+							<rect class='roundable' x='540' y='620' width='80' height='80' fill='none'/>
+						</g>
+
+						<g fill='var(--ink-primary)'>
+							<rect class='roundable' x='660' y='220' width='400' height='40'/>
+							<rect class='roundable' x='660' y='360' width='400' height='40'/>
+							<rect class='roundable' x='660' y='500' width='400' height='40'/>
+							<rect class='roundable' x='660' y='640' width='400' height='40'/>
+						</g>
+
+						<circle cx='580' cy='520' r='20' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>list-at-ease</strong> - checklist (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 11. aicad-2024 - UNION. The talk's argument drawn: the circle (the
+		     "creatives") and the square (the "coders") were never separate
+		     disciplines - the accent lives in the overlap, the well-rounded
+		     Designer. (Replaced the shape-lineup 2026-07-28: poorly spaced and
+		     said nothing.) Grid: square 300, circle d312 (the optical bump, 4%
+		     here so every coordinate stays an integer). Deep decisive overlap
+		     per Derek's markup - nothing tangent: the square's left edge rides
+		     the circle's center axis, its top edge sits 50 above the circle's
+		     center line. Span x 572-1028 / y 247-653, centered on 800/450;
+		     accent d100 at dead center of frame, inside the lens. Medium band. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='night' data-size='medium'>
@@ -443,70 +662,26 @@
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
 						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
-							<circle cx='660' cy='450' r='170'/>
-							<circle cx='940' cy='450' r='170'/>
+							<circle cx='728' cy='403' r='156'/>
+							<rect class='roundable' x='728' y='353' width='300' height='300'/>
 						</g>
 
-						<circle cx='800' cy='450' r='34' fill='var(--accent)'/>
+						<circle cx='800' cy='450' r='50' fill='var(--accent)'/>
 					</svg>
 				</div>
 
-				<figcaption><strong>outside-insights-turing</strong> - overlap (16:6 medium)</figcaption>
+				<figcaption><strong>aicad-2024</strong> - union (16:6 medium)</figcaption>
 			</figure>
 		</li>
 
-		<!-- 10. list-at-ease - PARTS BIN. The component library: a grid of parts,
-		     one of them a different kind of part. -->
-		<li>
-			<figure>
-				<div class='poster-frame' data-flavor='moss' data-size='large'>
-					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
-						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
-
-						<rect width='1600' height='900' fill='var(--fill-primary)'/>
-
-						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
-							<rect x='460' y='240' width='190' height='190'/>
-							<rect x='705' y='240' width='190' height='190' fill='var(--fill-secondary)'/>
-							<circle cx='1045' cy='335' r='95'/>
-							<rect x='460' y='485' width='190' height='190' fill='var(--fill-secondary)'/>
-							<circle cx='800' cy='580' r='95'/>
-						</g>
-
-						<circle cx='1045' cy='580' r='95' fill='var(--accent)'/>
-					</svg>
-				</div>
-
-				<figcaption><strong>list-at-ease</strong> - parts bin (16:9)</figcaption>
-			</figure>
-		</li>
-
-		<!-- 11. aicad-2024 - DELEGATION. Many schools, different shapes, marching
-		     together. Small band. -->
-		<li>
-			<figure>
-				<div class='poster-frame' data-flavor='night' data-size='small'>
-					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
-						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
-
-						<rect width='1600' height='900' fill='var(--fill-primary)'/>
-
-						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
-							<circle cx='430' cy='450' r='75'/>
-							<rect x='610' y='375' width='150' height='150'/>
-							<path d='M790,525 L865,375 L940,525 Z'/>
-							<rect x='1015' y='375' width='150' height='150' fill='var(--fill-secondary)'/>
-						</g>
-
-						<circle cx='1250' cy='450' r='40' fill='var(--accent)'/>
-					</svg>
-				</div>
-
-				<figcaption><strong>aicad-2024</strong> - delegation (16:3 small)</figcaption>
-			</figure>
-		</li>
-
-		<!-- 12. open-office-hours - ORBIT. Voices around a call, one of them lit. -->
+		<!-- 12. open-office-hours - ORBIT. Voices around a call, one of them lit.
+		     Positions are principled, not eyeballed (formalized 2026-07-28 when
+		     Derek asked how they were decided): ring r300 on the frame center;
+		     every dot center sits exactly ON the ring's path, spaced at even
+		     thirds (120 degrees), phase-rotated so one voice is at 9:00 (180)
+		     and the other two mirror across the horizontal axis (60 and 300 -
+		     cos 60 = 1/2, so x = 800+150 = 950 exactly; y = 450 -/+ 260). The
+		     accent is the 60-degree voice. Dot d124 unchanged. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='rose' data-size='large'>
@@ -515,13 +690,13 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<circle cx='800' cy='460' r='290' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+						<circle cx='800' cy='450' r='300' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
 
-						<circle cx='595' cy='255' r='62' fill='var(--ink-primary)'/>
+						<circle cx='500' cy='450' r='62' fill='var(--ink-primary)'/>
 
-						<circle cx='800' cy='750' r='62' fill='var(--ink-primary)'/>
+						<circle cx='950' cy='710' r='62' fill='var(--ink-primary)'/>
 
-						<circle cx='1005' cy='255' r='62' fill='var(--accent)'/>
+						<circle cx='950' cy='190' r='62' fill='var(--accent)'/>
 					</svg>
 				</div>
 
@@ -529,34 +704,215 @@
 			</figure>
 		</li>
 
-		<!-- 13. don-podcast-gap - THE GAP. A line interrupted; the accent sits in
-		     the missing part, which is the whole conversation. Medium band. -->
+		<!-- 13. don-podcast-gap - THE GAP. The gap drawn as a held emptiness:
+		     two parentheses framing a wide void, the speaker standing before it,
+		     the arrow pointing at how far there still is to go. (Redrawn per
+		     Derek 2026-07-28 - the old take had the accent FILLING the gap,
+		     which is backwards.) Small band: parens chords at x 580/1020
+		     (symmetric about 800), arcs y 350-550, dot d100 at left, arrow
+		     mirroring it at right. -->
 		<li>
 			<figure>
-				<div class='poster-frame' data-flavor='warm' data-size='medium'>
+				<div class='poster-frame' data-flavor='warm' data-size='small'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<defs>
+							<marker id='gap-arrow' viewBox='0 0 3 4.5' refX='0' refY='2.25'
+								markerWidth='3' markerHeight='4.5' markerUnits='strokeWidth' orient='auto'>
+								<path d='M0,0 L3,2.25 L0,4.5 Z' fill='context-stroke'/>
+							</marker>
+						</defs>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round'>
+							<path d='M580,350 A140,140 0 0 0 580,550'/>
+							<path d='M1020,350 A140,140 0 0 1 1020,550'/>
+						</g>
+
+						<circle cx='400' cy='450' r='50' fill='var(--accent)'/>
+
+						<path d='M1140,450 L1220,450' fill='none' stroke='var(--ink-primary)'
+							style='stroke-width: var(--line-width-primary)' stroke-linecap='round'
+							marker-end='url(#gap-arrow)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>don-podcast-gap</strong> - the gap (16:3 small)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 14. better-life - HABIT CHECKS. The tracker row: done, done, today,
+		     then the open days. (Checkpoint squares moved over from
+		     pe-self-paced 2026-07-28 - Derek: checkboxes read habit tracking;
+		     the network went to pe-study-hall.) Grid: squares 120 on a 180
+		     pitch (gap 60), span x 380-1220 / y 390-510 centered on 800/450;
+		     today's dot d60 = half the square, at dead center of the frame. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='rose' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<rect class='roundable' x='380' y='390' width='120' height='120' fill='var(--fill-secondary)'/>
+							<rect class='roundable' x='560' y='390' width='120' height='120' fill='var(--fill-secondary)'/>
+							<rect class='roundable' x='740' y='390' width='120' height='120' fill='none'/>
+							<rect class='roundable' x='920' y='390' width='120' height='120' fill='none'/>
+							<rect class='roundable' x='1100' y='390' width='120' height='120' fill='none'/>
+						</g>
+
+						<circle cx='800' cy='450' r='30' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>better-life</strong> - habit checks (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 15. pe-syntax-highlighting - TOKENS. Lines of code broken into pieces,
+		     one piece highlighted - which is literally the product. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='night' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<!-- All tokens filled (Derek 2026-07-28 - outlines read as
+						     empty slots). Left-aligned at x=450 like code; rows h60
+						     on a 120 pitch spanning y 300-600 (centered); gaps 20;
+						     quiet tokens secondary, loud tokens ink, one accent. -->
+						<g fill='var(--fill-secondary)'>
+							<rect class='roundable' x='450' y='300' width='220' height='60'/>
+							<rect class='roundable' x='830' y='300' width='320' height='60'/>
+							<rect class='roundable' x='630' y='420' width='280' height='60'/>
+							<rect class='roundable' x='450' y='540' width='300' height='60'/>
+						</g>
+
+						<g fill='var(--ink-primary)'>
+							<rect class='roundable' x='690' y='300' width='120' height='60'/>
+							<rect class='roundable' x='450' y='420' width='160' height='60'/>
+							<rect class='roundable' x='770' y='540' width='200' height='60'/>
+						</g>
+
+						<rect class='roundable' x='930' y='420' width='140' height='60' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>pe-syntax-highlighting</strong> - tokens (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 16. equivalent-design - SPLIT. The same mark on two grounds, surviving
+		     both - the whole accessibility/theming story. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='cool' data-size='large'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<rect class='roundable' x='0' y='0' width='800' height='900' fill='var(--fill-secondary)'/>
+
+						<circle cx='420' cy='450' r='150' fill='var(--ink-primary)'/>
+
+						<circle cx='1180' cy='450' r='150' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+
+						<circle cx='800' cy='170' r='36' fill='var(--accent)'/>
+					</svg>
+				</div>
+
+				<figcaption><strong>equivalent-design</strong> - split (16:9)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 17. pe-calendar-milestones - MONTH GRID. A month of days, every day
+		     a ring-and-dot unit; milestones wear thin quiet halos, today wears
+		     the bold accent halo - scattered through the month, not clustered
+		     (per Derek's markup 2026-07-28). Grid: day units d50 (ink ring,
+		     secondary center) on 140 columns / 150 rows centered on 800/450;
+		     halos d100; nearest halo edge to neighbor day is 65 - no tangents.
+		     Medium band. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='cool' data-size='medium'>
+					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
+						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
+
+						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<g fill='var(--fill-secondary)' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<circle cx='520' cy='300' r='25'/>
+							<circle cx='660' cy='300' r='25'/>
+							<circle cx='800' cy='300' r='25'/>
+							<circle cx='940' cy='300' r='25'/>
+							<circle cx='1080' cy='300' r='25'/>
+							<circle cx='520' cy='450' r='25'/>
+							<circle cx='660' cy='450' r='25'/>
+							<circle cx='800' cy='450' r='25'/>
+							<circle cx='940' cy='450' r='25'/>
+							<circle cx='1080' cy='450' r='25'/>
+							<circle cx='520' cy='600' r='25'/>
+							<circle cx='660' cy='600' r='25'/>
+							<circle cx='800' cy='600' r='25'/>
+							<circle cx='940' cy='600' r='25'/>
+							<circle cx='1080' cy='600' r='25'/>
+						</g>
+
+						<circle cx='940' cy='450' r='50' fill='none' stroke='var(--accent)' style='stroke-width: var(--line-width-primary)'/>
+
+						<g fill='none' stroke='var(--ink-secondary)' style='stroke-width: var(--line-width-secondary)'>
+							<circle cx='660' cy='300' r='50'/>
+							<circle cx='520' cy='600' r='50'/>
+						</g>
+					</svg>
+				</div>
+
+				<figcaption><strong>pe-calendar-milestones</strong> - month grid (16:6 medium)</figcaption>
+			</figure>
+		</li>
+
+		<!-- 18. dondev-podcast-2021 - TWO VOICES. Two equal voices, the shared
+		     idea sitting between them (evened up per Derek's markup 2026-07-28 -
+		     the unequal bars read as one voice dominating). Small band: bars on
+		     the chunk weight at x 680/920 (symmetric about 800), cap-inclusive
+		     extent y 350-550 = 200 with the band's 50 padding; dot d100 at dead
+		     center, 55 clear of each bar. -->
+		<li>
+			<figure>
+				<div class='poster-frame' data-flavor='moss' data-size='small'>
 					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
 						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
 						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: calc(var(--line-width-primary) * 3)' stroke-linecap='round'>
-							<path d='M280,450 L700,450'/>
-							<path d='M900,450 L1320,450'/>
+							<path d='M680,365 L680,535'/>
+							<path d='M920,365 L920,535'/>
 						</g>
 
-						<circle cx='800' cy='450' r='40' fill='var(--accent)'/>
+						<circle cx='800' cy='450' r='50' fill='var(--accent)'/>
 					</svg>
 				</div>
 
-				<figcaption><strong>don-podcast-gap</strong> - the gap (16:6 medium)</figcaption>
+				<figcaption><strong>dondev-podcast-2021</strong> - two voices (16:3 small)</figcaption>
 			</figure>
 		</li>
 
-		<!-- 14. better-life - NETWORK. Three nodes, connected; the community is
-		     the product. -->
+		<!-- 19. pe-study-hall - STUDY CIRCLE. Three people connected: the mentor
+		     present, a student thinking, a student lit up. (The network moved
+		     over from better-life 2026-07-28; the dots grid went to the
+		     calendar.) Nodes d160 on a centered triangle, connectors between
+		     edges - gets its exact-grid pass in the family sweep. -->
 		<li>
 			<figure>
-				<div class='poster-frame' data-flavor='rose' data-size='large'>
+				<div class='poster-frame' data-flavor='moss' data-size='large'>
 					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
 						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
 
@@ -576,43 +932,17 @@
 					</svg>
 				</div>
 
-				<figcaption><strong>better-life</strong> - network (16:9)</figcaption>
+				<figcaption><strong>pe-study-hall</strong> - study circle (16:9)</figcaption>
 			</figure>
 		</li>
 
-		<!-- 15. pe-syntax-highlighting - TOKENS. Lines of code broken into pieces,
-		     one piece highlighted - which is literally the product. -->
-		<li>
-			<figure>
-				<div class='poster-frame' data-flavor='night' data-size='large'>
-					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
-						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
-
-						<rect width='1600' height='900' fill='var(--fill-primary)'/>
-
-						<g fill='var(--fill-secondary)'>
-							<rect x='430' y='330' width='220' height='56'/>
-							<rect x='830' y='330' width='320' height='56'/>
-							<rect x='620' y='450' width='280' height='56'/>
-							<rect x='430' y='570' width='300' height='56'/>
-						</g>
-
-						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-secondary)'>
-							<rect x='680' y='330' width='120' height='56'/>
-							<rect x='430' y='450' width='160' height='56'/>
-							<rect x='760' y='570' width='180' height='56'/>
-						</g>
-
-						<rect x='930' y='450' width='140' height='56' fill='var(--accent)'/>
-					</svg>
-				</div>
-
-				<figcaption><strong>pe-syntax-highlighting</strong> - tokens (16:9)</figcaption>
-			</figure>
-		</li>
-
-		<!-- 16. equivalent-design - SPLIT. The same mark on two grounds, surviving
-		     both - the whole accessibility/theming story. -->
+		<!-- 20. pssst-css - SHEETS. The import order as actual stylesheets:
+		     three portrait sheets stacking forward, each on top of the last -
+		     order IS the methodology, and the front sheet carries the accent.
+		     (Redrawn from the shingled bars per Derek's markup 2026-07-28.)
+		     Grid: sheets 300x450 (2:3), offsets 160 across / 40 down (decisive
+		     140 overlap), span x 490-1110 / y 185-715 centered on 800/450; dot
+		     d100 at the front sheet's center. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='cool' data-size='large'>
@@ -621,132 +951,30 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<rect x='0' y='0' width='800' height='900' fill='var(--fill-secondary)'/>
-
-						<circle cx='420' cy='450' r='150' fill='var(--ink-primary)'/>
-
-						<circle cx='1180' cy='450' r='150' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
-
-						<circle cx='800' cy='170' r='36' fill='var(--accent)'/>
-					</svg>
-				</div>
-
-				<figcaption><strong>equivalent-design</strong> - split (16:9)</figcaption>
-			</figure>
-		</li>
-
-		<!-- 17. pe-calendar-milestones - DATES. A dotted timeline of days, one
-		     of them ringed. Small band. -->
-		<li>
-			<figure>
-				<div class='poster-frame' data-flavor='cool' data-size='small'>
-					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
-						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
-
-						<rect width='1600' height='900' fill='var(--fill-primary)'/>
-
-						<path d='M300,450 L1300,450' fill='none' stroke='var(--ink-secondary)' style='stroke-width: var(--line-width-secondary)' stroke-linecap='round' stroke-dasharray='2 46'/>
-
-						<g fill='var(--ink-primary)'>
-							<circle cx='400' cy='450' r='22'/>
-							<circle cx='600' cy='450' r='22'/>
-							<circle cx='800' cy='450' r='22'/>
-							<circle cx='1200' cy='450' r='22'/>
+						<g fill='var(--fill-primary)' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<rect class='roundable' x='490' y='185' width='300' height='450'/>
+							<rect class='roundable' x='650' y='225' width='300' height='450'/>
+							<rect class='roundable' x='810' y='265' width='300' height='450'/>
 						</g>
 
-						<circle cx='1000' cy='450' r='44' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
-
-						<circle cx='1000' cy='450' r='22' fill='var(--accent)'/>
+						<circle cx='960' cy='490' r='50' fill='var(--accent)'/>
 					</svg>
 				</div>
 
-				<figcaption><strong>pe-calendar-milestones</strong> - dates (16:3 small)</figcaption>
+				<figcaption><strong>pssst-css</strong> - sheets (16:9)</figcaption>
 			</figure>
 		</li>
 
-		<!-- 18. dondev-podcast-2021 - TWO VOICES. Two people talking, one idea
-		     rising off the conversation. Medium band. -->
-		<li>
-			<figure>
-				<div class='poster-frame' data-flavor='moss' data-size='medium'>
-					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
-						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
-
-						<rect width='1600' height='900' fill='var(--fill-primary)'/>
-
-						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: calc(var(--line-width-primary) * 3)' stroke-linecap='round'>
-							<path d='M700,330 L700,570'/>
-							<path d='M900,380 L900,520'/>
-						</g>
-
-						<circle cx='800' cy='260' r='34' fill='var(--accent)'/>
-					</svg>
-				</div>
-
-				<figcaption><strong>dondev-podcast-2021</strong> - two voices (16:6 medium)</figcaption>
-			</figure>
-		</li>
-
-		<!-- 19. pe-study-hall - THE ROOM. Everyone at their desks, one hand up. -->
-		<li>
-			<figure>
-				<div class='poster-frame' data-flavor='moss' data-size='large'>
-					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
-						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
-
-						<rect width='1600' height='900' fill='var(--fill-primary)'/>
-
-						<g fill='var(--fill-secondary)'>
-							<circle cx='520' cy='300' r='26'/>
-							<circle cx='660' cy='300' r='26'/>
-							<circle cx='800' cy='300' r='26'/>
-							<circle cx='940' cy='300' r='26'/>
-							<circle cx='1080' cy='300' r='26'/>
-							<circle cx='520' cy='450' r='26'/>
-							<circle cx='660' cy='450' r='26'/>
-							<circle cx='940' cy='450' r='26'/>
-							<circle cx='1080' cy='450' r='26'/>
-							<circle cx='520' cy='600' r='26'/>
-							<circle cx='660' cy='600' r='26'/>
-							<circle cx='800' cy='600' r='26'/>
-							<circle cx='940' cy='600' r='26'/>
-							<circle cx='1080' cy='600' r='26'/>
-						</g>
-
-						<circle cx='800' cy='450' r='42' fill='var(--accent)'/>
-					</svg>
-				</div>
-
-				<figcaption><strong>pe-study-hall</strong> - the room (16:9)</figcaption>
-			</figure>
-		</li>
-
-		<!-- 20. pssst-css - LAYERS. The import order as shingles: preset under
-		     setup under settings. Order IS the methodology. -->
-		<li>
-			<figure>
-				<div class='poster-frame' data-flavor='cool' data-size='large'>
-					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
-						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
-
-						<rect width='1600' height='900' fill='var(--fill-primary)'/>
-
-						<rect x='400' y='540' width='560' height='90' fill='var(--ink-primary)'/>
-
-						<rect x='460' y='410' width='560' height='90' fill='var(--fill-secondary)'/>
-
-						<rect x='520' y='280' width='560' height='90' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
-
-						<circle cx='1160' cy='325' r='30' fill='var(--accent)'/>
-					</svg>
-				</div>
-
-				<figcaption><strong>pssst-css</strong> - layers (16:9)</figcaption>
-			</figure>
-		</li>
-
-		<!-- 21. css-tricks-article - SPECIMEN. A drop cap and two lines of type:
-		     the article is about type patterns. Medium band. -->
+		<!-- 21. css-tricks-article - THE PATTERN. A line of prose lifted out and
+		     named: one text line grows a connector to a system node - which is
+		     the article's whole argument about type patterns. (The old
+		     smart-text-editor line-node motif, rehomed here per Derek
+		     2026-07-28; replaced the drop-cap specimen.) Grid: bars h60 on a
+		     120 pitch (y 300/420/540, centered on 450 - the middle bar rides
+		     the frame axis and is the one that grows the node); bars start
+		     x=400; connector 80 from the middle bar's end to the node's edge
+		     (deliberate joins); node d160 outlined, dot d60 = bar height. Span
+		     x 400-1200 centered on 800. Medium band. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='warm' data-size='medium'>
@@ -755,23 +983,32 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<circle cx='520' cy='450' r='130' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
-
 						<g fill='var(--fill-secondary)'>
-							<rect x='720' y='350' width='480' height='54'/>
-							<rect x='720' y='470' width='380' height='54'/>
+							<rect class='roundable' x='400' y='300' width='480' height='60'/>
+							<rect class='roundable' x='400' y='420' width='560' height='60'/>
+							<rect class='roundable' x='400' y='540' width='400' height='60'/>
 						</g>
 
-						<circle cx='1160' cy='497' r='27' fill='var(--accent)'/>
+						<path d='M960,450 L1040,450' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round'/>
+
+						<circle cx='1120' cy='450' r='80' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+
+						<circle cx='1120' cy='450' r='30' fill='var(--accent)'/>
 					</svg>
 				</div>
 
-				<figcaption><strong>css-tricks-article</strong> - specimen (16:6 medium)</figcaption>
+				<figcaption><strong>css-tricks-article</strong> - the pattern (16:6 medium)</figcaption>
 			</figure>
 		</li>
 
-		<!-- 22. pe-page-modules - SECTIONS. One page, stacked modules, one of
-		     them doing something different. -->
+		<!-- 22. pe-page-modules - MODULES. A page as separate stacked modules
+		     with real gaps - interchangeable blocks, not one box with dividers
+		     (per Derek's markup 2026-07-28). One module is filled (a different
+		     kind of section); one contains a little dome rising from its floor -
+		     the horizon motif living inside a module. Grid: modules 480x120 on
+		     a 140 pitch (gap 20), span y 180-720 / x 560-1040 centered on
+		     800/450; dome r60 based on its module's bottom edge, 60 clear of
+		     every module edge. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='warm' data-size='large'>
@@ -780,21 +1017,21 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<rect x='560' y='340' width='480' height='140' fill='var(--fill-secondary)'/>
+						<!-- The dome paints BEFORE the modules so the module's floor
+						     line crosses its base crisply (it rises from behind the
+						     line, never eats the border - Derek's catch 2026-07-28). -->
+						<path d='M860,580 A60,60 0 0 1 980,580 Z' fill='var(--accent)'/>
 
-						<rect x='560' y='180' width='480' height='560' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
-
-						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
-							<path d='M560,340 L1040,340'/>
-							<path d='M560,480 L1040,480'/>
-							<path d='M560,610 L1040,610'/>
+						<g stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<rect class='roundable' x='560' y='180' width='480' height='120' fill='none'/>
+							<rect class='roundable' x='560' y='320' width='480' height='120' fill='var(--fill-secondary)'/>
+							<rect class='roundable' x='560' y='460' width='480' height='120' fill='none'/>
+							<rect class='roundable' x='560' y='600' width='480' height='120' fill='none'/>
 						</g>
-
-						<rect x='950' y='650' width='44' height='44' fill='var(--accent)'/>
 					</svg>
 				</div>
 
-				<figcaption><strong>pe-page-modules</strong> - sections (16:9)</figcaption>
+				<figcaption><strong>pe-page-modules</strong> - modules (16:9)</figcaption>
 			</figure>
 		</li>
 
@@ -808,7 +1045,7 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<rect x='560' y='210' width='480' height='480' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round' stroke-dasharray='2 40'/>
+						<rect class='roundable' x='560' y='210' width='480' height='480' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round' stroke-dasharray='2 40'/>
 
 						<path d='M560,690 L1040,690' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round'/>
 
@@ -820,8 +1057,16 @@
 			</figure>
 		</li>
 
-		<!-- 24. pe-founded - STEPS. Leveling up; the next level floats just above
-		     the last step. -->
+		<!-- 24. pe-founded - STEPS. A staircase in profile: stacked slabs,
+		     right-aligned, each step narrower as it climbs; the next level is the
+		     dot above the top step.
+
+		     On the module grid (the reference case for the alignment rule):
+		       slab height 100 = dot diameter 100 (one measure, reused)
+		       every gap 20 - between slabs AND between dot and top slab
+		       step-in 200 per level, so widths run 620 / 420 / 220
+		       right edges share x=1110; dot center = top slab center x=1000
+		       whole composition spans y 220-680 -> centered on the 450 axis -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='moss' data-size='large'>
@@ -831,12 +1076,12 @@
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
 						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
-							<rect x='420' y='560' width='200' height='140'/>
-							<rect x='620' y='460' width='200' height='240'/>
-							<rect x='820' y='360' width='200' height='340' fill='var(--fill-secondary)'/>
+							<rect class='roundable' x='490' y='580' width='620' height='100'/>
+							<rect class='roundable' x='690' y='460' width='420' height='100'/>
+							<rect class='roundable' x='890' y='340' width='220' height='100' fill='var(--fill-secondary)'/>
 						</g>
 
-						<circle cx='920' cy='260' r='45' fill='var(--accent)'/>
+						<circle cx='1000' cy='270' r='50' fill='var(--accent)'/>
 					</svg>
 				</div>
 
@@ -844,7 +1089,15 @@
 			</figure>
 		</li>
 
-		<!-- 25. pxl - TWO SCREENS. The site and the phone game, side by side. -->
+		<!-- 25. pxl - THE BIG SCREEN. DreamWorks.com was a big-screen site: a
+		     cinema-dark screen with a knockout title bar and an accent moon
+		     rising in it; the phone game sits IN FRONT as a real device with
+		     playful marks. (Punched up from two empty boxes per Derek
+		     2026-07-28 - "a little more oomph".) Grid: screen 640x400 ink at
+		     x 430-1070 / y 180-580; phone 180x320 opaque overlapping the
+		     screen's corner by 80x180; span x 430-1170 / y 180-710 centered on
+		     800/450 (x within the phone crop); moon d100, title bar 320x50
+		     knockout, phone marks on its center axis. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='night' data-size='large'>
@@ -853,21 +1106,31 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
-							<rect x='430' y='260' width='540' height='340'/>
-							<rect x='1050' y='240' width='190' height='380'/>
-						</g>
+						<rect class='roundable' x='430' y='180' width='640' height='400' fill='var(--ink-primary)'/>
 
-						<circle cx='1145' cy='560' r='28' fill='var(--accent)'/>
+						<rect class='roundable' x='490' y='460' width='320' height='50' fill='var(--fill-primary)'/>
+
+						<circle cx='920' cy='300' r='50' fill='var(--accent)'/>
+
+						<rect class='roundable' x='990' y='390' width='180' height='320' fill='var(--fill-primary)' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+
+						<path d='M1080,470 L1080,530' fill='none' stroke='var(--ink-primary)' style='stroke-width: calc(var(--line-width-primary) * 3)' stroke-linecap='round'/>
+
+						<circle cx='1080' cy='600' r='30' fill='var(--ink-primary)'/>
 					</svg>
 				</div>
 
-				<figcaption><strong>pxl</strong> - two screens (16:9)</figcaption>
+				<figcaption><strong>pxl</strong> - the big screen (16:9)</figcaption>
 			</figure>
 		</li>
 
-		<!-- 26. mentoring - ONE-ON-ONE. A big circle and a small one, connected;
-		     the small one is the point. -->
+		<!-- 26. mentoring - ONE-ON-ONE. Two people the same size (equals),
+		     connected directly; the mentee wears the growth ring. (Per Derek's
+		     markup 2026-07-28 - was a big circle and a small one, which read
+		     as unequal.) Grid: both dots d120 on the y=450 axis, centers 360
+		     apart (mentor 560, mentee 920); ring r180 concentric on the
+		     mentee; connector runs edge to edge (620-860), crossing the ring
+		     deliberately; span x 500-1100 centered on 800. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='rose' data-size='large'>
@@ -876,11 +1139,15 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<circle cx='680' cy='450' r='180' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+						<!-- Growth ring is quiet (ink-secondary, fine weight - Derek
+						     2026-07-28), so it also breathes on hover. -->
+						<circle cx='920' cy='450' r='180' fill='none' stroke='var(--ink-secondary)' style='stroke-width: var(--line-width-secondary)'/>
 
-						<path d='M860,450 L990,450' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round'/>
+						<path d='M620,450 L860,450' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round'/>
 
-						<circle cx='1060' cy='450' r='70' fill='var(--accent)'/>
+						<circle cx='560' cy='450' r='60' fill='var(--ink-primary)'/>
+
+						<circle cx='920' cy='450' r='60' fill='var(--accent)'/>
 					</svg>
 				</div>
 
@@ -888,46 +1155,54 @@
 			</figure>
 		</li>
 
-		<!-- 27. niagen-bioscience - THE WALL. Sticky notes and the thread through
-		     them ("chasing a murderer"). -->
+		<!-- 27. niagen-bioscience - READINGS. Biometrics: people reporting
+		     their health, the numbers wobbling upward over time, the latest
+		     reading lit. (Replaced the sticky-note wall per Derek 2026-07-28 -
+		     the wall was an insider story nobody else could decode.) Grid:
+		     baseline x 420-1180 at y=620, readings d60 on 160 intervals with
+		     fine stems; dot centers step in 20s; the top of the highest reading
+		     (280) and the baseline (620) center the composition on 450. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='cool' data-size='large'>
 					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
 						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
 
-						<defs>
-							<marker id='niagen-arrow' viewBox='0 0 3 4.5' refX='0' refY='2.25'
-								markerWidth='3' markerHeight='4.5' markerUnits='strokeWidth' orient='auto'>
-								<path d='M0,0 L3,2.25 L0,4.5 Z' fill='context-stroke'/>
-							</marker>
-						</defs>
-
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<g fill='var(--fill-secondary)'>
-							<rect x='480' y='280' width='70' height='70'/>
-							<rect x='640' y='360' width='70' height='70'/>
-							<rect x='560' y='520' width='70' height='70'/>
-							<rect x='900' y='480' width='70' height='70'/>
+						<path d='M420,620 L1180,620' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round'/>
+
+						<g fill='none' stroke='var(--ink-secondary)' style='stroke-width: var(--line-width-secondary)'>
+							<path d='M480,620 L480,530'/>
+							<path d='M640,620 L640,470'/>
+							<path d='M800,620 L800,550'/>
+							<path d='M960,620 L960,430'/>
+							<path d='M1120,620 L1120,340'/>
 						</g>
 
-						<rect x='820' y='300' width='70' height='70' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-secondary)'/>
+						<g fill='var(--ink-primary)'>
+							<circle cx='480' cy='500' r='30'/>
+							<circle cx='640' cy='440' r='30'/>
+							<circle cx='800' cy='520' r='30'/>
+							<circle cx='960' cy='400' r='30'/>
+						</g>
 
-						<path d='M515,315 L675,395 L595,555 L935,515 L1080,420' fill='none' stroke='var(--ink-primary)'
-							style='stroke-width: var(--line-width-secondary)' stroke-linecap='round'
-							stroke-dasharray='2 28' marker-end='url(#niagen-arrow)'/>
-
-						<circle cx='935' cy='515' r='24' fill='var(--accent)'/>
+						<circle cx='1120' cy='310' r='30' fill='var(--accent)'/>
 					</svg>
 				</div>
 
-				<figcaption><strong>niagen-bioscience</strong> - the wall (16:9)</figcaption>
+				<figcaption><strong>niagen-bioscience</strong> - readings (16:9)</figcaption>
 			</figure>
 		</li>
 
-		<!-- 28. sheriffderek-consulting - ZOOM OUT. The same small square seen
-		     from further and further back: coder to bigger picture. Medium band. -->
+		<!-- 28. sheriffderek-consulting - TURNING THE PAGE. An open book from
+		     above, the right page caught mid-turn: coder for hire to
+		     bigger-picture consulting. (Per Derek's sketches 2026-07-28, third
+		     take: ONE spread, the turn drawn as a leaning divider inside it -
+		     not two boxes, not a foreshortened flap.) Grid: spread 800x400 at
+		     x 400-1200 / y 250-650, centered on 800/450; the divider pivots on
+		     the x=800 axis (830 at the top, 770 at the bottom); the turned side
+		     is filled; accent d100 at (1100,550), 50 from the spread's edges. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='stone' data-size='medium'>
@@ -936,25 +1211,27 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<rect x='660' y='410' width='80' height='80' fill='var(--fill-secondary)'/>
+						<path d='M830,250 L1200,250 L1200,650 L770,650 Z' fill='var(--fill-secondary)'/>
 
-						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
-							<rect x='580' y='330' width='240' height='240'/>
-							<rect x='480' y='230' width='440' height='440'/>
-						</g>
+						<rect class='roundable' x='400' y='250' width='800' height='400' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
 
-						<path d='M960,450 L1100,450' fill='none' stroke='var(--ink-secondary)' style='stroke-width: var(--line-width-secondary)' stroke-linecap='round' stroke-dasharray='2 30'/>
+						<path d='M830,250 L770,650' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round'/>
 
-						<circle cx='1160' cy='450' r='36' fill='var(--accent)'/>
+						<circle cx='1100' cy='550' r='50' fill='var(--accent)'/>
 					</svg>
 				</div>
 
-				<figcaption><strong>sheriffderek-consulting</strong> - zoom out (16:6 medium)</figcaption>
+				<figcaption><strong>sheriffderek-consulting</strong> - turning the page (16:6 medium)</figcaption>
 			</figure>
 		</li>
 
-		<!-- 29. school-loop - FRAMES. Systems inside systems; the audit finds the
-		     small thing in the corner. -->
+		<!-- 29. school-loop - THE AUDIT. A page wireframe mid-audit: solid
+		     outlines are settled, dashed outlines are regions under review,
+		     the accent dot flags the finding, and one block is already fixed
+		     (filled). (Redrawn from nested frames per Derek's sketch
+		     2026-07-28.) Grid: outer page 800x500 centered on 800/450 with 60
+		     insets all around; two columns (440 / 200) and rows of 100 with 40
+		     gaps everywhere; dashes 24/20 round. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='stone' data-size='large'>
@@ -964,17 +1241,23 @@
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
 						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
-							<rect x='400' y='150' width='800' height='600'/>
-							<rect x='540' y='260' width='520' height='380'/>
+							<rect class='roundable' x='400' y='200' width='800' height='500'/>
+							<rect class='roundable' x='460' y='260' width='440' height='100'/>
 						</g>
 
-						<rect x='400' y='150' width='210' height='150' fill='var(--fill-secondary)'/>
+						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-secondary)' stroke-linecap='round' stroke-dasharray='24 20'>
+							<rect class='roundable' x='940' y='260' width='200' height='100'/>
+							<rect class='roundable' x='460' y='400' width='440' height='240'/>
+							<rect class='roundable' x='940' y='400' width='200' height='100'/>
+						</g>
 
-						<rect x='1000' y='580' width='60' height='60' fill='var(--accent)'/>
+						<rect class='roundable' x='940' y='540' width='200' height='100' fill='var(--fill-secondary)' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+
+						<circle cx='680' cy='520' r='30' fill='var(--accent)'/>
 					</svg>
 				</div>
 
-				<figcaption><strong>school-loop</strong> - frames (16:9)</figcaption>
+				<figcaption><strong>school-loop</strong> - the audit (16:9)</figcaption>
 			</figure>
 		</li>
 
@@ -996,13 +1279,13 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<rect x='880' y='480' width='300' height='240' fill='url(#agency-tex)'/>
+						<rect class='roundable' x='880' y='480' width='300' height='240' fill='url(#agency-tex)'/>
 
 						<circle cx='520' cy='320' r='110' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
 
-						<rect x='860' y='200' width='150' height='150' fill='var(--fill-secondary)' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+						<rect class='roundable' x='860' y='200' width='150' height='150' fill='var(--fill-secondary)' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
 
-						<path d='M480,690 L600,530 L720,690 Z' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+						<path d='M480,690 L600,482 L720,690 Z' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
 
 						<circle cx='1150' cy='330' r='40' fill='var(--accent)'/>
 					</svg>
@@ -1039,39 +1322,52 @@
 			</figure>
 		</li>
 
-		<!-- 32. nouveau-studios - ARRIVAL. The dotted road into the first real
-		     door. Small band. -->
+		<!-- 32. nouveau-studios - LAYERS. A layered system stepping into depth:
+		     panels cascading down-right inside the frame, the deepest one lit.
+		     (Was the small "arrival" road; promoted to medium and redrawn per
+		     Derek's layered/system reference 2026-07-28 - it was a big job and
+		     the poster should carry that weight; revised to Derek's second
+		     markup the same day - the front panel goes bold and BREAKS OUT of
+		     the container, the work outgrowing the frame, with the accent
+		     floating free at the left.) Grid: container 420x400 at x 660-1080 /
+		     y 220-620; panels 300x260 cascading (back inset 40, mid 20 clear
+		     of the container's inner edges, front escaping 60 past its right
+		     and bottom); dot d100 at (510,450); span x 460-1140 / y 220-680
+		     centered on 800/450. Medium band. -->
 		<li>
 			<figure>
-				<div class='poster-frame' data-flavor='warm' data-size='small'>
+				<div class='poster-frame' data-flavor='warm' data-size='medium'>
 					<svg viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
 						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
 
-						<defs>
-							<marker id='nouveau-arrow' viewBox='0 0 3 4.5' refX='0' refY='2.25'
-								markerWidth='3' markerHeight='4.5' markerUnits='strokeWidth' orient='auto'>
-								<path d='M0,0 L3,2.25 L0,4.5 Z' fill='context-stroke'/>
-							</marker>
-						</defs>
-
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<path d='M320,450 L800,450' fill='none' stroke='var(--ink-primary)'
-							style='stroke-width: var(--line-width-primary)' stroke-linecap='round'
-							stroke-dasharray='2 44' marker-end='url(#nouveau-arrow)'/>
+						<circle cx='510' cy='450' r='50' fill='var(--accent)'/>
 
-						<rect x='900' y='370' width='160' height='160' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+						<rect class='roundable' x='660' y='220' width='420' height='400' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
 
-						<circle cx='320' cy='450' r='30' fill='var(--accent)'/>
+						<rect class='roundable' x='700' y='270' width='300' height='260' fill='var(--fill-secondary)'/>
+
+						<rect class='roundable' x='760' y='340' width='300' height='260' fill='var(--fill-primary)' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-secondary)'/>
+
+						<rect class='roundable' x='840' y='420' width='300' height='260' fill='var(--ink-primary)'/>
 					</svg>
 				</div>
 
-				<figcaption><strong>nouveau-studios</strong> - arrival (16:3 small)</figcaption>
+				<figcaption><strong>nouveau-studios</strong> - layers (16:6 medium)</figcaption>
 			</figure>
 		</li>
 
 		<!-- 33. fundamonium - VIEWPORTS. The same thing at three sizes: early
-		     responsive web. -->
+		     responsive web. Flipped 2026-07-28 per Derek's markup: phone ->
+		     tablet -> desktop, ascending left to right, BOTTOM edges shared
+		     (screens grow upward as the era progresses), accent floating above
+		     the desktop.
+
+		     Grid: widths double (120 / 240 / 480), heights step +80 (240 / 320 /
+		     400), gaps 20, shared baseline y=650. Span x 360-1240 -> centered on
+		     800 and inside the phone crop. Dot d100 on the desktop's center
+		     axis (x=1000), 20 above its top edge. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='warm' data-size='large'>
@@ -1080,13 +1376,18 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
-							<rect x='380' y='270' width='460' height='300'/>
-							<rect x='890' y='310' width='190' height='260'/>
-							<rect x='1120' y='350' width='100' height='220'/>
+						<!-- Differentiation (Derek 2026-07-28): the screens get more
+						     substantial as they grow - phone outline-only, tablet
+						     fill-secondary, desktop ink-secondary (the darker derived
+						     step). Existing slots only, and the gradation stays
+						     monotonic under every flavor including inverted night. -->
+						<g stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<rect class='roundable' x='360' y='410' width='120' height='240' fill='none'/>
+							<rect class='roundable' x='500' y='330' width='240' height='320' fill='var(--fill-secondary)'/>
+							<rect class='roundable' x='760' y='250' width='480' height='400' fill='var(--ink-secondary)'/>
 						</g>
 
-						<circle cx='1170' cy='530' r='22' fill='var(--accent)'/>
+						<circle cx='1000' cy='180' r='50' fill='var(--accent)'/>
 					</svg>
 				</div>
 
@@ -1121,8 +1422,11 @@
 			</figure>
 		</li>
 
-		<!-- 35. pizzaiolo - THE SLICE. A pie with one wedge accounted for, and
-		     an olive. Small band, default flavor. -->
+		<!-- 35. pizzaiolo - STACKED PLATES. Three plates overlapping, back to
+		     front, and one accent beside them. (Redrawn from the pie-wedge per
+		     Derek's markup 2026-07-28.) Grid: plates d200 at 100 spacing (each
+		     overlaps its neighbor by half), dot d100 at a 40 gap, composition
+		     centered on 800/450 with 50 of band padding above and below. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='default' data-size='small'>
@@ -1131,15 +1435,17 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<circle cx='700' cy='450' r='130' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+						<g fill='var(--fill-primary)' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<circle cx='630' cy='450' r='100'/>
+							<circle cx='730' cy='450' r='100'/>
+							<circle cx='830' cy='450' r='100'/>
+						</g>
 
-						<path d='M700,450 L830,450 A130,130 0 0 0 792,358 Z' fill='var(--fill-secondary)'/>
-
-						<circle cx='920' cy='400' r='22' fill='var(--accent)'/>
+						<circle cx='1020' cy='450' r='50' fill='var(--accent)'/>
 					</svg>
 				</div>
 
-				<figcaption><strong>pizzaiolo</strong> - the slice (16:3 small)</figcaption>
+				<figcaption><strong>pizzaiolo</strong> - stacked plates (16:3 small)</figcaption>
 			</figure>
 		</li>
 
@@ -1155,8 +1461,8 @@
 
 						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
 							<circle cx='720' cy='400' r='150'/>
-							<rect x='820' y='380' width='220' height='220'/>
-							<path d='M520,650 L660,410 L800,650 Z'/>
+							<rect class='roundable' x='820' y='380' width='220' height='220'/>
+							<path d='M510,650 L660,390 L810,650 Z'/>
 						</g>
 
 						<circle cx='1090' cy='300' r='34' fill='var(--accent)'/>
@@ -1182,6 +1488,16 @@
 			frame.dataset.homeFlavor = frame.dataset.flavor;
 		});
 
+		/* Apply whichever radio is checked at load (default ships checked -
+		   Derek 2026-07-28 - and the authored flavors only show via "mixed"). */
+		var startingFlavor = document.querySelector('input[name="flavor"]:checked').value;
+
+		if (startingFlavor) {
+			frames.forEach(function (frame) {
+				frame.dataset.flavor = startingFlavor;
+			});
+		}
+
 		document.querySelectorAll('input[name="flavor"]').forEach(function (radio) {
 			radio.addEventListener('change', function () {
 				frames.forEach(function (frame) {
@@ -1192,6 +1508,25 @@
 
 		document.getElementById('crop-toggle').addEventListener('change', function () {
 			document.body.dataset.crop = this.checked ? 'square' : '';
+		});
+
+		/* Corners preview: stands in for the brand-owned --corners axis.
+		   px because CSS rx wants a length; in this 1600-wide user space
+		   1px = 1 unit. One knob drives inner-rect rx AND the frame's
+		   border-radius (same brand token on the site) - note they won't match
+		   optically until the poster-space multiplier question is settled. */
+		document.querySelectorAll('input[name="corners"]').forEach(function (radio) {
+			radio.addEventListener('change', function () {
+				document.body.style.setProperty('--corners', radio.value + 'px');
+			});
+		});
+
+		document.getElementById('border-toggle').addEventListener('change', function () {
+			if (this.checked) {
+				document.body.dataset.frameBorder = 'true';
+			} else {
+				delete document.body.dataset.frameBorder;
+			}
 		});
 	</script>
 

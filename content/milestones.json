@@ -45,10 +45,11 @@
 			"design"
 		],
 		"flavor": "stone",
+		"poster": "medium",
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
-		"poster_note": "DECISION: text-only for now. Eventually a video of Derek talking about the site plus a poster that loosely shows how it looks. Nothing for it today.",
+		"poster_note": "DECISION: medium poster (2026-07-28; was text-only for a while). Eventually a video of Derek talking about the site plus a poster that loosely shows how it looks. Nothing for it today.",
 		"description": "<p>This is the site you're looking at right now. It had been a long time since I relied on a classic portfolio of work. I have a lot of thoughts on the <a class='relaxed' href='https://perpetual.education/stories/is-your-portfolio-doing-its-job-with-don-the-developer/' target='_blank'>failures of the common dev portfolio</a> and the way bootcamps teach cookie-cutter case studies - but now that I'm back on the market, I needed a way to tell my less-than-linear story. I took the opportunity to show off my ideas on multi-brand design systems while housing my history in a small but impactful format. If it's doing its job, you'll say: \"Woah - Derek's worked across a big range and gone deep in all of it. We want to talk to him.\"</p>",
 		"details": "",
 		"backstory": "Source docs predate this site (the narrative ends Oct 2025), so there's no backstory to mine - the repo itself is the record of what it does. Known context: the anti-portfolio stance traces to the Don the Developer episode linked on the card, and the multi-brand theme system IS the design-systems demo the card claims. Nothing private to add."
@@ -85,7 +86,7 @@
 			"design"
 		],
 		"flavor": "warm",
-		"poster": true,
+		"poster": "medium",
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
@@ -218,7 +219,7 @@
 			"education"
 		],
 		"flavor": "night",
-		"poster": "medium",
+		"poster": "small",
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
@@ -263,7 +264,7 @@
 			"speaking"
 		],
 		"flavor": "night",
-		"poster": "small",
+		"poster": "medium",
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
@@ -312,7 +313,7 @@
 			"community"
 		],
 		"flavor": "warm",
-		"poster": "medium",
+		"poster": "small",
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
@@ -401,7 +402,7 @@
 			"design"
 		],
 		"flavor": "cool",
-		"poster": "small",
+		"poster": "medium",
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
@@ -422,7 +423,7 @@
 			"community"
 		],
 		"flavor": "moss",
-		"poster": "medium",
+		"poster": "small",
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
@@ -746,7 +747,7 @@
 			"dev"
 		],
 		"flavor": "warm",
-		"poster": "small",
+		"poster": "medium",
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
