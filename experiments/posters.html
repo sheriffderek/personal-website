@@ -52,6 +52,13 @@
 			The steps poster (pe-founded) is the worked reference for this rule.
 			Full-family alignment sweep happens once the miss list settles - no
 			point precision-polishing a poster that may still be redrawn.
+
+			OPEN QUESTION (Derek, 2026-07-28 - deliberately NOT acted on yet):
+			should some posters run inverted (dark fill, light ink) to keep the
+			wall varied - either always, or decided by theme? Night flavor
+			already proves the tokens survive inversion; the open call is
+			per-poster art direction vs a theme-owned flip. Revisit after the
+			miss list settles.
 		*/
 
 		:root {
@@ -345,9 +352,11 @@
 		<!-- 3. pe-self-paced - THE DRIP. A dotted timeline of days, one of them
 		     ringed: go at your own pace, you are here. (Motif moved over from
 		     pe-calendar-milestones 2026-07-28 - Derek: this is what self-paced
-		     looks like; the checkpoint squares went to better-life.) Grid: days
-		     at 200 intervals on the y=450 axis, day dots d50, the ringed day
-		     d100. Small band. -->
+		     looks like; the checkpoint squares went to better-life.) Beefed up
+		     2026-07-28 - the faint dotted line read as broken: now a solid wire
+		     with beads on it. Grid: wire x 300-1300 on the y=450 axis at the
+		     primary weight; days d60 at 200 intervals; the current day rings
+		     d120 around an accent core d60. Small band. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='moss' data-size='small'>
@@ -356,18 +365,18 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<path d='M300,450 L1300,450' fill='none' stroke='var(--ink-secondary)' style='stroke-width: var(--line-width-secondary)' stroke-linecap='round' stroke-dasharray='2 46'/>
+						<path d='M300,450 L1300,450' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round'/>
 
 						<g fill='var(--ink-primary)'>
-							<circle cx='400' cy='450' r='25'/>
-							<circle cx='600' cy='450' r='25'/>
-							<circle cx='800' cy='450' r='25'/>
-							<circle cx='1200' cy='450' r='25'/>
+							<circle cx='400' cy='450' r='30'/>
+							<circle cx='600' cy='450' r='30'/>
+							<circle cx='800' cy='450' r='30'/>
+							<circle cx='1200' cy='450' r='30'/>
 						</g>
 
-						<circle cx='1000' cy='450' r='50' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+						<circle cx='1000' cy='450' r='60' fill='var(--fill-primary)' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
 
-						<circle cx='1000' cy='450' r='25' fill='var(--accent)'/>
+						<circle cx='1000' cy='450' r='30' fill='var(--accent)'/>
 					</svg>
 				</div>
 
@@ -434,7 +443,14 @@
 			</figure>
 		</li>
 
-		<!-- 6. world-ia-day-2026 - RIPPLE. One voice, carrying. -->
+		<!-- 6. world-ia-day-2026 - THE DAY. A generic calendar page with the
+		     one day marked - it's World IA DAY, and Derek ran the day. (Third
+		     take 2026-07-28: the ripple went to pe-founded's ring family, the
+		     chaos-to-order take made its point but Derek wanted plain calendar.)
+		     Grid: page 600x500 at x 500-1100 / y 200-700, centered on 800/450;
+		     header band h100 filled; body 4x4 cells (150x100) ruled at the
+		     fine weight; the marked day's dot d60 lands at (875,450) - on the
+		     frame's midline. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='warm' data-size='large'>
@@ -443,21 +459,26 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
-							<circle cx='500' cy='450' r='140'/>
-							<circle cx='500' cy='450' r='280'/>
+						<rect class='roundable' x='500' y='200' width='600' height='100' fill='var(--fill-secondary)'/>
+
+						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-secondary)'>
+							<path d='M500,400 L1100,400'/>
+							<path d='M500,500 L1100,500'/>
+							<path d='M500,600 L1100,600'/>
+							<path d='M650,300 L650,700'/>
+							<path d='M800,300 L800,700'/>
+							<path d='M950,300 L950,700'/>
 						</g>
 
-						<g fill='none' stroke='var(--ink-secondary)' style='stroke-width: var(--line-width-secondary)'>
-							<circle cx='500' cy='450' r='420'/>
-							<circle cx='500' cy='450' r='560'/>
-						</g>
+						<rect class='roundable' x='500' y='200' width='600' height='500' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
 
-						<circle cx='500' cy='450' r='48' fill='var(--accent)'/>
+						<path d='M500,300 L1100,300' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+
+						<circle cx='875' cy='450' r='30' fill='var(--accent)'/>
 					</svg>
 				</div>
 
-				<figcaption><strong>world-ia-day-2026</strong> - ripple (16:9)</figcaption>
+				<figcaption><strong>world-ia-day-2026</strong> - the day (16:9)</figcaption>
 			</figure>
 		</li>
 
@@ -648,11 +669,15 @@
 		     disciplines - the accent lives in the overlap, the well-rounded
 		     Designer. (Replaced the shape-lineup 2026-07-28: poorly spaced and
 		     said nothing.) Grid: square 300, circle d312 (the optical bump, 4%
-		     here so every coordinate stays an integer). Deep decisive overlap
-		     per Derek's markup - nothing tangent: the square's left edge rides
-		     the circle's center axis, its top edge sits 50 above the circle's
-		     center line. Span x 572-1028 / y 247-653, centered on 800/450;
-		     accent d100 at dead center of frame, inside the lens. Medium band. -->
+		     here so every coordinate stays an integer). Overlap deepened
+		     2026-07-28 (second markup): the dot read off-center in the lens
+		     and had zero room to move (it sat at the exact 20-clearance limit
+		     from the arc). Now the shapes are DERIVED from the dot: the lens's
+		     bounding region centers on the frame axes, so the accent d100 at
+		     dead center is also the lens's visual center, with 36 clearance to
+		     the arc and 28+ to the square's edges. Circle (742,412), square
+		     702,332; the composition sits 6 off exact centering - the
+		     lens-centering deliberately wins. Medium band. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='night' data-size='medium'>
@@ -662,8 +687,8 @@
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
 						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
-							<circle cx='728' cy='403' r='156'/>
-							<rect class='roundable' x='728' y='353' width='300' height='300'/>
+							<circle cx='742' cy='412' r='156'/>
+							<rect class='roundable' x='702' y='332' width='300' height='300'/>
 						</g>
 
 						<circle cx='800' cy='450' r='50' fill='var(--accent)'/>
@@ -680,8 +705,9 @@
 		     every dot center sits exactly ON the ring's path, spaced at even
 		     thirds (120 degrees), phase-rotated so one voice is at 9:00 (180)
 		     and the other two mirror across the horizontal axis (60 and 300 -
-		     cos 60 = 1/2, so x = 800+150 = 950 exactly; y = 450 -/+ 260). The
-		     accent is the 60-degree voice. Dot d124 unchanged. -->
+		     cos 60 = 1/2, so x = 800+120 exactly; y = 450 -/+ 208). The accent
+		     is the 60-degree voice. Sized down 2026-07-28 per Derek (ring r300
+		     -> r240, dots to the family d100). -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='rose' data-size='large'>
@@ -690,13 +716,13 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<circle cx='800' cy='450' r='300' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+						<circle cx='800' cy='450' r='240' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
 
-						<circle cx='500' cy='450' r='62' fill='var(--ink-primary)'/>
+						<circle cx='560' cy='450' r='50' fill='var(--ink-primary)'/>
 
-						<circle cx='950' cy='710' r='62' fill='var(--ink-primary)'/>
+						<circle cx='920' cy='658' r='50' fill='var(--ink-primary)'/>
 
-						<circle cx='950' cy='190' r='62' fill='var(--accent)'/>
+						<circle cx='920' cy='242' r='50' fill='var(--accent)'/>
 					</svg>
 				</div>
 
@@ -785,19 +811,20 @@
 
 						<!-- All tokens filled (Derek 2026-07-28 - outlines read as
 						     empty slots). Left-aligned at x=450 like code; rows h60
-						     on a 120 pitch spanning y 300-600 (centered); gaps 20;
+						     on a 100 pitch spanning y 320-580 (centered; tightened from
+						     120 per Derek 2026-07-28); gaps 20;
 						     quiet tokens secondary, loud tokens ink, one accent. -->
 						<g fill='var(--fill-secondary)'>
-							<rect class='roundable' x='450' y='300' width='220' height='60'/>
-							<rect class='roundable' x='830' y='300' width='320' height='60'/>
+							<rect class='roundable' x='450' y='320' width='220' height='60'/>
+							<rect class='roundable' x='830' y='320' width='320' height='60'/>
 							<rect class='roundable' x='630' y='420' width='280' height='60'/>
-							<rect class='roundable' x='450' y='540' width='300' height='60'/>
+							<rect class='roundable' x='450' y='520' width='300' height='60'/>
 						</g>
 
 						<g fill='var(--ink-primary)'>
-							<rect class='roundable' x='690' y='300' width='120' height='60'/>
+							<rect class='roundable' x='690' y='320' width='120' height='60'/>
 							<rect class='roundable' x='450' y='420' width='160' height='60'/>
-							<rect class='roundable' x='770' y='540' width='200' height='60'/>
+							<rect class='roundable' x='770' y='520' width='200' height='60'/>
 						</g>
 
 						<rect class='roundable' x='930' y='420' width='140' height='60' fill='var(--accent)'/>
@@ -824,7 +851,7 @@
 
 						<circle cx='1180' cy='450' r='150' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
 
-						<circle cx='800' cy='170' r='36' fill='var(--accent)'/>
+						<circle cx='800' cy='170' r='72' fill='var(--accent)'/>
 					</svg>
 				</div>
 
@@ -835,10 +862,12 @@
 		<!-- 17. pe-calendar-milestones - MONTH GRID. A month of days, every day
 		     a ring-and-dot unit; milestones wear thin quiet halos, today wears
 		     the bold accent halo - scattered through the month, not clustered
-		     (per Derek's markup 2026-07-28). Grid: day units d50 (ink ring,
-		     secondary center) on 140 columns / 150 rows centered on 800/450;
-		     halos d100; nearest halo edge to neighbor day is 65 - no tangents.
-		     Medium band. -->
+		     (per Derek's markup 2026-07-28; refined per his second mock the
+		     same day: today is a solid accent COIN under its day, and the
+		     milestone halos tightened to crisp fine ink rings). Grid: day
+		     units d50 (ink ring, secondary center) on 140 columns / 150 rows
+		     centered on 800/450; halos d90 - ring to day is the module 20;
+		     today's coin d100 under a standard day unit. Medium band. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='cool' data-size='medium'>
@@ -846,6 +875,8 @@
 						role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
+
+						<circle cx='940' cy='450' r='50' fill='var(--accent)'/>
 
 						<g fill='var(--fill-secondary)' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
 							<circle cx='520' cy='300' r='25'/>
@@ -865,11 +896,9 @@
 							<circle cx='1080' cy='600' r='25'/>
 						</g>
 
-						<circle cx='940' cy='450' r='50' fill='none' stroke='var(--accent)' style='stroke-width: var(--line-width-primary)'/>
-
-						<g fill='none' stroke='var(--ink-secondary)' style='stroke-width: var(--line-width-secondary)'>
-							<circle cx='660' cy='300' r='50'/>
-							<circle cx='520' cy='600' r='50'/>
+						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-secondary)'>
+							<circle cx='660' cy='300' r='45'/>
+							<circle cx='520' cy='600' r='45'/>
 						</g>
 					</svg>
 				</div>
@@ -905,11 +934,16 @@
 			</figure>
 		</li>
 
-		<!-- 19. pe-study-hall - STUDY CIRCLE. Three people connected: the mentor
-		     present, a student thinking, a student lit up. (The network moved
-		     over from better-life 2026-07-28; the dots grid went to the
-		     calendar.) Nodes d160 on a centered triangle, connectors between
-		     edges - gets its exact-grid pass in the family sweep. -->
+		<!-- 19. pe-study-hall - FLASHCARDS. What study hall actually is: a quiz
+		     system keyed to where you are in the course, built from progress
+		     nodes. A deck of flashcards; the front card shows the prompt bar
+		     and the accent as the answer. (Fourth take per Derek 2026-07-28;
+		     scaled up and simplified the same day - the tiny progress nodes
+		     were finer detail than anything else in the family.) Grid: cards
+		     560x360 stacked at (60,50) offsets - back (460,220), mid (520,270),
+		     front (580,320) - opaque so the stack occludes; span x 460-1140 /
+		     y 220-680 centered on 800/450; prompt bar 280x50 inset 60; answer
+		     dot d100 at 60 from the front card's corner. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='moss' data-size='large'>
@@ -918,21 +952,19 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
-							<path d='M665,365 L935,365'/>
-							<path d='M655,390 L750,555'/>
-							<path d='M945,390 L850,555'/>
+						<g fill='var(--fill-primary)' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<rect class='roundable' x='460' y='220' width='560' height='360'/>
+							<rect class='roundable' x='520' y='270' width='560' height='360'/>
+							<rect class='roundable' x='580' y='320' width='560' height='360'/>
 						</g>
 
-						<circle cx='600' cy='320' r='80' fill='var(--ink-primary)'/>
+						<rect class='roundable' x='640' y='380' width='280' height='50' fill='var(--fill-secondary)'/>
 
-						<circle cx='1000' cy='320' r='80' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
-
-						<circle cx='800' cy='620' r='80' fill='var(--accent)'/>
+						<circle cx='1030' cy='570' r='50' fill='var(--accent)'/>
 					</svg>
 				</div>
 
-				<figcaption><strong>pe-study-hall</strong> - study circle (16:9)</figcaption>
+				<figcaption><strong>pe-study-hall</strong> - flashcards (16:9)</figcaption>
 			</figure>
 		</li>
 
@@ -972,9 +1004,12 @@
 		     2026-07-28; replaced the drop-cap specimen.) Grid: bars h60 on a
 		     120 pitch (y 300/420/540, centered on 450 - the middle bar rides
 		     the frame axis and is the one that grows the node); bars start
-		     x=400; connector 80 from the middle bar's end to the node's edge
-		     (deliberate joins); node d160 outlined, dot d60 = bar height. Span
-		     x 400-1200 centered on 800. Medium band. -->
+		     x=380; a 40 SPACE between the middle bar's end and the connector
+		     (Derek 2026-07-28 - the pattern is lifted out of the prose, not
+		     welded to it), then an 80 stub joining the node's edge (doubled
+		     from 40 the same day); node d160
+		     outlined, dot d60 = bar height. Span x 380-1220 centered on 800.
+		     Medium band. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='warm' data-size='medium'>
@@ -984,16 +1019,16 @@
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
 						<g fill='var(--fill-secondary)'>
-							<rect class='roundable' x='400' y='300' width='480' height='60'/>
-							<rect class='roundable' x='400' y='420' width='560' height='60'/>
-							<rect class='roundable' x='400' y='540' width='400' height='60'/>
+							<rect class='roundable' x='380' y='300' width='480' height='60'/>
+							<rect class='roundable' x='380' y='420' width='560' height='60'/>
+							<rect class='roundable' x='380' y='540' width='400' height='60'/>
 						</g>
 
-						<path d='M960,450 L1040,450' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round'/>
+						<path d='M980,450 L1060,450' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round'/>
 
-						<circle cx='1120' cy='450' r='80' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+						<circle cx='1140' cy='450' r='80' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
 
-						<circle cx='1120' cy='450' r='30' fill='var(--accent)'/>
+						<circle cx='1140' cy='450' r='30' fill='var(--accent)'/>
 					</svg>
 				</div>
 
@@ -1035,8 +1070,17 @@
 			</figure>
 		</li>
 
-		<!-- 23. freelancing-2019 - EDGE-WALK. A perimeter mostly explored: dotted
-		     square, one side made solid. -->
+		<!-- 23. freelancing-2019 - MANY HATS. Five years freelancing across a
+		     lot of areas and roles: the freelancer at the center, five
+		     different kinds of work radiating around - a different shape for
+		     every role. (Fourth take 2026-07-28: edge-walk, off-the-grid, and
+		     the product card all missed; the story is the person, not the
+		     product.) Grid: accent d100 at dead center; spokes are fine quiet
+		     threads drawn TO each gig's center and occluded by the opaque
+		     shapes (exact trimming by paint order); gigs are one of each kind -
+		     outlined circle d120, filled square 120, equilateral triangle base
+		     140, ink bar 200x50, ink dot d80. Span x 440-1160 / y 200-700
+		     centered on 800/450. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='stone' data-size='large'>
@@ -1045,28 +1089,42 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<rect class='roundable' x='560' y='210' width='480' height='480' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round' stroke-dasharray='2 40'/>
+						<g fill='none' stroke='var(--ink-secondary)' style='stroke-width: var(--line-width-secondary)'>
+							<path d='M800,450 L560,270'/>
+							<path d='M800,450 L1020,260'/>
+							<path d='M800,450 L1080,640'/>
+							<path d='M800,450 L540,625'/>
+							<path d='M800,450 L1120,420'/>
+						</g>
 
-						<path d='M560,690 L1040,690' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round'/>
+						<circle cx='560' cy='270' r='60' fill='var(--fill-primary)' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
 
-						<circle cx='1040' cy='210' r='36' fill='var(--accent)'/>
+						<rect class='roundable' x='960' y='200' width='120' height='120' fill='var(--fill-secondary)' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+
+						<path d='M1010,700 L1080,579 L1150,700 Z' fill='var(--fill-primary)' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+
+						<rect class='roundable' x='440' y='600' width='200' height='50' fill='var(--ink-primary)'/>
+
+						<circle cx='1120' cy='420' r='40' fill='var(--ink-primary)'/>
+
+						<circle cx='800' cy='450' r='50' fill='var(--accent)'/>
 					</svg>
 				</div>
 
-				<figcaption><strong>freelancing-2019</strong> - edge-walk (16:9)</figcaption>
+				<figcaption><strong>freelancing-2019</strong> - many hats (16:9)</figcaption>
 			</figure>
 		</li>
 
-		<!-- 24. pe-founded - STEPS. A staircase in profile: stacked slabs,
-		     right-aligned, each step narrower as it climbs; the next level is the
-		     dot above the top step.
-
-		     On the module grid (the reference case for the alignment rule):
-		       slab height 100 = dot diameter 100 (one measure, reused)
-		       every gap 20 - between slabs AND between dot and top slab
-		       step-in 200 per level, so widths run 620 / 420 / 220
-		       right edges share x=1110; dot center = top slab center x=1000
-		       whole composition spans y 220-680 -> centered on the 450 axis -->
+		<!-- 24. pe-founded - THE TARGET. Founding the school = setting the mark
+		     to aim at: a centered bullseye, rings stepping outward, the biggest
+		     one cropping through the frame (deliberate bleed). (Per Derek
+		     2026-07-28; the STEPS staircase motif is PARKED for another PE card
+		     - geometry lives in git history at 35f57b2, and it stays the worked
+		     reference for the alignment rule in this header.) Grid: everything
+		     concentric on the frame center - dot d100, bold rings r140/r280,
+		     nothing else (the two fine bleed rings were cut per Derek's second
+		     note 2026-07-28: just the dot and two circles, nothing off the
+		     sides). -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='moss' data-size='large'>
@@ -1076,16 +1134,15 @@
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
 						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
-							<rect class='roundable' x='490' y='580' width='620' height='100'/>
-							<rect class='roundable' x='690' y='460' width='420' height='100'/>
-							<rect class='roundable' x='890' y='340' width='220' height='100' fill='var(--fill-secondary)'/>
+							<circle cx='800' cy='450' r='140'/>
+							<circle cx='800' cy='450' r='280'/>
 						</g>
 
-						<circle cx='1000' cy='270' r='50' fill='var(--accent)'/>
+						<circle cx='800' cy='450' r='50' fill='var(--accent)'/>
 					</svg>
 				</div>
 
-				<figcaption><strong>pe-founded</strong> - steps (16:9)</figcaption>
+				<figcaption><strong>pe-founded</strong> - the target (16:9)</figcaption>
 			</figure>
 		</li>
 
@@ -1093,11 +1150,14 @@
 		     cinema-dark screen with a knockout title bar and an accent moon
 		     rising in it; the phone game sits IN FRONT as a real device with
 		     playful marks. (Punched up from two empty boxes per Derek
-		     2026-07-28 - "a little more oomph".) Grid: screen 640x400 ink at
-		     x 430-1070 / y 180-580; phone 180x320 opaque overlapping the
-		     screen's corner by 80x180; span x 430-1170 / y 180-710 centered on
-		     800/450 (x within the phone crop); moon d100, title bar 320x50
-		     knockout, phone marks on its center axis. -->
+		     2026-07-28; made epic per his second markup the same day - the
+		     screen dominates and the phone became a pair.) Grid: screen
+		     880x520 ink at x 360-1240 / y 120-640 (entirely inside the phone
+		     crop); two phones 170x300 riding the screen's bottom edge (y
+		     480-780, overlapping it by 160), 40 apart, the second sharing the
+		     screen's right edge exactly; span x 360-1240 / y 120-780 centered
+		     on 800/450. Moon d140, title bar 400x60 knockout, playful marks on
+		     the first phone's axis. -->
 		<li>
 			<figure>
 				<div class='poster-frame' data-flavor='night' data-size='large'>
@@ -1106,17 +1166,20 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<rect class='roundable' x='430' y='180' width='640' height='400' fill='var(--ink-primary)'/>
+						<rect class='roundable' x='360' y='120' width='880' height='520' fill='var(--ink-primary)'/>
 
-						<rect class='roundable' x='490' y='460' width='320' height='50' fill='var(--fill-primary)'/>
+						<rect class='roundable' x='440' y='520' width='400' height='60' fill='var(--fill-primary)'/>
 
-						<circle cx='920' cy='300' r='50' fill='var(--accent)'/>
+						<circle cx='1060' cy='260' r='70' fill='var(--accent)'/>
 
-						<rect class='roundable' x='990' y='390' width='180' height='320' fill='var(--fill-primary)' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+						<g fill='var(--fill-primary)' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'>
+							<rect class='roundable' x='860' y='480' width='170' height='300'/>
+							<rect class='roundable' x='1070' y='480' width='170' height='300'/>
+						</g>
 
-						<path d='M1080,470 L1080,530' fill='none' stroke='var(--ink-primary)' style='stroke-width: calc(var(--line-width-primary) * 3)' stroke-linecap='round'/>
+						<path d='M945,540 L945,600' fill='none' stroke='var(--ink-primary)' style='stroke-width: calc(var(--line-width-primary) * 3)' stroke-linecap='round'/>
 
-						<circle cx='1080' cy='600' r='30' fill='var(--ink-primary)'/>
+						<circle cx='945' cy='680' r='30' fill='var(--ink-primary)'/>
 					</svg>
 				</div>
 
@@ -1277,17 +1340,26 @@
 							</pattern>
 						</defs>
 
+						<!-- Messy desk with good contrast (Derek's third note
+						     2026-07-28 - the tidy 2x2 was too aligned): the square
+						     lies ON the texture like paper on a desk pad, the
+						     triangle's apex sits 59 inside the circle so their lines
+						     cross, the accent floats loose top-right to balance the
+						     heavy left. Overlaps decisive, remaining gaps 40+. Span
+						     x 360-1240 centered on 800; vertically sits a touch high
+						     (span y 160-700) - Derek's optical call 2026-07-28,
+						     triangle nudged up 40. -->
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<rect class='roundable' x='880' y='480' width='300' height='240' fill='url(#agency-tex)'/>
+						<rect class='roundable' x='790' y='320' width='360' height='280' fill='url(#agency-tex)'/>
 
-						<circle cx='520' cy='320' r='110' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+						<rect class='roundable' x='730' y='240' width='220' height='220' fill='var(--fill-secondary)' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
 
-						<rect class='roundable' x='860' y='200' width='150' height='150' fill='var(--fill-secondary)' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+						<circle cx='510' cy='380' r='150' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
 
-						<path d='M480,690 L600,482 L720,690 Z' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+						<path d='M430,700 L590,423 L750,700 Z' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
 
-						<circle cx='1150' cy='330' r='40' fill='var(--accent)'/>
+						<circle cx='1180' cy='220' r='60' fill='var(--accent)'/>
 					</svg>
 				</div>
 
@@ -1327,12 +1399,13 @@
 		     (Was the small "arrival" road; promoted to medium and redrawn per
 		     Derek's layered/system reference 2026-07-28 - it was a big job and
 		     the poster should carry that weight; revised to Derek's second
-		     markup the same day - the front panel goes bold and BREAKS OUT of
-		     the container, the work outgrowing the frame, with the accent
-		     floating free at the left.) Grid: container 420x400 at x 660-1080 /
-		     y 220-620; panels 300x260 cascading (back inset 40, mid 20 clear
-		     of the container's inner edges, front escaping 60 past its right
-		     and bottom); dot d100 at (510,450); span x 460-1140 / y 220-680
+		     markup the same day; decluttered on his flag 2026-07-28 - the
+		     middle panel and the floating dot were noise.) Three elements: the
+		     container, one quiet layer inside it, and the bold panel breaking
+		     out of the corner wearing the accent itself. Grid: container
+		     420x400 at x 560-980 / y 220-620; back panel 300x260 inset 60;
+		     front ink panel 300x260 escaping 60 past the container's right and
+		     bottom, accent d60 at its center. Span x 560-1040 / y 220-680
 		     centered on 800/450. Medium band. -->
 		<li>
 			<figure>
@@ -1342,15 +1415,13 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<circle cx='510' cy='450' r='50' fill='var(--accent)'/>
+						<rect class='roundable' x='560' y='220' width='420' height='400' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
 
-						<rect class='roundable' x='660' y='220' width='420' height='400' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
+						<rect class='roundable' x='620' y='280' width='300' height='260' fill='var(--fill-secondary)'/>
 
-						<rect class='roundable' x='700' y='270' width='300' height='260' fill='var(--fill-secondary)'/>
+						<rect class='roundable' x='740' y='420' width='300' height='260' fill='var(--ink-primary)'/>
 
-						<rect class='roundable' x='760' y='340' width='300' height='260' fill='var(--fill-primary)' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-secondary)'/>
-
-						<rect class='roundable' x='840' y='420' width='300' height='260' fill='var(--ink-primary)'/>
+						<circle cx='890' cy='550' r='30' fill='var(--accent)'/>
 					</svg>
 				</div>
 
