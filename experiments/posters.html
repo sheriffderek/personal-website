@@ -53,6 +53,26 @@
 			Full-family alignment sweep happens once the miss list settles - no
 			point precision-polishing a poster that may still be redrawn.
 
+			THE SCALE (formalized 2026-07-28 after the whole-wall audit - every
+			measure in every poster comes off these ladders; anything else is a
+			documented exception at its use site):
+			  - Line weights: 5 (fine, breathes on hover) / 10 (bold) / 30 (the
+			    chunk, calc primary x 3, for glyph-scale marks). Nothing else -
+			    the x2 middle weight was retired in this pass.
+			  - Circle diameters: the 20-ladder - 40, 60, 80, 100, 120, 140,
+			    160, 200, 240, 280, 300... Role conventions on top of it:
+			    d100 = the standard accent; d120 = a person; d50 = grid/day/
+			    reading dots (the one 10-step, paired with d100 rings).
+			    Documented exceptions: aicad's d312 circle (optical bump next
+			    to the 300 square), the month grid's d90 halos (day 50 + two
+			    20-gaps).
+			  - Bars: h40 or h60 only. Widths in 20s.
+			  - Gaps, insets, offsets, pitches: multiples of 20 (20 breathing,
+			    40 separation, 60+ structure).
+			  - Fills carry role, not decoration: outline = a thing; secondary
+			    fill = a quiet mass; ink fill = a loud mass; accent = exactly
+			    one focal element per poster.
+
 			OPEN QUESTION (Derek, 2026-07-28 - deliberately NOT acted on yet):
 			should some posters run inverted (dark fill, light ink) to keep the
 			wall varied - either always, or decided by theme? Night flavor
@@ -428,11 +448,11 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<path d='M520,330 L700,450 L520,570' fill='none' stroke='var(--ink-primary)' style='stroke-width: calc(var(--line-width-primary) * 2)' stroke-linecap='round'/>
+						<path d='M520,330 L700,450 L520,570' fill='none' stroke='var(--ink-primary)' style='stroke-width: calc(var(--line-width-primary) * 3)' stroke-linecap='round'/>
 
 						<rect class='roundable' x='780' y='360' width='54' height='180' fill='var(--accent)'/>
 
-						<g fill='none' stroke='var(--ink-secondary)' style='stroke-width: calc(var(--line-width-primary) * 2)' stroke-linecap='round'>
+						<g fill='none' stroke='var(--ink-secondary)' style='stroke-width: calc(var(--line-width-primary) * 3)' stroke-linecap='round'>
 							<path d='M920,410 L1180,410'/>
 							<path d='M920,490 L1080,490'/>
 						</g>
@@ -851,7 +871,7 @@
 
 						<circle cx='1180' cy='450' r='150' fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
 
-						<circle cx='800' cy='170' r='72' fill='var(--accent)'/>
+						<circle cx='800' cy='170' r='70' fill='var(--accent)'/>
 					</svg>
 				</div>
 
@@ -958,7 +978,7 @@
 							<rect class='roundable' x='580' y='320' width='560' height='360'/>
 						</g>
 
-						<rect class='roundable' x='640' y='380' width='280' height='50' fill='var(--fill-secondary)'/>
+						<rect class='roundable' x='640' y='380' width='280' height='60' fill='var(--fill-secondary)'/>
 
 						<circle cx='1030' cy='570' r='50' fill='var(--accent)'/>
 					</svg>
@@ -1093,7 +1113,7 @@
 							<path d='M800,450 L560,270'/>
 							<path d='M800,450 L1020,260'/>
 							<path d='M800,450 L1080,640'/>
-							<path d='M800,450 L540,625'/>
+							<path d='M800,450 L540,620'/>
 							<path d='M800,450 L1120,420'/>
 						</g>
 
@@ -1103,7 +1123,7 @@
 
 						<path d='M1010,700 L1080,579 L1150,700 Z' fill='var(--fill-primary)' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)'/>
 
-						<rect class='roundable' x='440' y='600' width='200' height='50' fill='var(--ink-primary)'/>
+						<rect class='roundable' x='440' y='590' width='200' height='60' fill='var(--ink-primary)'/>
 
 						<circle cx='1120' cy='420' r='40' fill='var(--ink-primary)'/>
 
@@ -1377,7 +1397,7 @@
 
 						<rect width='1600' height='900' fill='var(--fill-primary)'/>
 
-						<circle cx='480' cy='450' r='56' fill='var(--ink-primary)'/>
+						<circle cx='480' cy='450' r='60' fill='var(--ink-primary)'/>
 
 						<g fill='none' stroke='var(--ink-primary)' style='stroke-width: var(--line-width-primary)' stroke-linecap='round'>
 							<path d='M560,310 A170,170 0 0 1 560,590'/>
@@ -1386,7 +1406,7 @@
 
 						<path d='M720,190 A330,330 0 0 1 720,710' fill='none' stroke='var(--ink-secondary)' style='stroke-width: var(--line-width-secondary)' stroke-linecap='round'/>
 
-						<circle cx='1120' cy='450' r='34' fill='var(--accent)'/>
+						<circle cx='1120' cy='450' r='30' fill='var(--accent)'/>
 					</svg>
 				</div>
 
@@ -1485,7 +1505,7 @@
 
 						<path d='M950,330 L1050,570' fill='none' stroke='var(--ink-primary)' style='stroke-width: calc(var(--line-width-primary) * 3)' stroke-linecap='round'/>
 
-						<circle cx='620' cy='420' r='34' fill='var(--accent)'/>
+						<circle cx='620' cy='420' r='30' fill='var(--accent)'/>
 					</svg>
 				</div>
 
@@ -1536,7 +1556,7 @@
 							<path d='M510,650 L660,390 L810,650 Z'/>
 						</g>
 
-						<circle cx='1090' cy='300' r='34' fill='var(--accent)'/>
+						<circle cx='1090' cy='300' r='30' fill='var(--accent)'/>
 					</svg>
 				</div>
 
