@@ -40,6 +40,17 @@
 	--loud-voice-line-height: 1;
 }
 
+/* Marketing always sits on WHITE PAPER (Derek, 2026-07-28) - a documented
+   EXCEPTION to "a character never names a hue": brochures are white paper,
+   and that reads as structural posture more than pigment. White composes
+   under every mood's inks; dark scheme pins one shared near-black since the
+   moods' own darks can't be partially kept. The html type in the selector is
+   load-bearing: characters load BEFORE moods, so without it every mood's own
+   fill (same specificity, later file) would win by source order. */
+html[data-brand-character="marketing"] {
+	--fill-primary: light-dark(white, var(--color-stone-950));
+}
+
 [data-brand-character="interface"] {
 	/* The app/dashboard surface: one neutral workhorse family doing both jobs,
 	   tight near-uniform scale, small corners - calm, dense, UI-shaped. */
