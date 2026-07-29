@@ -149,6 +149,12 @@
 	<?php endif; ?>
 
 	<script src='<?= asset('/scripts/sticky-header.js') ?>' defer></script>
+
+	<?php /* Per-poster phone-crop windows - same gate as the timeline scripts
+		(posters only render there). */ ?>
+	<?php if (($page_controls ?? null) === 'filter-control'): ?>
+		<script src='<?= asset('/scripts/poster-crops.js') ?>' defer></script>
+	<?php endif; ?>
 </head>
 
 <body>

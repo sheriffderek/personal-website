@@ -397,6 +397,26 @@
 			var(--poster-fill)
 		));
 
+		/* The ground paints as a CSS background so it can be a GRADIENT
+		   (poster-system.md's designed-then-dormant mechanism, built
+		   2026-07-28). A flavor/mood opts in just by stating the two stops -
+		   unset, both fall back to the flat --poster-fill and two identical
+		   stops render flat, so there's no on/off flag. The background covers
+		   the FRAME (not the 1600x900 user space), so a ramp always spans the
+		   visible crop edge to edge. */
+		background: linear-gradient(
+			var(--poster-gradient-angle, 135deg),
+			var(--poster-gradient-from, var(--poster-fill)),
+			var(--poster-gradient-to, var(--poster-fill))
+		);
+
+		/* ...and the SVG's own ground rect stands down so the background
+		   shows through. Every art file draws its ground as the first rect
+		   (audited 2026-07-28); marks and masses are untouched. */
+		> rect:first-of-type {
+			fill: transparent;
+		}
+
 		/* The fine strokes breathe on hover (5 -> 3, the lab's hover stop).
 		   The transition lives on the DESCENDANTS in the BASE state: the
 		   stroke-width changes on the paths reading the token, not on the
@@ -516,8 +536,22 @@
    frame asymmetric - a bare gap on one side. The gutter is the truth the
    layout actually built with; no re-derivation, no drift.) */
 @media (width <= 600px) {
+	/* The 3-wide phone system (lab spec, adopted at graduation): every size
+	   relaxes toward square - large 16:9 -> 3:3, medium 16:6 -> 3:2, small
+	   16:3 -> 3:1. (Supersedes the old rule where only larges squared and
+	   the bands kept ratio.) WHICH slice of the art shows is each poster's
+	   own call: scripts/poster-crops.js reads the svg's data-crop-x/y anchor
+	   and windows the viewBox; no anchor = centered, same as ever. */
 	.milestone {
 		--media-ratio: 1 / 1;
+	}
+
+	.milestone[data-poster-size="medium"] {
+		--media-ratio: 3 / 2;
+	}
+
+	.milestone[data-poster-size="small"] {
+		--media-ratio: 3 / 1;
 	}
 
 	.milestone .media {
