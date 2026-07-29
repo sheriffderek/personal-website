@@ -38,10 +38,6 @@
 	--attention-voice-line-height: 1.3;
 	--loud-voice-font-weight: 700;
 	--loud-voice-line-height: 1;
-
-	.panel {
-		border-radius: 12px;
-	}
 }
 
 [data-brand-character="interface"] {
@@ -59,4 +55,27 @@
 	--strong-voice-font-weight: 600;
 	--attention-voice-font-weight: 600;
 	--loud-voice-font-weight: 600;
+}
+
+/* ----------------------------------------------------------------------------
+   The year tag (Derek, 2026-07-28). The milestone date (.year, milestone.css)
+   carries tag slots that stay flush and transparent until a mood x character
+   combination states them - the same candidacy/activation pattern as the
+   invertible posters. First activation: expressive x marketing wears the year
+   as a full-round yellow pill (the GoFundMe-lane register). All four slots
+   live together here for now; if a second combination adopts the tag, split
+   the shape slots up into the character blocks per the axis law (character =
+   shape, mood = color).
+
+   Future direction (Derek, 2026-07-28, unbuilt on purpose): per-milestone tag
+   colors under expressive x marketing. The seam already exists - data-flavor
+   sits on the article and .year is inside it, so the expressive flavor blocks
+   (flavors.css) can state --year-fill / --year-ink per flavor and the tags
+   follow the card's palette with no new wiring. */
+html[data-brand-character="marketing"]:not([data-brand-mood]),
+html[data-brand-character="marketing"][data-brand-mood="expressive"] {
+	--year-padding: 0.25em 0.75em;
+	--year-corners: 1em;
+	--year-fill: light-dark(var(--color-yellow-300), var(--color-yellow-900));
+	--year-ink: light-dark(var(--color-stone-900), var(--color-yellow-100));
 }

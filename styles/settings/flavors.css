@@ -21,46 +21,165 @@
 	--poster-ink: var(--ink-primary);
 }
 
-/* The default set is a 70s muted rainbow - classy, not costume: harvest gold,
-   dusty blue, greige, espresso, avocado, dusty rose. The scale files don't carry
-   these mid-chroma period tones, so like stone's greige they're authored oklch
-   here - this block IS the token layer for posters. */
+/* ----------------------------------------------------------------------------
+   INVERTED - the two-layer model (Derek, 2026-07-28). A poster AUTHORS its
+   candidacy ("invertible": true in milestones.json -> data-invertible on the
+   article); a mood x character block decides whether its candidates actually
+   wear the treatment. The swap is RELATIVE - fill takes the page's ink, ink
+   takes the page's fill - so one definition reads as white-on-black in a
+   light scheme and flips honestly under dark, under any mood, with the
+   poster's secondaries deriving automatically (milestone.css color-mixes
+   them from this pair). Never filter: invert() (poster-system.md).
+
+   Beats the flavor blocks by specificity (html[...] + attribute vs one
+   attribute), which is the point: an activated candidate wears inverted
+   regardless of its flavor.
+
+   First activation: expressive x interface - the tech/tooling posters run
+   white-on-black, the way the tools they depict do. (Expressive is the
+   default mood, so "no mood attribute" counts as expressive too.) */
+
+html[data-brand-character="interface"]:not([data-brand-mood]) [data-invertible],
+html[data-brand-character="interface"][data-brand-mood="expressive"] [data-invertible] {
+	--poster-fill: var(--ink-primary);
+	--poster-ink: var(--fill-primary);
+}
+
+/* Quiet x interface: the same candidates go dark, but on an ORGANIC ground -
+   a deep olive instead of quiet's stark stone ink, with paper-olive marks
+   (Derek, 2026-07-28). Stated absolutely rather than via the relative swap
+   because the whole point is a color the page pair doesn't contain; the
+   light-dark() mirror keeps the honest flip under dark scheme (a pale olive
+   card standing out of the dark wall). */
+html[data-brand-character="interface"][data-brand-mood="quiet"] [data-invertible] {
+	--poster-fill: light-dark(var(--color-olive-900), var(--color-olive-100));
+	--poster-ink: light-dark(var(--color-olive-50), var(--color-olive-900));
+}
+
+/* ----------------------------------------------------------------------------
+   EXPRESSIVE's flavor take (Derek, 2026-07-28) - fun and RANGED, per the
+   three-moods sheet: multiple colors with equal importance, flat fills, high
+   contrast playful combos. The six authored flavor names map onto the sheet's
+   palette 1:1 (warm=yellow, cool=purple, stone=taupe, night=the black card,
+   moss=mint, rose=coral) - the per-milestone data-flavor keys in
+   milestones.json stay exactly as authored; each mood decides what its
+   flavors MEAN. Scoped to expressive (the default mood), so quiet and
+   technical fall through to the neutral baseline above without any
+   neutralizing rules. Light grounds all carry the same near-black ink (the
+   sheet's black is a palette member); dark scheme deepens each ground to its
+   family's 900 with a pale family ink. */
+
+/* The RANGE (Derek's references, 2026-07-28: the Useless Web poster + the
+   Figma illustration style): most flavors keep a PAPER ground and land their
+   color on the poster's quiet masses (--poster-fill-secondary - see the
+   override seam in milestone.css), the way line-art illustration scatters
+   flat fills across items. Full bleed is the exception, not the rule (warm's
+   yellow card, night's black card). Every flavor also recolors the accent -
+   cross-hue on purpose (yellow sun on indigo lines), which is where the
+   playful combinations live. Cool goes further and tints its LINEWORK indigo,
+   straight off the reference. */
+
+/* Bleed takes - the loud exceptions. */
+html:not([data-brand-mood]) [data-flavor="warm"],
+[data-brand-mood="expressive"] [data-flavor="warm"] {
+	--poster-fill: light-dark(var(--color-yellow-300), var(--color-yellow-900));
+	--poster-ink: light-dark(var(--color-stone-900), var(--color-yellow-100));
+
+	.poster-art {
+		--accent: light-dark(var(--color-red-500), var(--color-red-400));
+	}
+}
+
+/* The black card - same panel in both schemes; a black card is a black card. */
+html:not([data-brand-mood]) [data-flavor="night"],
+[data-brand-mood="expressive"] [data-flavor="night"] {
+	--poster-fill: var(--color-stone-900);
+	--poster-ink: var(--color-stone-100);
+
+	.poster-art {
+		--accent: var(--color-yellow-300);
+	}
+}
+
+/* Item takes - paper ground, color on the quiet masses. */
+html:not([data-brand-mood]) [data-flavor="cool"],
+[data-brand-mood="expressive"] [data-flavor="cool"] {
+	--poster-ink: light-dark(var(--color-indigo-700), var(--color-indigo-300));
+	--poster-fill-secondary: light-dark(var(--color-purple-300), var(--color-purple-800));
+
+	.poster-art {
+		--accent: light-dark(var(--color-yellow-400), var(--color-yellow-300));
+	}
+}
+
+html:not([data-brand-mood]) [data-flavor="stone"],
+[data-brand-mood="expressive"] [data-flavor="stone"] {
+	--poster-fill-secondary: light-dark(var(--color-taupe-300), var(--color-taupe-700));
+
+	.poster-art {
+		--accent: light-dark(var(--color-red-500), var(--color-red-400));
+	}
+}
+
+html:not([data-brand-mood]) [data-flavor="moss"],
+[data-brand-mood="expressive"] [data-flavor="moss"] {
+	--poster-fill-secondary: light-dark(var(--color-emerald-300), var(--color-emerald-800));
+
+	.poster-art {
+		--accent: light-dark(var(--color-purple-500), var(--color-purple-300));
+	}
+}
+
+html:not([data-brand-mood]) [data-flavor="rose"],
+[data-brand-mood="expressive"] [data-flavor="rose"] {
+	--poster-fill-secondary: light-dark(var(--color-red-300), var(--color-red-900));
+
+	.poster-art {
+		--accent: light-dark(var(--color-cyan-500), var(--color-cyan-300));
+	}
+}
+
+/* The 70s muted-rainbow set - the previous take, kept as reference: harvest
+   gold, dusty blue, greige, espresso, avocado, dusty rose. Authored oklch
+   because the scale files don't carry these mid-chroma period tones. If a
+   mood ever wants the classier register back, these are the values.
 
 [data-flavor="warm"] {
-	/* harvest gold, leaning burnt orange */
+	harvest gold, leaning burnt orange
 	--poster-fill: oklch(80% 0.085 70);
 	--poster-ink: oklch(36% 0.09 45);
 }
 
 [data-flavor="cool"] {
-	/* dusty blue */
+	dusty blue
 	--poster-fill: oklch(78% 0.05 240);
 	--poster-ink: oklch(33% 0.06 250);
 }
 
 [data-flavor="stone"] {
-	/* the original greige, already period-correct */
+	the original greige, already period-correct
 	--poster-fill: #c9c9be;
 	--poster-ink: var(--color-stone-900);
 }
 
 [data-flavor="night"] {
-	/* milk-chocolate brown with a gold ink - deliberately a MID tone, not
-	   espresso: a near-black card in a light wall of muted pastels reads as a
-	   hole (seen in the grid). Truly dark posters are red-light's whole thing;
-	   the default set stays in one tonal family. */
+	milk-chocolate brown with a gold ink - deliberately a MID tone, not
+	espresso: a near-black card in a light wall of muted pastels reads as a
+	hole (seen in the grid). Truly dark posters are red-light's whole thing;
+	the default set stays in one tonal family.
 	--poster-fill: oklch(42% 0.045 55);
 	--poster-ink: oklch(85% 0.06 85);
 }
 
 [data-flavor="moss"] {
-	/* avocado */
+	avocado
 	--poster-fill: oklch(76% 0.07 115);
 	--poster-ink: oklch(33% 0.06 120);
 }
 
 [data-flavor="rose"] {
-	/* dusty rose */
+	dusty rose
 	--poster-fill: oklch(80% 0.05 20);
 	--poster-ink: oklch(36% 0.07 15);
 }
+*/
