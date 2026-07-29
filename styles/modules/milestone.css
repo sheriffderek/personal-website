@@ -540,7 +540,7 @@
 	   relaxes toward square - large 16:9 -> 3:3, medium 16:6 -> 3:2, small
 	   16:3 -> 3:1. (Supersedes the old rule where only larges squared and
 	   the bands kept ratio.) WHICH slice of the art shows is each poster's
-	   own call: scripts/poster-crops.js reads the svg's data-crop-x/y anchor
+	   own call: scripts/poster-crops.js reads the svg's --crop-x/y token
 	   and windows the viewBox; no anchor = centered, same as ever. */
 	.milestone {
 		--media-ratio: 1 / 1;
