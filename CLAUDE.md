@@ -248,7 +248,7 @@ The theming behavior is a load-bearing artifact of this site — it's part of th
 
 **Why direct restatement.** We tried the `--t-*-light` / `--t-*-dark` intermediate layer. It caused inheritance mysteries in top-layer popovers and a "not defined" tooltip on `--stroke-primary` that took hours to unwind. Simpler wins. The tradeoff (adding a new color token = editing every emphasis×scheme block) is accepted.
 
-**Panel chrome invariance (`[data-ui='app']` contract).** The panel must NOT restyle while the user is changing brands/emphases. `--font-body` and `--font-heading` are pinned to sans inside the scope; radii are literal (above). If brands ever carry shadow/depth tokens, add matching `--app-*` invariants first.
+**Panel chrome invariance (`[data-ui='app']` contract).** The core UI is STATIONARY but paintable (Derek, 2026-07-28): nothing inside the scope may change size or position when themes change, but themes may still color it. The `--app-*` color slots alias the global semantic tokens (the only sanctioned door in); the geometry tokens are frozen and no theme block may set them; `--font-body`/`--font-heading` are pinned to sans (a family swap reflows label metrics); radii are literal (above). The scope sits on the whole `.site-tray` (header.php), not just the panels - the toolbar triggers read `--app-*` tokens and were silently unresolved outside it (that's also why the triggers' spec'd circular chrome vanished after the lab port). Token set + contract comment live in `styles/modules/settings-panel.css`.
 
 **Flavors are global baselines** (top level in settings.css, done 2026-07-11 — this was queued item "move flavors to :root"). A brand or emphasis block may override a flavor if its palette wants a different take.
 
@@ -293,7 +293,7 @@ The label above the slider reads `Filter: <count> / <total>` (`data-filter-count
 
 The failure mode to avoid: it renders as full-width, blown-out bars instead of a small faithful diagram. If you see that, the `max-width` / two-column rules got lost - restore them, don't delete the map.
 
-In **grid view** the minimap keeps its contract by changing shape with the page: the fake panel becomes a thin strip on TOP (the settings band on the top composition) and the bars become a grid of cells matching the real column count — both read `--layout-wall-columns`, so they can't drift.
+In **grid view** the minimap keeps its contract by changing shape with the page: the bars become a grid of cells matching the real column count (they read `--layout-wall-columns`, so they can't drift), and the fake panel is dropped entirely (Derek, 2026-07-28 — a strip depicting the band was tried hollow and solid, and both read as junk; between 1200 and 1450 there's no band to depict anyway). The fake panel is a list-view device only.
 
 ## Grid view (built 2026-07-11, behind a kill switch)
 

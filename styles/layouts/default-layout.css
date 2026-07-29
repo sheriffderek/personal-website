@@ -93,11 +93,17 @@ main {
 
 /* The dev stamp (non-production serves only - header.php) borrows the
    site-name's left slot: a quiet corner readout of the code's freshness,
-   never competing with the toolbar. */
+   never competing with the toolbar. Its whole job is phone QA (Derek,
+   2026-07-28: local + mobile only), so it exists only while the tray is
+   the phone-posture top bar - the desktop side column never shows it. */
 .dev-stamp {
 	margin-block: 0;
 	margin-inline-end: auto;
 	color: var(--ink-auxiliary);
+
+	@media (width >= 1024px) {
+		display: none;
+	}
 }
 
 /* Small screens only: once the tray pins to the top, give it a bottom

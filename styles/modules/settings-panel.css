@@ -26,31 +26,40 @@
 	/* This is the app-within-an-app: a sealed scope with its own token set, so
 	   theming the editorial layer can never move the UI out from under the
 	   cursor. Every rule inside the chrome reads an --app-* token below, NEVER a
-	   global token directly - that indirection IS the wall. The contract:
+	   global token directly - that indirection IS the wall. The contract
+	   (Derek, 2026-07-28: the chrome is STATIONARY - it never changes size or
+	   position - but themes may still paint it):
 
-	     COLOR slots default to aliasing the global semantic tokens, so the
-	     chrome tracks the active theme for free. They are the ONLY sanctioned
-	     door in: an emphasis that wants bespoke chrome (a filled coral pill, a
-	     soft lift) overrides these - and only these.
+	     COLOR slots alias the global semantic tokens, so the chrome tracks
+	     the active theme for free. They are the ONLY sanctioned door in: a
+	     theme that wants bespoke chrome overrides these - and only these.
 
-	     GEOMETRY tokens are the frozen list. An emphasis block must never set
+	     GEOMETRY tokens are the frozen list. A theme block must never set
 	     them: a size or border-width change moves the control, defeating the
-	     whole point. (--app-corners is the one geometry lever that's cursor-safe
-	     - radius doesn't move a target's center - but it stays literal until the
-	     unfreeze-corners decision lands, so it's deliberately not a token yet.) */
+	     whole point. Fonts are pinned below for the same reason - a family
+	     swap reflows label metrics. (--app-corners is the one geometry lever
+	     that's cursor-safe - radius doesn't move a target's center - but it
+	     stays literal until the unfreeze-corners decision lands, so it's
+	     deliberately not a token yet.) */
 
-	/* Pin type families inside the panel so the character switcher doesn't
-	   restyle its own chrome (a mono/display character would otherwise hit
-	   panel labels). */
+	/* Pin type families inside the chrome so the character switcher doesn't
+	   restyle its own controls (a family swap changes metrics, and metrics
+	   are geometry). The token pin alone is NOT enough: the page's
+	   font-family rule lives on body, resolves OUT there with the
+	   character's font, and chrome elements just inherit the resolved
+	   result - so the scope must re-apply the property to make the pinned
+	   token actually land. */
 	--font-body: var(--font-sans);
 	--font-heading: var(--font-sans);
+
+	font-family: var(--font-body);
 
 	--app-data-voice-font-family: var(--font-mono);
 	--app-data-voice-font-size: calc(var(--step-0) * 0.75);
 	--app-data-voice-line-height: 1.4;
 	--app-data-voice-letter-spacing: 0.01em;
 
-	/* Color slots - free levers (an emphasis may repaint these). */
+	/* Color slots - free levers (a theme may repaint these). */
 	--app-fill: var(--fill-primary);
 	--app-ink: var(--ink-primary);
 	--app-ink-secondary: var(--ink-secondary);
@@ -62,6 +71,11 @@
 	/* Geometry - frozen. The border stays as a color-matched placeholder (a
 	   theme fakes "no border" via --app-stroke, never by zeroing the width). */
 	--app-border-width: 1px;
+
+	/* Control text sits between the body size and the data-voice labels: big
+	   enough to press, small enough that a pill doesn't outshout its own
+	   section label. Font size is metrics is geometry - frozen like the rest. */
+	--app-control-font-size: calc(var(--step-0) * 0.85);
 }
 
 .app-data-voice {
@@ -314,22 +328,38 @@ button.trigger {
 	display: grid;
 	gap: 1.5rem;
 
-	/* Radio pills: a radio dot + label. Compact, but still a comfortable tap
-	   target. The dot makes the single-select obvious (matching role=radio), so
-	   the row no longer needs an inset container. */
+	/* Radio pills: a radio dot + label. The visible pill is deliberately slim
+	   (control-size type, light padding); the ::after overlay quietly extends
+	   the touch target back out to ~44px - same "small visual, big hit"
+	   pattern as the slider's --range-hit. Horizontal reach stays inside the
+	   group gap so neighboring pills' targets don't overlap.
+
+	   Selected is MONOCHROME on purpose (Derek, 2026-07-28) - filled dot,
+	   deeper ink tint, stronger ink stroke. An accent tint was tried and
+	   clashed under the darker palettes (accent-into-dark-fill goes muddy);
+	   ink/fill mixes track every scheme and emphasis by definition. The ink
+	   stays --app-ink in both states. */
 	button {
 		font: inherit;
+		font-size: var(--app-control-font-size);
 		cursor: pointer;
 
+		position: relative;
 		display: inline-flex;
 		align-items: center;
 		gap: 0.45rem;
-		padding: 0.4rem 0.65rem;
+		padding: 0.3rem 0.6rem;
 
-		border: var(--app-border-width) solid var(--app-stroke);
-		background: var(--app-fill);
+		border: var(--app-border-width) solid color-mix(in oklch, var(--app-ink) 8%, var(--app-fill));
+		background: color-mix(in oklch, var(--app-ink) 6%, var(--app-fill));
 		color: var(--app-ink);
 		border-radius: 0px;
+
+		&::after {
+			content: "";
+			position: absolute;
+			inset: -7px -3px;
+		}
 
 		&:focus-visible {
 			outline: 2px solid var(--app-accent);
@@ -337,14 +367,8 @@ button.trigger {
 		}
 
 		&[aria-checked="true"] {
-			color: var(--app-fill);
-			background: var(--app-accent);
-			background: linear-gradient(
-				to bottom,
-				color-mix(in oklch, var(--app-accent) 80%, white) 0%,
-				var(--app-accent) 100%
-			);
-			border-color: color-mix(in oklch, var(--app-accent) 70%, black);
+			background: color-mix(in oklch, var(--app-ink) 14%, var(--app-fill));
+			border-color: color-mix(in oklch, var(--app-ink) 45%, var(--app-fill));
 		}
 	}
 
@@ -359,7 +383,7 @@ button.trigger {
 		}
 
 		&[aria-checked="true"]::before {
-			background: var(--app-accent);
+			background: currentColor;
 		}
 	}
 }

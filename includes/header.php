@@ -166,7 +166,10 @@
 			stuck. sticky-header.js watches it and toggles .is-stuck. */ ?>
 		<div class='tray-sentinel' aria-hidden='true'></div>
 
-		<header class='site-tray'>
+		<?php /* data-ui='app': the tray IS core UI, so the whole strip lives in
+			the sealed app-chrome scope (settings-panel.css) - without it the
+			toolbar triggers read --app-* tokens that never resolve. */ ?>
+		<header class='site-tray' data-ui='app'>
 			<!--<a class='site-name' href='<?= '/' . ($target_query ?? '') ?>'>Derek Wood</a>-->
 
 			<?php /* Dev stamp - which code am I looking at, at a glance. Top-left
