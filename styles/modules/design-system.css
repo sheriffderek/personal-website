@@ -118,7 +118,7 @@
 		}
 	}
 
-	/* The hand-tuned reference row - reads the REAL [data-flavor] tokens from
+	/* The hand-tuned reference row - reads the REAL [data-variant] tokens from
 	   settings.css, so it is the actual shipped design sitting next to the
 	   generated one. */
 	.harmony-reference {

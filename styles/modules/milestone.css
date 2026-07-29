@@ -19,7 +19,7 @@
 
 .milestone {
 	/* --poster-fill / --poster-ink come from the flavor blocks in
-	   settings.css (the bare [data-flavor] baseline covers the default) -
+	   settings.css (the bare [data-variant] baseline covers the default) -
 	   never restate them here; see the note there. */
 	--line-width-primary: 6;
 	--line-width-secondary: 3;

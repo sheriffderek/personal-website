@@ -9,7 +9,7 @@
 			"job",
 			"consulting"
 		],
-		"flavor": "stone",
+		"variant": "stone",
 		"media": [
 			{
 				"type": "play",
@@ -43,7 +43,7 @@
 			"dev",
 			"design"
 		],
-		"flavor": "stone",
+		"variant": "stone",
 		"poster": "medium",
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -63,7 +63,7 @@
 			"education",
 			"product"
 		],
-		"flavor": "moss",
+		"variant": "moss",
 		"invertible": true,
 		"poster": "small",
 		"media": [
@@ -85,7 +85,7 @@
 			"education",
 			"design"
 		],
-		"flavor": "warm",
+		"variant": "warm",
 		"poster": "medium",
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -105,7 +105,7 @@
 			"education",
 			"dev"
 		],
-		"flavor": "cool",
+		"variant": "cool",
 		"invertible": true,
 		"poster": "medium",
 		"media": [
@@ -141,7 +141,7 @@
 			"community",
 			"leadership"
 		],
-		"flavor": "warm",
+		"variant": "warm",
 		"poster": true,
 		"media": [
 			{
@@ -176,7 +176,7 @@
 			"dev",
 			"design"
 		],
-		"flavor": "cool",
+		"variant": "cool",
 		"invertible": true,
 		"media": [
 			{
@@ -200,7 +200,7 @@
 			"music",
 			"design"
 		],
-		"flavor": "night",
+		"variant": "night",
 		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -220,7 +220,7 @@
 			"speaking",
 			"education"
 		],
-		"flavor": "night",
+		"variant": "night",
 		"poster": "small",
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -239,7 +239,7 @@
 			"job",
 			"product"
 		],
-		"flavor": "moss",
+		"variant": "moss",
 		"media": [
 			{
 				"type": "loop",
@@ -265,7 +265,7 @@
 			"education",
 			"speaking"
 		],
-		"flavor": "night",
+		"variant": "night",
 		"poster": "medium",
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -290,7 +290,7 @@
 			"community",
 			"mentoring"
 		],
-		"flavor": "rose",
+		"variant": "rose",
 		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -315,7 +315,7 @@
 			"education",
 			"community"
 		],
-		"flavor": "warm",
+		"variant": "warm",
 		"poster": "small",
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -334,7 +334,7 @@
 			"job",
 			"product"
 		],
-		"flavor": "rose",
+		"variant": "rose",
 		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -358,7 +358,7 @@
 			"education",
 			"dev"
 		],
-		"flavor": "night",
+		"variant": "night",
 		"invertible": true,
 		"poster": "medium",
 		"media": [
@@ -380,7 +380,7 @@
 			"education",
 			"accessibility"
 		],
-		"flavor": "cool",
+		"variant": "cool",
 		"invertible": true,
 		"poster": true,
 		"media": [
@@ -406,7 +406,7 @@
 			"education",
 			"design"
 		],
-		"flavor": "cool",
+		"variant": "cool",
 		"poster": "medium",
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -427,7 +427,7 @@
 			"education",
 			"community"
 		],
-		"flavor": "moss",
+		"variant": "moss",
 		"poster": "small",
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -448,7 +448,7 @@
 			"education",
 			"design"
 		],
-		"flavor": "moss",
+		"variant": "moss",
 		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -468,7 +468,7 @@
 			"design-systems",
 			"dev"
 		],
-		"flavor": "cool",
+		"variant": "cool",
 		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -488,7 +488,7 @@
 			"writing",
 			"design-systems"
 		],
-		"flavor": "warm",
+		"variant": "warm",
 		"poster": "medium",
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -513,7 +513,7 @@
 			"education",
 			"design"
 		],
-		"flavor": "warm",
+		"variant": "warm",
 		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -533,7 +533,7 @@
 			"consulting",
 			"ecommerce"
 		],
-		"flavor": "stone",
+		"variant": "stone",
 		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -553,7 +553,7 @@
 			"education",
 			"product"
 		],
-		"flavor": "moss",
+		"variant": "moss",
 		"poster": true,
 		"media": [
 			{
@@ -588,7 +588,7 @@
 			"dev",
 			"agency"
 		],
-		"flavor": "night",
+		"variant": "night",
 		"invertible": true,
 		"poster": true,
 		"media": [
@@ -614,7 +614,7 @@
 			"community",
 			"mentoring"
 		],
-		"flavor": "rose",
+		"variant": "rose",
 		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -634,7 +634,7 @@
 			"product",
 			"design-systems"
 		],
-		"flavor": "cool",
+		"variant": "cool",
 		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -657,7 +657,7 @@
 			"job",
 			"consulting"
 		],
-		"flavor": "stone",
+		"variant": "stone",
 		"poster": "medium",
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -677,7 +677,7 @@
 			"design-systems",
 			"education"
 		],
-		"flavor": "stone",
+		"variant": "stone",
 		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -701,7 +701,7 @@
 			"agency",
 			"dev"
 		],
-		"flavor": "warm",
+		"variant": "warm",
 		"poster": true,
 		"media": [
 			{
@@ -736,7 +736,7 @@
 			"product",
 			"dev"
 		],
-		"flavor": "cool",
+		"variant": "cool",
 		"poster": "medium",
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -756,7 +756,7 @@
 			"agency",
 			"dev"
 		],
-		"flavor": "warm",
+		"variant": "warm",
 		"poster": "medium",
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -775,7 +775,7 @@
 			"job",
 			"freelance"
 		],
-		"flavor": "warm",
+		"variant": "warm",
 		"poster": true,
 		"media": [
 			{

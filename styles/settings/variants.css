@@ -1,0 +1,36 @@
+/* ============================================================================
+   VARIANTS  [data-variant]  - the per-milestone poster ROLE slot (the
+   "variant" key in milestones.json -> data-variant on the article). Renamed
+   from "flavor" 2026-07-28, freeing that word for the range axis (see
+   flavors.css).
+
+   A variant is NOT a color. It names the card's position in the wall's
+   variety - the loud one, the black card, a quiet-mass card - authored once
+   per milestone and never changed by any theme. What a slot MEANS in
+   pigment is decided above it: each mood x character cell (and eventually
+   each named flavor range) assigns colors to these slots in flavors.css.
+
+   The bare [data-variant] block is the safety net and MUST come first, so
+   named-slot rules beat it by source order (every selector here is one
+   attribute - equal specificity). It covers data-variant='default' and any
+   unknown value: those posters paint with the page's own fill/ink. Don't
+   restate these tokens in milestone.css - a same-specificity rule in a
+   later module file would silently flatten every variant (that regression
+   has happened once already).
+   ========================================================================== */
+
+[data-variant] {
+	--poster-fill: var(--fill-primary);
+	--poster-ink: var(--ink-primary);
+}
+
+/* Phones: the media frame goes edge-to-edge and drops its side borders
+   (milestone.css), so a page-colored ground would melt into the page. The
+   FALLBACK ground steps to the secondary fill for delineation - it loses to
+   any stated ground by source order (settings.css imports this file before
+   flavors.css, and every stated ground lives there). */
+@media (width <= 600px) {
+	[data-variant] {
+		--poster-fill: var(--fill-secondary);
+	}
+}

@@ -120,7 +120,7 @@
 		'slug' => 'design-system-sample',
 		'date' => '2026',
 		'weight' => 1,
-		'flavor' => 'warm',
+		'variant' => 'warm',
 		'poster' => true,
 		'title' => 'Sample poster card',
 		'description' => '<p>The live poster card, rendered through the real milestone template. Change brand, emphasis, or scheme in the settings panel and watch this repaint with everything above it.</p>',
@@ -152,7 +152,7 @@
 	<?php /* Phase 0 bench: is a palette composable, or must it be hand-authored?
 		Engine lives in styles/modules/design-system.css - bench-local until it
 		earns promotion, same as the grain layers. The reference row reads the
-		REAL [data-flavor] tokens, so the shipped design sits next to the
+		REAL [data-variant] tokens, so the shipped design sits next to the
 		generated one. Rows 3 and 4 are the actual test: they cost one value
 		each, and either they hold up or the model is wrong. */ ?>
 	<section class='ds-section'>
@@ -163,13 +163,13 @@
 		<h3 class='strong-voice'>Hand-tuned - the shipped 70s rainbow</h3>
 
 		<ol class='harmony-reference'>
-			<li data-flavor='rose'><span class='quiet-voice'>rose</span></li>
+			<li data-variant='rose'><span class='quiet-voice'>rose</span></li>
 
-			<li data-flavor='warm'><span class='quiet-voice'>warm</span></li>
+			<li data-variant='warm'><span class='quiet-voice'>warm</span></li>
 
-			<li data-flavor='moss'><span class='quiet-voice'>moss</span></li>
+			<li data-variant='moss'><span class='quiet-voice'>moss</span></li>
 
-			<li data-flavor='cool'><span class='quiet-voice'>cool</span></li>
+			<li data-variant='cool'><span class='quiet-voice'>cool</span></li>
 		</ol>
 
 		<h3 class='strong-voice'>Generated - Happy (rainbow)</h3>

@@ -19,7 +19,7 @@
 	$invertible = !empty($milestone['invertible']) ? ' data-invertible' : '';
 ?>
 
-<article id='<?= $milestone['slug'] ?>' class='milestone' data-flavor='<?= $milestone['flavor'] ?? 'default' ?>' data-weight='<?= $milestone['weight'] ?? 6 ?>'<?= $poster_size ?><?= $invertible ?>>
+<article id='<?= $milestone['slug'] ?>' class='milestone' data-variant='<?= $milestone['variant'] ?? 'default' ?>' data-weight='<?= $milestone['weight'] ?? 6 ?>'<?= $poster_size ?><?= $invertible ?>>
 
 	<div class='setup'>
 		<p class='year high-voice'><?= $milestone['date'] ?></p>

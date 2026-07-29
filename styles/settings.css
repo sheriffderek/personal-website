@@ -19,8 +19,13 @@
      RED LIGHT  [data-red-light]        ->  settings/red-light.css
         Boolean override that stomps ALL color. Not on the mood dial.
 
+     VARIANT    [data-variant]          ->  settings/variants.css
+        The per-poster ROLE slot (renamed from "flavor" 2026-07-28) - which
+        position in the wall's variety a card plays. Palette-free.
+
      FLAVOR     [data-flavor]           ->  settings/flavors.css
-        Per-poster hue (--poster-*). Parked until the graphics exist.
+        The color-range axis: what the variant slots MEAN in pigment, per
+        mood x character cell - and, as named ranges arrive, per flavor.
 
    THE CONTRACT that makes them compose:
      - Components only ever read the semantic slots (--fill-*, --ink-*,
@@ -33,7 +38,8 @@
        unaccounted and a dropped token is visible at a glance.
 
    LOAD ORDER matters where selectors tie on specificity: base -> characters ->
-   moods -> red-light (must beat moods) -> scheme -> flavors.
+   moods -> red-light (must beat moods) -> scheme -> variants (the bare slot
+   baseline) -> flavors (every color assignment beats the baseline).
    ========================================================================== */
 
 @import 'settings/base.css';
@@ -41,4 +47,5 @@
 @import 'settings/moods.css';
 @import 'settings/red-light.css';
 @import 'settings/scheme.css';
+@import 'settings/variants.css';
 @import 'settings/flavors.css';

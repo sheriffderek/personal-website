@@ -47,8 +47,8 @@
 
 /* Posters too: red light stomps every flavor to the same near-black panel with
    bright red linework. Descendant selector (0,2,0) out-specifies the base
-   [data-flavor] (0,1,0) in flavors.css regardless of load order. */
-[data-red-light] [data-flavor] {
+   [data-variant] (0,1,0) in flavors.css regardless of load order. */
+[data-red-light] [data-variant] {
 	--poster-fill: oklch(20% 0.07 26);
 	--poster-ink: #ff0004;
 }

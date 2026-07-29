@@ -68,10 +68,10 @@
    shape, mood = color).
 
    Future direction (Derek, 2026-07-28, unbuilt on purpose): per-milestone tag
-   colors under expressive x marketing. The seam already exists - data-flavor
-   sits on the article and .year is inside it, so the expressive flavor blocks
-   (flavors.css) can state --year-fill / --year-ink per flavor and the tags
-   follow the card's palette with no new wiring. */
+   colors under expressive x marketing. The seam already exists - data-variant
+   sits on the article and .year is inside it, so the expressive take blocks
+   (flavors.css) can state --year-fill / --year-ink per variant slot and the
+   tags follow the card's palette with no new wiring. */
 html[data-brand-character="marketing"]:not([data-brand-mood]),
 html[data-brand-character="marketing"][data-brand-mood="expressive"] {
 	--year-padding: 0.25em 0.75em;
