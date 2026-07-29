@@ -14,6 +14,8 @@
 <?= partial('settings/mode-switcher', ['id_suffix' => $id_suffix]) ?>
 <?= partial('settings/character-switcher', ['id_suffix' => $id_suffix]) ?>
 <?= partial('settings/mood-switcher', ['id_suffix' => $id_suffix]) ?>
+
+<?= partial('settings/flavor-switcher', ['id_suffix' => $id_suffix]) ?>
 <?php if (!empty($page_has_grid)): ?>
 	<?= partial('settings/view-switcher', ['id_suffix' => $id_suffix]) ?>
 <?php endif; ?>

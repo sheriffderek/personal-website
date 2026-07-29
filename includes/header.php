@@ -57,6 +57,9 @@
 				var mood = localStorage.getItem('mood-preference');
 				if (['technical', 'quiet'].indexOf(mood) !== -1) html.setAttribute('data-brand-mood', mood);
 
+				var flavor = localStorage.getItem('flavor-preference');
+				if (['berry'].indexOf(flavor) !== -1) html.setAttribute('data-flavor', flavor);
+
 				/* Red light is a boolean override, its own key - 'on' = a bare
 				   data-red-light attribute (no value). */
 				if (localStorage.getItem('red-light-preference') === 'on') html.setAttribute('data-red-light', '');

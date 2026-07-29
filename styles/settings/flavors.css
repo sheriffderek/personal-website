@@ -124,6 +124,64 @@ html[data-brand-character="marketing"][data-brand-mood="expressive"] [data-varia
 	}
 }
 
+/* --- BERRY - the first named flavor range (2026-07-28), proving the axis:
+   the marketing cell re-dressed from green-yellow into rose/pink/plum -
+   "same company, different brand colors," the per-target-company mechanism
+   in miniature. Tier-2 restatement only (theme-model.md): the year tag,
+   the heading color, and the slot accents/items it cares about; everything
+   unstated falls through to the cell's default take. The extra [data-flavor]
+   attribute outranks the cell blocks, so berry wins where it speaks. --- */
+html[data-flavor="berry"][data-brand-character="marketing"]:not([data-brand-mood]),
+html[data-flavor="berry"][data-brand-character="marketing"][data-brand-mood="expressive"] {
+	--year-fill: light-dark(var(--color-rose-300), var(--color-rose-900));
+	--year-ink: light-dark(var(--color-stone-900), var(--color-rose-100));
+	--milestone-heading-color: light-dark(var(--color-rose-700), var(--color-rose-300));
+}
+
+html[data-flavor="berry"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="warm"],
+html[data-flavor="berry"][data-brand-character="marketing"][data-brand-mood="expressive"] [data-variant="warm"] {
+	--poster-fill: light-dark(var(--color-rose-300), var(--color-rose-900));
+	--poster-ink: light-dark(var(--color-stone-900), var(--color-rose-100));
+
+	.poster-art {
+		--accent: light-dark(var(--color-fuchsia-600), var(--color-fuchsia-400));
+	}
+}
+
+html[data-flavor="berry"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="cool"],
+html[data-flavor="berry"][data-brand-character="marketing"][data-brand-mood="expressive"] [data-variant="cool"] {
+	--poster-fill-secondary: light-dark(var(--color-pink-300), var(--color-pink-800));
+
+	.poster-art {
+		--accent: light-dark(var(--color-fuchsia-700), var(--color-fuchsia-300));
+	}
+}
+
+html[data-flavor="berry"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="moss"],
+html[data-flavor="berry"][data-brand-character="marketing"][data-brand-mood="expressive"] [data-variant="moss"] {
+	--poster-fill-secondary: light-dark(var(--color-fuchsia-300), var(--color-fuchsia-800));
+
+	.poster-art {
+		--accent: light-dark(var(--color-purple-600), var(--color-purple-400));
+	}
+}
+
+html[data-flavor="berry"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="rose"],
+html[data-flavor="berry"][data-brand-character="marketing"][data-brand-mood="expressive"] [data-variant="rose"] {
+	--poster-fill-secondary: light-dark(var(--color-rose-200), var(--color-rose-800));
+
+	.poster-art {
+		--accent: light-dark(var(--color-purple-600), var(--color-purple-400));
+	}
+}
+
+html[data-flavor="berry"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="night"],
+html[data-flavor="berry"][data-brand-character="marketing"][data-brand-mood="expressive"] [data-variant="night"] {
+	.poster-art {
+		--accent: var(--color-pink-300);
+	}
+}
+
 /* --- product x technical: the Stripe ramp. Gradients are THIS cell's
    signature, and per the sheet they live ON THE SHAPES, not the grounds:
    70% paper / 15% gradient / one warm accent. Every mass drawn with the

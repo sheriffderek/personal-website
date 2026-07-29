@@ -355,6 +355,21 @@
 		names: MOOD_NAMES
 	});
 
+	/* Flavor - the color-range axis on top of mood x character (flavors.css):
+	   index 0 is each cell's own default take, named ranges re-pigment only
+	   what they state. Value list must stay matched with the FOUC script in
+	   header.php and the slider max in includes/settings/flavor-switcher.php. */
+	var FLAVORS      = ['default', 'berry'];
+	var FLAVOR_NAMES = ['Default', 'Berry'];
+
+	var applyFlavor = sliderSwitcher({
+		kind: 'flavor',
+		attr: 'data-flavor',
+		storageKey: 'flavor-preference',
+		values: FLAVORS,
+		names: FLAVOR_NAMES
+	});
+
 	/* Timeline filter — slider sets number of weight tiers shown, cumulative.
 	   1 = weight-1 entries only (the gap-covered product-design pitch),
 	   6 = everything. Weight 1 is the HIGHEST tier — the slider value is also
@@ -1213,6 +1228,12 @@
 		if (moodIdx < 0) moodIdx = 0;
 		applyMood(moodIdx, { persist: false });
 
+		var savedFlavor = null;
+		try { savedFlavor = localStorage.getItem('flavor-preference'); } catch (error) {}
+		var flavorIdx = savedFlavor ? FLAVORS.indexOf(savedFlavor) : 0;
+		if (flavorIdx < 0) flavorIdx = 0;
+		applyFlavor(flavorIdx, { persist: false });
+
 		SWITCHERS.forEach(function (cfg) {
 			var apply = applyByKind[cfg.kind];
 			if (!apply) return;
@@ -1237,6 +1258,7 @@
 	window.settings = {
 		applyCharacter: applyCharacter,
 		applyMood: applyMood,
+		applyFlavor: applyFlavor,
 		applyFilter: applyFilter,
 		set: function (kind, value, opts) {
 			if (applyByKind[kind]) applyByKind[kind](value, opts);
