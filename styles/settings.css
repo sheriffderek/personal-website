@@ -37,15 +37,23 @@
        top of moods.css) - no chaining, no var-of-var, so nothing goes
        unaccounted and a dropped token is visible at a glance.
 
-   LOAD ORDER matters where selectors tie on specificity: base -> characters ->
-   moods -> red-light (must beat moods) -> scheme -> variants (the bare slot
-   baseline) -> flavors (every color assignment beats the baseline).
+   AUTHORITY is declared, not accidental (2026-07-28): each file is a cascade
+   LAYER, and the @layer statement below is the whole law - a later layer
+   beats an earlier one regardless of selector specificity, so no take,
+   flavor, or future block can out-specify red light again (that arms race
+   actually broke the stomp once, same day the takes landed). Two rules ride
+   on this:
+     - red-light is the LAST layer: the finale wins over everything, forever.
+     - modules stay UNLAYERED (unlayered beats layered), which is why the
+       standing law that modules never declare palette tokens is load-bearing.
    ========================================================================== */
 
-@import 'settings/base.css';
-@import 'settings/characters.css';
-@import 'settings/moods.css';
-@import 'settings/red-light.css';
-@import 'settings/scheme.css';
-@import 'settings/variants.css';
-@import 'settings/flavors.css';
+@layer base, characters, moods, scheme, variants, flavors, red-light;
+
+@import 'settings/base.css' layer(base);
+@import 'settings/characters.css' layer(characters);
+@import 'settings/moods.css' layer(moods);
+@import 'settings/red-light.css' layer(red-light);
+@import 'settings/scheme.css' layer(scheme);
+@import 'settings/variants.css' layer(variants);
+@import 'settings/flavors.css' layer(flavors);

@@ -1,8 +1,11 @@
 /* ============================================================================
    CHARACTER  [data-brand-character]  - the structural axis: type pair, corner
-   radius, scale rhythm (and, later, the color APPLICATION policy - WHERE color
-   lands; see theme-model.md). A character NEVER names a hue - the same
-   character must work under every mood, so the pigments stay the mood's job.
+   radius, scale rhythm. A character NEVER names a hue - the same character
+   must work under every mood. (The axis model, per Derek 2026-07-28:
+   character = structure, MOOD = the application policy - where color lands
+   and in what way - and FLAVOR routes the pigments. An earlier note here
+   gave "where color lands" to character; that was wrong under the settled
+   model.)
 
    Three characters (2026-07-14): Product / Marketing / Interface.
      Product     - the DEFAULT. :root (base.css) IS Product: Derek's own personal
@@ -40,16 +43,9 @@
 	--loud-voice-line-height: 1;
 }
 
-/* Marketing always sits on WHITE PAPER (Derek, 2026-07-28) - a documented
-   EXCEPTION to "a character never names a hue": brochures are white paper,
-   and that reads as structural posture more than pigment. White composes
-   under every mood's inks; dark scheme pins one shared near-black since the
-   moods' own darks can't be partially kept. The html type in the selector is
-   load-bearing: characters load BEFORE moods, so without it every mood's own
-   fill (same specificity, later file) would win by source order. */
-html[data-brand-character="marketing"] {
-	--fill-primary: light-dark(white, var(--color-stone-950));
-}
+/* (Marketing's always-white page ground lives in flavors.css - it must
+   outrank the moods, and under the layer order only the assignment layer
+   does. The character block above stays hue-free, per the law.) */
 
 [data-brand-character="interface"] {
 	/* The app/dashboard surface: one neutral workhorse family doing both jobs,
@@ -83,8 +79,7 @@ html[data-brand-character="marketing"] {
    sits on the article and .year is inside it, so the expressive take blocks
    (flavors.css) can state --year-fill / --year-ink per variant slot and the
    tags follow the card's palette with no new wiring. */
-html[data-brand-character="marketing"]:not([data-brand-mood]),
-html[data-brand-character="marketing"][data-brand-mood="expressive"] {
+html[data-brand-character="marketing"]:not([data-brand-mood]) {
 	--year-padding: 0.25em 0.75em;
 	--year-corners: 1em;
 	--year-fill: light-dark(var(--color-yellow-300), var(--color-yellow-900));

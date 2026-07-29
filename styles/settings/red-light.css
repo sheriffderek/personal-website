@@ -45,10 +45,32 @@
 	--selection-ink: var(--fill-primary);
 }
 
-/* Posters too: red light stomps every flavor to the same near-black panel with
-   bright red linework. Descendant selector (0,2,0) out-specifies the base
-   [data-variant] (0,1,0) in flavors.css regardless of load order. */
+/* Posters too: red light stomps every variant to the same near-black panel
+   with bright red linework. Authority comes from the LAYER order (red-light
+   is the last settings layer - settings.css), not from specificity: any take
+   or flavor block can be as specific as it likes and still lose here. */
 [data-red-light] [data-variant] {
 	--poster-fill: oklch(20% 0.07 26);
 	--poster-ink: #ff0004;
+
+	/* The secondary surface returns to its derived mix (initial on a custom
+	   property = guaranteed-invalid, so milestone.css's var() fallback kicks
+	   in) - no take-colored masses in the two-color room. */
+	--poster-fill-secondary: initial;
+}
+
+/* The technical cell paints its masses through the shared gradient def with
+   a real fill rule (flavors.css) - tokens can't undo a property, so the
+   stomp restores the token fill directly. Same layer authority. */
+[data-red-light] .poster-art [fill="var(--fill-secondary)"] {
+	fill: var(--fill-secondary);
+}
+
+/* Card expression slots go quiet: no yellow year pills or green headings in
+   the red room. Color only - the tag keeps its padding (geometry never moves
+   on a color toggle), it just stops painting. */
+[data-red-light] {
+	--year-fill: transparent;
+	--year-ink: var(--ink-primary);
+	--milestone-heading-color: var(--ink-primary);
 }
