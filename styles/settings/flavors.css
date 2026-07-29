@@ -55,77 +55,55 @@
 
 /* --- product x expressive: wilder accents --- */
 html:not([data-brand-character]):not([data-brand-mood]) [data-variant="warm"] {
-	.poster-art {
-		--accent: light-dark(var(--color-fuchsia-500), var(--color-fuchsia-400));
-	}
+	--poster-accent: light-dark(var(--color-fuchsia-500), var(--color-fuchsia-400));
 }
 
 html:not([data-brand-character]):not([data-brand-mood]) [data-variant="cool"] {
-	.poster-art {
-		--accent: light-dark(var(--color-lime-400), var(--color-lime-300));
-	}
+	--poster-accent: light-dark(var(--color-lime-400), var(--color-lime-300));
 }
 
 html:not([data-brand-character]):not([data-brand-mood]) [data-variant="stone"] {
 	--poster-fill-secondary: light-dark(var(--color-sky-300), var(--color-sky-800));
 
-	.poster-art {
-		--accent: light-dark(var(--color-orange-500), var(--color-orange-400));
-	}
+	--poster-accent: light-dark(var(--color-orange-500), var(--color-orange-400));
 }
 
 html:not([data-brand-character]):not([data-brand-mood]) [data-variant="night"] {
-	.poster-art {
-		--accent: var(--color-fuchsia-400);
-	}
+	--poster-accent: var(--color-fuchsia-400);
 }
 
 html:not([data-brand-character]):not([data-brand-mood]) [data-variant="moss"] {
-	.poster-art {
-		--accent: light-dark(var(--color-orange-500), var(--color-orange-400));
-	}
+	--poster-accent: light-dark(var(--color-orange-500), var(--color-orange-400));
 }
 
 /* --- marketing x expressive: the green-yellow-amber family --- */
 html[data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="warm"] {
-	.poster-art {
-		--accent: light-dark(var(--color-emerald-600), var(--color-emerald-400));
-	}
+	--poster-accent: light-dark(var(--color-emerald-600), var(--color-emerald-400));
 }
 
 html[data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="cool"] {
 	--poster-ink: light-dark(var(--color-stone-900), var(--color-lime-100));
 	--poster-fill-secondary: light-dark(var(--color-lime-300), var(--color-lime-800));
 
-	.poster-art {
-		--accent: light-dark(var(--color-green-700), var(--color-green-300));
-	}
+	--poster-accent: light-dark(var(--color-green-700), var(--color-green-300));
 }
 
 html[data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="stone"] {
-	.poster-art {
-		--accent: light-dark(var(--color-green-600), var(--color-green-400));
-	}
+	--poster-accent: light-dark(var(--color-green-600), var(--color-green-400));
 }
 
 html[data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="night"] {
-	.poster-art {
-		--accent: var(--color-lime-300);
-	}
+	--poster-accent: var(--color-lime-300);
 }
 
 html[data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="moss"] {
-	.poster-art {
-		--accent: light-dark(var(--color-amber-500), var(--color-amber-400));
-	}
+	--poster-accent: light-dark(var(--color-amber-500), var(--color-amber-400));
 }
 
 html[data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="rose"] {
 	--poster-fill-secondary: light-dark(var(--color-amber-300), var(--color-amber-800));
 
-	.poster-art {
-		--accent: light-dark(var(--color-emerald-600), var(--color-emerald-400));
-	}
+	--poster-accent: light-dark(var(--color-emerald-600), var(--color-emerald-400));
 }
 
 /* --- BERRY - the first named flavor range (2026-07-28), proving the axis:
@@ -141,43 +119,47 @@ html[data-flavor="berry"][data-brand-character="marketing"]:not([data-brand-mood
 	--milestone-heading-color: light-dark(var(--color-rose-700), var(--color-rose-300));
 }
 
+/* The cell-wide accent BASELINE: without it, any variant this flavor
+   doesn't explicitly restate (stone, default) falls through to the
+   marketing take's green - a green dot in the berry room (caught live,
+   2026-07-28). It MUST target the articles ([data-variant]), not sit in
+   the html-scope block above: the cell takes declare on the article, and
+   an element's own declaration beats anything inherited regardless of
+   layer - an html-level baseline would be silently dead. At article level
+   the extra [data-flavor] attribute outranks the takes, and berry's own
+   per-variant blocks below outrank this. Every flavor range needs this
+   rule - a flavor covers a cell's accents wholesale or not at all. */
+html[data-flavor="berry"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant] {
+	--poster-accent: light-dark(var(--color-fuchsia-600), var(--color-fuchsia-400));
+}
+
 html[data-flavor="berry"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="warm"] {
 	--poster-fill: light-dark(var(--color-rose-300), var(--color-rose-900));
 	--poster-ink: light-dark(var(--color-stone-900), var(--color-rose-100));
 
-	.poster-art {
-		--accent: light-dark(var(--color-fuchsia-600), var(--color-fuchsia-400));
-	}
+	--poster-accent: light-dark(var(--color-fuchsia-600), var(--color-fuchsia-400));
 }
 
 html[data-flavor="berry"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="cool"] {
 	--poster-fill-secondary: light-dark(var(--color-pink-300), var(--color-pink-800));
 
-	.poster-art {
-		--accent: light-dark(var(--color-fuchsia-700), var(--color-fuchsia-300));
-	}
+	--poster-accent: light-dark(var(--color-fuchsia-700), var(--color-fuchsia-300));
 }
 
 html[data-flavor="berry"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="moss"] {
 	--poster-fill-secondary: light-dark(var(--color-fuchsia-300), var(--color-fuchsia-800));
 
-	.poster-art {
-		--accent: light-dark(var(--color-purple-600), var(--color-purple-400));
-	}
+	--poster-accent: light-dark(var(--color-purple-600), var(--color-purple-400));
 }
 
 html[data-flavor="berry"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="rose"] {
 	--poster-fill-secondary: light-dark(var(--color-rose-200), var(--color-rose-800));
 
-	.poster-art {
-		--accent: light-dark(var(--color-purple-600), var(--color-purple-400));
-	}
+	--poster-accent: light-dark(var(--color-purple-600), var(--color-purple-400));
 }
 
 html[data-flavor="berry"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="night"] {
-	.poster-art {
-		--accent: var(--color-pink-300);
-	}
+	--poster-accent: var(--color-pink-300);
 }
 
 /* --- product x technical: the Stripe ramp. Gradients are THIS cell's
@@ -200,25 +182,19 @@ html:not([data-brand-character])[data-brand-mood="technical"] .poster-art [fill=
 
 html:not([data-brand-character])[data-brand-mood="technical"] [data-variant="warm"] {
 	/* The wall's ONE warm accent. */
-	.poster-art {
-		--accent: light-dark(var(--color-amber-500), var(--color-amber-400));
-	}
+	--poster-accent: light-dark(var(--color-amber-500), var(--color-amber-400));
 }
 
 html:not([data-brand-character])[data-brand-mood="technical"] [data-variant="cool"] {
 	--poster-ink: light-dark(var(--color-indigo-700), var(--color-indigo-300));
 
-	.poster-art {
-		--accent: light-dark(var(--color-sky-500), var(--color-sky-400));
-	}
+	--poster-accent: light-dark(var(--color-sky-500), var(--color-sky-400));
 }
 
 html:not([data-brand-character])[data-brand-mood="technical"] [data-variant="stone"] {
 	--poster-fill-secondary: light-dark(var(--color-slate-200), var(--color-slate-700));
 
-	.poster-art {
-		--accent: light-dark(var(--color-indigo-500), var(--color-indigo-400));
-	}
+	--poster-accent: light-dark(var(--color-indigo-500), var(--color-indigo-400));
 }
 
 html:not([data-brand-character])[data-brand-mood="technical"] [data-variant="night"] {
@@ -227,25 +203,19 @@ html:not([data-brand-character])[data-brand-mood="technical"] [data-variant="nig
 	--poster-gradient-from: var(--color-indigo-950);
 	--poster-gradient-to: var(--color-violet-800);
 
-	.poster-art {
-		--accent: light-dark(var(--color-sky-400), var(--color-sky-400));
-	}
+	--poster-accent: light-dark(var(--color-sky-400), var(--color-sky-400));
 }
 
 html:not([data-brand-character])[data-brand-mood="technical"] [data-variant="moss"] {
 	--poster-fill-secondary: light-dark(var(--color-sky-200), var(--color-sky-800));
 
-	.poster-art {
-		--accent: light-dark(var(--color-violet-500), var(--color-violet-400));
-	}
+	--poster-accent: light-dark(var(--color-violet-500), var(--color-violet-400));
 }
 
 html:not([data-brand-character])[data-brand-mood="technical"] [data-variant="rose"] {
 	--poster-fill-secondary: light-dark(var(--color-violet-200), var(--color-violet-800));
 
-	.poster-art {
-		--accent: light-dark(var(--color-blue-500), var(--color-blue-400));
-	}
+	--poster-accent: light-dark(var(--color-blue-500), var(--color-blue-400));
 }
 
 /* ----------------------------------------------------------------------------
@@ -310,9 +280,7 @@ html:not([data-brand-mood]) [data-variant="warm"] {
 	--poster-fill: light-dark(var(--color-yellow-300), var(--color-yellow-900));
 	--poster-ink: light-dark(var(--color-stone-900), var(--color-yellow-100));
 
-	.poster-art {
-		--accent: light-dark(var(--color-red-500), var(--color-red-400));
-	}
+	--poster-accent: light-dark(var(--color-red-500), var(--color-red-400));
 }
 
 /* The black card - same panel in both schemes; a black card is a black card. */
@@ -320,9 +288,7 @@ html:not([data-brand-mood]) [data-variant="night"] {
 	--poster-fill: var(--color-stone-900);
 	--poster-ink: var(--color-stone-100);
 
-	.poster-art {
-		--accent: var(--color-yellow-300);
-	}
+	--poster-accent: var(--color-yellow-300);
 }
 
 /* Item takes - paper ground, color on the quiet masses. */
@@ -330,33 +296,25 @@ html:not([data-brand-mood]) [data-variant="cool"] {
 	--poster-ink: light-dark(var(--color-indigo-700), var(--color-indigo-300));
 	--poster-fill-secondary: light-dark(var(--color-purple-300), var(--color-purple-800));
 
-	.poster-art {
-		--accent: light-dark(var(--color-yellow-400), var(--color-yellow-300));
-	}
+	--poster-accent: light-dark(var(--color-yellow-400), var(--color-yellow-300));
 }
 
 html:not([data-brand-mood]) [data-variant="stone"] {
 	--poster-fill-secondary: light-dark(var(--color-taupe-300), var(--color-taupe-700));
 
-	.poster-art {
-		--accent: light-dark(var(--color-red-500), var(--color-red-400));
-	}
+	--poster-accent: light-dark(var(--color-red-500), var(--color-red-400));
 }
 
 html:not([data-brand-mood]) [data-variant="moss"] {
 	--poster-fill-secondary: light-dark(var(--color-emerald-300), var(--color-emerald-800));
 
-	.poster-art {
-		--accent: light-dark(var(--color-purple-500), var(--color-purple-300));
-	}
+	--poster-accent: light-dark(var(--color-purple-500), var(--color-purple-300));
 }
 
 html:not([data-brand-mood]) [data-variant="rose"] {
 	--poster-fill-secondary: light-dark(var(--color-red-300), var(--color-red-900));
 
-	.poster-art {
-		--accent: light-dark(var(--color-cyan-500), var(--color-cyan-300));
-	}
+	--poster-accent: light-dark(var(--color-cyan-500), var(--color-cyan-300));
 }
 
 /* The 70s muted-rainbow set - the previous take, kept as reference: harvest
@@ -403,3 +361,17 @@ html:not([data-brand-mood]) [data-variant="rose"] {
 	--poster-ink: oklch(36% 0.07 15);
 }
 */
+
+/* ----------------------------------------------------------------------------
+   PER-POSTER CUSTOM (the pattern, 2026-07-28) - a custom block is a
+   SINGLE-CARD FLAVOR: same slots, same layer, scoped by the article's id.
+   The id's specificity means a custom card holds its identity across every
+   take and named flavor - custom means custom - and living in this layer
+   (never inline on the art) means red light still stomps it, per the
+   finale's law. Use sparingly: a card earns a custom block when its SUBJECT
+   has a real color identity the shared registers can't honor.
+
+   First case: the CSS-Tricks card wears its subject's orange. */
+#css-tricks-article {
+	--poster-accent: light-dark(var(--color-orange-500), var(--color-orange-400));
+}

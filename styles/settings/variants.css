@@ -24,6 +24,22 @@
 	--poster-ink: var(--ink-primary);
 }
 
+/* The focal-mark slot, promoted to a real poster token (2026-07-28) so takes
+   state it flat at the article level like fill and ink - the page --accent
+   stays a page concern (chrome, focus rings) and posters read it only
+   through this baseline. milestone.css re-points the art's var(--accent)
+   reads at this slot.
+
+   Declared at :root, NOT on [data-variant], on purpose: an element's own
+   declaration beats anything inherited, so an article-level baseline would
+   silently kill every cell-wide (html-scope) accent statement a flavor
+   makes. At root, the ladder works: flavor cell baselines at html override
+   by layer, article-level takes override by proximity, and with nobody
+   speaking the poster follows the page accent. */
+:root {
+	--poster-accent: var(--accent);
+}
+
 /* Phones: the media frame goes edge-to-edge and drops its side borders
    (milestone.css), so a page-colored ground would melt into the page. The
    FALLBACK ground steps to the secondary fill for delineation - it loses to

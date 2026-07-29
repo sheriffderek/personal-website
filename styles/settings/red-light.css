@@ -57,6 +57,11 @@
 	   property = guaranteed-invalid, so milestone.css's var() fallback kicks
 	   in) - no take-colored masses in the two-color room. */
 	--poster-fill-secondary: initial;
+
+	/* Focal marks rejoin the red accent - stomps every take, flavor, and
+	   per-poster custom accent (this article-level line beats them all by
+	   layer, which is the finale's whole contract). */
+	--poster-accent: var(--accent);
 }
 
 /* The technical cell paints its masses through the shared gradient def with

@@ -381,6 +381,11 @@
 		--fill-primary: var(--poster-fill);
 		--ink-primary: var(--poster-ink);
 
+		/* The art files read var(--accent) for the focal mark; this re-points
+		   that read at the poster's own slot (baseline = the page accent, in
+		   variants.css), so no SVG ever changes when accents re-route. */
+		--accent: var(--poster-accent);
+
 		/* The secondary slots DERIVE from the pair by default, but a flavor
 		   may state them directly (--poster-fill-secondary / -ink-secondary)
 		   - that's how the "just some items" treatment lands color on a
