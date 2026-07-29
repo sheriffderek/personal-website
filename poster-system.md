@@ -64,6 +64,19 @@ Theme still owns the shape language - corners, line widths. Invert (dark surface
 light marks) is just a flavor that sets `--poster-fill` dark and `--poster-ink`
 light - never `filter: invert()`.
 
+## One composition per milestone (Derek, 2026-07-28)
+
+A mood restyles a poster; it never redraws one. Each milestone has exactly ONE
+authored composition (`includes/posters/art/<slug>.php`), and every mood paints
+that same geometry through the tokens. The one sanctioned variation: a mood may
+HIDE or REVEAL a named optional layer - an extra mark drawn in the same file,
+wearing a class (e.g. `class='mood-extra'`), toggled with `display` from a mood
+block. The layer lives in the poster's own SVG so the composition stays one
+file, one truth; a mood block toggles visibility only - it never injects or
+repositions art. (Decided when the three-moods sheet showed per-mood example
+posters with different compositions - that variety, if wanted, comes from
+revealed layers, never from forked artwork.)
+
 ## Gradient background
 
 Use a CSS `background` on the poster element, not SVG `<stop>` elements (SVG stops

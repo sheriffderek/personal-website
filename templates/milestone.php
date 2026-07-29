@@ -11,9 +11,15 @@
 	   authored per entry in milestones.json. A string value becomes
 	   data-poster-size, which milestone.css maps to the frame ratio. */
 	$poster_size = is_string($milestone['poster'] ?? null) ? " data-poster-size='" . $milestone['poster'] . "'" : '';
+
+	/* "invertible" marks a poster as a CANDIDATE for the inverted (swapped
+	   fill/ink) treatment - candidacy is authored here per poster, but a
+	   mood x character block decides whether its candidates actually wear
+	   it (see the inverted section in styles/settings/flavors.css). */
+	$invertible = !empty($milestone['invertible']) ? ' data-invertible' : '';
 ?>
 
-<article id='<?= $milestone['slug'] ?>' class='milestone' data-flavor='<?= $milestone['flavor'] ?? 'default' ?>' data-weight='<?= $milestone['weight'] ?? 6 ?>'<?= $poster_size ?>>
+<article id='<?= $milestone['slug'] ?>' class='milestone' data-flavor='<?= $milestone['flavor'] ?? 'default' ?>' data-weight='<?= $milestone['weight'] ?? 6 ?>'<?= $poster_size ?><?= $invertible ?>>
 
 	<div class='setup'>
 		<p class='year high-voice'><?= $milestone['date'] ?></p>
@@ -33,36 +39,27 @@
 	</div>
 
 	<?php
-		/* Three media shapes, all built on the themable poster-shapes cover:
+		/* Three media shapes, all built on the themable poster cover:
 		     1) no poster       → text-only (nothing rendered here)
-		     2) poster only      → the poster-shapes alone (a card wants a visual
+		     2) poster only      → the poster art alone (a card wants a visual
 		                          but has no slides/videos yet; opt in with
 		                          "poster": true in the JSON)
-		     3) poster + media   → the poster-shapes cover first, then every real
+		     3) poster + media   → the poster cover first, then every real
 		                          slide/video, in a carousel
 		   The poster is ALWAYS the cover — slides and videos are additional, never
 		   a replacement for it. real_media_items() drops placeholders (render.php);
 		   the one shared partial (posters/media-item) renders each item, so the
 		   responsive swap + ratio-lock frame apply throughout.
-		   Authoring the poster cover art itself (the SVG in poster-shapes.php:
-		   tokens, stroke widths, texture rules) is specced in poster-tech-brief.md. */
+		   The cover art is per-milestone: poster_art_path() (render.php) picks
+		   includes/posters/art/<slug>.php, falling back to the original
+		   poster-shapes.php collage. Authoring rules (tokens, stroke widths,
+		   THE SCALE) live in the lab header (experiments/posters.html) and
+		   poster-system.md. */
 		$media_items = real_media_items($milestone);
 		$poster_only = empty($media_items) && !empty($milestone['poster']);
 	?>
 
-	<?php if (!empty($milestone['coverless']) && $media_items): ?>
-
-		<?php /* TEMPORARY (pre-covers phase): show just the intro video, bare -
-			no poster-shapes cover, no carousel. This deliberately overrides the
-			locked "poster-first / no bare media" rule for a card whose real
-			cover isn't drawn yet. The card keeps its other media in the JSON,
-			simply unshown, until it's ready. To restore the full poster+carousel,
-			remove the "coverless" key from the milestone and this branch. */ ?>
-		<figure class='media'>
-			<?= partial('posters/media-item', ['item' => $media_items[0]]) ?>
-		</figure>
-
-	<?php elseif ($media_items): ?>
+	<?php if ($media_items): ?>
 
 		<figure class='media'>
 			<?php /* wrapAround with only 2 cells (poster + one item) can leave a
@@ -71,7 +68,7 @@
 			   worse. If the seam shows up again, fix the seam, not the wrap. */ ?>
 			<div class='carousel' data-flickity='{ "wrapAround": true, "imagesLoaded": true, "prevNextButtons": false }'>
 				<div class='slide' data-type='poster'>
-					<?php include INCLUDES_DIR . '/posters/poster-shapes.php'; ?>
+					<?php include poster_art_path($milestone['slug']); ?>
 				</div>
 
 				<?php foreach ($media_items as $item): ?>
@@ -84,7 +81,7 @@
 
 		<figure class='media'>
 			<div class='slide' data-type='poster'>
-				<?php include INCLUDES_DIR . '/posters/poster-shapes.php'; ?>
+				<?php include poster_art_path($milestone['slug']); ?>
 			</div>
 		</figure>
 

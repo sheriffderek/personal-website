@@ -10,7 +10,6 @@
 			"consulting"
 		],
 		"flavor": "stone",
-		"coverless": true,
 		"media": [
 			{
 				"type": "play",
@@ -65,12 +64,13 @@
 			"product"
 		],
 		"flavor": "moss",
+		"invertible": true,
 		"poster": "small",
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
 		"poster_note": "Small (16:3) heading band, decided 2026-07-12 - enough visual rhythm on the wall without competing with the first milestone beside it. (Supersedes the earlier intentionally-text-only call; the eventual case-study link still stands.)",
-		"description": "<p>After years of leading cohorts day to day, I decided to take a much-needed break to reset. But students kept asking to go through the course. So I tried an experiment: what would happen if it were self-paced? Would people speed up? Get lost? I'm a big fan of cohort-style learning - and I didn't want to lose that magic - but self-paced turned out to open up a lot of interesting opportunities. After enough successful trials, I decided to redesign from a daily drip to a system that lets people go at their own pace with clear milestone checkpoints, based on a monthly membership.</p>",
+		"description": "<p>After years of leading cohorts day to day, I decided to take a much-needed break to reset. But students kept asking to go through the course. So I tried an experiment: what would happen if it were self-paced? Would people speed up? Get lost?</p> <p>I'm a big fan of cohort-style learning - and I didn't want to lose that magic - but self-paced turned out to open up a lot of interesting opportunities. After enough successful trials, I decided to redesign from a daily drip to a system that lets people go at their own pace with clear milestone checkpoints, based on a monthly membership.</p>",
 		"details": "<p>Moving off the daily drip meant major changes, but it also inspired a host of new features that are turning out to be really exciting. Native CSS has come a long way since the initial build in 2019 - so I took the opportunity to fold in everything I'd learned about themeable systems. It was nearly a full rewrite with a ton of database changes. The final polish isn't everywhere yet, but the system is themeable at every level and fortified for its new job.</p>",
 		"backstory": "Source (narrative): the cohort cycle (Alphas 1-7, overlapping every 3-4 months for 4 years) was exhausting, and Derek let cohorts FADE rather than announcing an ending. Tested self-paced with 10 people before committing - it worked. The real validation: students needed Derek less and less as the curriculum refined - 'the ultimate validation: it works WITHOUT you.' Date note: dereks-history.md logs a 'self-paced transition' under 2024 (business-model redesign) while the official launch is May 2026 - it was a two-year fade, not one decision; the card dates it at the launch end. Un-fakeable: the 10-person trial, cohorts faded not killed."
 	},
@@ -106,6 +106,7 @@
 			"dev"
 		],
 		"flavor": "cool",
+		"invertible": true,
 		"poster": "medium",
 		"media": [
 			{
@@ -176,6 +177,7 @@
 			"design"
 		],
 		"flavor": "cool",
+		"invertible": true,
 		"media": [
 			{
 				"type": "photo",
@@ -273,7 +275,7 @@
 			"assets": "Photos from the AICAD symposium, and the event's playful graphic style to riff on."
 		},
 		"poster_note": "EVENTUAL: \"poster\": \"small\" band, poster-only (no slider) - a poster graphic, likely riffing on the symposium playful style in our visual language. SUPERSEDES the poster_plan above: event photos are out - Derek: \"not sure what photos from the event would really help with.\" NOW: text-only. TODO: make the medium poster art (moderate). Weight 1, but only one graphic to produce.",
-		"description": "<p>The Association of Independent Colleges of Art and Design (AICAD) is the consortium of the top art and design schools in the country. Each year they hold a symposium to address what's changing in education. I was invited to speak, and my talk, \"Untangling Web Design Education,\" argued that most programs teach tools instead of core universal design and communication foundations - and that we're failing students because of it. Web designers and developers are building the systems we all have to use. Their work reaches the farthest, with the most serious consequences - yet we expect them to learn through YouTube videos and \"watch how I do it\" courses. We've arbitrarily separated people into \"creatives\" and \"coders\" when what we truly need are well-rounded Designers.</p>",
+		"description": "<p>The Association of Independent Colleges of Art and Design (AICAD) is the consortium of the top art and design schools in the country. Each year they hold a symposium to address what's changing in education. I was invited to speak, and my talk, \"Untangling Web Design Education,\" argued that most programs teach tools instead of core universal design and communication foundations - and that we're failing students because of it.</p> <p>Web designers and developers are building the systems we all have to use. Their work reaches the farthest, with the most serious consequences - yet we expect them to learn through YouTube videos and \"watch how I do it\" courses. We've arbitrarily separated people into \"creatives\" and \"coders\" when what we truly need are well-rounded Designers.</p>",
 		"details": "<p>It was strange being \"back at art school\" - this time as an educator. I spent days across the beautiful ArtCenter campuses, sitting among educators and provosts from the top design schools in the country - including CCA, where I did my undergrad. I especially enjoyed <a class='relaxed' href='https://safiyaunoble.com' target='_blank'>Safiya Noble</a>'s keynote (<em>Algorithms of Oppression</em>) and the <a class='relaxed' href='https://datavandals.com' target='_blank'>Data Vandals</a> (a data-viz art collective out of NYC). I got to hear so many perspectives - but some of these schools are strangely out of touch about AI. Someone with a lot of influence over these programs asked, in earnest, whether it means we could get students through a degree in two years instead of four. No. That's not how art school works, at all.</p>",
 		"backstory": "Source is logistics-only (dereks-history.md): talk 'Untangling Web Design Education,' ArtCenter College of Design (Pasadena), Nov 13-15 2024, AICAD annual gathering, tracks AI/ML / New Learners / Pedagogy and Practice / Graduate Education. The good texture - Safiya Noble's keynote, the Data Vandals collective, the provost who asked about two-year degrees, the CCA-undergrad full-circle - is already in the public 'details,' not the source. So there's little PRIVATE backstory to add here yet. If there's more grit (who invited him, how the talk landed, specific conversations), it needs Derek."
 	},
@@ -289,6 +291,7 @@
 			"mentoring"
 		],
 		"flavor": "rose",
+		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
@@ -356,6 +359,7 @@
 			"dev"
 		],
 		"flavor": "night",
+		"invertible": true,
 		"poster": "medium",
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -377,6 +381,7 @@
 			"accessibility"
 		],
 		"flavor": "cool",
+		"invertible": true,
 		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -386,7 +391,7 @@
 			"assets": "SVG/graphic examples we can show side by side in light mode, dark mode, and forced-colors mode."
 		},
 		"poster_note": "EVENTUAL: poster showing a simple graphic in light + dark mode (evokes the same-graphic-across-contexts accessibility work; see poster_plan), plus slides. ASSET SOURCE: good interactive CodePens to screen-record for the slides. Weight-1 accessibility credential. NOW: text-only. TODO: make the light/dark poster graphic (moderate); video the CodePens (cheap-moderate).",
-		"description": "<p>Light mode, dark mode, forced-colors, contrast, and animation preferences - can you build universal graphics that <em>behave</em> no matter the context? You know those logos in your email that show up broken, black on black? Situations where branding just feels broken across platforms? An accessibility-focused company was working on a solution, and I came on to consult and audit what they'd accomplished so far. It's not something a lot of people think about, so I helped build out the education: client-facing material so target companies could understand the technology by interacting with it, plus internal explainers and checklists for the teams we'd be working with.</p>",
+		"description": "<p>Light mode, dark mode, forced-colors, contrast, and animation preferences - can you build universal graphics that <em>behave</em> no matter the context? You know those logos in your email that show up broken, black on black? Situations where branding just feels broken across platforms?</p> <p>An accessibility-focused company was working on a solution, and I came on to consult and audit what they'd accomplished so far. It's not something a lot of people think about, so I helped build out the education: client-facing material so target companies could understand the technology by interacting with it, plus internal explainers and checklists for the teams we'd be working with.</p>",
 		"details": "<p>I created examples in every combination we could discover and documented each one in extreme detail. I worked with real screen reader users and blind testers along the way. We explored a bunch of ways to show the technology - scrolling storytelling, interactive demos - and I represented the work at the <a href='https://www.csun.edu/cod/conference'>CSUN Assistive Technology Conference</a> that year, where I met a lot of amazing people and got real feedback.</p><p>This kind of work goes deep - it's not a graphic you fix once and hand back. It's embedding with a company's internal team, shifting how they think about it, and working out how all of these pieces fit into their design and theming system at large.</p>",
 		"backstory": "Source: Feb-Aug 2022, SVG + accessibility R&D, built internal tools to teach the team about accessible graphics, and prototyped a habit tracker they were considering building. The private grit (narrative): the ending was weird - Derek had to tell them their tech wasn't really proprietary (you can't patent SVGs that are public knowledge) - his 'why do I always end up working for crazy people?' pattern. Also pedagogically load-bearing: PE students watched him get and do this job in real time - 'I'm actually doing the things they're learning for real - and they can see it.' The CSUN conference appearance in the public details is NOT in the source - memory-only. The habit-tracker R&D here predates the better-life habit-tracking R&D - possible thread, check with Derek."
 	},
@@ -444,6 +449,7 @@
 			"design"
 		],
 		"flavor": "moss",
+		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
@@ -463,6 +469,7 @@
 			"dev"
 		],
 		"flavor": "cool",
+		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
@@ -527,6 +534,7 @@
 			"ecommerce"
 		],
 		"flavor": "stone",
+		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],
@@ -581,6 +589,7 @@
 			"agency"
 		],
 		"flavor": "night",
+		"invertible": true,
 		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -606,6 +615,7 @@
 			"mentoring"
 		],
 		"flavor": "rose",
+		"poster": true,
 		"media": [
 			"/content/placeholder/poster-wide.png"
 		],

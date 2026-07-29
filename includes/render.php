@@ -110,6 +110,16 @@ function poster_variant($path) {
 	return '';
 }
 
+/* A milestone's poster art: the per-milestone SVG partial from the poster
+   language lab (includes/posters/art/<slug>.php - the folder listing is the
+   poster index), falling back to the original poster-shapes collage for any
+   card without its own art yet. Returns the path for include. */
+function poster_art_path($slug) {
+	$art = INCLUDES_DIR . '/posters/art/' . $slug . '.php';
+
+	return is_file($art) ? $art : INCLUDES_DIR . '/posters/poster-shapes.php';
+}
+
 /* A milestone's real media items — the typed {type, src} entries that point at
    a made asset (not the shared placeholder). The template (templates/milestone.php)
    uses this to pick the media shape:
@@ -117,13 +127,9 @@ function poster_variant($path) {
      none + "poster": true → the poster-shapes alone
      none                  → text-only
    The poster is never optional when there's media: a slide/video is NEVER
-   rendered without the poster-shapes cover in front of it. There is no
-   bare-media shape. (One TEMPORARY exception: a milestone with "coverless": true
-   shows its first item bare while its real cover is being drawn - see the
-   coverless branch in templates/milestone.php. It's a labeled override, not a
-   sanctioned shape, and comes out when covers land.) Placeholder paths and empty
-   entries are dropped, so the count reflects real media only. A bare string is
-   treated as a photo. */
+   rendered without the poster cover in front of it. There is no bare-media
+   shape. Placeholder paths and empty entries are dropped, so the count
+   reflects real media only. A bare string is treated as a photo. */
 function real_media_items($milestone) {
 	$items = [];
 

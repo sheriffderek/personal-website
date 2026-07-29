@@ -21,8 +21,8 @@
 	/* --poster-fill / --poster-ink come from the flavor blocks in
 	   settings.css (the bare [data-flavor] baseline covers the default) -
 	   never restate them here; see the note there. */
-	--line-width-primary: 10;
-	--line-width-secondary: 5;
+	--line-width-primary: 6;
+	--line-width-secondary: 3;
 
 	--border-width: 1px;
 
@@ -75,7 +75,17 @@
 
 	.setup {
 		.year {
-			color: var(--ink-auxiliary);
+			color: var(--year-ink, var(--ink-auxiliary));
+
+			/* Tag capability: the year can wear a pill, but stays flush and
+			   transparent until a mood x character combination states the
+			   --year-* slots (first activation: expressive x marketing, in
+			   characters.css). fit-content keeps a stated fill hugging the
+			   text instead of banding the column. */
+			width: fit-content;
+			padding: var(--year-padding, 0);
+			border-radius: var(--year-corners, 0);
+			background: var(--year-fill, transparent);
 		}
 
 		.heading {
@@ -134,10 +144,6 @@
 			width: 100%;
 			height: 100%;
 			object-fit: cover;
-		}
-
-		.slide > svg {
-			opacity: 0;
 		}
 
 		/* Themable media wash - OFF by default (normal blend over a
@@ -374,23 +380,37 @@
 	.poster-art {
 		--fill-primary: var(--poster-fill);
 		--ink-primary: var(--poster-ink);
-		--fill-secondary: color-mix(
+
+		/* The secondary slots DERIVE from the pair by default, but a flavor
+		   may state them directly (--poster-fill-secondary / -ink-secondary)
+		   - that's how the "just some items" treatment lands color on a
+		   poster's quiet masses while the ground stays paper (see the
+		   expressive set in flavors.css). */
+		--fill-secondary: var(--poster-fill-secondary, color-mix(
 			in oklch,
 			var(--poster-fill) 70%,
 			var(--poster-ink)
-		);
-		--ink-secondary: color-mix(
+		));
+		--ink-secondary: var(--poster-ink-secondary, color-mix(
 			in oklch,
 			var(--poster-ink) 55%,
 			var(--poster-fill)
-		);
+		));
 
-		/* Hovering the poster art itself (not the whole milestone) thins the
-		   texture stroke. Scoped to .poster-art so hovering the card's text
-		   never triggers it. */
+		/* The fine strokes breathe on hover (5 -> 3, the lab's hover stop).
+		   The transition lives on the DESCENDANTS in the BASE state: the
+		   stroke-width changes on the paths reading the token, not on the
+		   svg root, and a transition declared only inside :hover would snap
+		   back on exit. (Ported wrong once - root + hover-only = no easing
+		   either way.) */
+		* {
+			transition: stroke-width 300ms;
+		}
+
+		/* Scoped to .poster-art so hovering the card's text never triggers
+		   it. */
 		&:hover {
 			--line-width-secondary: 3;
-			transition: stroke-width 300ms;
 		}
 	}
 
