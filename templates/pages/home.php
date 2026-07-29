@@ -51,9 +51,13 @@ $target_notes = $target['milestones'] ?? [];
 </style>
 
 <header class='page-header'>
-	<h1 class='loud-voice'>
-		<span class='name'>Derek Wood</span>
-		<span class='role'>Goal&#8209driven Designer</span>
+	<?php /* The lockup: big name over a small caps role line - identity loud,
+	         metadata quiet. Each span carries its own voice; the h1 is just
+	         the grouping (its accessible name reads both lines together). */ ?>
+	<h1>
+		<span class='name loud-voice'>Derek Wood</span>
+
+		<span class='role high-voice'>Technical Product Designer etc. etc.</span>
 		<?php // specific role text could be target-based too ?>
 	</h1>
 
@@ -156,6 +160,10 @@ $target_notes = $target['milestones'] ?? [];
 		</div>
 	</section>
 <?php endif; ?>
+
+<?php /* Shared paint server for poster mass gradients (one def per page -
+	ids are global). See the comment in the partial. */ ?>
+<?php include INCLUDES_DIR . '/posters/gradient-defs.php'; ?>
 
 <ul class='timeline' role='list'>
 	<?php foreach ($milestones as $milestone):

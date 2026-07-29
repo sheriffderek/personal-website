@@ -307,3 +307,35 @@ That keeps **every beat of the story except #4**, and #4 is the one Derek himsel
 ### The thing to be honest about
 
 The real cost here is **not code - it is design time.** Every theme x emphasis band is a palette someone has to actually look at and approve. The oklch composition makes them *cheap to express*; it does not make them *automatically good*. Budget the eye time, not the keystrokes - that is what makes or breaks this.
+
+## The colorway axis (Derek, 2026-07-28 - planned, deliberately unbuilt)
+
+Motivation: expressive x marketing currently pigments green-yellow (the
+GoFundMe register) - great, but not every target company wears those colors.
+A **colorway** is a palette variant sitting ON TOP of mood x character: same
+mood, same character, different pigment family. (Named "colorway" because
+"flavor" is taken by the per-milestone poster axis.)
+
+What tokens a colorway would change - the plannable surface, all slots today:
+
+- **Tier 1, page paint** (moods.css): the ~11 semantic tokens (fills, inks,
+  strokes, accent, selection). A colorway COULD restate these; probably
+  shouldn't - whole-page repaint per company is the costume version.
+- **Tier 2, the expression layer** (what the combination takes state now,
+  and where a company's colors actually land): the per-flavor poster takes
+  (~2 slots x 6 flavors in flavors.css), the year tag pair (--year-fill /
+  --year-ink), --milestone-heading-color.
+- **Tier 3, optional finishes**: the media wash pair, link color.
+- **Out by contract**: the app chrome (--app-* aliases tier 1; stationary
+  contract holds under any colorway).
+
+Shape when built: `data-colorway` on <html>, color-only by the same one-way
+law as mood; implementation is DIRECT RESTATEMENT of the tier-2 blocks per
+colorway (the --t-* indirection lesson stands - more CSS, no abstraction
+layer); a colorway defines takes only for the cells it cares about and
+everything else falls through. Realistic size: a dozen-ish declarations.
+
+The long-game tie-in: ?target= already tailors copy per company; the same
+visit could carry the colorway, so a target company's view re-pigments to
+their family - the site dressing for the interview. url-state-plan.md is
+the carrier when that day comes.

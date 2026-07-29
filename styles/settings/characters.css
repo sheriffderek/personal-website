@@ -78,4 +78,10 @@ html[data-brand-character="marketing"][data-brand-mood="expressive"] {
 	--year-corners: 1em;
 	--year-fill: light-dark(var(--color-yellow-300), var(--color-yellow-900));
 	--year-ink: light-dark(var(--color-stone-900), var(--color-yellow-100));
+
+	/* Milestone headings take the brand green in this cell (first take,
+	   2026-07-28 - the .heading a slot in milestone.css). Likely future:
+	   per-flavor heading colors, same seam as the per-flavor year tags
+	   noted below. */
+	--milestone-heading-color: light-dark(var(--color-green-700), var(--color-green-300));
 }

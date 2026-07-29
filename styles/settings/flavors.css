@@ -21,6 +21,191 @@
 	--poster-ink: var(--ink-primary);
 }
 
+/* Phones: the media frame goes edge-to-edge and drops its side borders
+   (milestone.css), so a page-colored ground would melt into the page. The
+   FALLBACK ground steps to the secondary fill for delineation - sits before
+   every named flavor so any stated ground still wins by source order (same
+   one-attribute specificity as the bare block above). */
+@media (width <= 600px) {
+	[data-flavor] {
+		--poster-fill: var(--fill-secondary);
+	}
+}
+
+/* ----------------------------------------------------------------------------
+   COMBINATION TAKES (Derek, 2026-07-28) - the matrix cells get their own
+   registers, overriding the expressive base above by character scope
+   (product = no data-brand-character attribute, per settings-panel.js):
+
+     product x expressive   -> WILD, the Figma-rainbow cell: same paper-ground
+                               items model, accents pushed across the whole
+                               wheel (orange, fuchsia, lime, cyan).
+     marketing x expressive -> ON-BRAND ANALOGOUS, the GoFundMe cell: every
+                               flavor lives in the green-yellow-amber family;
+                               cool loses its indigo linework here.
+     product x technical    -> STRIPE, analogous blue-violet: technical's
+                               first poster palette (elsewhere technical
+                               stays neutral). Cool tones dominate with ONE
+                               warm accent - warm's amber dot is the only
+                               warm note on the wall, per the sheet.
+
+   Interface inherits the expressive base untouched (its story is the
+   inverted candidates). These are explorations - tune per flavor. */
+
+/* --- product x expressive: wilder accents --- */
+html:not([data-brand-character]):not([data-brand-mood]) [data-flavor="warm"],
+html:not([data-brand-character])[data-brand-mood="expressive"] [data-flavor="warm"] {
+	.poster-art {
+		--accent: light-dark(var(--color-fuchsia-500), var(--color-fuchsia-400));
+	}
+}
+
+html:not([data-brand-character]):not([data-brand-mood]) [data-flavor="cool"],
+html:not([data-brand-character])[data-brand-mood="expressive"] [data-flavor="cool"] {
+	.poster-art {
+		--accent: light-dark(var(--color-lime-400), var(--color-lime-300));
+	}
+}
+
+html:not([data-brand-character]):not([data-brand-mood]) [data-flavor="stone"],
+html:not([data-brand-character])[data-brand-mood="expressive"] [data-flavor="stone"] {
+	--poster-fill-secondary: light-dark(var(--color-sky-300), var(--color-sky-800));
+
+	.poster-art {
+		--accent: light-dark(var(--color-orange-500), var(--color-orange-400));
+	}
+}
+
+html:not([data-brand-character]):not([data-brand-mood]) [data-flavor="night"],
+html:not([data-brand-character])[data-brand-mood="expressive"] [data-flavor="night"] {
+	.poster-art {
+		--accent: var(--color-fuchsia-400);
+	}
+}
+
+html:not([data-brand-character]):not([data-brand-mood]) [data-flavor="moss"],
+html:not([data-brand-character])[data-brand-mood="expressive"] [data-flavor="moss"] {
+	.poster-art {
+		--accent: light-dark(var(--color-orange-500), var(--color-orange-400));
+	}
+}
+
+/* --- marketing x expressive: the green-yellow-amber family --- */
+html[data-brand-character="marketing"]:not([data-brand-mood]) [data-flavor="warm"],
+html[data-brand-character="marketing"][data-brand-mood="expressive"] [data-flavor="warm"] {
+	.poster-art {
+		--accent: light-dark(var(--color-emerald-600), var(--color-emerald-400));
+	}
+}
+
+html[data-brand-character="marketing"]:not([data-brand-mood]) [data-flavor="cool"],
+html[data-brand-character="marketing"][data-brand-mood="expressive"] [data-flavor="cool"] {
+	--poster-ink: light-dark(var(--color-stone-900), var(--color-lime-100));
+	--poster-fill-secondary: light-dark(var(--color-lime-300), var(--color-lime-800));
+
+	.poster-art {
+		--accent: light-dark(var(--color-green-700), var(--color-green-300));
+	}
+}
+
+html[data-brand-character="marketing"]:not([data-brand-mood]) [data-flavor="stone"],
+html[data-brand-character="marketing"][data-brand-mood="expressive"] [data-flavor="stone"] {
+	.poster-art {
+		--accent: light-dark(var(--color-green-600), var(--color-green-400));
+	}
+}
+
+html[data-brand-character="marketing"]:not([data-brand-mood]) [data-flavor="night"],
+html[data-brand-character="marketing"][data-brand-mood="expressive"] [data-flavor="night"] {
+	.poster-art {
+		--accent: var(--color-lime-300);
+	}
+}
+
+html[data-brand-character="marketing"]:not([data-brand-mood]) [data-flavor="moss"],
+html[data-brand-character="marketing"][data-brand-mood="expressive"] [data-flavor="moss"] {
+	.poster-art {
+		--accent: light-dark(var(--color-amber-500), var(--color-amber-400));
+	}
+}
+
+html[data-brand-character="marketing"]:not([data-brand-mood]) [data-flavor="rose"],
+html[data-brand-character="marketing"][data-brand-mood="expressive"] [data-flavor="rose"] {
+	--poster-fill-secondary: light-dark(var(--color-amber-300), var(--color-amber-800));
+
+	.poster-art {
+		--accent: light-dark(var(--color-emerald-600), var(--color-emerald-400));
+	}
+}
+
+/* --- product x technical: the Stripe ramp. Gradients are THIS cell's
+   signature, and per the sheet they live ON THE SHAPES, not the grounds:
+   70% paper / 15% gradient / one warm accent. Every mass drawn with the
+   secondary fill paints through the shared #poster-ramp def
+   (includes/posters/gradient-defs.php) - one analogous ramp across the
+   whole wall, tuned by the two tokens below. Grounds stay paper; night's
+   deep panel is the one ground ramp (a dark card is this cell's bleed). --- */
+html:not([data-brand-character])[data-brand-mood="technical"] {
+	--poster-ramp-from: light-dark(var(--color-sky-300), var(--color-indigo-800));
+	--poster-ramp-to: light-dark(var(--color-indigo-400), var(--color-violet-600));
+}
+
+/* The render-layer door: match the masses by their authored fill so the art
+   files stay untouched. CSS fill outranks the presentation attribute. */
+html:not([data-brand-character])[data-brand-mood="technical"] .poster-art [fill="var(--fill-secondary)"] {
+	fill: url(#poster-ramp);
+}
+
+html:not([data-brand-character])[data-brand-mood="technical"] [data-flavor="warm"] {
+	/* The wall's ONE warm accent. */
+	.poster-art {
+		--accent: light-dark(var(--color-amber-500), var(--color-amber-400));
+	}
+}
+
+html:not([data-brand-character])[data-brand-mood="technical"] [data-flavor="cool"] {
+	--poster-ink: light-dark(var(--color-indigo-700), var(--color-indigo-300));
+
+	.poster-art {
+		--accent: light-dark(var(--color-sky-500), var(--color-sky-400));
+	}
+}
+
+html:not([data-brand-character])[data-brand-mood="technical"] [data-flavor="stone"] {
+	--poster-fill-secondary: light-dark(var(--color-slate-200), var(--color-slate-700));
+
+	.poster-art {
+		--accent: light-dark(var(--color-indigo-500), var(--color-indigo-400));
+	}
+}
+
+html:not([data-brand-character])[data-brand-mood="technical"] [data-flavor="night"] {
+	--poster-fill: light-dark(var(--color-indigo-950), var(--color-indigo-950));
+	--poster-ink: var(--color-indigo-100);
+	--poster-gradient-from: var(--color-indigo-950);
+	--poster-gradient-to: var(--color-violet-800);
+
+	.poster-art {
+		--accent: light-dark(var(--color-sky-400), var(--color-sky-400));
+	}
+}
+
+html:not([data-brand-character])[data-brand-mood="technical"] [data-flavor="moss"] {
+	--poster-fill-secondary: light-dark(var(--color-sky-200), var(--color-sky-800));
+
+	.poster-art {
+		--accent: light-dark(var(--color-violet-500), var(--color-violet-400));
+	}
+}
+
+html:not([data-brand-character])[data-brand-mood="technical"] [data-flavor="rose"] {
+	--poster-fill-secondary: light-dark(var(--color-violet-200), var(--color-violet-800));
+
+	.poster-art {
+		--accent: light-dark(var(--color-blue-500), var(--color-blue-400));
+	}
+}
+
 /* ----------------------------------------------------------------------------
    INVERTED - the two-layer model (Derek, 2026-07-28). A poster AUTHORS its
    candidacy ("invertible": true in milestones.json -> data-invertible on the
