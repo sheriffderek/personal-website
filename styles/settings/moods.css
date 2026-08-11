@@ -27,48 +27,54 @@
    palettes. Swap in the real values. Structure is what's proven here, not hues.
    ========================================================================== */
 
-/* --- EXPRESSIVE (default) - fun / happy / friendly: warm paper, vivid accent.
-   Bound to :root so it is the default paint; also matches its own attribute. --- */
+/* --- EXPRESSIVE (default) - fun / happy / friendly: warm-white paper (olive),
+   warm ink (stone), vivid green accent. Bound to :root so it is the default
+   paint; also matches its own attribute. --- */
 :root,
 [data-brand-mood="expressive"] {
-	--fill-primary: light-dark(oklch(98% 0.012 90), oklch(22% 0.02 90));
-	--fill-secondary: light-dark(oklch(95% 0.02 90), oklch(28% 0.02 90));
-	--fill-auxiliary: light-dark(oklch(91% 0.03 90), oklch(34% 0.02 90));
+	--fill-primary: light-dark(var(--color-olive-50), var(--color-olive-900));
+	--fill-secondary: light-dark(var(--color-olive-100), var(--color-olive-800));
+	--fill-auxiliary: light-dark(var(--color-olive-200), var(--color-olive-700));
 
-	--ink-primary: light-dark(oklch(22% 0.03 60), oklch(96% 0.01 90));
-	--ink-secondary: light-dark(oklch(42% 0.04 60), oklch(85% 0.02 90));
-	--ink-auxiliary: light-dark(oklch(56% 0.04 60), oklch(70% 0.02 90));
+	--ink-primary: light-dark(var(--color-stone-900), var(--color-stone-100));
+	--ink-secondary: light-dark(var(--color-stone-600), var(--color-stone-300));
+	--ink-auxiliary: light-dark(var(--color-stone-500), var(--color-stone-400));
 
-	--stroke-primary: light-dark(oklch(80% 0.03 90), oklch(45% 0.02 90));
-	--stroke-secondary: light-dark(oklch(88% 0.02 90), oklch(36% 0.02 90));
-	--stroke-auxiliary: light-dark(oklch(92% 0.02 90), oklch(30% 0.02 90));
+	--stroke-primary: light-dark(var(--color-olive-400), var(--color-olive-600));
+	--stroke-secondary: light-dark(var(--color-olive-300), var(--color-olive-700));
+	--stroke-auxiliary: light-dark(var(--color-olive-200), var(--color-olive-800));
 
-	--accent: light-dark(oklch(58% 0.16 150), oklch(78% 0.15 150));
+	--accent: light-dark(var(--color-green-600), var(--color-green-400));
 
 	/* Highlighter - a calm yellow. LITERAL dark ink (not var(--ink-primary)):
 	   the marker is light in both schemes, and dark-scheme ink goes near-white,
 	   so white-on-yellow would be unreadable. This is the shared default other
 	   moods inherit unless they restate it. */
-	--selection-fill: oklch(93% 0.12 102);
+	--selection-fill: var(--color-yellow-200);
 	--selection-ink: var(--color-stone-900);
 }
 
 /* --- TECHNICAL - techie / cold / cool: an analogous blue spectrum. Seeded from
    the old immersive pilot - a clean starting point. Restates selection (blue). --- */
 [data-brand-mood="technical"] {
-	--fill-primary: light-dark(var(--color-blue-50), var(--color-blue-950));
+	/* Stripe-style decisions (2026-07-28): the page is WHITE paper (Derek -
+	   not blue-tinted; Stripe pages are white) with SLATE ink (Stripe body
+	   text is slate, not blue-on-blue), and the accent is the blurple -
+	   indigo, the signature. The blue family stays in the secondary fills
+	   and strokes as the cool cast. */
+	--fill-primary: light-dark(white, var(--color-blue-950));
 	--fill-secondary: light-dark(var(--color-blue-100), var(--color-blue-900));
 	--fill-auxiliary: light-dark(var(--color-blue-200), var(--color-blue-800));
 
-	--ink-primary: light-dark(var(--color-blue-950), var(--color-blue-50));
-	--ink-secondary: light-dark(var(--color-blue-900), var(--color-blue-200));
-	--ink-auxiliary: light-dark(var(--color-blue-800), var(--color-blue-300));
+	--ink-primary: light-dark(var(--color-slate-900), var(--color-slate-100));
+	--ink-secondary: light-dark(var(--color-slate-600), var(--color-slate-300));
+	--ink-auxiliary: light-dark(var(--color-slate-500), var(--color-slate-400));
 
 	--stroke-primary: light-dark(var(--color-blue-300), var(--color-blue-700));
 	--stroke-secondary: light-dark(var(--color-blue-200), var(--color-blue-800));
 	--stroke-auxiliary: light-dark(var(--color-blue-100), var(--color-blue-800));
 
-	--accent: light-dark(var(--color-blue-600), var(--color-blue-300));
+	--accent: light-dark(var(--color-indigo-500), var(--color-indigo-400));
 
 	--selection-fill: var(--color-blue-200);
 	--selection-ink: var(--color-blue-950);

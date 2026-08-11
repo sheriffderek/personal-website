@@ -439,6 +439,13 @@
 		}
 	}
 
+	/* The ascii twin (poster_ascii_path in render.php) rides along in every
+	   poster slide, dormant. The Terminal character swaps it in below. It's a
+	   real <pre> readout - selectable text, terminal-style - not an image. */
+	.poster-ascii {
+		display: none;
+	}
+
 	.info {
 		.target-note {
 			/* the optional per-milestone sentence injected by ?target=companyname */
@@ -463,6 +470,9 @@
 
 		.more {
 			summary {
+				/* Shrink the touch target to the text - a block summary makes
+				   the whole row clickable. */
+				display: inline-block;
 				cursor: pointer;
 				list-style: none;
 			}
@@ -566,5 +576,44 @@
 
 		border-top: var(--border-width) solid var(--ink-secondary);
 		border-bottom: var(--border-width) solid var(--ink-secondary);
+	}
+}
+
+/* Terminal character: the posters speak ascii. The drawn art stands down and
+   the ascii twin takes the slide - a structure swap, so it keys off the
+   character axis. The twin is a real text readout (a <pre>): an ascii-framed
+   graphic with a command line under it, at a fixed terminal type size - a
+   terminal doesn't scale its text to its window, and neither does this. It
+   wears .poster-art, so the poster ink/fill re-pointing and gradient ground
+   apply - moods and flavors color it like any other poster. */
+[data-brand-character="terminal"] .milestone {
+	.poster-art:not(.poster-ascii) {
+		display: none;
+	}
+
+	.poster-ascii {
+		display: grid;
+		align-content: center;
+		justify-content: center;
+		justify-items: start;
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		padding: 1rem;
+		overflow: hidden;
+		color: var(--ink-primary);
+		font-family: var(--font-mono);
+		font-size: 15px; /* fixed terminal geometry, not the type ladder - px on purpose (units rule) */
+		line-height: 1.5;
+
+		/* The focal mark - the same job var(--accent) does in the drawn art. */
+		.accent {
+			color: var(--accent);
+		}
+
+		/* The quiet trailing comment on the command line. */
+		.meta {
+			color: var(--ink-secondary);
+		}
 	}
 }

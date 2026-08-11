@@ -424,3 +424,145 @@
 		stroke: var(--ink-primary);
 	}
 }
+
+/* Token flow bench - the theming system drawn as a live circuit. Geometry
+   only: every chip paints from the token it names (inline in the markup), so
+   the chart repaints with the system it depicts. The edge paths are drawn by
+   scripts/design-system.js into the .flow-edges overlay. */
+.token-flow {
+	position: relative;
+	display: grid;
+	grid-template-columns: repeat(4, minmax(180px, 1fr));
+	gap: calc(var(--gutter) * 3);
+	align-items: start;
+	margin-top: var(--gutter);
+	overflow-x: auto;
+	padding-bottom: calc(var(--gutter) / 2);
+
+	.flow-edges {
+		position: absolute;
+		top: 0;
+		left: 0;
+		pointer-events: none;
+
+		path {
+			fill: none;
+			stroke: var(--stroke-primary);
+			stroke-width: 1.5;
+			transition: stroke 0.3s;
+
+			/* The red-light edges: an override that stomps, not a supply line. */
+			&.stomp {
+				stroke-dasharray: 4 4;
+			}
+
+			/* The pulse - a switch just moved, so its wires carry the change. */
+			&.is-live {
+				stroke: var(--accent);
+				stroke-width: 2.5;
+			}
+		}
+	}
+
+	.flow-column {
+		display: grid;
+		gap: var(--gutter);
+		align-content: start;
+	}
+
+	.flow-column-title {
+		margin: 0;
+	}
+
+	.flow-node {
+		display: grid;
+		gap: calc(var(--gutter) / 3);
+		padding: calc(var(--gutter) * 0.75);
+		border: 1px solid var(--stroke-secondary);
+		border-radius: var(--corners, 0);
+		background: var(--fill-primary);
+
+		p {
+			margin: 0;
+		}
+
+		&.is-live {
+			border-color: var(--accent);
+		}
+	}
+
+	/* A switch wears dashed machinery chrome - it is an input, not a token. */
+	.flow-switch {
+		border: 1px dashed var(--accent);
+
+		.switch-position {
+			text-transform: capitalize;
+		}
+	}
+
+	.flow-rows {
+		display: grid;
+		gap: calc(var(--gutter) / 4);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+
+		li {
+			display: flex;
+			align-items: center;
+			gap: calc(var(--gutter) / 3);
+		}
+
+		.chip {
+			flex-shrink: 0;
+			width: 1.5em;
+			height: 1.5em;
+			border: 1px solid var(--stroke-primary);
+			border-radius: var(--corners, 0);
+		}
+
+		.flow-readout {
+			margin-left: auto;
+			text-align: right;
+		}
+	}
+
+	.family-strip {
+		display: flex;
+		height: 1.5em;
+		border: 1px solid var(--stroke-primary);
+		border-radius: var(--corners, 0);
+		overflow: hidden;
+
+		span {
+			flex: 1;
+		}
+	}
+}
+
+/* Flavor range bench - geometry only; every color arrives through the
+   --bench-* properties the bench script paints. */
+.flavor-bench {
+	margin-top: 1.5rem;
+
+	input[type="range"] {
+		width: 100%;
+		max-width: 480px;
+	}
+
+	.bench-specimens {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1rem;
+
+		margin-top: 1rem;
+		max-width: 720px;
+
+		svg {
+			display: block;
+			width: 100%;
+			height: auto;
+			border: 1px solid var(--stroke-secondary);
+		}
+	}
+}

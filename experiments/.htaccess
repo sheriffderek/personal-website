@@ -1,0 +1,6 @@
+# Everything in here is a lab, not the site. robots.txt disallows the
+# folder for polite crawlers; this header is the enforcement layer for
+# anything that already has a direct link.
+<IfModule mod_headers.c>
+	Header set X-Robots-Tag "noindex, nofollow"
+</IfModule>

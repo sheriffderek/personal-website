@@ -7,7 +7,7 @@
    gave "where color lands" to character; that was wrong under the settled
    model.)
 
-   Three characters (2026-07-14): Product / Marketing / Interface.
+   Five characters (Editorial + Terminal added 2026-08-10):
      Product     - the DEFAULT. :root (base.css) IS Product: Derek's own personal
                    lane, which reads as the Stripe register too - friendly
                    Quicksand/Spline, soft. No block here; absent attribute = it.
@@ -15,6 +15,12 @@
                    a dramatic scale so headings tower.
      Interface   - the Claude/OpenAI dashboard lane: one neutral workhorse family,
                    tight near-uniform scale, small corners - calm, dense, UI.
+     Editorial   - the magazine lane: a flowery display serif over a readable
+                   serif, a dramatic scale, sharp print corners.
+     Terminal    - the console lane: everything monospace at ONE size (flat
+                   scale) - hierarchy comes from weight only. The posters swap
+                   to ascii art under this character (milestone.css toggles,
+                   includes/posters/poster-ascii.php is the art).
    (Personal folded into Product; Documentation dropped. Matrix in theme-model.md.)
 
    A character overrides only the type/shape DELTAS it needs - the rest falls
@@ -62,6 +68,77 @@
 	--strong-voice-font-weight: 600;
 	--attention-voice-font-weight: 600;
 	--loud-voice-font-weight: 600;
+}
+
+[data-brand-character="editorial"] {
+	/* The magazine lane. The voice plan: a serif DISPLAY face performs in the
+	   heading voices (attention/loud/strong), a readable serif carries the
+	   prose (calm), and the chrome voices (quiet/label/high/data) deliberately
+	   stay on the sans/mono UI stacks - the classic magazine trio of display,
+	   text, and caption. Dramatic scale so the display face gets room; sharp
+	   print corners. (Boska/Sentient are audition placeholders like every
+	   other pairing - swap freely.) */
+	--font-heading: "Boska", Georgia, serif;
+	--font-body: "Sentient", Georgia, serif;
+
+	--corners: 2px;
+
+	--scale-ratio: 1.414;
+
+	/* Display serifs carry contrast in their strokes, so the heading voices
+	   run light and tight - weight would coarsen the face. */
+	--font-heading-weight: 400;
+	--attention-voice-font-weight: 400;
+	--attention-voice-line-height: 1.1;
+	--loud-voice-font-weight: 400;
+	--loud-voice-line-height: 1.05;
+	--strong-voice-font-weight: 500;
+
+	/* Prose: a serif wants a touch more air and a real text weight. */
+	--calm-voice-font-weight: 400;
+	--calm-voice-line-height: 1.65;
+	--calm-voice-strong-font-weight: 600;
+}
+
+[data-brand-character="terminal"] {
+	/* The console lane. The voice plan: EVERY voice resolves to the one code
+	   mono at ONE size - the three family tokens below catch all of them
+	   (heading/body/ui; data already reads --font-code = mono), and
+	   scale-ratio 1 flattens the whole step ladder. Hierarchy comes from
+	   weight and case alone, like a real terminal: bold for headings, tracking
+	   + uppercase (high-voice's own habit) for eyebrows. The two size
+	   overrides exist because those voices carry literal/derived sizes in
+	   base.css that would otherwise dodge the flat ladder. (--font-mono is the
+	   system stack for now - Fontshare has no mono; a picked code face slots
+	   into font-scales.css later.) */
+	--font-heading: var(--font-mono);
+	--font-body: var(--font-mono);
+	--font-ui: var(--font-mono);
+
+	--corners: 0;
+
+	/* Ratio 1 flattens the ladder onto the anchor; the anchor pinned at
+	   0.8rem is the dense readout size - so every voice lands on 0.8rem
+	   (Derek, 2026-08-10). */
+	--scale-ratio: 1;
+	--type-anchor: 0.8rem;
+	--calm-voice-font-size: var(--step-0);
+	--data-voice-font-size: var(--step-0);
+
+	/* Weight is the only hierarchy left, so the split is stark: 700 speaks,
+	   400 reads. No middle weights - a console has no semibold. */
+	--font-heading-weight: 700;
+	--attention-voice-font-weight: 700;
+	--attention-voice-line-height: 1.4;
+	--loud-voice-font-weight: 700;
+	--loud-voice-line-height: 1.4;
+	--strong-voice-font-weight: 700;
+	--calm-voice-font-weight: 400;
+	--calm-voice-line-height: 1.6;
+	--calm-voice-strong-font-weight: 700;
+
+	/* The eyebrow reads like an environment variable: wide and spare. */
+	--high-voice-letter-spacing: 0.14em;
 }
 
 /* ----------------------------------------------------------------------------

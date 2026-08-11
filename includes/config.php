@@ -52,4 +52,4 @@ define('SLIDER_HINT_ENABLED', true);
    with no JS trimming. All the slider code (filter-control partial, the
    filter section of settings-panel.js, the minimap CSS) stays in place,
    untouched - flip to true and the full timeline + slider come back. */
-define('FILTER_ENABLED', false);
+define('FILTER_ENABLED', true);

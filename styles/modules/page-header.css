@@ -1,16 +1,19 @@
 .page-header {
+	/* The lockup stacks: the spans carry the voices (loud name, high-voice
+	   caps role), this is just the geometry. */
 	.name {
-		/*color: var(--accent);*/
-	}
-	.role {
-		color: var(--ink-auxiliary);
-	}
-	.read-more {
+		display: block;
 	}
 
-	.loud-voice {
+	.role {
+		display: block;
+		margin-top: 0.75em;
+		color: var(--ink-auxiliary);
+	}
+
+	h1 {
 		+ text-content {
-			margin-top: 0.8em;
+			margin-top: 1.2em;
 		}
 	}
 
@@ -31,6 +34,9 @@
 
 	.more {
 		summary {
+			/* Shrink the touch target to the text - a block summary makes
+			   the whole row clickable. */
+			display: inline-block;
 			cursor: pointer;
 			list-style: none;
 		}

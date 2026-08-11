@@ -1,0 +1,10 @@
+{
+	"name": "LADD",
+	"hero": "Hello, <strong>LADD</strong>. This is my new site - part work timeline, part design-system playground. Open the settings and mess with the themes; that's half the reason it exists. And the honest part: I'm looking for my next full-time team, so if yours needs a design lead, keep scrolling.",
+	"milestones": {
+		"2026-job-search": "This is the real reason I'm sharing here - the good roles come through people, not portals. If your team (or one you know) needs someone who designs and ships, I'd love an intro.",
+		"world-ia-day-2026": "Some of you were there - or spoke, or volunteered. Chairing it was my favorite way to meet the LA design community all over again.",
+		"pxl": "Proof that meetups work: I met PXL's creative technologist at the Ember meetup, and that turned into DreamWorks.com. Keep showing up to things.",
+		"open-office-hours": "This one's for you, not recruiters. If you want a second set of eyes on your portfolio or a design-system problem at work, book a slot - it's free."
+	}
+}

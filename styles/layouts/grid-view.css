@@ -238,11 +238,13 @@ button.trigger[data-to-top] {
 			max-width: 160px;
 		}
 
+		/* No fake panel in grid view at any width (Derek, 2026-07-28). A strip
+		   depicting the band was tried twice - hollow it read as an empty text
+		   input, solid it read as a stray bar - and between 1200 and 1450
+		   there's no band to depict anyway. The cells alone are the schematic
+		   here; the fake panel stays a list-view device. */
 		.mini-map .mini-map-panel {
-			display: block;
-			order: -1;
-			aspect-ratio: auto;
-			height: 10px;
+			display: none;
 		}
 
 		/* Cells, not bars - but still diagram-scale (the list mode's bars are
@@ -321,25 +323,93 @@ button.trigger[data-to-top] {
 
 		/* The band's rows are UNBOXED - no fill, border, or shadow; the
 		   controls sit on the page like content, ambient texture rather than
-		   a card. Small controls stack in a left column; the filter (slider
-		   + minimap schematic) takes the right column at full height. */
+		   a card. The composition (Derek's sketch, 2026-07-29): the theme
+		   axes stack in a left column; the filter owns the wide side - the
+		   slider runs full width across the top, the minimap schematic sits
+		   large beneath it - and the three toggles (Layout, Sounds, Red
+		   light) leave the stack to live as their own column beside the
+		   map. */
 		.settings-band .settings-panel {
 			display: grid;
-			grid-template-columns: max-content minmax(0, 1fr);
+			grid-template-columns: max-content minmax(0, 1fr) minmax(0, 1fr);
+			/* The right side defines the fine row rhythm (label, slider, tier
+			   name, map, toggles); the left axes span GROUPS of those rows.
+			   Without the spans, each short right-side piece sits alone in a
+			   row as tall as the switcher beside it, and the label drifts far
+			   from its slider (seen 2026-07-29). The tall map row absorbs the
+			   slack instead. */
+			grid-template-areas:
+				"scheme    filter-label filter-label"
+				"scheme    slider       slider"
+				"character tier-name    layout"
+				"character map          layout"
+				"mood      map          sounds"
+				"flavor    map          red-light";
 			gap: 1.25rem 2.5rem;
 			align-items: start;
 		}
 
-		.settings-band .filter-control {
-			grid-column: 2;
-			grid-row: 1 / span 6;
+		/* The filter's wrappers dissolve so its four pieces (count label,
+		   slider, tier name, minimap) place themselves on the band grid -
+		   the only way the slider can span both wide columns while the map
+		   shares a row with the Layout toggle. DOM order (and so the popover
+		   and tab order) is unchanged. */
+		.settings-band .filter-control,
+		.settings-band .filter-body {
+			display: contents;
+		}
+
+		.settings-band .mode-switcher {
+			grid-area: scheme;
+		}
+
+		.settings-band .character-switcher {
+			grid-area: character;
+		}
+
+		.settings-band .mood-switcher {
+			grid-area: mood;
+		}
+
+		.settings-band .flavor-switcher {
+			grid-area: flavor;
+		}
+
+		.settings-band .view-switcher {
+			grid-area: layout;
+		}
+
+		.settings-band .sound-switcher {
+			grid-area: sounds;
+		}
+
+		.settings-band .red-light-switcher {
+			grid-area: red-light;
+		}
+
+		/* The "Filter: n / n" heading (the tier name below has its own row). */
+		.settings-band .filter-control > .app-data-voice {
+			grid-area: filter-label;
+		}
+
+		.settings-band .filter-body > .plain-range {
+			grid-area: slider;
 		}
 
 		/* The band is the one surface wide enough for the tier-name aside
 		   (hidden everywhere else - see .filter-level-name in
-		   modules/settings-panel.css). */
+		   modules/settings-panel.css). It heads the minimap's column. */
 		.settings-band .filter-level-name {
+			grid-area: tier-name;
 			display: block;
+		}
+
+		/* In the band the map graduates from popover diagram to the
+		   composition's centerpiece - it takes its column instead of the
+		   small-diagram scale it keeps in the popovers. */
+		.settings-band .mini-map {
+			grid-area: map;
+			max-width: none;
 		}
 
 		/* The toolbar hugs the tray's INNER edge, beside the wall where the

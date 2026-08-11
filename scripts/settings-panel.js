@@ -334,8 +334,8 @@
 	/* Keep these lists matched to the FOUC script in includes/header.php and
 	   the sliders' max in includes/settings/{character,emphasis}-switcher.php.
 	   Index 0 is the default (Product = :root, no attribute written). */
-	var CHARACTERS      = ['product', 'marketing', 'interface'];
-	var CHARACTER_NAMES = ['Product', 'Marketing', 'Interface'];
+	var CHARACTERS      = ['product', 'marketing', 'interface', 'editorial', 'terminal'];
+	var CHARACTER_NAMES = ['Product', 'Marketing', 'Interface', 'Editorial', 'Terminal'];
 	var MOODS           = ['expressive', 'technical', 'quiet'];
 	var MOOD_NAMES      = ['Expressive', 'Technical', 'Quiet'];
 

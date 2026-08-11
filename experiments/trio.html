@@ -1,0 +1,1315 @@
+<!doctype html>
+<html lang='en'>
+
+<head>
+	<meta charset='utf-8'>
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+	<title>Trio - coverage lab</title>
+
+	<style>
+		/* ============================================================
+		   TRIO - the team-coverage planner, standalone lab. Take 6.
+
+		   THE JOB: an empty field, and a team to plan. The map is the
+		   product-trio Venn; people are translucent spray paint, one
+		   color each. Coverage, gaps, and the certainty bar judge the
+		   plan; a shape's position IS a job title (ROLE_NAMES).
+
+		   THE COMPONENT MODEL (this take's change): every sphere is a
+		   known component that owns its data {color, position, shape},
+		   wearing an ALWAYS-VISIBLE chip handle at its center - solid,
+		   inked, riding above all paint, so overlapping spheres never
+		   hide each other's controls.
+		   - DRAG the chip to move the sphere.
+		   - CLICK the chip to select it. Selection retargets the
+		     sphere-specific axis: the shape slider snaps to and edits
+		     THAT sphere, the axis label says so in its color, and a
+		     remove control appears. Click paper (or Escape) deselects.
+		   - The other axes (scope, certainty) are context-specific -
+		     they describe the situation, never one sphere, and ignore
+		     selection entirely.
+
+		   THE HONESTY RULES (unchanged):
+		   - Paint is a fixed budget per person - wide is thinner.
+		   - The map always fills the page; scope shrinks people.
+		   - The certainty veil washes out thin paint first.
+		   ============================================================ */
+
+		*,
+		*::before,
+		*::after {
+			box-sizing: border-box;
+		}
+
+		:root {
+			--paper: #ffffff;
+			--line: #111111;
+			--line-soft: #767676;
+			--rule: #e2e2e2;
+			--accent: #ff5c1f;
+		}
+
+		body {
+			margin: 0;
+			min-height: 100vh;
+			display: grid;
+			place-items: center;
+			background: var(--paper);
+			color: var(--line);
+			font-family: system-ui, sans-serif;
+			line-height: 1.5;
+		}
+
+		main {
+			width: min(720px, 92vw);
+			padding: 3rem 0 4rem;
+		}
+
+		/* larger screens: a left rail of two cards (the axes, then the
+		   live feedback) beside a right column that is pure diagram */
+		@media (min-width: 1100px) {
+			main {
+				width: min(1240px, 94vw);
+				display: grid;
+				grid-template-columns: 24rem 1fr;
+				grid-template-rows: auto auto 1fr;
+				column-gap: 3rem;
+				row-gap: 1.5rem;
+				align-items: start;
+			}
+
+			h1 {
+				grid-column: 1 / -1;
+			}
+
+			.controls {
+				grid-column: 1;
+				grid-row: 2;
+				margin-bottom: 0;
+			}
+
+			.status {
+				grid-column: 1;
+				grid-row: 3;
+				border: 1px solid var(--rule);
+				border-radius: 8px;
+				padding: 0.75rem 1.5rem 1.25rem;
+			}
+
+			.status .readout,
+			.status .coach,
+			.status .role-hint,
+			.status .how-to {
+				text-align: left;
+				max-width: none;
+			}
+
+			figure {
+				grid-column: 2;
+				grid-row: 2 / span 2;
+			}
+		}
+
+		h1 {
+			font-size: 1rem;
+			font-weight: 600;
+			letter-spacing: 0.04em;
+			text-transform: uppercase;
+			color: var(--line-soft);
+			margin: 0 0 1.5rem;
+		}
+
+		/* ---- the control panel: context axes + the sphere axis ------ */
+
+		.controls {
+			display: grid;
+			gap: 1.25rem;
+			border: 1px solid var(--rule);
+			border-radius: 8px;
+			padding: 1.25rem 1.5rem;
+			margin-bottom: 2.5rem;
+		}
+
+		.axis {
+			display: grid;
+			gap: 0.35rem;
+		}
+
+		.axis .axis-head {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			font-size: 0.9rem;
+			font-weight: 600;
+		}
+
+		/* the why-text folds behind a small info toggle - the panel
+		   leads with the questions, the teaching waits to be asked */
+		.axis .info {
+			border: 2px solid var(--line-soft);
+			border-radius: 50%;
+			background: var(--paper);
+			color: var(--line-soft);
+			font: inherit;
+			font-size: 0.7rem;
+			font-weight: 700;
+			width: 1.35rem;
+			height: 1.35rem;
+			line-height: 1;
+			cursor: pointer;
+			flex: none;
+		}
+
+		.axis.show-why .info {
+			border-color: var(--line);
+			color: var(--line);
+		}
+
+		.axis .why {
+			display: none;
+		}
+
+		.axis.show-why .why {
+			display: block;
+		}
+
+		/* ---- the sphere toolbox: per-sphere options, at the sphere -- */
+
+		figure {
+			position: relative;
+		}
+
+		/* small and quiet on purpose - it must never bury the sphere
+		   it edits. Anchored to the CHIP (center), not the sphere's
+		   edge, so reshaping never moves the card under the cursor. */
+		.toolbox {
+			position: absolute;
+			width: 10.5rem;
+			background: var(--paper);
+			border: 1px solid var(--line-soft);
+			border-radius: 8px;
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+			padding: 0.45rem 0.65rem;
+			display: none;
+			z-index: 2;
+		}
+
+		.toolbox.open {
+			display: grid;
+			gap: 0.3rem;
+		}
+
+		.toolbox .toolbox-head {
+			display: flex;
+			align-items: center;
+			gap: 0.4rem;
+			font-size: 0.72rem;
+			font-weight: 600;
+			margin: 0;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		.toolbox .toolbox-head .swatch {
+			width: 0.7em;
+			height: 0.7em;
+			border-radius: 50%;
+			flex: none;
+		}
+
+		.toolbox .range-row {
+			display: grid;
+			grid-template-columns: auto 1fr auto;
+			align-items: center;
+			gap: 0.4rem;
+			font-size: 0.6rem;
+			color: var(--line-soft);
+		}
+
+		.toolbox input[type='range'] {
+			height: 1rem;
+		}
+
+		.toolbox .toolbox-remove {
+			justify-self: start;
+			border: none;
+			background: none;
+			font: inherit;
+			font-size: 0.65rem;
+			color: var(--line-soft);
+			text-decoration: underline;
+			padding: 0;
+			cursor: pointer;
+		}
+
+		.axis .why {
+			font-size: 0.8rem;
+			color: var(--line-soft);
+			margin: 0;
+		}
+
+		.axis .scale-hint {
+			font-size: 0.78rem;
+			color: var(--line-soft);
+			font-variant-numeric: tabular-nums;
+			border: 1px solid var(--rule);
+			border-radius: 6px;
+			padding: 0.35rem 0.6rem;
+			margin: 0.5rem 0 0;
+
+			/* the bands are written to hold one line (see SCOPE_BANDS);
+			   the reservation just makes that a guarantee */
+			min-height: calc(1lh + 0.9rem);
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		/* heading above, slider at FULL width, the endpoint words under
+		   the ends they name - axis poles, not inline labels */
+		.axis .range-row {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			row-gap: 0.15rem;
+			font-size: 0.78rem;
+			color: var(--line-soft);
+			margin-top: 0.25rem;
+		}
+
+		.axis .range-row input {
+			width: 100%;
+			order: -1;
+		}
+
+		input[type='range'] {
+			width: 100%;
+			accent-color: var(--accent);
+		}
+
+		/* ---- the field ---------------------------------------------- */
+
+		figure {
+			margin: 0;
+		}
+
+		svg {
+			width: 100%;
+			height: auto;
+			display: block;
+			user-select: none;   /* dragging chips must never select the ink */
+		}
+
+		svg.is-holding {
+			cursor: none;   /* while loaded, the spray IS the cursor */
+		}
+
+		.terrain circle {
+			fill: none;
+			stroke: var(--line);
+			stroke-width: 3;
+		}
+
+		.terrain text {
+			font-family: system-ui, sans-serif;
+			font-size: 30px;
+			font-weight: 600;
+			fill: var(--line);
+			text-anchor: middle;
+		}
+
+		.terrain .question {
+			font-size: 21px;
+			font-weight: 400;
+			fill: var(--line);   /* all ink is black - hierarchy comes
+			                        from size, and paint never gets to
+			                        make gray text unreadable */
+		}
+
+		/* paint sits UNDER the ink (source order) and multiplies, so
+		   black lines always cut through - paint never buries the map */
+		.spray {
+			mix-blend-mode: multiply;
+			pointer-events: none;   /* all interaction goes through chips */
+		}
+
+		/* the chip: a sphere's always-visible handle. Solid, inked,
+		   layered above every spray - overlap can't hide it. */
+		.chip {
+			cursor: grab;
+		}
+
+		.chip:active {
+			cursor: grabbing;
+		}
+
+		.chip .dot {
+			stroke: var(--paper);
+			stroke-width: 3;
+		}
+
+		.chip .grip {
+			stroke: var(--paper);
+			stroke-width: 2;
+			stroke-linecap: round;
+			pointer-events: none;
+		}
+
+		/* the options button: a plain click target beside the grip -
+		   no click-vs-drag guessing, it only ever opens the toolbox.
+		   While its toolbox is open it inverts (pressed-in) - the open
+		   state lives on the control that caused it, never on the grip. */
+		.chip-options {
+			cursor: pointer;
+		}
+
+		.chip-options circle {
+			fill: var(--paper);
+			stroke: var(--line);
+			stroke-width: 2;
+		}
+
+		.chip-options text {
+			font-family: system-ui, sans-serif;
+			font-size: 17px;
+			font-weight: 700;
+			fill: var(--line);
+			text-anchor: middle;
+			pointer-events: none;
+		}
+
+		.chip-options.active circle {
+			fill: var(--line);
+		}
+
+		.chip-options.active text {
+			fill: var(--paper);
+		}
+
+		/* the corner source: the next hire, waiting to be pulled in */
+		.new-person {
+			cursor: pointer;
+		}
+
+		.new-person text {
+			font-family: system-ui, sans-serif;
+			font-size: 22px;
+			font-weight: 600;
+			fill: var(--line-soft);
+		}
+
+		svg.is-holding .new-person {
+			opacity: 0.25;
+			pointer-events: none;
+		}
+
+		.role-hint {
+			font-size: 0.9rem;
+			font-weight: 600;
+			text-align: center;
+			margin: 1rem 0 0;
+		}
+
+		.readout {
+			font-size: 0.8rem;
+			color: var(--line-soft);
+			font-variant-numeric: tabular-nums;
+			text-align: center;
+			margin-top: 1rem;
+		}
+
+		.coach {
+			font-size: 0.85rem;
+			color: var(--line);
+			text-align: center;
+			max-width: 52ch;
+			margin: 0.5rem auto 0;
+		}
+
+		.how-to {
+			margin-top: 1.5rem;
+			font-size: 0.95rem;
+			color: var(--line-soft);
+			max-width: 46ch;
+			margin-inline: auto;
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body>
+
+	<main>
+
+		<h1>Coverage lab</h1>
+
+		<section class='controls' aria-label='The axes'>
+
+			<div class='axis'>
+
+				<p class='axis-head'>
+					<label for='scope'>How big is the thing?</label>
+					<button type='button' class='info' aria-label='Why this axis'>i</button>
+				</p>
+
+				<p class='why'>Context, not any one person. The map always fills the page - a bigger product means each person covers less of it. There's no correct headcount: the same-size thing gets shipped by one person or by three teams, at very different prices, with different outcomes. And past a product line, nobody sees all of it - the map re-draws per sub-team, and this one is yours.</p>
+
+				<div class='range-row'>
+					<span>one feature</span>
+					<input type='range' id='scope' min='0' max='1000' value='0'>
+					<span>whole platform</span>
+				</div>
+
+				<p class='scale-hint' id='scope-hint'></p>
+
+			</div>
+
+			<div class='axis'>
+
+				<p class='axis-head'>
+					<label for='bar'>How much certainty do they need?</label>
+					<button type='button' class='info' aria-label='Why this axis'>i</button>
+				</p>
+
+				<p class='why'>Context, not any one person. A team betting on its people counts thin paint as covered - trust fills the gaps. Buying certainty raises the bar until only thick paint counts, and filling the whole map at that standard is what burns the runway.</p>
+
+				<div class='range-row'>
+					<span>betting on people</span>
+					<input type='range' id='bar' min='0' max='1000' value='0'>
+					<span>buying certainty</span>
+				</div>
+
+			</div>
+
+		</section>
+
+		<figure>
+
+			<svg viewBox='0 0 1000 820' role='img' aria-label='The product trio diagram as line art - an empty field where sprays of paint are placed to plan a team'>
+
+				<defs id='gradient-defs'>
+					<!-- one spray-falloff gradient per palette color,
+					     written by JS at boot from PALETTE + FALLOFF -->
+				</defs>
+
+				<!-- every person's paint lands in here, under the veil -->
+				<g id='people'></g>
+
+				<!-- the certainty bar: a white veil over ALL the paint
+				     (but under the ink). Raising it washes out thin
+				     coverage first - what survives is what this org
+				     counts as covered. -->
+				<rect id='certainty-veil' width='1000' height='820' fill='var(--paper)' opacity='0' pointer-events='none' />
+
+				<!-- the line art -->
+				<g class='terrain' pointer-events='none'>
+
+					<circle cx='500' cy='300' r='255' />
+
+					<circle cx='362' cy='525' r='255' />
+
+					<circle cx='638' cy='525' r='255' />
+
+					<text x='500' y='185'>Product</text>
+
+					<text x='500' y='222' class='question'>should we build it?</text>
+
+					<text x='300' y='625'>Design</text>
+
+					<text x='300' y='662' class='question'>can people use it?</text>
+
+					<text x='700' y='625'>Engineering</text>
+
+					<text x='700' y='662' class='question'>can we build it?</text>
+
+				</g>
+
+				<!-- the corner source: click to pull the next hire into
+				     your hand. Sits half off the paper on purpose - they
+				     haven't joined yet. -->
+				<g class='new-person' id='new-person'>
+
+					<circle id='new-person-swatch' cx='60' cy='60' r='85' opacity='0.45' />
+
+					<text x='160' y='68'>pull in a new person</text>
+
+				</g>
+
+				<!-- chip handles ride ABOVE the ink and every spray, so
+				     overlapping spheres can never hide each other's
+				     controls -->
+				<g id='chips'></g>
+
+				<!-- the held spray rides the cursor above everything -->
+				<g id='hand'></g>
+
+			</svg>
+
+			<!-- the sphere toolbox: opened by a chip click, anchored
+			     beside that sphere. One instance - it always shows the
+			     selected sphere's data. -->
+			<div class='toolbox' id='toolbox'>
+
+				<p class='toolbox-head'>
+					<span class='swatch' id='toolbox-swatch'></span>
+					<span id='toolbox-role'></span>
+				</p>
+
+				<div class='range-row'>
+					<span>deep</span>
+					<input type='range' id='sphere-shape' min='0' max='1000' value='0' aria-label='Shape of this person'>
+					<span>wide</span>
+				</div>
+
+				<button type='button' class='toolbox-remove' id='toolbox-remove'>remove</button>
+
+			</div>
+
+		</figure>
+
+		<!-- the feedback: on phones it reads below the map; on large
+		     screens it is the second card in the left rail, so the
+		     right column stays pure diagram -->
+		<aside class='status'>
+
+			<p class='role-hint' id='role-hint'></p>
+
+			<p class='readout' id='readout'></p>
+
+			<p class='coach' id='coach'></p>
+
+			<p class='how-to'>
+				Pull a person in from the corner and click to set them
+				down. Drag a chip to move its sphere; click a chip for
+				its toolbox - reshape or remove. Escape lets go.
+			</p>
+
+		</aside>
+
+	</main>
+
+	<script>
+		/* ---- tunable constants - the whole feel lives here ---------- */
+
+		// the shape slider travels between these two radii (before scope)
+		var DEEP_R = 130;   // dense spray on one overlap
+		var WIDE_R = 300;   // wide wash - still visibly NOT the whole map;
+		                    // "covers everything" must never be a slider stop
+
+		// paint budget - THE COATS MODEL (full spec + rationale in
+		// coverage-math-spec.md next to this file). A deep specialist's
+		// coat is 0.70 opacity, not 1.0: even the best person lets some
+		// light through. WIDTH_COST 1.5 calibrates a mid-shape person
+		// to exactly ONE THIRD of a specialist in coats, which is what
+		// makes the bar's "three solid people buy certainty" story land
+		// as round numbers.
+		var DENSITY_DEEP = 0.7;
+		var DENSITY_FLOOR = 0.15;
+		var WIDTH_COST = 1.5;
+
+		// the measuring stick: one deep coat = 1.0 layers. Logs turn
+		// the multiplicative paint stack into a SUM, so every identical
+		// hire adds equally - the metric reads the same physics as the
+		// pixels, just on the fair axis.
+		var LAYER_UNIT = -Math.log(1 - DENSITY_DEEP);
+
+		// scope: the map stays fixed, so "the thing got bigger" renders
+		// as EVERY person's paint shrinking relative to it. At full
+		// platform scale radii are this fraction of feature-scale size.
+		var SCOPE_MIN_SCALE = 0.55;
+
+		// certainty bar: the veil's ceiling. Past ~0.7 even a deep coat's
+		// paint starts to disappear - deliberate: "certainty no one can
+		// actually deliver" is a real org failure mode, and the map
+		// going blank at the far right is the picture of it.
+		var VEIL_MAX = 0.75;
+
+		// the certainty bar, in COATS: how many specialist-grade layers
+		// every spot must carry. Left third = one honest coat certifies
+		// (betting on people). Middle = pairs (a second opinion). Right
+		// third = three solid coats (buying certainty) - one specialist,
+		// or three mids stacked. Max is 0.95, not 1.0, so those both
+		// clear with margin instead of a knife edge. Coverage gives
+		// PROPORTIONAL credit (layers/required, capped) - no threshold,
+		// no cliffs, and the number can never contradict visible paint.
+		var BAR_MIN_LAYERS = 0.15;
+		var BAR_MAX_LAYERS = 0.95;
+
+		// the round-up buffer: circles can't tile circles, so a team
+		// that has visibly brought enough paint always leaves bare
+		// slivers at the rims. Point-coverage of this fraction reads
+		// as FULL - the report divides by it and caps at 100. It
+		// forgives packing geometry only, never absence: paint piled
+		// in one corner still averages low.
+		var PACKING_ALLOWANCE = 0.8;
+		var SAMPLE_STEP = 12;   // grid spacing in map units - fidelity vs work
+
+		// how strongly the paint RENDERS, as a fraction of its logical
+		// density - the ink must always win, so full-density paint
+		// draws at roughly half strength. Visual only: the metrics
+		// keep judging the logical density, this just keeps the page
+		// readable. Dial to taste.
+		var PAINT_STRENGTH = 0.55;
+
+		var CHIP_R = 15;   // the handle dot's radius
+
+		// where a fresh hire starts on the deep<->wide axis before
+		// their toolbox shapes them - middle, so neither direction
+		// looks like the "right" answer
+		var DEFAULT_SHAPE_T = 0.5;
+
+		// one color per person, cycling if the team outgrows the list
+		var PALETTE = ['#ff5c1f', '#4f8fd6', '#3faa72', '#9a6bd6', '#e0a51f', '#d65f9a'];
+
+		// ranges, not numbers, on purpose: the same-size thing really
+		// does get shipped by 1 person or 5 - the spread IS the lesson.
+		// Kept to ONE LINE each (the note box must never change height);
+		// the longer teaching lives in the axis's why-text.
+		var SCOPE_BANDS = [
+			'a feature - 1 to 5 people',
+			'a focused product - 2 to 10 people',
+			'many moving parts - 5 to 25 people',
+			'a product line - 15 to 60 people',
+			'a whole platform - 50 to hundreds'
+		];
+
+		// the terrain's three circles, shared by the drawing and the
+		// metrics - if the map changes, change it here and in the svg
+		var TERRAIN = [
+			{ name: 'Product', x: 500, y: 300, r: 255 },
+			{ name: 'Design', x: 362, y: 525, r: 255 },
+			{ name: 'Engineering', x: 638, y: 525, r: 255 }
+		];
+
+		// the diagram run in reverse: a person's position + spread IS a
+		// job title. A circle counts toward the name when it holds at
+		// least this share of the person's paint.
+		var ROLE_THRESHOLD = 0.5;   // "holds at least half my paint."
+		                            // Measured, not guessed: these circles
+		                            // overlap so much that a deep disk in a
+		                            // two-circle pocket still dips ~0.45
+		                            // into the third - anything below 0.5
+		                            // promotes pair-shapes to unicorn.
+
+		// keys are the circles a shape meaningfully touches, sorted
+		// alphabetically and joined with '+'. Every key may split by
+		// depth ('-deep' / '-wide' suffix, falling back to the bare
+		// key) - the same ground covered thick or thin is a different
+		// (and differently priced) hire. Titles are agent-researched
+		// real-industry vocabulary - the full menu of ~60, with trend
+		// notes and sources, lives in role-names.md next to this file.
+		var ROLE_NAMES = {
+			'product-deep': 'Growth PM / product analyst',
+			'product-wide': 'Product manager',
+			'design-deep': 'UI / visual designer',
+			'design-wide': 'UX designer',
+			'engineering-deep': 'Specialist engineer',
+			'engineering-wide': 'Full-stack engineer',
+			'design+product-deep': 'Staff product designer',
+			'design+product-wide': 'Product designer',
+			'design+engineering-deep': 'Design systems engineer',
+			'design+engineering-wide': 'Design engineer',
+			'engineering+product-deep': 'Technical product manager',
+			'engineering+product-wide': 'Product engineer',
+			'design+engineering+product-deep': 'The unicorn - rare, expensive',
+			'design+engineering+product-wide': 'Founding designer / generalist',
+			'off-map': 'Mostly off the map - paint with no problem under it'
+		};
+
+		// the spray gradient's falloff profile as (offset, opacity)
+		// pairs - the gradients in defs are generated FROM this, so the
+		// metrics and the pixels can't drift apart. Dense to ~72%, then
+		// a fast breathy edge - a long fade reads as "I do everything."
+		var FALLOFF = [[0, 1], [0.72, 0.96], [0.92, 0.5], [1, 0]];
+
+		/* ------------------------------------------------------------- */
+
+		var SVG_NS = 'http://www.w3.org/2000/svg';
+
+		var svg = document.querySelector('svg');
+		var people = document.getElementById('people');
+		var chips = document.getElementById('chips');
+		var hand = document.getElementById('hand');
+		var gradientDefs = document.getElementById('gradient-defs');
+		var newPerson = document.getElementById('new-person');
+		var newPersonSwatch = document.getElementById('new-person-swatch');
+		var scopeSlider = document.getElementById('scope');
+		var barSlider = document.getElementById('bar');
+		var scopeHint = document.getElementById('scope-hint');
+		var veil = document.getElementById('certainty-veil');
+		var readout = document.getElementById('readout');
+		var coach = document.getElementById('coach');
+		var roleHint = document.getElementById('role-hint');
+		var toolbox = document.getElementById('toolbox');
+		var toolboxSwatch = document.getElementById('toolbox-swatch');
+		var toolboxRole = document.getElementById('toolbox-role');
+		var sphereShapeSlider = document.getElementById('sphere-shape');
+		var toolboxRemove = document.getElementById('toolbox-remove');
+		var figure = document.querySelector('figure');
+
+		// the team. Each sphere is a component owning its data:
+		// {color, el (spray), chip (handle), baseR, density}. baseR is
+		// pre-scope size, so scope changes re-derive every drawn radius.
+		var placed = [];
+		var held = null;
+		var selected = null;
+		var dragging = null;
+		var nextColor = 0;
+
+		function lerp(a, b, t) {
+			return a + (b - a) * t;
+		}
+
+		function scopeScale() {
+			return lerp(1, SCOPE_MIN_SCALE, scopeSlider.value / 1000);
+		}
+
+		function densityFor(baseR) {
+			var raw = DENSITY_DEEP * Math.pow(DEEP_R / baseR, WIDTH_COST);
+			return Math.max(DENSITY_FLOOR, Math.min(DENSITY_DEEP, raw));
+		}
+
+		/* ---- gradients: one falloff per palette color, from data ---- */
+
+		PALETTE.forEach(function (color, index) {
+			var gradient = document.createElementNS(SVG_NS, 'radialGradient');
+			gradient.setAttribute('id', 'falloff-' + index);
+
+			FALLOFF.forEach(function (stop) {
+				var el = document.createElementNS(SVG_NS, 'stop');
+				el.setAttribute('offset', (stop[0] * 100) + '%');
+				el.setAttribute('stop-color', color);
+				el.setAttribute('stop-opacity', stop[1]);
+				gradient.appendChild(el);
+			});
+
+			gradientDefs.appendChild(gradient);
+		});
+
+		function paletteFill(index) {
+			return 'url(#falloff-' + (index % PALETTE.length) + ')';
+		}
+
+		function paletteColor(index) {
+			return PALETTE[index % PALETTE.length];
+		}
+
+		/* ---- the corner source -------------------------------------- */
+
+		function refreshSource() {
+			newPersonSwatch.setAttribute('fill', paletteFill(nextColor));
+			svg.classList.toggle('is-holding', held !== null);
+		}
+
+		newPerson.addEventListener('click', function (event) {
+			event.stopPropagation();
+			deselect();
+			pullInNewPerson();
+		});
+
+		function pullInNewPerson() {
+			var el = document.createElementNS(SVG_NS, 'circle');
+			el.setAttribute('class', 'spray');
+			el.setAttribute('fill', paletteFill(nextColor));
+			el.setAttribute('cx', 60);   // starts at the source, rides the mouse
+			el.setAttribute('cy', 60);
+			hand.appendChild(el);
+
+			var baseR = lerp(DEEP_R, WIDE_R, DEFAULT_SHAPE_T);
+			held = { color: nextColor, el: el, chip: null, baseR: baseR, density: densityFor(baseR) };
+			nextColor++;
+			redrawSprays();
+			refreshSource();
+		}
+
+		/* ---- the sphere component ----------------------------------- */
+
+		// the chip is the sphere's public interface: always visible,
+		// drag to move, click to select. It lives in the #chips layer
+		// above everything, so no amount of overlap can hide it.
+		// $todo chips still collide with EACH OTHER when spheres sit
+		// near-concentric (seen 2026-08-09: one chip fully burying
+		// another). Likely fix: nudge overlapping chips apart along the
+		// line between their sphere centers - deferred until the rest
+		// of the interaction settles.
+		function buildChip(person) {
+			var chip = document.createElementNS(SVG_NS, 'g');
+			chip.setAttribute('class', 'chip');
+			chip.innerHTML = '<circle class=\'dot\' r=\'' + CHIP_R + '\' fill=\'' + paletteColor(person.color) + '\'></circle>'
+				+ '<line class=\'grip\' x1=\'-6\' y1=\'-4\' x2=\'6\' y2=\'-4\'></line>'
+				+ '<line class=\'grip\' x1=\'-6\' y1=\'0\' x2=\'6\' y2=\'0\'></line>'
+				+ '<line class=\'grip\' x1=\'-6\' y1=\'4\' x2=\'6\' y2=\'4\'></line>';
+
+			// the grip is drag-only - opening options is the button's job
+			chip.addEventListener('pointerdown', function (event) {
+				if (held) {
+					return;
+				}
+
+				event.preventDefault();
+				event.stopPropagation();
+				dragging = person;
+				deselect();   // a drag shouldn't tow an open toolbox
+				chip.setPointerCapture(event.pointerId);
+			});
+
+			chip.addEventListener('pointermove', function (event) {
+				if (dragging !== person) {
+					return;
+				}
+
+				var here = svgPoint(event);
+				person.el.setAttribute('cx', here.x);
+				person.el.setAttribute('cy', here.y);
+				positionChip(person);
+				queueMetrics();
+			});
+
+			chip.addEventListener('pointerup', function () {
+				dragging = null;
+				queueMetrics();
+			});
+
+			var optionsButton = document.createElementNS(SVG_NS, 'g');
+			optionsButton.setAttribute('class', 'chip-options');
+			optionsButton.innerHTML = '<circle r=\'13\'></circle>'
+				+ '<text y=\'5\'>⋯</text>';
+
+			optionsButton.addEventListener('pointerdown', function (event) {
+				event.stopPropagation();   // never starts a drag
+			});
+
+			optionsButton.addEventListener('click', function (event) {
+				event.stopPropagation();
+
+				if (selected === person) {
+					deselect();
+				} else {
+					select(person);
+				}
+			});
+
+			person.chip = chip;
+			person.optionsButton = optionsButton;
+			chips.appendChild(chip);
+			chips.appendChild(optionsButton);
+			positionChip(person);
+		}
+
+		function positionChip(person) {
+			var cx = Number(person.el.getAttribute('cx'));
+			var cy = Number(person.el.getAttribute('cy'));
+			person.chip.setAttribute('transform', 'translate(' + cx + ' ' + cy + ')');
+
+			// the options button rides just right of the grip
+			person.optionsButton.setAttribute('transform', 'translate(' + (cx + CHIP_R * 2 + 8) + ' ' + cy + ')');
+		}
+
+		/* ---- selection: re-aiming the sphere axis ------------------- */
+
+		// selecting a sphere opens ITS toolbox beside it - the sphere
+		// carries its own controls; the top panel never retargets
+		function select(person) {
+			deselect();
+			selected = person;
+			person.optionsButton.classList.add('active');
+
+			var shapeT = (person.baseR - DEEP_R) / (WIDE_R - DEEP_R);
+			sphereShapeSlider.value = Math.round(shapeT * 1000);
+			toolboxSwatch.style.background = paletteColor(person.color);
+
+			toolbox.classList.add('open');
+			positionToolbox(person);
+			queueMetrics();
+		}
+
+		function deselect() {
+			if (!selected) {
+				return;
+			}
+
+			selected.optionsButton.classList.remove('active');
+			selected = null;
+			toolbox.classList.remove('open');
+			queueMetrics();
+		}
+
+		// the toolbox floats in page space at a FIXED offset from the
+		// chip (the sphere's center) - never from the sphere's edge,
+		// so reshaping can't move the card under the cursor. It sits
+		// up and to the right of the chip, then clamps to the figure.
+		function positionToolbox(person) {
+			var svgRect = svg.getBoundingClientRect();
+			var figureRect = figure.getBoundingClientRect();
+			var chipX = (svgRect.left - figureRect.left) + Number(person.el.getAttribute('cx')) * (svgRect.width / 1000);
+			var chipY = (svgRect.top - figureRect.top) + Number(person.el.getAttribute('cy')) * (svgRect.height / 820);
+
+			var left = chipX + 28;
+			var top = chipY - toolbox.offsetHeight - 28;
+
+			left = Math.max(0, Math.min(left, figureRect.width - toolbox.offsetWidth - 4));
+			top = Math.max(0, Math.min(top, figureRect.height - toolbox.offsetHeight - 4));
+
+			toolbox.style.left = left + 'px';
+			toolbox.style.top = top + 'px';
+		}
+
+		sphereShapeSlider.addEventListener('input', function () {
+			if (!selected) {
+				return;
+			}
+
+			var shapeT = sphereShapeSlider.value / 1000;
+			selected.baseR = lerp(DEEP_R, WIDE_R, shapeT);
+			selected.density = densityFor(selected.baseR);
+			redrawSprays();
+		});
+
+		toolboxRemove.addEventListener('click', function () {
+			if (!selected) {
+				return;
+			}
+
+			var person = selected;
+			deselect();
+			person.el.remove();
+			person.chip.remove();
+			person.optionsButton.remove();
+			placed = placed.filter(function (candidate) {
+				return candidate !== person;
+			});
+			queueMetrics();
+		});
+
+		/* ---- place / drop ------------------------------------------- */
+
+		function placeHeld() {
+			var person = held;
+			people.appendChild(person.el);
+			buildChip(person);
+			placed.push(person);
+			held = null;
+			refreshSource();
+
+			// their toolbox opens right away - shaping is the natural
+			// next gesture after setting someone down
+			select(person);
+		}
+
+		// Escape: drop whoever is in hand, or let go of the selection
+		document.addEventListener('keydown', function (event) {
+			if (event.key !== 'Escape') {
+				return;
+			}
+
+			if (held) {
+				held.el.remove();
+				held = null;
+				nextColor--;
+				refreshSource();
+				queueMetrics();
+			} else {
+				deselect();
+			}
+		});
+
+		/* ---- the axes ----------------------------------------------- */
+
+		function applyScope() {
+			var scopeT = scopeSlider.value / 1000;
+			var band = Math.min(SCOPE_BANDS.length - 1, Math.floor(scopeT * SCOPE_BANDS.length));
+			scopeHint.textContent = SCOPE_BANDS[band];
+
+			redrawSprays();
+		}
+
+		function applyBar() {
+			veil.setAttribute('opacity', (barSlider.value / 1000) * VEIL_MAX);
+			queueMetrics();
+		}
+
+		// every drawn radius derives from stored baseR x current scope -
+		// scope changes rescale the whole team, held sphere included
+		function redrawSprays() {
+			var scale = scopeScale();
+
+			placed.concat(held ? [held] : []).forEach(function (person) {
+				person.el.setAttribute('r', person.baseR * scale);
+				person.el.setAttribute('opacity', person.density * PAINT_STRENGTH);
+
+				if (person.chip) {
+					positionChip(person);
+				}
+			});
+
+			queueMetrics();
+		}
+
+		/* ---- aim and place ------------------------------------------ */
+
+		function svgPoint(event) {
+			var point = new DOMPoint(event.clientX, event.clientY);
+			return point.matrixTransform(svg.getScreenCTM().inverse());
+		}
+
+		svg.addEventListener('pointermove', function (event) {
+			if (!held) {
+				return;
+			}
+
+			var here = svgPoint(event);
+			held.el.setAttribute('cx', here.x);
+			held.el.setAttribute('cy', here.y);
+			queueMetrics();
+		});
+
+		svg.addEventListener('click', function () {
+			if (held) {
+				placeHeld();
+			} else {
+				deselect();
+			}
+		});
+
+		/* ---- coverage metrics --------------------------------------- */
+
+		// the gradient's opacity at a fraction of the radius (0 = center,
+		// 1 = rim), straight-line interpolation between the stops
+		function falloffAt(u) {
+			for (var i = 1; i < FALLOFF.length; i++) {
+				if (u <= FALLOFF[i][0]) {
+					var span = FALLOFF[i][0] - FALLOFF[i - 1][0];
+					var t = (u - FALLOFF[i - 1][0]) / span;
+					return lerp(FALLOFF[i - 1][1], FALLOFF[i][1], t);
+				}
+			}
+
+			return 0;
+		}
+
+		// layers of paint at one point, in specialist-coats. Deliberately
+		// NO falloff here: a person counts at full density everywhere
+		// inside their radius. The feathered edge is visual-only -
+		// charging it in the metric taxed width twice (thinness AND a
+		// confiscated rim), which was the shrinking-core bug.
+		function layersAt(x, y, sprays) {
+			var layers = 0;
+
+			sprays.forEach(function (person) {
+				var dx = x - Number(person.el.getAttribute('cx'));
+				var dy = y - Number(person.el.getAttribute('cy'));
+				var radius = Number(person.el.getAttribute('r'));
+
+				if (dx * dx + dy * dy < radius * radius) {
+					layers += -Math.log(1 - person.density) / LAYER_UNIT;
+				}
+			});
+
+			return layers;
+		}
+
+		// where does this person's paint actually sit? Sample their own
+		// disk, weight by the falloff, and tally the share landing in
+		// each circle - the circles above threshold name the role.
+		function roleFor(person) {
+			var cx = Number(person.el.getAttribute('cx'));
+			var cy = Number(person.el.getAttribute('cy'));
+			var radius = Number(person.el.getAttribute('r'));
+
+			var mass = 0;
+			var onMap = 0;
+			var perCircle = [0, 0, 0];
+
+			// polar sampling: ring weight grows with u (more area out
+			// there), falloff shrinks it - together, honest paint mass
+			for (var u = 0.05; u < 1; u += 0.1) {
+				for (var a = 0; a < 12; a++) {
+					var angle = (a / 12) * 2 * Math.PI;
+					var x = cx + Math.cos(angle) * u * radius;
+					var y = cy + Math.sin(angle) * u * radius;
+					var weight = falloffAt(u) * u;
+
+					mass += weight;
+
+					var hit = false;
+
+					for (var i = 0; i < TERRAIN.length; i++) {
+						var dx = x - TERRAIN[i].x;
+						var dy = y - TERRAIN[i].y;
+
+						if (dx * dx + dy * dy < TERRAIN[i].r * TERRAIN[i].r) {
+							perCircle[i] += weight;
+							hit = true;
+						}
+					}
+
+					if (hit) {
+						onMap += weight;
+					}
+				}
+			}
+
+			if (onMap / mass < 0.5) {
+				return ROLE_NAMES['off-map'];
+			}
+
+			var touched = TERRAIN.filter(function (circle, i) {
+				return perCircle[i] / mass >= ROLE_THRESHOLD;
+			}).map(function (circle) {
+				return circle.name.toLowerCase();
+			}).sort();
+
+			var key = touched.join('+');
+			var depth = person.baseR > (DEEP_R + WIDE_R) / 2 ? '-wide' : '-deep';
+
+			return ROLE_NAMES[key + depth] || ROLE_NAMES[key] || 'Between titles - the interesting zone';
+		}
+
+		function updateMetrics() {
+			var required = lerp(BAR_MIN_LAYERS, BAR_MAX_LAYERS, barSlider.value / 1000);
+			var sprays = placed.concat(held ? [held] : []);
+
+			var mapTotal = 0;
+			var mapCovered = 0;
+			var perCircle = TERRAIN.map(function () {
+				return { total: 0, covered: 0, raw: 0 };
+			});
+
+			for (var x = 0; x <= 1000; x += SAMPLE_STEP) {
+				for (var y = 0; y <= 820; y += SAMPLE_STEP) {
+					var inside = false;
+					var credit = 0;
+					var raw = 0;
+
+					for (var i = 0; i < TERRAIN.length; i++) {
+						var dx = x - TERRAIN[i].x;
+						var dy = y - TERRAIN[i].y;
+
+						if (dx * dx + dy * dy < TERRAIN[i].r * TERRAIN[i].r) {
+							if (!inside) {
+								inside = true;
+
+								// proportional: ground with 2 of the 3
+								// demanded coats is 2/3 done - say so.
+								// raw runs past 1 to measure SURPLUS,
+								// but never feeds coverage (a corner
+								// mega-stack must not claim the circle)
+								raw = layersAt(x, y, sprays) / required;
+								credit = Math.min(raw, 1);
+							}
+
+							perCircle[i].total++;
+							perCircle[i].covered += credit;
+							perCircle[i].raw += raw;
+						}
+					}
+
+					if (inside) {
+						mapTotal++;
+						mapCovered += credit;
+					}
+				}
+			}
+
+			function reportPercent(covered, total) {
+				if (!total) {
+					return 0;
+				}
+
+				return Math.min(100, Math.round(covered / total / PACKING_ALLOWANCE * 100));
+			}
+
+			var parts = TERRAIN.map(function (circle, i) {
+				var percent = reportPercent(perCircle[i].covered, perCircle[i].total);
+
+				// a full circle earns the honest surplus reading: 160%
+				// says "over-bought here - this budget could move."
+				// Only shown once genuinely covered, so a corner stack
+				// can never buy the label with piled-up paint.
+				if (percent >= 100) {
+					percent = Math.max(100, Math.round(perCircle[i].raw / perCircle[i].total * 100));
+				}
+
+				return circle.name + ' ' + percent + '%';
+			});
+
+			var percent = reportPercent(mapCovered, mapTotal);
+			var teamSize = placed.length + (held ? 1 : 0);
+
+			readout.textContent = 'team of ' + teamSize + ' · meets the bar: ' + percent + '% · ' + parts.join(' · ');
+			coach.textContent = teamSize ? coachLine(percent) : 'An empty field. Pull in a person and start covering it.';
+
+			if (held) {
+				roleHint.textContent = 'in hand: ' + roleFor(held);
+			} else if (dragging) {
+				roleHint.textContent = 'moving: ' + roleFor(dragging);
+			} else {
+				roleHint.textContent = '';
+			}
+
+			// the toolbox header names its sphere - live, so dragging
+			// the shape slider re-titles them as they widen
+			if (selected) {
+				toolboxRole.textContent = roleFor(selected);
+			}
+		}
+
+		// the levers, named when the map shows a problem - each move
+		// costs something different, and saying the price is the lesson
+		function coachLine(percent) {
+			if (percent >= 85) {
+				return 'Covered - this team meets its own standard.';
+			}
+
+			if (percent >= 40) {
+				return 'Gaps at this standard. Add people (burns runway), spread your generalists wider (thinner paint), or lower the bar (trust the people you have).';
+			}
+
+			if (percent > 0) {
+				return 'Mostly uncovered. This is a bigger-team problem, a smaller-scope problem, or a trust problem - pick which one you are paying for.';
+			}
+
+			// with proportional credit, 0% means the paint is off the
+			// problem entirely - not that a bar swallowed it
+			return 'Nothing on the map counts yet - the paint is not on the problem.';
+		}
+
+		// pointermove fires faster than we need to count ~5000 samples -
+		// coalesce to one recount per frame
+		var metricsQueued = false;
+
+		function queueMetrics() {
+			if (metricsQueued) {
+				return;
+			}
+
+			metricsQueued = true;
+
+			requestAnimationFrame(function () {
+				metricsQueued = false;
+				updateMetrics();
+			});
+		}
+
+		/* ---- the info toggles --------------------------------------- */
+
+		document.querySelectorAll('.axis .info').forEach(function (button) {
+			button.addEventListener('click', function () {
+				button.closest('.axis').classList.toggle('show-why');
+			});
+		});
+
+		/* ---- boot --------------------------------------------------- */
+
+		scopeSlider.addEventListener('input', applyScope);
+		barSlider.addEventListener('input', applyBar);
+
+		refreshSource();
+		applyScope();
+		applyBar();
+	</script>
+
+</body>
+
+</html>

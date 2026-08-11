@@ -69,6 +69,9 @@
 			<div class='carousel' data-flickity='{ "wrapAround": true, "imagesLoaded": true, "prevNextButtons": false }'>
 				<div class='slide' data-type='poster'>
 					<?php include poster_art_path($milestone['slug']); ?>
+					<?php /* The ascii twin rides along dormant; the Terminal
+					   character swaps it in (toggle in milestone.css). */ ?>
+					<?php include poster_ascii_path($milestone['slug']); ?>
 				</div>
 
 				<?php foreach ($media_items as $item): ?>
@@ -82,6 +85,9 @@
 		<figure class='media'>
 			<div class='slide' data-type='poster'>
 				<?php include poster_art_path($milestone['slug']); ?>
+				<?php /* The ascii twin rides along dormant; the Terminal
+				   character swaps it in (toggle in milestone.css). */ ?>
+				<?php include poster_ascii_path($milestone['slug']); ?>
 			</div>
 		</figure>
 

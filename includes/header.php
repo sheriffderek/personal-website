@@ -52,7 +52,7 @@
 				   (e.g. a stale 'brand-preference'-era slug) are ignored. Keep
 				   these lists matched to CHARACTERS / MOODS in settings-panel.js. */
 				var character = localStorage.getItem('character-preference');
-				if (['marketing', 'interface'].indexOf(character) !== -1) html.setAttribute('data-brand-character', character);
+				if (['marketing', 'interface', 'editorial', 'terminal'].indexOf(character) !== -1) html.setAttribute('data-brand-character', character);
 
 				var mood = localStorage.getItem('mood-preference');
 				if (['technical', 'quiet'].indexOf(mood) !== -1) html.setAttribute('data-brand-mood', mood);
@@ -89,9 +89,9 @@
 	<?php /* Alternate-theme + audition fonts, loaded non-blocking: media=print keeps
 		them off the render path, then onload flips them to all. noscript covers
 		the JS-off case. All variable (@1) except single-weight gambarino/bebas-neue. */ ?>
-	<link rel='stylesheet' media='print' onload="this.media='all'" href='https://api.fontshare.com/v2/css?f[]=general-sans@1&f[]=boska@1&f[]=supreme@1&f[]=switzer@1&f[]=hind@1&f[]=poppins@1&f[]=nunito@1&f[]=chubbo@1&f[]=pilcrow-rounded@1&f[]=bonny@1&f[]=gambarino@400&f[]=bebas-neue@400&display=swap'>
+	<link rel='stylesheet' media='print' onload="this.media='all'" href='https://api.fontshare.com/v2/css?f[]=general-sans@1&f[]=boska@1&f[]=supreme@1&f[]=switzer@1&f[]=hind@1&f[]=poppins@1&f[]=nunito@1&f[]=chubbo@1&f[]=pilcrow-rounded@1&f[]=bonny@1&f[]=sentient@1&f[]=gambarino@400&f[]=bebas-neue@400&display=swap'>
 	<noscript>
-		<link rel='stylesheet' href='https://api.fontshare.com/v2/css?f[]=general-sans@1&f[]=boska@1&f[]=supreme@1&f[]=switzer@1&f[]=hind@1&f[]=poppins@1&f[]=nunito@1&f[]=chubbo@1&f[]=pilcrow-rounded@1&f[]=bonny@1&f[]=gambarino@400&f[]=bebas-neue@400&display=swap'>
+		<link rel='stylesheet' href='https://api.fontshare.com/v2/css?f[]=general-sans@1&f[]=boska@1&f[]=supreme@1&f[]=switzer@1&f[]=hind@1&f[]=poppins@1&f[]=nunito@1&f[]=chubbo@1&f[]=pilcrow-rounded@1&f[]=bonny@1&f[]=sentient@1&f[]=gambarino@400&f[]=bebas-neue@400&display=swap'>
 	</noscript>
 
 	<?php foreach (stylesheet_paths() as $sheet): ?>

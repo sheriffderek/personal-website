@@ -120,6 +120,18 @@ function poster_art_path($slug) {
 	return is_file($art) ? $art : INCLUDES_DIR . '/posters/poster-shapes.php';
 }
 
+/* The ascii twin of the poster art - the Terminal character's take on the
+   cover (it rides along dormant in every poster slide; milestone.css swaps it
+   in under data-brand-character='terminal'). Same fallback shape as
+   poster_art_path: a per-milestone twin from includes/posters/art-ascii/
+   <slug>.php - each one a few glyphs mirroring its drawn svg - falling back
+   to the generic poster-ascii for any card without its own yet. */
+function poster_ascii_path($slug) {
+	$ascii = INCLUDES_DIR . '/posters/art-ascii/' . $slug . '.php';
+
+	return is_file($ascii) ? $ascii : INCLUDES_DIR . '/posters/poster-ascii.php';
+}
+
 /* A milestone's real media items — the typed {type, src} entries that point at
    a made asset (not the shared placeholder). The template (templates/milestone.php)
    uses this to pick the media shape:

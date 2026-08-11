@@ -1,0 +1,5 @@
+# The experiments folder is a workbench, not the site - keep it out of
+# search. (Polite-crawler layer; experiments/.htaccess adds the
+# X-Robots-Tag header for anything that ignores this file.)
+User-agent: *
+Disallow: /experiments/

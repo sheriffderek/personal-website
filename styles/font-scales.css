@@ -5,7 +5,7 @@
 	   already loaded (primary in <head>, the rest async):
 	     sans:  General Sans, Switzer, Supreme, Spline Sans, Hind, Poppins,
 	            Quicksand, Nunito, Pilcrow Rounded, Bebas Neue (display)
-	     serif: Boska, Bonny, Gambarino
+	     serif: Boska, Bonny, Gambarino, Sentient
 	     mono:  none on Fontshare - stays system. */
 	--font-sans: 'General Sans', system-ui, sans-serif;
 	--font-serif: 'Boska', Georgia, serif;
