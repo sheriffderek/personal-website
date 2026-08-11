@@ -305,6 +305,14 @@
 			sliders.forEach(function (slider) {
 				slider.value = String(clamped);
 			});
+
+			/* Terminal hides the whole media apparatus (milestone.css), and
+			   Flickity cells measured while hidden come back squished - so a
+			   character swap announces a resize, which Flickity already
+			   listens for. Character only: moods/flavors are color-only. */
+			if (cfg.kind === 'character') {
+				window.dispatchEvent(new Event('resize'));
+			}
 		}
 
 		applyByKind[cfg.kind] = apply;

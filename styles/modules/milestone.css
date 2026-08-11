@@ -579,31 +579,33 @@
 	}
 }
 
-/* Terminal character: the posters speak ascii. The drawn art stands down and
-   the ascii twin takes the slide - a structure swap, so it keys off the
-   character axis. The twin is a real text readout (a <pre>): an ascii-framed
-   graphic with a command line under it, at a fixed terminal type size - a
-   terminal doesn't scale its text to its window, and neither does this. It
-   wears .poster-art, so the poster ink/fill re-pointing and gradient ground
-   apply - moods and flavors color it like any other poster. */
+/* Terminal character: the media apparatus stands down ENTIRELY - carousel,
+   slides, photos, videos, the drawn poster art - and the ascii twin (the
+   <pre> sitting beside the carousel in the figure) IS the media. A full
+   switch, never a mix (Derek, 2026-08-10: no drawn poster peeking out beside
+   a readout). The readout is real text in the document flow - flush left,
+   the page's own mono size, natural height, no frame, no ground. Structure
+   swap, so it keys off the character axis. */
 [data-brand-character="terminal"] .milestone {
-	.poster-art:not(.poster-ascii) {
+	.media {
+		border: 0;
+	}
+
+	/* Both media shapes: the carousel (poster + slides) and the lone poster
+	   slide. Hidden wholesale - the readout replaces them. */
+	.media .carousel,
+	.media > .slide {
 		display: none;
 	}
 
 	.poster-ascii {
-		display: grid;
-		align-content: center;
-		justify-content: center;
-		justify-items: start;
-		width: 100%;
-		height: 100%;
+		display: block;
 		margin: 0;
-		padding: 1rem;
-		overflow: hidden;
+		overflow: hidden; /* a long command line clips instead of widening the card */
+		background: none; /* the poster ground stands down - readouts sit on the page */
 		color: var(--ink-primary);
 		font-family: var(--font-mono);
-		font-size: 15px; /* fixed terminal geometry, not the type ladder - px on purpose (units rule) */
+		font-size: var(--step-0); /* the flat ladder - same size as every other terminal voice */
 		line-height: 1.5;
 
 		/* The focal mark - the same job var(--accent) does in the drawn art. */

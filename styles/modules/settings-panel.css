@@ -23,24 +23,46 @@
    1. App chrome scope */
 
 [data-ui="app"] {
-	/* This is the app-within-an-app: a sealed scope with its own token set, so
-	   theming the editorial layer can never move the UI out from under the
-	   cursor. Every rule inside the chrome reads an --app-* token below, NEVER a
-	   global token directly - that indirection IS the wall. The contract
-	   (Derek, 2026-07-28: the chrome is STATIONARY - it never changes size or
-	   position - but themes may still paint it):
+	/* ========================================================================
+	   THE APP-UI CONTRACT - read this before touching ANYTHING in the chrome.
+	   ========================================================================
+	   [data-ui='app'] is ITS OWN APP with its own rules. The site's theming
+	   system stops at this boundary. (Derek, 2026-07-28; restated harder
+	   2026-08-10 after two accidents - see the history note below.)
 
-	     COLOR slots alias the global semantic tokens, so the chrome tracks
-	     the active theme for free. They are the ONLY sanctioned door in: a
-	     theme that wants bespoke chrome overrides these - and only these.
+	   1. FORM NEVER CHANGES. No brand, character, mood, flavor, scheme, or
+	      future axis may add, remove, swap, resize, or move a control in
+	      here. Not "re-form to match the theme's personality" - NEVER. The
+	      whole point is that the controls stay put under the visitor's hand
+	      while the page transforms around them.
 
-	     GEOMETRY tokens are the frozen list. A theme block must never set
-	     them: a size or border-width change moves the control, defeating the
-	     whole point. Fonts are pinned below for the same reason - a family
-	     swap reflows label metrics. (--app-corners is the one geometry lever
-	     that's cursor-safe - radius doesn't move a target's center - but it
-	     stays literal until the unfreeze-corners decision lands, so it's
-	     deliberately not a token yet.) */
+	   2. THE ONLY DOOR IN IS THE --app-* COLOR SLOTS. They alias the global
+	      semantic tokens below, so the chrome repaints with the theme for
+	      free; a theme wanting bespoke chrome overrides those slots and
+	      nothing else. Color. That's the whole menu.
+
+	   3. EVERYTHING ELSE IS SEALED, EXPLICITLY. Geometry tokens are frozen.
+	      Font families are pinned to the UI stacks AND the metrics (size,
+	      weight, line-height) are re-stated at this scope - because anything
+	      the chrome inherits or reads from a global token is a hole in the
+	      wall, even if no theme happens to reach through it today. Rules
+	      inside the chrome read --app-* tokens or literals, never a global
+	      token directly.
+
+	   History - how each rule earned its wording (2026-08-10, the Terminal
+	   character): re-pointing global --font-ui at the mono restyled the
+	   chrome (the pin list only covered the tokens characters had used so
+	   far - rule 3); its flat type scale resized chrome text through
+	   inheritance (family was re-applied but not metrics - rule 3); and the
+	   sliders were briefly swapped for text steppers (rule 1, reverted same
+	   day). When a new global token or axis appears, assume it pierces this
+	   scope until pinned here.
+
+	   (Amended 2026-08-11, Derek: --app-corners is UNFROZEN - a sanctioned
+	   lever alongside the color slots. Radius is the one geometry change
+	   that's cursor-safe - it never moves a target's center - so a theme may
+	   round the chrome without breaking the stationary contract. Everything
+	   else in the geometry list stays frozen.) */
 
 	/* Pin type families inside the chrome so the character switcher doesn't
 	   restyle its own controls (a family swap changes metrics, and metrics
@@ -51,8 +73,22 @@
 	   token actually land. */
 	--font-body: var(--font-sans);
 	--font-heading: var(--font-sans);
+	/* --font-ui too: no character touched it until Terminal re-pointed it at
+	   the mono (2026-08-10), which sailed through this wall and restyled the
+	   chrome. Every family token a character may set gets pinned here - the
+	   pin list must cover the character blocks' reach, not just the tokens
+	   they happen to use today. */
+	--font-ui: var(--font-sans);
 
+	/* Re-apply the full font shorthand's worth, not just the family: size,
+	   weight, and line-height also resolve outside and inherit in, so a
+	   character's global type changes (Terminal's flat scale and weights,
+	   2026-08-10) restyled the chrome through the same gap the family pin
+	   already closes. The chrome's metrics are ITS OWN, stated here. */
 	font-family: var(--font-body);
+	font-size: var(--type-anchor);
+	font-weight: 400;
+	line-height: 1.5;
 
 	--app-data-voice-font-family: var(--font-mono);
 	--app-data-voice-font-size: calc(var(--step-0) * 0.75);
@@ -68,6 +104,11 @@
 	--app-accent: var(--accent);
 	--app-shadow: var(--panel-shadow, 0 4px 12px rgb(0 0 0 / 0.12));
 
+	/* Corners - the one free GEOMETRY lever (unfrozen 2026-08-11, see the
+	   contract above): radius never moves a target's center, so a theme may
+	   round the chrome. Default is the house square. */
+	--app-corners: 0px;
+
 	/* Geometry - frozen. The border stays as a color-matched placeholder (a
 	   theme fakes "no border" via --app-stroke, never by zeroing the width). */
 	--app-border-width: 1px;
@@ -82,6 +123,10 @@
 	margin: 0 0 0.4rem;
 	font-family: var(--app-data-voice-font-family);
 	font-size: var(--app-data-voice-font-size);
+	/* Weight stated, not inherited: these labels are <p>s, and the bare-p
+	   calm-voice rule would otherwise hand them each character's prose
+	   weight. Chrome metrics are frozen like the rest. */
+	font-weight: 400;
 	line-height: var(--app-data-voice-line-height);
 	letter-spacing: var(--app-data-voice-letter-spacing);
 	color: var(--app-ink-secondary);
@@ -223,7 +268,7 @@ button.trigger {
 	background: var(--app-fill);
 	color: var(--app-ink);
 	border: var(--app-border-width) solid var(--app-stroke);
-	border-radius: 0px;
+	border-radius: var(--app-corners);
 	box-shadow: var(--app-shadow);
 
 	/* A closed popover MUST be display:none in AUTHOR css. The UA's
@@ -235,6 +280,20 @@ button.trigger {
 	   is the best suspect yet for the old mobile scroll-freeze). */
 	&:not(:popover-open) {
 		display: none;
+	}
+}
+
+/* Phone posture (< 1024, the toolbar's row axis): the panel's width is an
+   OPINION, not max-content fallout. It spans the page's own gutters - the
+   tray's triggers sit --gutter off the right edge, placePanel keeps right
+   edges aligned, so a gutter-to-gutter width lands the card symmetric inside
+   the content column by construction. Without this, width resolves from the
+   widest row's intrinsic size and the left edge cuts the page at an
+   arbitrary spot (Derek, 2026-08-11: "it just has to have an opinion that
+   fits with our spacing"). */
+@media (width < 1024px) {
+	.panel {
+		width: min(var(--layout-panel-max), 100vw - var(--gutter) * 2);
 	}
 }
 

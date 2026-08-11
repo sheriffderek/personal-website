@@ -53,7 +53,11 @@
 			margin: 0;
 			min-height: 100vh;
 			display: grid;
-			place-items: center;
+
+			/* pinned to the TOP, centered only horizontally - vertical
+			   centering re-balances the page around every content-size
+			   change, so the map jiggles when a text line appears */
+			place-items: start center;
 			background: var(--paper);
 			color: var(--line);
 			font-family: system-ui, sans-serif;
@@ -94,14 +98,6 @@
 				border: 1px solid var(--rule);
 				border-radius: 8px;
 				padding: 0.75rem 1.5rem 1.25rem;
-			}
-
-			.status .readout,
-			.status .coach,
-			.status .role-hint,
-			.status .how-to {
-				text-align: left;
-				max-width: none;
 			}
 
 			figure {
@@ -404,36 +400,49 @@
 			pointer-events: none;
 		}
 
+		/* the status block reads left-aligned at every width - centered
+		   text re-rags on every content change */
 		.role-hint {
 			font-size: 0.9rem;
 			font-weight: 600;
-			text-align: center;
 			margin: 1rem 0 0;
 		}
 
-		.readout {
+		.team-line {
+			font-size: 0.8rem;
+			color: var(--line-soft);
+			margin: 1rem 0 0.25rem;
+		}
+
+		.meter {
+			border-collapse: collapse;
 			font-size: 0.8rem;
 			color: var(--line-soft);
 			font-variant-numeric: tabular-nums;
-			text-align: center;
-			margin-top: 1rem;
+		}
+
+		.meter th {
+			text-align: left;
+			font-weight: 400;
+			padding: 0.1rem 2rem 0.1rem 0;
+		}
+
+		.meter td {
+			text-align: right;
 		}
 
 		.coach {
 			font-size: 0.85rem;
 			color: var(--line);
-			text-align: center;
 			max-width: 52ch;
-			margin: 0.5rem auto 0;
+			margin: 0.75rem 0 0;
 		}
 
 		.how-to {
-			margin-top: 1.5rem;
+			margin: 1.5rem 0 0;
 			font-size: 0.95rem;
 			color: var(--line-soft);
 			max-width: 46ch;
-			margin-inline: auto;
-			text-align: center;
 		}
 	</style>
 </head>
@@ -575,7 +584,31 @@
 
 			<p class='role-hint' id='role-hint'></p>
 
-			<p class='readout' id='readout'></p>
+			<p class='team-line' id='team-line'></p>
+
+			<table class='meter'>
+
+				<tr>
+					<th>meets the bar</th>
+					<td id='meter-total'></td>
+				</tr>
+
+				<tr>
+					<th>Product</th>
+					<td id='meter-product'></td>
+				</tr>
+
+				<tr>
+					<th>Design</th>
+					<td id='meter-design'></td>
+				</tr>
+
+				<tr>
+					<th>Engineering</th>
+					<td id='meter-engineering'></td>
+				</tr>
+
+			</table>
 
 			<p class='coach' id='coach'></p>
 
@@ -738,7 +771,11 @@
 		var barSlider = document.getElementById('bar');
 		var scopeHint = document.getElementById('scope-hint');
 		var veil = document.getElementById('certainty-veil');
-		var readout = document.getElementById('readout');
+		var teamLine = document.getElementById('team-line');
+		var meterTotal = document.getElementById('meter-total');
+		var meterCells = TERRAIN.map(function (circle) {
+			return document.getElementById('meter-' + circle.name.toLowerCase());
+		});
 		var coach = document.getElementById('coach');
 		var roleHint = document.getElementById('role-hint');
 		var toolbox = document.getElementById('toolbox');
@@ -1220,24 +1257,25 @@
 				return Math.min(100, Math.round(covered / total / PACKING_ALLOWANCE * 100));
 			}
 
-			var parts = TERRAIN.map(function (circle, i) {
-				var percent = reportPercent(perCircle[i].covered, perCircle[i].total);
+			TERRAIN.forEach(function (circle, i) {
+				var circlePercent = reportPercent(perCircle[i].covered, perCircle[i].total);
 
 				// a full circle earns the honest surplus reading: 160%
 				// says "over-bought here - this budget could move."
 				// Only shown once genuinely covered, so a corner stack
 				// can never buy the label with piled-up paint.
-				if (percent >= 100) {
-					percent = Math.max(100, Math.round(perCircle[i].raw / perCircle[i].total * 100));
+				if (circlePercent >= 100) {
+					circlePercent = Math.max(100, Math.round(perCircle[i].raw / perCircle[i].total * 100));
 				}
 
-				return circle.name + ' ' + percent + '%';
+				meterCells[i].textContent = circlePercent + '%';
 			});
 
 			var percent = reportPercent(mapCovered, mapTotal);
 			var teamSize = placed.length + (held ? 1 : 0);
 
-			readout.textContent = 'team of ' + teamSize + ' · meets the bar: ' + percent + '% · ' + parts.join(' · ');
+			teamLine.textContent = 'team of ' + teamSize;
+			meterTotal.textContent = percent + '%';
 			coach.textContent = teamSize ? coachLine(percent) : 'An empty field. Pull in a person and start covering it.';
 
 			if (held) {

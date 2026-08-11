@@ -35,7 +35,10 @@ body {
 	--layout-list-column: 720px;
 	--layout-tray-sidebar: 300px;
 
-	--layout-panel-gap: 8px;
+	/* The drop gap is the tray's own 0.5rem block padding continuing below
+	   the bar - the panel hangs at the tray's rhythm, not a magic number.
+	   If the tray's padding changes, change this with it. */
+	--layout-panel-gap: 0.5rem;
 	--layout-panel-edge: 8px;
 	--layout-panel-min: 280px;
 	--layout-panel-max: 360px;

@@ -69,15 +69,17 @@
 			<div class='carousel' data-flickity='{ "wrapAround": true, "imagesLoaded": true, "prevNextButtons": false }'>
 				<div class='slide' data-type='poster'>
 					<?php include poster_art_path($milestone['slug']); ?>
-					<?php /* The ascii twin rides along dormant; the Terminal
-					   character swaps it in (toggle in milestone.css). */ ?>
-					<?php include poster_ascii_path($milestone['slug']); ?>
 				</div>
 
 				<?php foreach ($media_items as $item): ?>
 					<?= partial('posters/media-item', ['item' => $item]) ?>
 				<?php endforeach; ?>
 			</div>
+
+			<?php /* The ascii twin sits BESIDE the carousel, not inside it,
+			   dormant. Under the Terminal character the whole carousel stands
+			   down and this readout IS the media (toggle in milestone.css). */ ?>
+			<?php include poster_ascii_path($milestone['slug']); ?>
 		</figure>
 
 	<?php elseif ($poster_only): ?>
@@ -85,10 +87,12 @@
 		<figure class='media'>
 			<div class='slide' data-type='poster'>
 				<?php include poster_art_path($milestone['slug']); ?>
-				<?php /* The ascii twin rides along dormant; the Terminal
-				   character swaps it in (toggle in milestone.css). */ ?>
-				<?php include poster_ascii_path($milestone['slug']); ?>
 			</div>
+
+			<?php /* The ascii twin sits BESIDE the poster slide, dormant.
+			   Under the Terminal character the slide stands down and this
+			   readout IS the media (toggle in milestone.css). */ ?>
+			<?php include poster_ascii_path($milestone['slug']); ?>
 		</figure>
 
 	<?php endif; ?>
