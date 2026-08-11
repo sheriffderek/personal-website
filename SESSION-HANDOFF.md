@@ -1,47 +1,46 @@
-# Session Handoff (July 3, 2026, updated July 28)
+# Session Handoff (July 3, 2026, updated August 10)
 
-## Current focus (2026-07-28): THE POSTER LANGUAGE LAB
+## Current state (2026-08-10): POSTERS GRADUATED, THEMING AXES BUILT, TRIO LAB IN FLIGHT
 
-The milestone poster covers are being designed in `experiments/posters.html`
-(view at http://derek.local:8888/experiments/posters.html - MAMP host renamed
-to `derek.local`, CLAUDE.md already updated). All 36 milestones have a drafted
-poster; several review rounds are done and committed (`7d05750` through
-`3b4acb7` on `fixing-grid-and-reworking-theme`).
+The poster language lab GRADUATED (2026-07-28): every milestone's cover is a
+per-slug partial in `includes/posters/art/` (`poster_art_path()` in
+render.php; poster-shapes.php is the fallback). The lab file remains as
+reference; authoring rules live in its header + poster-system.md. On top of
+that, the theming architecture landed - all committed on main, each law
+documented as a colocated comment at its enforcement point:
 
-**The lab file's header comment IS the spec - read it before touching any
-poster.** It carries the family law (alignment, padding, equilateral
-triangles, optical bump, no tangents), THE SCALE (line weights 5/10/30, the
-20-ladder for circles, bar heights, gap semantics: 20 breathing / 40
-separation, constant sibling steps), the roundness law (corners axis drives
-rect rx AND stroke caps/joins), the 3-wide phone-crop system (large 3:3,
-medium 3:2, small 3:1 - milestone.css adopts it at graduation), and the open
-question (per-poster dark/inverted variety - recorded, deliberately not acted
-on). Every poster's own comment documents its geometry against the ladders.
+- **The axes**: scheme / character / mood / **flavor** (`data-flavor`, panel
+  row, `berry` is the first named range) / per-card **variant** (RENAMED
+  from "flavor" - the card's palette-free role slot) / red light. The
+  model (Derek): character = structure, mood = application policy (where
+  color lands, how), flavor = pigment routing. See characters.css header.
+- **Authority is the cascade LAYER order** in settings.css - red-light is
+  the last layer and stomps everything; specificity arms races are over.
+  Index-0 axis values are never written as attributes (law in flavors.css).
+- **Poster slots**: `--poster-fill/-ink/-fill-secondary/-accent` (variants
+  .css baseline, flavors.css assignments), ground-gradient stop pair +
+  the `#poster-ramp` mass def (technical's signature), per-poster custom =
+  an id-scoped single-card flavor (css-tricks orange, flavors.css tail).
+- **Phone crops**: 3-wide ratios in milestone.css + per-poster
+  `--crop-x/y/scale` tokens (scripts/poster-crops.js, live-scrubbable).
+- **The flavor-range bench** on /design-system: the reparameterized hue
+  dial (waypoint table, mud zones excluded) driving the real specimen
+  card. Open: waypoint tuning by eye, a dark-scheme recipe, roster naming
+  (industry registers - Derek is deliberately still expanding this
+  thinking; don't lock his first idea in).
 
-**The working process that works:** Derek posts a marked-up screenshot or a
-one-line note per poster; rework that poster in place (geometry derived, not
-eyeballed - document the numbers in its comment); verify in the browser pane;
-he says "save" and the batch commits as one slice. Do not batch-redesign
-unprompted.
+Derek's NEW in-flight instrument: the **trio coverage lab**
+(`experiments/trio.html` + `coverage-math-spec.md` + `role-names.md`) -
+committed, thread not yet claimed by any session directive.
 
-Things to know:
-- Poster sizes are AUTHORED in `content/milestones.json` (`poster` key);
-  several changed this session - the JSON is already correct.
-- The steps/staircase motif is parked for a future PE card (geometry at
-  `35f57b2`); pe-founded wears the target now.
-- Coverage audited: all 36 JSON milestones have lab posters, 1:1. Two stale
-  doc refs found (timeline-content-plan still lists the removed
-  crowdfunding-competitor as a must-have; milestone-tuneup-notes still
-  reviews the deleted pe-redesign-dashboard) - one-line cleanups, unclaimed.
-- Next when Derek says so: remaining misses; the dark/inverted question;
-  grain as a FRAME finish (the texture bench lives on /design-system -
-  posters themselves stay filter-free per poster-system.md); graduating
-  winners into `includes/posters/` per poster-system.md's checklist
-  (slug-prefixed ids; site wiring needs the 3-wide crops in milestone.css,
-  per-brand corners/caps tokens, and the poster-space corner-unit multiplier
-  flagged in the lab).
-- `styles/settings/moods.css` has Derek's own uncommitted working diff -
-  never stage it.
+Queued small slices (direction approved, unbuilt): the axis value lists ->
+one PHP-side config (four consumers: FOUC script, JS arrays, slider maxes -
+prerequisite for url-state-plan.md); the `@import` cache-bust fix (editing
+an imported settings file dodges the mtime buster - hard-reload to see
+mood/flavor edits until fixed).
+
+Scope law (root CLAUDE.md, 2026-07-28): only work the current thread -
+queued $todos and doc backlogs enter only when Derek brings them up.
 
 ## Previous focus (2026-07-20): VIDEO CONTENT, not the shell
 
