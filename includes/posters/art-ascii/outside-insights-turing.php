@@ -1,9 +1,9 @@
-<?php /* THE TARGET, as a readout. Mirrors art/pe-founded.php: the centered
-	bullseye - two rings, the accent dot at the center. */ ?>
+<?php /* OVERLAP, as a readout. Mirrors art/outside-insights-turing.php: two
+	schools of thought overlapping, the accent voice apart. */ ?>
 <pre class='poster-art poster-ascii'>
 +------------------+
 |                  |
-|   (  ( <span class='accent'>●</span> )  )    |
+|  <span class='accent'>●</span>   ( ( ) )     |
 |                  |
 +------------------+
 $ open <?= $milestone['slug'] ?>  <span class='meta'># <?= $milestone['date'] ?></span>

@@ -73,6 +73,27 @@ $pages = [
 	],
 ];
 
+// Articles live at /articles/<slug>. The metadata layer (title, date,
+// description) is content/articles.json; the prose itself is a body file at
+// templates/articles/<slug>.php (markup is template-land, data is content-land).
+// Both must exist for the page to exist - a JSON entry without a body file, or
+// a stray body file without its entry, is still a 404.
+if (strpos($slug, 'articles/') === 0) {
+	$article_slug = substr($slug, strlen('articles/'));
+	$articles = load_json('articles.json');
+
+	if (isset($articles[$article_slug]) && is_file(TEMPLATES_DIR . '/articles/' . $article_slug . '.php')) {
+		$article = $articles[$article_slug];
+		$article['slug'] = $article_slug;
+
+		$pages[$slug] = [
+			'file' => 'article.php',
+			'title' => $article['title'] . ' - ' . SITE_TITLE,
+			'description' => $article['description'],
+		];
+	}
+}
+
 // Didn't recognize it? Show a 404 - still a real page with our normal chrome.
 if (!isset($pages[$slug])) {
 	http_response_code(404);

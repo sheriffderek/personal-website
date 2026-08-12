@@ -1,5 +1,5 @@
 <?php /* The settings rows - ONE list, shared by every settings surface: the
-	panel popover in the tray, and the band on the grid's top composition
+	panel in the tray, and the band on the grid's top composition
 	(templates/pages/home.php). The mirror model: each surface renders its own
 	copy of these rows; none owns the state - settings-panel.js writes state to
 	data-* on <html> + localStorage and reflects EVERY control from it, so N

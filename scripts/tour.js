@@ -72,10 +72,12 @@
 			def: 'closed',
 			apply: function (value) {
 				if (!panel) return;
+				/* The panel's manual state machine (settings-panel.js, de-popovered
+				   2026-08-11) - showPopover/hidePopover no longer exist on it. */
 				if (value === 'open') {
-					try { if (panel.showPopover) panel.showPopover(); } catch (error) {}
+					settings.openPanel(panel);
 				} else {
-					if (panel.hidePopover) panel.hidePopover();
+					settings.closePanel(panel);
 				}
 			}
 		},

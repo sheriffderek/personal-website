@@ -3,6 +3,16 @@
    ONLY - never type or shape, so any character works under any mood. Three
    moods, in slider order: Expressive (default) · Technical · Quiet.
 
+   THE AXIS IN ONE BREATH (Derek, 2026-08-11): Expressive is colorful and
+   wide-ranged - a whole rainbow of dimension. Technical can be colorful but
+   ANALOGOUS - one neighborhood of the wheel. Quiet is subdued - less
+   saturation, more grays, less contrast. (Character, for comparison, is
+   spacing / fonts / sizes and a little corners or line quality - never a
+   hue.) Each mood block below carries its CREATIVE BRIEF - the vibe written
+   out like a creative director would say it, light and dark both - so the
+   values can be adjusted against the words, not re-guessed. When a value
+   and its brief disagree, the brief wins; adjust the value.
+
    MOOD CONTRACT --------------------------------------------------------------
    Every mood block MUST declare these 10 CORE tokens, in this exact order and
    grouping, so a missing one is visible at a glance (that is the whole point of
@@ -27,9 +37,19 @@
    palettes. Swap in the real values. Structure is what's proven here, not hues.
    ========================================================================== */
 
-/* --- EXPRESSIVE (default) - fun / happy / friendly: warm-white paper (olive),
-   warm ink (stone), vivid green accent. Bound to :root so it is the default
-   paint; also matches its own attribute. --- */
+/* --- EXPRESSIVE (default) ------------------------------------------------
+   THE BRIEF: the colorful one, wide-ranged - a whole rainbow of dimension.
+   Fun, happy, friendly. Color is allowed from ANYWHERE on the wheel; slots
+   don't match each other, they harmonize by value. The page is a warm
+   gallery wall and the work on it gets to be loud.
+     LIGHT: warm paper, vivid marks - a sunny studio with art everywhere.
+     DARK: the same studio at night - velvet ground, every color glowing
+     one step brighter, never dimmed into gray.
+   DRIFT NOTE (2026-08-11): today's values are one warm family (olive paper,
+   stone ink, green accent) - the rainbow currently lives only in the poster
+   flavors, so the PAGE reads calmer than the brief. If Expressive should
+   feel rainbow at the page level too, the secondary fills/strokes are the
+   slots with room to take on more hues. --- */
 :root,
 [data-brand-mood="expressive"] {
 	--fill-primary: light-dark(var(--color-olive-50), var(--color-olive-900));
@@ -54,8 +74,17 @@
 	--selection-ink: var(--color-stone-900);
 }
 
-/* --- TECHNICAL - techie / cold / cool: an analogous blue spectrum. Seeded from
-   the old immersive pilot - a clean starting point. Restates selection (blue). --- */
+/* --- TECHNICAL ------------------------------------------------------------
+   THE BRIEF: colorful but ANALOGOUS - pick a home hue and never leave its
+   neighborhood. Home is blue: slate, indigo, violet are legal neighbors;
+   orange never appears. Cool, precise, lab-coated - color used as signal,
+   not decoration. Saturation is allowed (this is not Quiet), but it all
+   points the same direction on the wheel.
+     LIGHT: white lab paper with a cool cast, the blurple accent as the
+     one signature flourish (the Stripe register).
+     DARK: a deep blue-black console - the hue HOLDS in the darkness (never
+     collapses to neutral gray; the room stays blue).
+   Current values match the brief (blue -> indigo -> slate, 2026-08-11). --- */
 [data-brand-mood="technical"] {
 	/* Stripe-style decisions (2026-07-28): the page is WHITE paper (Derek -
 	   not blue-tinted; Stripe pages are white) with SLATE ink (Stripe body
@@ -80,9 +109,20 @@
 	--selection-ink: var(--color-blue-950);
 }
 
-/* --- QUIET - muted / minimal / editorial: neutral paper, a single accent, lots
-   of space. Inherits Expressive's yellow highlighter (no selection restated).
-   $todo the board gives Quiet a rust/sage "little hint" accent - blue placeholder. --- */
+/* --- QUIET ----------------------------------------------------------------
+   THE BRIEF: subdued - less saturation, more grays, less contrast. Muted,
+   minimal, editorial; a room with the lights low and one small thing worth
+   looking at. Color appears only as the accent, and even that is a murmur
+   (the board says a rust/sage "little hint"). Nothing shouts; nothing is
+   quite black or quite white.
+     LIGHT: soft gray paper, gray ink a step short of full black - the
+     whole page pulled toward the middle.
+     DARK: warm charcoal, ink a step short of white - dim, not stark.
+   DRIFT NOTES (2026-08-11): ink runs stone-900-on-white / stone-50-on-900
+   today - that's full contrast, louder than the brief; both ends want a
+   step toward the middle. And the accent is still the blue placeholder,
+   not the rust/sage hint. Inherits Expressive's yellow highlighter (no
+   selection restated) - arguably too loud for this room too. --- */
 [data-brand-mood="quiet"] {
 	--fill-primary: light-dark(white, var(--color-stone-900));
 	--fill-secondary: light-dark(var(--color-stone-100), var(--color-stone-800));

@@ -1,6 +1,7 @@
 /* Display settings (triggers + panels) — single data-driven loop for switcher
    rows, plus the timeline filter slider (its own shape, not a switcher).
-   Native <popover> handles open/close, Esc, and light-dismiss. */
+   Panel open/close, Esc, light-dismiss, and focus return are OURS (manual
+   state machine below - de-popovered 2026-08-11, see its comment for why). */
 (function () {
 	var html = document.documentElement;
 
@@ -367,8 +368,8 @@
 	   index 0 is each cell's own default take, named ranges re-pigment only
 	   what they state. Value list must stay matched with the FOUC script in
 	   header.php and the slider max in includes/settings/flavor-switcher.php. */
-	var FLAVORS      = ['default', 'berry'];
-	var FLAVOR_NAMES = ['Default', 'Berry'];
+	var FLAVORS      = ['default', 'earth', 'cool', 'sweet'];
+	var FLAVOR_NAMES = ['Default', 'Earth', 'Cool', 'Sweet'];
 
 	var applyFlavor = sliderSwitcher({
 		kind: 'flavor',
@@ -778,16 +779,14 @@
 		});
 	});
 
-	/* Outside-tap dismiss, for BOTH menus (Settings + Pages). Native popover
-	   light-dismiss is unreliable on iOS Safari (a styled ::backdrop swallows
-	   the tap, and support only landed in 18.3), so we close it ourselves.
-	   Only one auto-popover is open at a time; we track which from the `toggle`
-	   event (rather than :popover-open, which can throw on older Safari) and
-	   listen for both pointerdown and touchstart - touchstart is the raw touch
-	   event iOS always fires. We compare the tap point to the panel's box, not
-	   the event target (a ::backdrop tap reports the popover itself as target,
-	   so a contains() check would wrongly keep it open). Any trigger is skipped
-	   so its own tap toggles natively without a close-then-reopen race. */
+	/* Outside-tap dismiss, for BOTH menus (Settings + Pages). This began as
+	   the iOS fallback for native popover light-dismiss (unreliable there
+	   until 18.3); with the popover gone (de-popovered 2026-08-11) it is THE
+	   light-dismiss mechanism on every browser. We listen for both
+	   pointerdown and touchstart - touchstart is the raw touch event iOS
+	   always fires - and compare the tap point to the panel's box, not the
+	   event target. Any trigger is skipped so its own tap toggles through
+	   the click wiring without a close-then-reopen race. */
 	var triggers = document.querySelectorAll('.trigger');
 	var panels = document.querySelectorAll('.panel');
 	var openPanel = null;
@@ -798,14 +797,13 @@
 	   tray's own sidebar column covers nothing, so it gets no dim.
 
 	   We track the set of open panels rather than a single flag so a SWITCH
-	   reconciles correctly - that's also the whole reason for the rAF: tapping
-	   the other menu fires two toggle events (the open one closes, the new one
-	   opens). If we set the shade on each event it would blink off then on.
-	   Instead each toggle just marks the set and queues one reconcile for the
-	   next frame; by then the set holds the settled state, so a switch (still
-	   one dimming panel open) leaves the shade on and untouched. Only a real
-	   full-close fades it out. (The set, not :popover-open in a selector -
-	   that pseudo-class can throw on older Safari.) */
+	   reconciles correctly - that's also the whole reason for the rAF: a
+	   panel-to-panel switch is a close then an open (two state changes). If
+	   we set the shade on each change it would blink off then on. Instead
+	   each change just marks the set and queues one reconcile for the next
+	   frame; by then the set holds the settled state, so a switch (still one
+	   dimming panel open) leaves the shade on and untouched. Only a real
+	   full-close fades it out. */
 	var shade = document.querySelector('.site-shade');
 	var openPanels = new Set();
 	var shadeSyncQueued = false;
@@ -859,11 +857,24 @@
 	var PANEL_EDGE = parseFloat(rootStyle.getPropertyValue('--layout-panel-edge')) || 8;
 
 	function triggerFor(panel) {
-		return document.querySelector('.trigger[popovertarget="' + panel.id + '"]');
+		/* Scoped to the toolbar: the perch replicas (clones, below) carry the
+		   same data-panel so the click wiring picks them up for free, but
+		   placement, aria-expanded, and focus return always mean the REAL
+		   trigger. */
+		return document.querySelector('.toolbar .trigger[data-panel="' + panel.id + '"]');
 	}
 
 	function triggerIsRendered(trigger) {
 		return !!trigger && getComputedStyle(trigger).display !== 'none';
+	}
+
+	/* The perch is ON wherever CSS renders the replicas (.panel-triggers,
+	   settings-panel.css, < 1024) - placePanel reads that display as THE
+	   switch, so geometry and chrome can never disagree about which
+	   composition is live. */
+	function perchIsActive(panel) {
+		var perch = panel.querySelector('.panel-triggers');
+		return !!perch && getComputedStyle(perch).display !== 'none';
 	}
 
 	function placePanel(panel, trigger) {
@@ -905,6 +916,19 @@
 			} else {
 				left = box.left - PANEL_GAP - width;
 			}
+		} else if (perchIsActive(panel)) {
+			/* PERCHED (the phone composition, Derek's sketch): the card hangs
+			   from the buttons that opened it. Top edge at the circles'
+			   midline, so they straddle the seam - half on the header, half
+			   on the card (the visible halves are the panel's own replica
+			   clones; the sticky tray paints as one slab, so the real circles
+			   are covered where they overlap). Right edge runs one rhythm
+			   unit (--layout-panel-gap, the tray's own 0.5rem) past the
+			   toolbar, which seats the corner circle 0.5rem in from the
+			   card's edge - the same breath that spaces everything else in
+			   the tray. */
+			top = box.top + box.height / 2;
+			left = box.right + PANEL_GAP - width;
 		} else {
 			/* BELOW: drop under the toolbar, right edges aligned. */
 			top = box.bottom + PANEL_GAP;
@@ -916,9 +940,30 @@
 		left = Math.max(viewLeft + PANEL_EDGE, Math.min(left, viewLeft + viewportWidth - width - PANEL_EDGE));
 		top = Math.max(viewTop + PANEL_EDGE, Math.min(top, viewTop + viewportHeight - height - PANEL_EDGE));
 
-		panel.style.left = Math.round(left) + 'px';
-		panel.style.top = Math.round(top) + 'px';
+		left = Math.round(left);
+		top = Math.round(top);
+
+		panel.style.left = left + 'px';
+		panel.style.top = top + 'px';
 		panel.style.right = 'auto';
+
+		/* Pin each replica exactly over its real trigger - computed from the
+		   real trigger's live rect against the panel's ROUNDED coordinates,
+		   so the overlay can never be a pixel off whatever the clamp did to
+		   the panel itself. */
+		if (perchIsActive(panel)) {
+			panel.querySelectorAll('.panel-triggers .trigger').forEach(function (replica) {
+				var real = document.querySelector('.toolbar .trigger[data-panel="' + replica.getAttribute('data-panel') + '"]');
+
+				if (!real) {
+					return;
+				}
+
+				var realBox = real.getBoundingClientRect();
+				replica.style.left = Math.round(realBox.left - left) + 'px';
+				replica.style.top = Math.round(realBox.top - top) + 'px';
+			});
+		}
 
 		/* "Over content" is derived, not declared per situation: the panel
 		   covers content exactly when its placed rect overlaps <main>.
@@ -960,7 +1005,7 @@
 			}
 
 			if (!triggerIsRendered(trigger)) {
-				panel.hidePopover();
+				closePanelNow(panel);
 				return;
 			}
 
@@ -972,74 +1017,173 @@
 		queueShadeSync();
 	}
 
-	panels.forEach(function (panel) {
-		/* No flash of an unplaced panel: the popover's `toggle` event is
-		   queued (async), so a frame could paint between show and placement.
-		   `beforetoggle` fires synchronously before it shows, so we hide
-		   there and reveal once placed. Done in JS, not CSS, so with no JS
-		   the popover still shows - the no-JS floor stays intact. */
-		panel.addEventListener('beforetoggle', function (event) {
-			if (event.newState === 'open') {
-				panel.style.visibility = 'hidden';
-			}
+	/* --- Panel state (manual, de-popovered 2026-08-11) ---
+	   The panels were native <popover>s until the ledger tipped: placement,
+	   the dim, and iOS dismiss were ALREADY manual (each because the native
+	   behavior failed cross-browser), and the top layer - the popover's one
+	   remaining big feature - paints panels above the tray unconditionally,
+	   vetoing the perched-trigger design. So the state machine is ours too.
+	   What that makes us own, explicitly: open/close (below), Esc, light
+	   dismiss (the iOS fallback handler promoted to THE mechanism), and
+	   focus return to the trigger. No-JS cost, accepted as a decision: the
+	   menus can't open at all - the settings are dead switches without JS
+	   anyway, and the footer's site-map carries the same navigation.
+
+	   Placement happens synchronously between adding .is-open and this task
+	   yielding, so there is no unplaced first frame - the old
+	   beforetoggle/visibility dance died with the popover.
+
+	   THE LESSON THAT MUST NOT REGRESS: closed = display:none, enforced by
+	   .panel:not(.is-open) in settings-panel.css. A closed-but-rendered
+	   panel is an invisible fixed box over the toolbar that eats every tap
+	   (the old mobile scroll-freeze suspect). Never fake closed with
+	   visibility or opacity. */
+
+	function syncTriggerExpanded(panel, isOpen) {
+		/* Keep the trigger's disclosure state in sync for assistive tech. */
+		var trigger = triggerFor(panel);
+		if (trigger) {
+			trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+		}
+	}
+
+	function openPanelNow(panel) {
+		if (panel.classList.contains('is-open')) {
+			return;
+		}
+
+		/* One panel at a time - the manual replacement for auto-popover
+		   exclusivity. Collect first, then close: closing mutates the set. */
+		var toClose = [];
+		openPanels.forEach(function (other) {
+			toClose.push(other);
 		});
+		toClose.forEach(closePanelNow);
 
-		panel.addEventListener('toggle', function (event) {
-			var isOpen = event.newState === 'open';
+		panel.classList.add('is-open');
+		openPanel = panel;
+		openPanels.add(panel);
 
-			if (isOpen) {
-				openPanel = panel;
-				openPanels.add(panel);
+		var placeTrigger = triggerFor(panel);
 
-				var placeTrigger = triggerFor(panel);
+		if (triggerIsRendered(placeTrigger)) {
+			placePanel(panel, placeTrigger);
 
-				if (triggerIsRendered(placeTrigger)) {
-					placePanel(panel, placeTrigger);
-
-					/* Settle pass: the first placement measured the panel the
-					   instant it became renderable, and that first measure can
-					   be off (fonts landing, iOS finishing a URL-bar or zoom
-					   transition mid-open). One more placement on the next
-					   frame reads the settled layout and corrects invisibly -
-					   on desktop it lands on the same pixels. */
-					requestAnimationFrame(function () {
-						if (!openPanels.has(panel)) {
-							return;
-						}
-
-						var settleTrigger = triggerFor(panel);
-
-						if (triggerIsRendered(settleTrigger)) {
-							placePanel(panel, settleTrigger);
-						}
-					});
-				} else {
-					/* Safety net only - a panel opens by its trigger, so a
-					   hidden trigger shouldn't get here. If it somehow does,
-					   clear any stale inline position so the CSS floor (a
-					   centred popover) applies instead of last week's spot. */
-					panel.style.left = '';
-					panel.style.top = '';
-					panel.style.right = '';
-					panel.removeAttribute('data-over');
+			/* Settle pass: the first placement measured the panel the
+			   instant it became renderable, and that first measure can
+			   be off (fonts landing, iOS finishing a URL-bar or zoom
+			   transition mid-open). One more placement on the next
+			   frame reads the settled layout and corrects invisibly -
+			   on desktop it lands on the same pixels. */
+			requestAnimationFrame(function () {
+				if (!openPanels.has(panel)) {
+					return;
 				}
 
-				panel.style.visibility = '';
-			} else {
-				openPanels.delete(panel);
-				if (openPanel === panel) {
-					openPanel = null;
+				var settleTrigger = triggerFor(panel);
+
+				if (triggerIsRendered(settleTrigger)) {
+					placePanel(panel, settleTrigger);
 				}
-			}
+			});
+		} else {
+			/* Safety net only - a panel opens by its trigger, so a
+			   hidden trigger shouldn't get here. If it somehow does,
+			   clear any stale inline position so the CSS floor applies
+			   instead of last week's spot. */
+			panel.style.left = '';
+			panel.style.top = '';
+			panel.style.right = '';
+			panel.removeAttribute('data-over');
+		}
 
-			queueShadeSync();
+		syncTriggerExpanded(panel, true);
+		queueShadeSync();
 
-			/* Keep the trigger's disclosure state in sync for assistive tech. */
-			var trigger = document.querySelector('[popovertarget="' + panel.id + '"]');
+		/* For instruments only (?debug=taps) - state changes are otherwise
+		   invisible to listeners now that there's no native toggle event. */
+		panel.dispatchEvent(new CustomEvent('panel-toggle', { detail: { open: true } }));
+	}
+
+	function closePanelNow(panel) {
+		if (!panel.classList.contains('is-open')) {
+			return;
+		}
+
+		/* Focus return - native popovers hand focus back to the invoker on
+		   close; keyboard users keep that here. Pointer closes never moved
+		   focus into the panel, so this is a no-op for them. */
+		if (panel.contains(document.activeElement)) {
+			var trigger = triggerFor(panel);
 			if (trigger) {
-				trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+				trigger.focus();
+			}
+		}
+
+		panel.classList.remove('is-open');
+		openPanels.delete(panel);
+		if (openPanel === panel) {
+			openPanel = null;
+		}
+
+		syncTriggerExpanded(panel, false);
+		queueShadeSync();
+
+		panel.dispatchEvent(new CustomEvent('panel-toggle', { detail: { open: false } }));
+	}
+
+	/* --- The perch replicas (Derek's sketch, 2026-08-11) ---
+	   On phones the open panel tucks up into the header with the circles
+	   straddling its top edge. The real circles can't paint over the panel -
+	   the sticky tray is one atomic stacking slab (position:sticky forms a
+	   stacking context, so there's no z-order that puts the panel between
+	   the tray's band and its buttons). So each panel carries CLONES of the
+	   menu triggers, pinned over the real ones by placePanel. Clones, not
+	   authored copies, so they can never drift from the originals - the
+	   mirror model by construction. They keep data-panel, so the click
+	   wiring below drives them like any trigger (tap to close, tap the
+	   other to switch); aria-hidden + tabindex=-1 because the REAL triggers
+	   still carry the semantics and keyboard path. */
+	panels.forEach(function (panel) {
+		var replicaWrapper = document.createElement('div');
+		replicaWrapper.className = 'panel-triggers';
+		replicaWrapper.setAttribute('aria-hidden', 'true');
+
+		document.querySelectorAll('.toolbar .trigger[data-panel]').forEach(function (real) {
+			var replica = real.cloneNode(true);
+			replica.removeAttribute('aria-controls');
+			replica.removeAttribute('aria-expanded');
+			replica.setAttribute('tabindex', '-1');
+			replicaWrapper.appendChild(replica);
+		});
+
+		panel.appendChild(replicaWrapper);
+	});
+
+	/* Trigger taps: plain click wiring (see the parked-cleverness note below -
+	   the floor is "every tap works"; no gesture inference). Includes the
+	   perch replicas - same data-panel, same handler. */
+	document.querySelectorAll('.trigger[data-panel]').forEach(function (trigger) {
+		trigger.addEventListener('click', function () {
+			var panel = document.getElementById(trigger.getAttribute('data-panel'));
+
+			if (!panel) {
+				return;
+			}
+
+			if (panel.classList.contains('is-open')) {
+				closePanelNow(panel);
+			} else {
+				openPanelNow(panel);
 			}
 		});
+	});
+
+	/* Esc closes - the popover behavior we keep, now stated in one line. */
+	document.addEventListener('keydown', function (event) {
+		if (event.key === 'Escape' && openPanel) {
+			closePanelNow(openPanel);
+		}
 	});
 
 	/* An open panel stays open across a resize and RE-PLACES live - the panel
@@ -1116,19 +1260,13 @@
 			clientY >= box.top &&
 			clientY <= box.bottom;
 
-		if (!insidePanel && openPanel.hidePopover) {
-			var dismissed = openPanel;
-
-			/* Clear the trackers SYNCHRONOUSLY, before hiding. One iOS tap
-			   fires this via pointerdown AND touchstart; the toggle handler
-			   that normally clears openPanel is queued (async), so without
-			   this the second pass saw the stale reference and called
-			   hidePopover on an already-hidden popover - an uncaught
-			   InvalidStateError on every outside tap (2026-07-20 audit). */
-			openPanel = null;
-			openPanels.delete(dismissed);
-
-			dismissed.hidePopover();
+		if (!insidePanel) {
+			/* One iOS tap fires this via pointerdown AND touchstart; the
+			   second pass is harmless because closePanelNow no-ops on an
+			   already-closed panel (the .is-open check) and the first pass
+			   cleared openPanel synchronously - the InvalidStateError this
+			   double-fire once caused (2026-07-20 audit) can't recur. */
+			closePanelNow(openPanel);
 
 			/* A softer click than the trigger's — half volume (gated by
 			   data-sound like every other UI sound). */
@@ -1161,9 +1299,10 @@
 	   machinery was inference about event timing we never observed; git has
 	   it all (2ebb263, 5747db1, 0b2d492, 9bd4f1d) if it's ever re-earned.
 
-	   The floor won: buttons must work. Native popover behavior only -
-	   every tap opens the menu, a mid-glide tap stops the scroll first
-	   (what native apps do), a menu switch is an instant swap.
+	   The floor won: buttons must work. Plain click wiring only (the
+	   openPanelNow/closePanelNow toggle above) - every tap opens the menu,
+	   a mid-glide tap stops the scroll first (what native apps do), a menu
+	   switch is an instant swap.
 
 	   REVISIT only via the house method that built the shell: prove the
 	   mechanic on a REAL device in the layout lab first (?debug=taps below
@@ -1208,8 +1347,8 @@
 		});
 
 		panels.forEach(function (panel) {
-			panel.addEventListener('toggle', function (event) {
-				logTap(panel.id + ': ' + event.newState);
+			panel.addEventListener('panel-toggle', function (event) {
+				logTap(panel.id + ': ' + (event.detail.open ? 'open' : 'closed'));
 			});
 		});
 	}
@@ -1272,6 +1411,8 @@
 			if (applyByKind[kind]) applyByKind[kind](value, opts);
 		},
 		restore: restore,
-		panel: document.getElementById('settings-panel')
+		panel: document.getElementById('settings-panel'),
+		openPanel: openPanelNow,
+		closePanel: closePanelNow
 	};
 })();

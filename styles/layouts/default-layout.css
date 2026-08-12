@@ -6,7 +6,7 @@ body {
    Mobile: flex column. Aside is sticky to viewport top throughout the page.
    Desktop: 4-column grid — gutter | content | tray | gutter (measures are
    the --layout-* tokens below). Aside contents are right-aligned so the
-   popover panel lands inside the tray, not in content. */
+   floating panel lands inside the tray, not in content. */
 .page-wrapper {
 	display: flex;
 	flex-direction: column;
@@ -27,7 +27,7 @@ body {
    --layout-wall-* set lives in grid-view.css beside the grid it sizes.
      --layout-list-column   the reading column in list view
      --layout-tray-sidebar  the dedicated control column from 1024 up
-     --layout-panel-*       popover panel placement + size caps. placePanel
+     --layout-panel-*       floating-panel placement + size caps. placePanel
                             (settings-panel.js) READS these via getComputedStyle,
                             so the JS re-encodes no numbers - CSS is the single
                             source for every layout constant. */
@@ -47,6 +47,14 @@ body {
 main {
 	padding: var(--gutter);
 	padding-top: var(--page-top);
+
+	/* Sticky footer, solved by flexbox (the pssst-css default-layout
+	   pattern): the page-wrapper is the full-height flex column; main grows
+	   to fill the leftover space, which pushes the footer to the bottom on
+	   short pages. Long pages are unaffected. In the >= 1024 grid posture
+	   the wrapper's `grid-template-rows: 1fr auto` does this same job, and
+	   flex-grow is inert on a grid item. */
+	flex-grow: 1;
 }
 
 .page-header {
@@ -75,8 +83,10 @@ main {
 	   (the filter's keep-your-place scrollBy in settings-panel.js) iOS
 	   repaints sticky elements a frame late, so the bar flickered between
 	   its background and the content beneath it. Composited, it just moves.
-	   Safe for the panel inside: when open it lives in the top layer, which
-	   an ancestor transform doesn't reach. */
+	   A transform makes this the containing block for position:fixed
+	   descendants - which is why the menu panels live OUTSIDE the tray
+	   (site-panels.php, included after it in header.php). Only the toolbar
+	   triggers render in here. */
 	transform: translateZ(0);
 
 	background-color: var(--fill-primary);
@@ -99,10 +109,13 @@ main {
    never competing with the toolbar. Its whole job is phone QA (Derek,
    2026-07-28: local + mobile only), so it exists only while the tray is
    the phone-posture top bar - the desktop side column never shows it. */
-.dev-stamp {
+/* Scoped under .site-tray so its margin/color beat the shared app-data-voice
+   defaults by specificity, not by stylesheet order. Reads an --app-* slot per
+   the app-ui contract (chrome never reads page tokens directly). */
+.site-tray .dev-stamp {
 	margin-block: 0;
 	margin-inline-end: auto;
-	color: var(--ink-auxiliary);
+	color: var(--app-ink-secondary);
 
 	@media (width >= 1024px) {
 		display: none;

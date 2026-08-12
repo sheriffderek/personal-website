@@ -290,10 +290,11 @@
 		{ hue: 355, chroma: 0.13 }   /* rose */
 	];
 
+	/* Named for the flavor trio (flavors.css): earth, cool, sweet. */
 	var BOOKMARKS = [
-		{ at: 140, name: 'nature' },
-		{ at: 255, name: 'systems' },
-		{ at: 325, name: 'berry' }
+		{ at: 140, name: 'earth' },
+		{ at: 255, name: 'cool' },
+		{ at: 325, name: 'sweet' }
 	];
 
 	function paletteAt(position) {

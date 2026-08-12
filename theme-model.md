@@ -49,6 +49,27 @@ Rows are **brand-character**, columns are **brand-color**. **Three brands, scope
 | **Product** | | | | |
 | **Interface** | | | | |
 
+### The matrix, planned per cell (2026-08-11, from Derek's Figma board)
+
+Five characters now (Editorial + Terminal added 2026-08-10). Moods carry their
+creative briefs in `styles/settings/moods.css`; these cells are the per-combo
+vibe, each named by a real-world reference (internal shorthand only, per the
+rule above - never public labels).
+
+| | **Expressive** (rainbow) | **Technical** (analogous) | **Quiet** (subdued) | **Dark take** |
+|---|---|---|---|---|
+| **Product** | Figma - playful canvas, rainbow chips on white | Stripe - white paper, slate ink, blurple + one gradient flourish | Notion/Muji - gray on white, one soft hint *(was the board's "?")* | full dark; Technical goes Stripe-infra navy |
+| **Marketing** | GoFundMe - yellow/green bands, warm photos | the same bands in one violet family ("general marketing") | Lemonaid - line art, white, one pink hint | **partial** - the closing band deepens, the paper stays (per the board: "just some parts dark") |
+| **Interface** | Anthropic - warm chrome, lavender/blue feature cards | Glitch / Stack Overflow / GitHub - colored tags on utilitarian neutral | OpenAI - near-monochrome, generous gray | full dark; Quiet-dark IS Linear |
+| **Editorial** | WIRED - clashing brights at display scale | The Verge - one analogous family used hard | Kinfolk - newsprint, black text, one red | reading mode - warm, dim, sepia-leaning |
+| **Terminal** | 16-color ANSI - every accent a different terminal color | Solarized / Nord - the canonical analogous console themes | Plan 9 / acme - pale paper, barely-there marks | **native habitat** - dark is Terminal's home state; light is the printout |
+
+**Dark is a per-character POSTURE, not one global flip** (the board makes this
+explicit): Product and Interface go fully dark, Marketing goes partially dark
+(bands deepen, paper holds), Editorial dims into a reading mode, and Terminal
+treats dark as home. A single scheme toggle can still drive it - each
+character's `light-dark()` pairs just express its own posture.
+
 **Flavors are parked** (2026-07-14) until the poster graphics exist - flavor paints individual posters, so it has nothing to act on yet. This does NOT block themes: a theme paints the *page* (fills, inks, strokes, accent, and the emphasis bands), and that is legible with no flavors at all. The hue channel stays in the token design as a seam.
 
 **On the real-company names.** The cells were sketched against real products (Claude, Stripe, Linear, OpenAI, Glitch, Lemonaid). Those are **internal shorthand for a direction only** - they are NOT targets to replicate, NOT things the palettes must match, and NOT public labels. Public copy uses the registers (Happy / Techy / Muted). A portfolio that labels a theme with another company's name reads badly to anyone who works there, and the resemblance lands harder when the visitor arrives at it themselves.

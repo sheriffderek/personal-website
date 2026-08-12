@@ -30,6 +30,28 @@ p {
 	text-wrap: pretty;
 }
 
+/* A character swap re-sizes the whole ladder; easing the size makes the
+   transformation legible instead of a jump-cut - the theme system performing
+   itself, so functional motion per the motion policy (no reduced-motion gate:
+   the visitor pulled the switch). HEADING voices only, deliberately: flowing
+   body text re-wraps on every frame of a size glide (and its 72ch measure
+   breathes with it), which read as churn (Derek, 2026-08-10) - so prose
+   snaps, and the drama lives where text doesn't wrap. The family still
+   snaps everywhere - families can't crossfade - and that's accepted. */
+/* One short shared beat - just enough to say "transforming," not enough to
+   watch. (Longer and per-size variants were tried 2026-08-10 and read weird:
+   equal durations = unequal speeds, equal speeds = big type lagging alone.) */
+h1,
+h2,
+h3,
+h4,
+.strong-voice,
+.attention-voice,
+.loud-voice,
+.high-voice {
+	transition: font-size 150ms linear, line-height 150ms linear, font-weight 150ms linear;
+}
+
 .calm-voice,
 p,
 a.link {

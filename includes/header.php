@@ -58,7 +58,7 @@
 				if (['technical', 'quiet'].indexOf(mood) !== -1) html.setAttribute('data-brand-mood', mood);
 
 				var flavor = localStorage.getItem('flavor-preference');
-				if (['berry'].indexOf(flavor) !== -1) html.setAttribute('data-flavor', flavor);
+				if (['earth', 'cool', 'sweet'].indexOf(flavor) !== -1) html.setAttribute('data-flavor', flavor);
 
 				/* Red light is a boolean override, its own key - 'on' = a bare
 				   data-red-light attribute (no value). */
@@ -188,7 +188,10 @@
 				IS the gate: renders on every serve that isn't production, no flag
 				to forget. */ ?>
 			<?php if (strpos($_SERVER['HTTP_HOST'] ?? '', 'derekthomaswood.com') === false): ?>
-				<p class='dev-stamp data-voice'><?= dev_stamp() ?></p>
+				<?php /* app-data-voice, NOT the page's data-voice: the stamp
+					lives inside the chrome, and chrome text wears chrome
+					voices only (the app-ui contract, settings-panel.css). */ ?>
+				<p class='dev-stamp app-data-voice'><?= dev_stamp() ?></p>
 			<?php endif; ?>
 
 			<?php /* Gates together with the settings-panel.js <link> in <head>
@@ -197,6 +200,14 @@
 				<?php include INCLUDES_DIR . '/settings-panel.php'; ?>
 			<?php endif; ?>
 		</header>
+
+		<?php /* The menu panels stand OUTSIDE the tray: its translateZ(0)
+			would otherwise become their fixed-position containing block
+			(settings-panel.php's comment has the full story). Same gate as
+			the toolbar; reads $page_has_grid from its scope. */ ?>
+		<?php if ($settings_panel_on ?? false): ?>
+			<?php include INCLUDES_DIR . '/site-panels.php'; ?>
+		<?php endif; ?>
 
 		<?php /* One dim behind an open menu (phones/tablets). Root-level so it
 			isn't trapped in the tray's stacking context. Shown/hidden by

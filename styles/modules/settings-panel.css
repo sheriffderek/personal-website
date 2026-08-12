@@ -1,10 +1,10 @@
 /* Display settings
    ----------------
-   Generic trigger + panel primitive (a glyph button opening a popover) +
-   settings-specific rows.
-   Native HTML popover handles open/close, Esc, and light-dismiss.
-   Panel PLACEMENT is JS (placePanel, settings-panel.js) - cross-browser,
-   clamped inside the viewport; CSS owns only size and skin.
+   Generic trigger + panel primitive (a glyph button opening a floating
+   panel) + settings-specific rows.
+   Open/close, Esc, light-dismiss, and PLACEMENT are all JS
+   (settings-panel.js - manual state machine, de-popovered 2026-08-11);
+   CSS owns only size and skin.
 
    Chrome lives inside [data-ui='app'] so a brand's font families
    don't leak into the panel chrome. Token names map to the project's
@@ -47,7 +47,12 @@
 	      the chrome inherits or reads from a global token is a hole in the
 	      wall, even if no theme happens to reach through it today. Rules
 	      inside the chrome read --app-* tokens or literals, never a global
-	      token directly.
+	      token directly - and chrome MARKUP never wears a page voice class
+	      (label text is .app-data-voice). The airlock below backstops even
+	      that mistake: the scope re-derives the type ladder at a pinned
+	      ratio and restates every voice token at base values, so a page
+	      voice inside the chrome resolves to the base look, never the
+	      active character's.
 
 	   History - how each rule earned its wording (2026-08-10, the Terminal
 	   character): re-pointing global --font-ui at the mono restyled the
@@ -86,9 +91,74 @@
 	   2026-08-10) restyled the chrome through the same gap the family pin
 	   already closes. The chrome's metrics are ITS OWN, stated here. */
 	font-family: var(--font-body);
-	font-size: var(--type-anchor);
+	font-size: 1rem;
 	font-weight: 400;
 	line-height: 1.5;
+
+	/* --- THE AIRLOCK (2026-08-10). Voice and step tokens compute at <html>
+	   with the active character's values, then inherit in here already
+	   poisoned - re-pointing them at the scope is the only way to make them
+	   resolve clean. The ladder re-derives at a PINNED ratio, and every
+	   voice token restates its base.css value, so any element in the chrome
+	   that reads a voice or step token - by class, by bare-element rule, by
+	   future mistake - gets the base look, never the character's. Keep this
+	   list matched to base.css / font-scales.css when tokens are added. --- */
+	--type-anchor: 1rem;
+	--scale-ratio: 1.25;
+	--step-down-2: calc(var(--step-down-1) / var(--scale-ratio));
+	--step-down-1: calc(var(--step-0) / var(--scale-ratio));
+	--step-0: var(--type-anchor);
+	--step-up-1: calc(var(--step-0) * var(--scale-ratio));
+	--step-up-2: calc(var(--step-up-1) * var(--scale-ratio));
+	--step-up-3: calc(var(--step-up-2) * var(--scale-ratio));
+	--step-up-4: calc(var(--step-up-3) * var(--scale-ratio));
+	--step-up-5: calc(var(--step-up-4) * var(--scale-ratio));
+
+	--font-heading-weight: 600;
+
+	--calm-voice-font-family: var(--font-body);
+	--calm-voice-font-size: 1.1rem;
+	--calm-voice-font-weight: 300;
+	--calm-voice-line-height: 1.5;
+	--calm-voice-strong-font-weight: 410;
+
+	--strong-voice-font-family: var(--font-heading);
+	--strong-voice-font-size: var(--step-up-1);
+	--strong-voice-font-weight: 500;
+	--strong-voice-line-height: 1.2;
+
+	--attention-voice-font-family: var(--font-heading);
+	--attention-voice-font-size: var(--step-up-3);
+	--attention-voice-font-weight: 530;
+	--attention-voice-line-height: 1.2;
+
+	--loud-voice-font-family: var(--font-heading);
+	--loud-voice-font-size: var(--step-up-4);
+	--loud-voice-font-weight: 500;
+	--loud-voice-line-height: 1.2;
+
+	--quiet-voice-font-family: var(--font-ui);
+	--quiet-voice-font-size: var(--step-down-1);
+	--quiet-voice-font-weight: 300;
+	--quiet-voice-line-height: 1.3;
+
+	--data-voice-font-family: var(--font-code);
+	--data-voice-font-size: calc(var(--step-0) * 0.85);
+	--data-voice-font-weight: 400;
+	--data-voice-line-height: 1.4;
+	--data-voice-letter-spacing: 0.01em;
+
+	--label-voice-font-family: var(--font-ui);
+	--label-voice-font-size: var(--step-down-1);
+	--label-voice-font-weight: 500;
+	--label-voice-line-height: 1.3;
+
+	--high-voice-font-family: var(--font-ui);
+	--high-voice-font-size: var(--step-down-1);
+	--high-voice-font-weight: 400;
+	--high-voice-line-height: 1.2;
+	--high-voice-letter-spacing: 0.08em;
+	--high-voice-text-transform: uppercase;
 
 	--app-data-voice-font-family: var(--font-mono);
 	--app-data-voice-font-size: calc(var(--step-0) * 0.75);
@@ -144,7 +214,7 @@
 }
 
 /* ----------------------------------------------------------------------------
-   2. Trigger + panel primitive — trigger, glyph, popover panel */
+   2. Trigger + panel primitive — trigger, glyph, floating panel */
 
 /* The trigger group. One flex parent so the glyphs arrange as a set, and so the
    panel-placement script has a single element whose AXIS says where panels open
@@ -235,6 +305,12 @@ button.trigger {
 	inset: auto;
 	margin: 0;
 
+	/* De-popovered (2026-08-11): the panel is a plain fixed box now, so its
+	   stack position is finally OURS, not the top layer's. Above the shade
+	   (4) and the tray (5) - identical to the popover's old stacking. The
+	   perch design lowers this below the tray in its own slice. */
+	z-index: 6;
+
 	width: max-content;
 
 	/* Size caps come from the shared --layout-panel-* tokens (default-layout
@@ -244,12 +320,10 @@ button.trigger {
 	min-width: min(var(--layout-panel-min), 100vw - var(--gutter) * 2);
 	max-width: min(var(--layout-panel-max), 100vw - var(--gutter) * 2);
 
-	/* Never taller than the space below the bar - scroll inside if the content
-	   still doesn't fit, so the panel can't run off the bottom of the screen. */
-	max-height: calc(100dvh - 5rem);
-	overflow-y: auto;
-
-	padding: var(--gutter);
+	/* Scrolling lives on the INNER .panel-scroll, not here: the perch
+	   replicas straddle the panel's top edge, and an overflow on this box
+	   would clip their outside halves. The panel itself stays overflow
+	   visible (the default). */
 
 	font-family: var(--app-data-voice-font-family);
 	font-size: var(--app-data-voice-font-size);
@@ -271,15 +345,48 @@ button.trigger {
 	border-radius: var(--app-corners);
 	box-shadow: var(--app-shadow);
 
-	/* A closed popover MUST be display:none in AUTHOR css. The UA's
-	   closed-popover display:none is a normal UA-origin rule, so ANY author
-	   display on the same node beats it - and the settings panel carries
-	   .settings-panel's rows grid. Without this, the "closed" panel sits as
-	   an invisible fixed box over the toolbar, eating every click on the
-	   triggers (and, as an invisible overflow-y:auto layer over content, it
-	   is the best suspect yet for the old mobile scroll-freeze). */
-	&:not(:popover-open) {
+	/* A closed panel MUST be display:none - THE lesson that must not regress
+	   (it predates the manual state machine and survives it). Anything less
+	   leaves the "closed" panel as an invisible fixed box over the toolbar,
+	   eating every click on the triggers (and, as an invisible
+	   overflow-y:auto layer over content, it was the best suspect for the
+	   old mobile scroll-freeze). .is-open is written only by the state
+	   machine in settings-panel.js - never fake closed with visibility or
+	   opacity. */
+	&:not(.is-open) {
 		display: none;
+	}
+}
+
+/* The panel's scroll layer: caps at the space below the bar and scrolls
+   inside when content doesn't fit, so the panel can't run off the bottom of
+   the screen. A separate element (not overflow on .panel) so the perch
+   replicas can straddle the panel's top edge unclipped. In the settings
+   panel this same element wears .settings-panel, which lays out the rows. */
+.panel-scroll {
+	max-height: calc(100dvh - 5rem);
+	overflow-y: auto;
+
+	padding: var(--gutter);
+}
+
+/* The perch replicas (built as clones by settings-panel.js - see its
+   comment): live copies of the menu triggers, absolutely pinned over the
+   real ones so the circles read as straddling the panel's top edge. They
+   exist only where the perch composition does (< 1024, the toolbar's row
+   posture); placePanel reads this display as THE perch switch - one
+   source, geometry and chrome can't disagree. */
+.panel-triggers {
+	display: none;
+}
+
+@media (width < 1024px) {
+	.panel-triggers {
+		display: contents;
+	}
+
+	.panel-triggers .trigger {
+		position: absolute;
 	}
 }
 
@@ -334,8 +441,8 @@ button.trigger {
 
 	/* BELOW the tray (z-index 5): content dims, but the triggers stay bright
 	   and clickable ON TOP of the dim, so you can switch straight from one
-	   panel to the next without dismissing first. The open panel is a popover
-	   in the top layer - always above both, regardless of z-index. */
+	   panel to the next without dismissing first. The open panel sits above
+	   both (z-index 6 on .panel - ours to set since the de-popovering). */
 	z-index: 4;
 
 	background: var(--scrim, rgb(0 0 0 / 0.15));
@@ -364,8 +471,9 @@ button.trigger {
 
 /* iOS only dispatches tap events for "clickable" targets, which is why an
    outside tap on the dimmed area can be swallowed. cursor: pointer marks the
-   page clickable so those taps are delivered (to native light-dismiss and our
-   JS fallback). Touch devices only - invisible there, no desktop effect. */
+   page clickable so those taps reach the outside-tap dismiss handler
+   (settings-panel.js). Touch devices only - invisible there, no desktop
+   effect. */
 @media (hover: none) {
 	body {
 		cursor: pointer;

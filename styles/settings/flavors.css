@@ -13,6 +13,29 @@
        through (theme-model.md carries the plan; a range is a dozen-ish
        declarations, tier-2 only - poster takes, year tag, heading color).
 
+   FLAVOR NAMING (Derek, 2026-08-11): a flavor names a broad FEELING people
+   recognize on sight - abstract like temperature or material, not a pigment
+   and not a specific industry (both over-claim: "berry" says what the paint
+   is; "banking" says blue but so does "ocean"). The active trio:
+     EARTH - greens/browns (serves wellness, outdoors, coffee, legal-warm)
+     COOL  - blues/teals (serves banking, ocean, biotech, civic)
+     SWEET - reddish things (serves beauty, candy, punk-hot; berry's
+             existing magenta range renames into this one)
+
+   THE SHELF - the divergent list, saved for later (2026-08-11 session).
+   Industry feelings: banking (navy, steel, teal, gold thread) · beauty
+   (berry, blush, cream) · luxury (near-black, champagne, oxblood) · kids
+   (crayon primaries) · coffee shop (espresso, cream, kraft) · biotech
+   (mint, white, violet glow) · legal (charcoal, burgundy, ivory) · games
+   (neon purple, cyan, void black) · civic (flag blue, warm gray, poster
+   red) · vintage (mustard, avocado, burnt orange) · ocean (deep teal,
+   foam, driftwood) · editorial print (newsprint, black, one red) · candy
+   (bubblegum, mint, grape) · industrial (safety orange, gunmetal,
+   concrete) · cosmic (midnight, nebula pink, star white). And flavors
+   need not all be industries - era (70s, Y2K), place (Tokyo, desert),
+   material (kraft, terrazzo), music (jazz club, rave, grunge) are legal
+   taxonomies on the same shelf.
+
    Ordering truth: authority is the LAYER order in settings.css (variants
    below this file, red-light above everything). Selector law (2026-07-28):
    index-0 axis values (product, expressive, default-flavor) are NEVER
@@ -106,14 +129,15 @@ html[data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="ros
 	--poster-accent: light-dark(var(--color-emerald-600), var(--color-emerald-400));
 }
 
-/* --- BERRY - the first named flavor range (2026-07-28), proving the axis:
-   the marketing cell re-dressed from green-yellow into rose/pink/plum -
-   "same company, different brand colors," the per-target-company mechanism
-   in miniature. Tier-2 restatement only (theme-model.md): the year tag,
-   the heading color, and the slot accents/items it cares about; everything
-   unstated falls through to the cell's default take. The extra [data-flavor]
-   attribute outranks the cell blocks, so berry wins where it speaks. --- */
-html[data-flavor="berry"][data-brand-character="marketing"]:not([data-brand-mood]) {
+/* --- SWEET (was "berry" until the naming rule landed, 2026-08-11) - the
+   first named flavor range (2026-07-28), proving the axis: the marketing
+   cell re-dressed from green-yellow into rose/pink/plum - "same company,
+   different brand colors," the per-target-company mechanism in miniature.
+   Tier-2 restatement only (theme-model.md): the year tag, the heading
+   color, and the slot accents/items it cares about; everything unstated
+   falls through to the cell's default take. The extra [data-flavor]
+   attribute outranks the cell blocks, so the flavor wins where it speaks. --- */
+html[data-flavor="sweet"][data-brand-character="marketing"]:not([data-brand-mood]) {
 	--year-fill: light-dark(var(--color-rose-300), var(--color-rose-900));
 	--year-ink: light-dark(var(--color-stone-900), var(--color-rose-100));
 	--milestone-heading-color: light-dark(var(--color-rose-700), var(--color-rose-300));
@@ -126,40 +150,129 @@ html[data-flavor="berry"][data-brand-character="marketing"]:not([data-brand-mood
    the html-scope block above: the cell takes declare on the article, and
    an element's own declaration beats anything inherited regardless of
    layer - an html-level baseline would be silently dead. At article level
-   the extra [data-flavor] attribute outranks the takes, and berry's own
-   per-variant blocks below outrank this. Every flavor range needs this
+   the extra [data-flavor] attribute outranks the takes, and the flavor's
+   own per-variant blocks below outrank this. Every flavor range needs this
    rule - a flavor covers a cell's accents wholesale or not at all. */
-html[data-flavor="berry"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant] {
+html[data-flavor="sweet"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant] {
 	--poster-accent: light-dark(var(--color-fuchsia-600), var(--color-fuchsia-400));
 }
 
-html[data-flavor="berry"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="warm"] {
+html[data-flavor="sweet"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="warm"] {
 	--poster-fill: light-dark(var(--color-rose-300), var(--color-rose-900));
 	--poster-ink: light-dark(var(--color-stone-900), var(--color-rose-100));
 
 	--poster-accent: light-dark(var(--color-fuchsia-600), var(--color-fuchsia-400));
 }
 
-html[data-flavor="berry"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="cool"] {
+html[data-flavor="sweet"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="cool"] {
 	--poster-fill-secondary: light-dark(var(--color-pink-300), var(--color-pink-800));
 
 	--poster-accent: light-dark(var(--color-fuchsia-700), var(--color-fuchsia-300));
 }
 
-html[data-flavor="berry"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="moss"] {
+html[data-flavor="sweet"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="moss"] {
 	--poster-fill-secondary: light-dark(var(--color-fuchsia-300), var(--color-fuchsia-800));
 
 	--poster-accent: light-dark(var(--color-purple-600), var(--color-purple-400));
 }
 
-html[data-flavor="berry"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="rose"] {
+html[data-flavor="sweet"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="rose"] {
 	--poster-fill-secondary: light-dark(var(--color-rose-200), var(--color-rose-800));
 
 	--poster-accent: light-dark(var(--color-purple-600), var(--color-purple-400));
 }
 
-html[data-flavor="berry"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="night"] {
+html[data-flavor="sweet"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="night"] {
 	--poster-accent: var(--color-pink-300);
+}
+
+/* --- EARTH - greens and browns (serves wellness, outdoors, coffee): the
+   marketing cell re-dressed into olive/amber/clay with green accents. Same
+   tier-2 shape as sweet: year tag, heading, accent baseline, variant takes;
+   everything unstated falls through. --- */
+html[data-flavor="earth"][data-brand-character="marketing"]:not([data-brand-mood]) {
+	--year-fill: light-dark(var(--color-olive-300), var(--color-olive-900));
+	--year-ink: light-dark(var(--color-stone-900), var(--color-olive-100));
+	--milestone-heading-color: light-dark(var(--color-green-800), var(--color-olive-300));
+}
+
+/* The cell-wide accent baseline (same rule as sweet's - a flavor covers a
+   cell's accents wholesale or not at all). */
+html[data-flavor="earth"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant] {
+	--poster-accent: light-dark(var(--color-green-700), var(--color-green-400));
+}
+
+html[data-flavor="earth"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="warm"] {
+	--poster-fill: light-dark(var(--color-amber-200), var(--color-amber-900));
+	--poster-ink: light-dark(var(--color-stone-900), var(--color-amber-100));
+
+	--poster-accent: light-dark(var(--color-orange-600), var(--color-orange-400));
+}
+
+html[data-flavor="earth"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="cool"] {
+	--poster-fill-secondary: light-dark(var(--color-olive-300), var(--color-olive-800));
+
+	--poster-accent: light-dark(var(--color-green-700), var(--color-green-300));
+}
+
+html[data-flavor="earth"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="moss"] {
+	--poster-fill-secondary: light-dark(var(--color-green-300), var(--color-green-800));
+
+	--poster-accent: light-dark(var(--color-amber-600), var(--color-amber-400));
+}
+
+html[data-flavor="earth"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="rose"] {
+	--poster-fill-secondary: light-dark(var(--color-orange-200), var(--color-orange-800));
+
+	--poster-accent: light-dark(var(--color-green-700), var(--color-green-400));
+}
+
+html[data-flavor="earth"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="night"] {
+	--poster-accent: var(--color-lime-300);
+}
+
+/* --- COOL - blues and teals (serves banking, ocean, biotech): the
+   marketing cell re-dressed into sky/blue/teal with a teal accent. Same
+   tier-2 shape as sweet: year tag, heading, accent baseline, variant takes;
+   everything unstated falls through. --- */
+html[data-flavor="cool"][data-brand-character="marketing"]:not([data-brand-mood]) {
+	--year-fill: light-dark(var(--color-sky-200), var(--color-blue-900));
+	--year-ink: light-dark(var(--color-slate-900), var(--color-sky-100));
+	--milestone-heading-color: light-dark(var(--color-blue-800), var(--color-sky-300));
+}
+
+/* The cell-wide accent baseline (same rule as sweet's). */
+html[data-flavor="cool"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant] {
+	--poster-accent: light-dark(var(--color-teal-600), var(--color-teal-400));
+}
+
+html[data-flavor="cool"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="warm"] {
+	--poster-fill: light-dark(var(--color-sky-200), var(--color-blue-900));
+	--poster-ink: light-dark(var(--color-slate-900), var(--color-sky-100));
+
+	--poster-accent: light-dark(var(--color-cyan-600), var(--color-cyan-400));
+}
+
+html[data-flavor="cool"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="cool"] {
+	--poster-fill-secondary: light-dark(var(--color-blue-200), var(--color-blue-800));
+
+	--poster-accent: light-dark(var(--color-indigo-600), var(--color-indigo-300));
+}
+
+html[data-flavor="cool"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="moss"] {
+	--poster-fill-secondary: light-dark(var(--color-teal-200), var(--color-teal-800));
+
+	--poster-accent: light-dark(var(--color-sky-600), var(--color-sky-400));
+}
+
+html[data-flavor="cool"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="rose"] {
+	--poster-fill-secondary: light-dark(var(--color-cyan-200), var(--color-cyan-800));
+
+	--poster-accent: light-dark(var(--color-blue-600), var(--color-blue-400));
+}
+
+html[data-flavor="cool"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="night"] {
+	--poster-accent: var(--color-cyan-300);
 }
 
 /* --- product x technical: the Stripe ramp. Gradients are THIS cell's

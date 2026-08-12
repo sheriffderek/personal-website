@@ -428,13 +428,13 @@ button.trigger[data-to-top] {
 		   shows the settings (incl. Layout) at the top, so they stay hidden
 		   until you scroll past it - then they rejoin the tray. (The grid
 		   invite isn't listed: it doesn't exist in grid at all.) */
-		button.trigger[popovertarget="settings-panel"] {
+		button.trigger[data-panel="settings-panel"] {
 			display: none;
 		}
 	}
 
 	[data-view="grid"][data-scrolled] {
-		button.trigger[popovertarget="settings-panel"],
+		button.trigger[data-panel="settings-panel"],
 		button.trigger[data-to-top] {
 			display: inline-flex;
 		}

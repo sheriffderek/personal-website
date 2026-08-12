@@ -1,6 +1,7 @@
 <?php /*
-	Two menus, two triggers, two popovers (native <popover>, placed by
-	placePanel in scripts/settings-panel.js):
+	Two menus, two triggers, two panels (manual state machine + placePanel in
+	scripts/settings-panel.js - de-popovered 2026-08-11; the state comment
+	there carries the why):
 
 	  Pages (hamburger glyph) — site navigation. The PRIMARY member: every
 	    page, every scroll depth, first in the toolbar's DOM so the corner
@@ -45,7 +46,8 @@
 <?php /* ---- Pages menu (PRIMARY) ---- */ ?>
 <button
 	type='button'
-	popovertarget='pages-menu'
+	data-panel='pages-menu'
+	aria-controls='pages-menu'
 	class='trigger'
 	aria-expanded='false'
 	aria-label='Pages'
@@ -60,7 +62,8 @@
 <?php /* ---- Settings menu ---- */ ?>
 <button
 	type='button'
-	popovertarget='settings-panel'
+	data-panel='settings-panel'
+	aria-controls='settings-panel'
 	class='trigger'
 	aria-expanded='false'
 	aria-label='Display settings'
@@ -115,33 +118,14 @@
 
 </div><?php /* end .toolbar */ ?>
 
-<?php /* ---- The panels ----
-	One popover per menu, both wearing the same .panel chrome, both placed by
-	placePanel against the toolbar's box (so they share one clean edge). The
-	pages panel is a plain container - the nav landmark lives in the partial. */ ?>
-
-<div
-	id='pages-menu'
-	popover
-	class='panel'
-	data-ui='app'
->
-	<?= partial('settings/page-menu', ['pages' => $pages, 'slug' => $slug, 'target_query' => $target_query ?? '']) ?>
-</div>
-
-<div
-	id='settings-panel'
-	popover
-	class='panel settings-panel'
-	data-ui='app'
-	aria-label='Display settings'
->
-	<?= partial('settings-rows', [
-		'id_suffix' => '',
-		'page_has_grid' => $page_has_grid,
-		'page_controls' => $page_controls ?? null,
-	]) ?>
-</div>
+<?php /* The panels themselves live in includes/site-panels.php, included by
+	header.php AFTER the tray closes - they can't sit in here: the tray's
+	translateZ(0) (default-layout.css, the iOS sticky-flicker fix) makes it
+	the containing block for position:fixed descendants, so a panel inside
+	it would place relative to the tray's box, not the viewport. The native
+	popover's top layer used to escape that transform for free; the manual
+	panels (2026-08-11) escape it by standing outside. site-panels.php reads
+	$page_has_grid from this file's scope - include order matters. */ ?>
 
 <?php /* (The corner island used to float here - retired with the lab port.
 	Its jobs moved into the tray itself: the tray is a sticky column that rides
