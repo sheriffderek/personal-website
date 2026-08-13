@@ -136,6 +136,23 @@
 			return;
 		}
 
+		/* A panel open OVER the page (phone posture - [data-over], the same
+		   flag the shade reads) means the visitor is looking at the panel,
+		   not the page: the thing anchoring protects is behind a dim. Apply
+		   plainly - a drag fires this per notch, and the per-notch
+		   measure + scrollBy against a reflowing page was the repaint storm
+		   that read as the panel flashing on iOS (2026-08-12). Desktop is
+		   unaffected: there the panel sits in the tray's own column, not
+		   over content, so reading-position anchoring stays. */
+		if (openPanel && openPanel.hasAttribute('data-over')) {
+			if (pendingFrame !== null) cancelAnimationFrame(pendingFrame);
+			pendingFrame = null;
+			pendingShift = null;
+
+			applyChange();
+			return;
+		}
+
 		settlePending();
 
 		var anchor = centeredSection(willSurvive);
@@ -310,9 +327,17 @@
 			/* Terminal hides the whole media apparatus (milestone.css), and
 			   Flickity cells measured while hidden come back squished - so a
 			   character swap announces a resize, which Flickity already
-			   listens for. Character only: moods/flavors are color-only. */
+			   listens for. Character only: moods/flavors are color-only.
+			   DEBOUNCED (2026-08-12): a drag fires apply() per notch, and a
+			   resize per notch made every carousel on the page re-measure
+			   mid-drag - stacked on the genuine type reflow, that was the
+			   Character jank. One announcement after the drag settles keeps
+			   Flickity correct at a fraction of the work. */
 			if (cfg.kind === 'character') {
-				window.dispatchEvent(new Event('resize'));
+				clearTimeout(apply.resizeTimer);
+				apply.resizeTimer = setTimeout(function () {
+					window.dispatchEvent(new Event('resize'));
+				}, 200);
 			}
 		}
 

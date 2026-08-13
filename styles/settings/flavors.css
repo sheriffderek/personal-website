@@ -332,6 +332,129 @@ html:not([data-brand-character])[data-brand-mood="technical"] [data-variant="ros
 }
 
 /* ----------------------------------------------------------------------------
+   PLANNED-CELL FIRST TAKES (2026-08-11) - rough paint on the matrix cells
+   from Derek's Figma board (the filled matrix lives in theme-model.md).
+   Tier-2 only, small on purpose: an accent story per cell, so every combo
+   SAYS something when you land on it. Tune freely - these are ideas in
+   place, not locked palettes. */
+
+/* --- terminal x expressive: ANSI. Every variant slot takes a different
+   terminal color - the classic 16-color set cycling across the wall
+   (warm=red, stone=yellow, moss=green, cool=cyan, night=blue,
+   rose=magenta). --- */
+html[data-brand-character="terminal"]:not([data-brand-mood]) [data-variant="warm"] {
+	--poster-accent: light-dark(var(--color-red-600), var(--color-red-400));
+}
+
+html[data-brand-character="terminal"]:not([data-brand-mood]) [data-variant="stone"] {
+	--poster-accent: light-dark(var(--color-yellow-600), var(--color-yellow-400));
+}
+
+html[data-brand-character="terminal"]:not([data-brand-mood]) [data-variant="moss"] {
+	--poster-accent: light-dark(var(--color-green-600), var(--color-green-400));
+}
+
+html[data-brand-character="terminal"]:not([data-brand-mood]) [data-variant="cool"] {
+	--poster-accent: light-dark(var(--color-cyan-600), var(--color-cyan-400));
+}
+
+html[data-brand-character="terminal"]:not([data-brand-mood]) [data-variant="night"] {
+	--poster-accent: light-dark(var(--color-blue-600), var(--color-blue-400));
+}
+
+html[data-brand-character="terminal"]:not([data-brand-mood]) [data-variant="rose"] {
+	--poster-accent: light-dark(var(--color-fuchsia-600), var(--color-fuchsia-400));
+}
+
+/* --- terminal x technical: Solarized/Nord - the canonical analogous
+   console. One cyan baseline, blue/violet neighbors. --- */
+html[data-brand-character="terminal"][data-brand-mood="technical"] [data-variant] {
+	--poster-accent: light-dark(var(--color-cyan-600), var(--color-cyan-400));
+}
+
+html[data-brand-character="terminal"][data-brand-mood="technical"] [data-variant="night"] {
+	--poster-accent: light-dark(var(--color-blue-500), var(--color-blue-300));
+}
+
+html[data-brand-character="terminal"][data-brand-mood="technical"] [data-variant="rose"] {
+	--poster-accent: light-dark(var(--color-violet-500), var(--color-violet-400));
+}
+
+/* --- terminal x quiet: Plan 9 / acme - barely-there marks. Accents step
+   down to near-neutral; the readouts whisper. --- */
+html[data-brand-character="terminal"][data-brand-mood="quiet"] [data-variant] {
+	--poster-accent: light-dark(var(--color-stone-500), var(--color-stone-400));
+}
+
+/* --- editorial x expressive: WIRED - clashing brights at display scale.
+   Same slot-cycling trick as ANSI but hotter pairs. --- */
+html[data-brand-character="editorial"]:not([data-brand-mood]) [data-variant="warm"] {
+	--poster-accent: light-dark(var(--color-orange-600), var(--color-orange-400));
+}
+
+html[data-brand-character="editorial"]:not([data-brand-mood]) [data-variant="stone"] {
+	--poster-accent: light-dark(var(--color-yellow-500), var(--color-yellow-400));
+}
+
+html[data-brand-character="editorial"]:not([data-brand-mood]) [data-variant="moss"] {
+	--poster-accent: light-dark(var(--color-lime-600), var(--color-lime-400));
+}
+
+html[data-brand-character="editorial"]:not([data-brand-mood]) [data-variant="cool"] {
+	--poster-accent: light-dark(var(--color-cyan-600), var(--color-cyan-400));
+}
+
+html[data-brand-character="editorial"]:not([data-brand-mood]) [data-variant="night"] {
+	--poster-accent: light-dark(var(--color-pink-400), var(--color-pink-300));
+}
+
+html[data-brand-character="editorial"]:not([data-brand-mood]) [data-variant="rose"] {
+	--poster-accent: light-dark(var(--color-fuchsia-600), var(--color-fuchsia-400));
+}
+
+/* --- editorial x technical: The Verge - one analogous family used hard.
+   Violet baseline, purple/indigo neighbors. --- */
+html[data-brand-character="editorial"][data-brand-mood="technical"] [data-variant] {
+	--poster-accent: light-dark(var(--color-violet-600), var(--color-violet-400));
+}
+
+html[data-brand-character="editorial"][data-brand-mood="technical"] [data-variant="cool"] {
+	--poster-accent: light-dark(var(--color-indigo-600), var(--color-indigo-400));
+}
+
+html[data-brand-character="editorial"][data-brand-mood="technical"] [data-variant="rose"] {
+	--poster-accent: light-dark(var(--color-purple-600), var(--color-purple-400));
+}
+
+/* --- editorial x quiet: Kinfolk - newsprint and ONE red. Every slot's
+   accent is the same single red; the restraint IS the idea. --- */
+html[data-brand-character="editorial"][data-brand-mood="quiet"] [data-variant] {
+	--poster-accent: light-dark(var(--color-red-600), var(--color-red-400));
+}
+
+/* --- product x quiet: Notion/Muji - gray on white, one soft hint (this
+   was the board's "?" cell; theme-model.md records the pick). Accents fall
+   to a warm neutral so the wall reads as one calm sheet. --- */
+html:not([data-brand-character])[data-brand-mood="quiet"] [data-variant] {
+	--poster-accent: light-dark(var(--color-taupe-500), var(--color-taupe-400));
+}
+
+/* --- marketing x technical: the "general marketing" cell - the GoFundMe
+   bands re-dressed in one violet family (same move the sweet flavor makes,
+   here as the cell's own default). --- */
+html[data-brand-character="marketing"][data-brand-mood="technical"] {
+	--year-fill: light-dark(var(--color-violet-200), var(--color-violet-900));
+	--year-ink: light-dark(var(--color-stone-900), var(--color-violet-100));
+	--year-padding: 0.25em 0.75em;
+	--year-corners: 1em;
+	--milestone-heading-color: light-dark(var(--color-violet-700), var(--color-violet-300));
+}
+
+html[data-brand-character="marketing"][data-brand-mood="technical"] [data-variant] {
+	--poster-accent: light-dark(var(--color-violet-600), var(--color-violet-400));
+}
+
+/* ----------------------------------------------------------------------------
    INVERTED - the two-layer model (Derek, 2026-07-28). A poster AUTHORS its
    candidacy ("invertible": true in milestones.json -> data-invertible on the
    article); a mood x character block decides whether its candidates actually
