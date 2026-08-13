@@ -528,18 +528,34 @@
 		});
 	}
 
-	function applyFilter(tiersShown, opts) {
+	/* Weights read once, up front - the drag preview recounts per notch
+	   without touching the DOM's layout at all. */
+	var entryWeights = [];
+	entries.forEach(function (li) {
+		var article = li.querySelector('[data-weight]');
+		entryWeights.push(article ? parseInt(article.getAttribute('data-weight'), 10) : MAX_WEIGHT);
+	});
+
+	/* The filter in two layers (2026-08-12, the filter-drag jank fix - same
+	   medicine as the character resize debounce):
+
+	   PREVIEW - everything cheap: the count, the tier name, the minimap
+	   bars, the slider mirrors. Painted on every notch, so the drag feels
+	   alive. None of it moves layout.
+
+	   COMMIT (applyFilter) - the actual hide/show. Toggling a card's
+	   display moves every card below it - the single biggest reflow the
+	   site performs - and per-notch it flickered (iOS re-rasterizes each
+	   revealed poster a frame late, and the whole storm repaints under the
+	   open panel). It lands ONCE per drag, after the slider quiets. */
+	function previewFilter(tiersShown) {
 		var inCount = 0;
 		entries.forEach(function (li, i) {
-			var article = li.querySelector('[data-weight]');
-			var weight = article ? parseInt(article.getAttribute('data-weight'), 10) : MAX_WEIGHT;
-			var isIn = weight <= tiersShown;
+			var isIn = entryWeights[i] <= tiersShown;
 			if (isIn) inCount++;
-			li.style.display = isIn ? '' : 'none';
 			miniMaps.forEach(function (miniMap) {
 				if (miniMap.children[i]) miniMap.children[i].setAttribute('data-state', isIn ? 'in' : 'out');
 			});
-			if (isIn) ensureCarousels(li);
 		});
 		filterNames.forEach(function (filterName) {
 			filterName.textContent = FILTER_NAMES[tiersShown] || '';
@@ -551,6 +567,16 @@
 		   so the slider itself announces the tier for assistive tech. */
 		filterSliders.forEach(function (filterSlider) {
 			filterSlider.setAttribute('aria-valuetext', (FILTER_NAMES[tiersShown] || String(tiersShown)) + ', ' + inCount + ' entries shown');
+		});
+	}
+
+	function applyFilter(tiersShown, opts) {
+		previewFilter(tiersShown);
+
+		entries.forEach(function (li, i) {
+			var isIn = entryWeights[i] <= tiersShown;
+			li.style.display = isIn ? '' : 'none';
+			if (isIn) ensureCarousels(li);
 		});
 		if (shouldPersist(opts)) {
 			try {
@@ -590,18 +616,29 @@
 		return article ? parseInt(article.getAttribute('data-weight'), 10) : MAX_WEIGHT;
 	}
 
+	var filterCommitTimer = null;
+
 	filterSliders.forEach(function (filterSlider) {
 		filterSlider.addEventListener('input', function () {
 			var tiersShown = parseInt(filterSlider.value, 10);
 
-			syncScroll(
-				function () {
-					applyFilter(tiersShown);
-				},
-				function willSurvive(card) {
-					return cardWeight(card) <= tiersShown;
-				}
-			);
+			/* Per notch: the cheap feedback layer only. */
+			previewFilter(tiersShown);
+
+			/* Once the drag quiets: the real hide/show, anchored. The
+			   anchor measures at commit time, against the layout the
+			   correction will actually run in. */
+			clearTimeout(filterCommitTimer);
+			filterCommitTimer = setTimeout(function () {
+				syncScroll(
+					function () {
+						applyFilter(tiersShown);
+					},
+					function willSurvive(card) {
+						return cardWeight(card) <= tiersShown;
+					}
+				);
+			}, 180);
 
 			if (window.ui && window.ui.sound) {
 				var t = (parseFloat(filterSlider.value) - 1) / (MAX_WEIGHT - 1);
