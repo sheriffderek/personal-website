@@ -46,6 +46,13 @@ $pages = [
 		'description' => 'What Derek Wood is focused on right now.',
 	],
 
+	'journal' => [
+		'file' => 'journal.php',
+		'menu' => 'Journal',
+		'title' => 'Journal - ' . SITE_TITLE,
+		'description' => 'Videos and stories from Derek Wood - takes on design and development, situations from real work, tips and tricks.',
+	],
+
 	'contact' => [
 		'file' => 'contact.php',
 		'menu' => 'Contact',
@@ -73,23 +80,23 @@ $pages = [
 	],
 ];
 
-// Articles live at /articles/<slug>. The metadata layer (title, date,
-// description) is content/articles.json; the prose itself is a body file at
-// templates/articles/<slug>.php (markup is template-land, data is content-land).
+// Journal entries live at /journal/<slug>. The metadata layer (title, date,
+// description) is content/journal.json; the body itself is a file at
+// templates/journal/<slug>.php (markup is template-land, data is content-land).
 // Both must exist for the page to exist - a JSON entry without a body file, or
 // a stray body file without its entry, is still a 404.
-if (strpos($slug, 'articles/') === 0) {
-	$article_slug = substr($slug, strlen('articles/'));
-	$articles = load_json('articles.json');
+if (strpos($slug, 'journal/') === 0) {
+	$entry_slug = substr($slug, strlen('journal/'));
+	$journal = load_json('journal.json');
 
-	if (isset($articles[$article_slug]) && is_file(TEMPLATES_DIR . '/articles/' . $article_slug . '.php')) {
-		$article = $articles[$article_slug];
-		$article['slug'] = $article_slug;
+	if (isset($journal[$entry_slug]) && is_file(TEMPLATES_DIR . '/journal/' . $entry_slug . '.php')) {
+		$entry = $journal[$entry_slug];
+		$entry['slug'] = $entry_slug;
 
 		$pages[$slug] = [
-			'file' => 'article.php',
-			'title' => $article['title'] . ' - ' . SITE_TITLE,
-			'description' => $article['description'],
+			'file' => 'journal-entry.php',
+			'title' => $entry['title'] . ' - ' . SITE_TITLE,
+			'description' => $entry['description'],
 		];
 	}
 }

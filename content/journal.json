@@ -1,0 +1,9 @@
+{
+	"specimen": {
+		"title": "The journal specimen",
+		"date": "August 2026",
+		"description": "The living outline for journal entries on this site: every module an entry can use, in order, described as it demonstrates itself.",
+		"summary": "Every module a journal entry can use, in order. This page is the outline new entries start from, and the style-guide surface where the entry template gets checked against theme changes.",
+		"unlisted": true
+	}
+}

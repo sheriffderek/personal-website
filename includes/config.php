@@ -64,9 +64,5 @@ define('SLIDER_HINT_ENABLED', true);
    untouched - flip to true and the full timeline + slider come back. */
 define('FILTER_ENABLED', true);
 
-/* CAROUSEL_ENABLED - the Flickity carousel on milestone cards. Off = every
-   card with media renders the poster SVG only, same as poster-only cards.
-   The media items stay in the JSON, Flickity stays loaded (it's cheap to
-   resume), the carousel markup just doesn't render. Flip to true to bring
-   the slides back. */
-define('CAROUSEL_ENABLED', false);
+/* (CAROUSEL_ENABLED lives above, by GRID_VIEW_ENABLED - a duplicate define
+   briefly lived here, 2026-08-13.) */
