@@ -328,6 +328,15 @@ button.trigger {
 	   regardless - the whole tray context (z 5) outranks the shade (4). */
 	z-index: 1;
 
+	/* Its own compositor layer, for iOS: sharing the tray's layer meant a
+	   filter commit (the site's biggest reflow, plus the anchor's scrollBy
+	   in the next frame) could drop the combined backing store for a frame
+	   - the band flashed transparent with the posters showing through the
+	   header, and the panel blinked with it. A separate layer keeps the
+	   band's own layer small and stable. Closed panels are display:none,
+	   so this costs nothing while the menus are shut. */
+	transform: translateZ(0);
+
 	/* Two phone-range compositions (Derek, 2026-08-12), split at 700 -
 	   phones keep the immersive card well past the smallest sizes; the
 	   dropdown takes over in tablet territory:
