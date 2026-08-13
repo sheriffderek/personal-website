@@ -94,6 +94,12 @@
 		// reduced-motion visitors get still frames, never motion.
 		// ------------------------------------------------------------------
 		window.addEventListener('load', () => {
+			// QA bisect guard (?bare=carousel, see header.php): with Flickity
+			// deliberately absent, the playback wiring below would throw on
+			// its prototype and take the rest of the page's JS with it. The
+			// whole media system stands down instead - that IS the test.
+			if (!window.Flickity) return;
+
 			// The one talking video. A video claims that slot the moment it has a
 			// voice, and 'muted' is the honest test for that whatever its type: a
 			// 'play' is never muted, a 'loop' always is, and a 'story' is muted

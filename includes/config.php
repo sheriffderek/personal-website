@@ -37,6 +37,16 @@ define('TOUR_ENABLED', false);
    data-view - the site is exactly the single-column list. */
 define('GRID_VIEW_ENABLED', true);
 
+/* CAROUSEL_ENABLED - the per-card media carousel (Flickity). OFF 2026-08-12:
+   prime suspect in the iOS horizontal-scroll bug (composited translated
+   slides escaping ancestor clips is a known WebKit bug family), and Derek's
+   call: not coming back until way later, if ever. Off = cards render their
+   poster cover only (media items stay authored in milestones.json,
+   un-rendered), Flickity never loads (header.php), and the playback script
+   stands down (footer.php guards on window.Flickity). The carousel path is
+   intact behind this flag. */
+define('CAROUSEL_ENABLED', false);
+
 /* SLIDER_HINT_ENABLED - the carousel-affordance nudge: the first carousel to
    scroll into view slides itself a little toward slide 2 and settles back,
    demonstrating the swipe. Once per pageview, retired forever after the

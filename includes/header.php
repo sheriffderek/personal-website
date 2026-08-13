@@ -97,8 +97,12 @@
 	<?php foreach (stylesheet_paths() as $sheet): ?>
 		<link rel='stylesheet' href='<?= asset($sheet) ?>'>
 	<?php endforeach; ?>
-	<link rel='stylesheet' href='https://unpkg.com/flickity@2/dist/flickity.min.css'>
-	<script src='https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js' defer></script>
+	<?php /* Flickity loads only when the carousel system is on (config.php -
+		off since 2026-08-12, the iOS horizontal-scroll suspect). */ ?>
+	<?php if (CAROUSEL_ENABLED): ?>
+		<link rel='stylesheet' href='https://unpkg.com/flickity@2/dist/flickity.min.css'>
+		<script src='https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js' defer></script>
+	<?php endif; ?>
 	<script src='https://player.vimeo.com/api/player.js' defer></script>
 	<script src='<?= asset('/scripts/audio.js') ?>' defer></script>
 	<?php /* The settings script and the panel markup (in <body> below) gate

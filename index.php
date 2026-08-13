@@ -116,6 +116,14 @@ $page_controls = $current['controls'] ?? null;
 // flag, read in header.php; set per-slug to gate it again if needed.
 $settings_panel_on = true;
 
+// QA bisect ladder (iOS horizontal-scroll hunt, 2026-08-12 - remove when
+// solved): ?bare=chrome drops the whole tray/panel apparatus;
+// ?bare=carousel drops Flickity (header.php); ?bare=all drops both.
+$bare = $_GET['bare'] ?? '';
+if ($bare === 'chrome' || $bare === 'all') {
+	$settings_panel_on = false;
+}
+
 // Build the page: shared header, this page's body, shared footer.
 require __DIR__ . '/includes/header.php';
 require TEMPLATES_DIR . '/pages/' . $current['file'];
