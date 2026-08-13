@@ -792,9 +792,9 @@
 	var openPanel = null;
 
 	/* One shared dim behind an open panel - but only when that panel is OVER
-	   content ([data-over], written by placePanel from real geometry; see
-	   .site-shade in modules/settings-panel.css). A panel opening into the
-	   tray's own sidebar column covers nothing, so it gets no dim.
+	   content ([data-over], written by syncOverContent from real geometry;
+	   see .site-shade in modules/settings-panel.css). A panel opening into
+	   the tray's own sidebar column covers nothing, so it gets no dim.
 
 	   We track the set of open panels rather than a single flag so a SWITCH
 	   reconciles correctly - that's also the whole reason for the rAF: a
@@ -832,35 +832,20 @@
 		requestAnimationFrame(syncShade);
 	}
 
-	/* --- Panel placement (placePanel) ---
-	   CSS anchor positioning is Chrome/Edge only, so it could never be
-	   bulletproof on every browser - in Safari/Firefox it silently no-ops and
-	   the popover lands centred, on exactly the phones recruiters use. So WHERE
-	   a panel lands is computed here: on open, read the toolbar's rect and set
-	   top/left, identically in every browser. The locked rules are the inputs:
+	/* --- Panel placement: NONE (deliberately) ---
+	   The panels are absolute children of the tray (settings-panel.php), so
+	   CSS places them per posture (settings-panel.css) and the browser keeps
+	   them glued to the sticky tray natively - through scroll, URL-bar
+	   collapse, and the filter's programmatic scroll corrections, with no
+	   re-glue listeners and no frame lag. The placePanel/visualViewport
+	   machinery this replaces (2026-08-11) existed only because the panels
+	   once lived OUTSIDE the tray in fixed/top-layer coordinates; a button
+	   opening an element just below it needs none of it.
 
-	     - the toolbar's AXIS decides below vs beside (read live from its
-	       flex-direction - one source of truth, no second place to sync)
-	     - BESIDE prefers the free side (right, the tray's margin) and flips
-	       left only when there's no room - judged from the shared
-	       --layout-panel-max cap, NOT this panel's own width, so every panel
-	       on a tray picks the SAME side
-	     - the result is CLAMPED inside the viewport unconditionally - that
-	       clamp is the "works every time on every browser"
-
-	   Placed once on open; the tray is sticky, so an open panel stays aligned
-	   as you scroll. A width resize re-places live (listener below). The
-	   numbers come from the --layout-panel-* tokens in default-layout.css -
-	   the JS re-encodes nothing. */
-	var rootStyle = getComputedStyle(html);
-	var PANEL_GAP = parseFloat(rootStyle.getPropertyValue('--layout-panel-gap')) || 8;
-	var PANEL_EDGE = parseFloat(rootStyle.getPropertyValue('--layout-panel-edge')) || 8;
-
+	   The one geometric fact JS still owns: does the open panel cover
+	   content? (The shade dims only then.) Derived from real rects, never
+	   declared per breakpoint. */
 	function triggerFor(panel) {
-		/* Scoped to the toolbar: the perch replicas (clones, below) carry the
-		   same data-panel so the click wiring picks them up for free, but
-		   placement, aria-expanded, and focus return always mean the REAL
-		   trigger. */
 		return document.querySelector('.toolbar .trigger[data-panel="' + panel.id + '"]');
 	}
 
@@ -868,126 +853,35 @@
 		return !!trigger && getComputedStyle(trigger).display !== 'none';
 	}
 
-	/* The perch is ON wherever CSS renders the replicas (.panel-triggers,
-	   settings-panel.css, < 1024) - placePanel reads that display as THE
-	   switch, so geometry and chrome can never disagree about which
-	   composition is live. */
-	function perchIsActive(panel) {
-		var perch = panel.querySelector('.panel-triggers');
-		return !!perch && getComputedStyle(perch).display !== 'none';
-	}
-
-	function placePanel(panel, trigger) {
-		/* Align to the TOOLBAR's box, not the individual trigger, so every
-		   panel shares one clean edge (the corner-most edge of the tray)
-		   instead of stepping inboard to whichever glyph opened it. The
-		   trigger only tells us which toolbar; its box is what we align to. */
-		var toolbar = trigger.closest('.toolbar') || trigger;
-		var beside = getComputedStyle(toolbar).flexDirection.indexOf('column') === 0;
-
-		var box = toolbar.getBoundingClientRect();
-		var width = panel.offsetWidth;
-		var height = panel.offsetHeight;
-
-		/* The VISIBLE box, in the same layout-viewport coordinates the rects
-		   and position:fixed use. On desktop this is just the viewport. On
-		   iOS the layout viewport is taller than what's on screen (the URL
-		   bar overlays it) and can be panned/zoomed - visualViewport is the
-		   truth of what the visitor can actually see, so the clamp keeps the
-		   panel inside THAT, never half-hidden behind Safari's chrome. */
-		var visual = window.visualViewport;
-		var viewLeft = visual ? visual.offsetLeft : 0;
-		var viewTop = visual ? visual.offsetTop : 0;
-		var viewportWidth = visual ? visual.width : document.documentElement.clientWidth;
-		var viewportHeight = visual ? visual.height : document.documentElement.clientHeight;
-
-		var top;
-		var left;
-
-		if (beside) {
-			/* BESIDE: align to the toolbar's top, prefer the free margin
-			   to the right of the tray. */
-			top = box.top;
-
-			var sideReference = parseFloat(getComputedStyle(panel).maxWidth) || width;
-
-			if (viewLeft + viewportWidth - box.right >= sideReference + PANEL_GAP + PANEL_EDGE) {
-				left = box.right + PANEL_GAP;
-			} else {
-				left = box.left - PANEL_GAP - width;
-			}
-		} else if (perchIsActive(panel)) {
-			/* PERCHED (the phone composition, Derek's sketch): the card hangs
-			   from the buttons that opened it. Top edge at the circles'
-			   midline, so they straddle the seam - half on the header, half
-			   on the card (the visible halves are the panel's own replica
-			   clones; the sticky tray paints as one slab, so the real circles
-			   are covered where they overlap). Right edge runs one rhythm
-			   unit (--layout-panel-gap, the tray's own 0.5rem) past the
-			   toolbar, which seats the corner circle 0.5rem in from the
-			   card's edge - the same breath that spaces everything else in
-			   the tray. */
-			top = box.top + box.height / 2;
-			left = box.right + PANEL_GAP - width;
-		} else {
-			/* BELOW: drop under the toolbar, right edges aligned. */
-			top = box.bottom + PANEL_GAP;
-			left = box.right - width;
-		}
-
-		/* Bulletproof: never let any edge leave the VISIBLE box, whatever the
-		   math above said. */
-		left = Math.max(viewLeft + PANEL_EDGE, Math.min(left, viewLeft + viewportWidth - width - PANEL_EDGE));
-		top = Math.max(viewTop + PANEL_EDGE, Math.min(top, viewTop + viewportHeight - height - PANEL_EDGE));
-
-		left = Math.round(left);
-		top = Math.round(top);
-
-		panel.style.left = left + 'px';
-		panel.style.top = top + 'px';
-		panel.style.right = 'auto';
-
-		/* Pin each replica exactly over its real trigger - computed from the
-		   real trigger's live rect against the panel's ROUNDED coordinates,
-		   so the overlay can never be a pixel off whatever the clamp did to
-		   the panel itself. */
-		if (perchIsActive(panel)) {
-			panel.querySelectorAll('.panel-triggers .trigger').forEach(function (replica) {
-				var real = document.querySelector('.toolbar .trigger[data-panel="' + replica.getAttribute('data-panel') + '"]');
-
-				if (!real) {
-					return;
-				}
-
-				var realBox = real.getBoundingClientRect();
-				replica.style.left = Math.round(realBox.left - left) + 'px';
-				replica.style.top = Math.round(realBox.top - top) + 'px';
-			});
-		}
-
+	function syncOverContent(panel) {
 		/* "Over content" is derived, not declared per situation: the panel
-		   covers content exactly when its placed rect overlaps <main>.
-		   Dropping into the tray's own sidebar column does NOT overlap main
-		   -> not over; the phone top bar dropping onto the page DOES -> over.
-		   We only write the boolean; the shade reads it to decide the dim. */
+		   covers content exactly when its rect overlaps <main>. Sitting
+		   inside the tray's own sidebar column does NOT overlap main -> not
+		   over; the phone card over the page and the grid's beside-panel
+		   over the wall DO -> over. We only write the boolean; the shade
+		   reads it to decide the dim. */
 		var mainElement = document.querySelector('main');
 		var over = false;
 
 		if (mainElement) {
+			var p = panel.getBoundingClientRect();
 			var m = mainElement.getBoundingClientRect();
-			over = left < m.right && left + width > m.left && top < m.bottom && top + height > m.top;
+			over = p.left < m.right && p.right > m.left && p.top < m.bottom && p.bottom > m.top;
 		}
 
 		panel.toggleAttribute('data-over', over);
 	}
 
-	/* One reconcile for every "the layout just moved" door: re-place each
-	   open panel against the new geometry, or close it if its trigger is no
-	   longer rendered - A PANEL MAY NOT OUTLIVE ITS TRIGGER (closing loses
-	   nothing: the mirror model means another surface already shows the same
-	   controls with the same state). Callers: the width-resize listener,
-	   applyView, and the settings-band observer (data-scrolled re-hides the
-	   reveal members).
+	/* One reconcile for every "the layout just moved" door: close an open
+	   panel whose trigger is no longer rendered - A PANEL MAY NOT OUTLIVE
+	   ITS TRIGGER (closing loses nothing: the mirror model means another
+	   surface already shows the same controls with the same state) - and
+	   re-derive whether the survivors cover content (a same-width list<->grid
+	   toggle from the panel's own Layout row moves the panel with NO resize,
+	   so the dim must re-check here, not just on open). CSS owns the
+	   re-placement itself. Callers: the width-resize listener, applyView,
+	   and the settings-band observer (data-scrolled re-hides the reveal
+	   members).
 
 	   Guarded on openPanels existing because applyView runs once at init,
 	   before the panel wiring below has assigned it - nothing can be open
@@ -1009,10 +903,10 @@
 				return;
 			}
 
-			placePanel(panel, trigger);
+			syncOverContent(panel);
 		});
 
-		/* A re-place can flip a panel over <-> not-over; the shade re-checks
+		/* A layout move can flip a panel over <-> not-over; the shade re-checks
 		   itself (a steady state is a no-op, never a blink). */
 		queueShadeSync();
 	}
@@ -1029,9 +923,10 @@
 	   menus can't open at all - the settings are dead switches without JS
 	   anyway, and the footer's site-map carries the same navigation.
 
-	   Placement happens synchronously between adding .is-open and this task
-	   yielding, so there is no unplaced first frame - the old
-	   beforetoggle/visibility dance died with the popover.
+	   Placement is not in this machine at all - the panels are absolute
+	   children of the tray, positioned by CSS per posture (settings-panel
+	   .css). Opening is just a class flip; there is nothing to measure and
+	   no unplaced first frame.
 
 	   THE LESSON THAT MUST NOT REGRESS: closed = display:none, enforced by
 	   .panel:not(.is-open) in settings-panel.css. A closed-but-rendered
@@ -1064,38 +959,9 @@
 		openPanel = panel;
 		openPanels.add(panel);
 
-		var placeTrigger = triggerFor(panel);
-
-		if (triggerIsRendered(placeTrigger)) {
-			placePanel(panel, placeTrigger);
-
-			/* Settle pass: the first placement measured the panel the
-			   instant it became renderable, and that first measure can
-			   be off (fonts landing, iOS finishing a URL-bar or zoom
-			   transition mid-open). One more placement on the next
-			   frame reads the settled layout and corrects invisibly -
-			   on desktop it lands on the same pixels. */
-			requestAnimationFrame(function () {
-				if (!openPanels.has(panel)) {
-					return;
-				}
-
-				var settleTrigger = triggerFor(panel);
-
-				if (triggerIsRendered(settleTrigger)) {
-					placePanel(panel, settleTrigger);
-				}
-			});
-		} else {
-			/* Safety net only - a panel opens by its trigger, so a
-			   hidden trigger shouldn't get here. If it somehow does,
-			   clear any stale inline position so the CSS floor applies
-			   instead of last week's spot. */
-			panel.style.left = '';
-			panel.style.top = '';
-			panel.style.right = '';
-			panel.removeAttribute('data-over');
-		}
+		/* CSS has already placed it; the only geometry question is whether
+		   it landed over content (the shade reads the answer). */
+		syncOverContent(panel);
 
 		syncTriggerExpanded(panel, true);
 		queueShadeSync();
@@ -1132,37 +998,8 @@
 		panel.dispatchEvent(new CustomEvent('panel-toggle', { detail: { open: false } }));
 	}
 
-	/* --- The perch replicas (Derek's sketch, 2026-08-11) ---
-	   On phones the open panel tucks up into the header with the circles
-	   straddling its top edge. The real circles can't paint over the panel -
-	   the sticky tray is one atomic stacking slab (position:sticky forms a
-	   stacking context, so there's no z-order that puts the panel between
-	   the tray's band and its buttons). So each panel carries CLONES of the
-	   menu triggers, pinned over the real ones by placePanel. Clones, not
-	   authored copies, so they can never drift from the originals - the
-	   mirror model by construction. They keep data-panel, so the click
-	   wiring below drives them like any trigger (tap to close, tap the
-	   other to switch); aria-hidden + tabindex=-1 because the REAL triggers
-	   still carry the semantics and keyboard path. */
-	panels.forEach(function (panel) {
-		var replicaWrapper = document.createElement('div');
-		replicaWrapper.className = 'panel-triggers';
-		replicaWrapper.setAttribute('aria-hidden', 'true');
-
-		document.querySelectorAll('.toolbar .trigger[data-panel]').forEach(function (real) {
-			var replica = real.cloneNode(true);
-			replica.removeAttribute('aria-controls');
-			replica.removeAttribute('aria-expanded');
-			replica.setAttribute('tabindex', '-1');
-			replicaWrapper.appendChild(replica);
-		});
-
-		panel.appendChild(replicaWrapper);
-	});
-
 	/* Trigger taps: plain click wiring (see the parked-cleverness note below -
-	   the floor is "every tap works"; no gesture inference). Includes the
-	   perch replicas - same data-panel, same handler. */
+	   the floor is "every tap works"; no gesture inference). */
 	document.querySelectorAll('.trigger[data-panel]').forEach(function (trigger) {
 		trigger.addEventListener('click', function () {
 			var panel = document.getElementById(trigger.getAttribute('data-panel'));
@@ -1186,13 +1023,13 @@
 		}
 	});
 
-	/* An open panel stays open across a resize and RE-PLACES live - the panel
-	   following the layout as the viewport changes is part of the demo (same
-	   spirit as the motion policy: the system performing itself is the pitch).
-	   If the resize hid the panel's trigger, it closes instead - a panel may
-	   not outlive its trigger, and the mirror model means nothing is lost.
+	/* An open panel stays open across a resize; CSS re-places it as the tray
+	   morphs (the system performing itself is the pitch). The reconcile only
+	   closes it if the new width hid its trigger, and re-derives the dim.
 	   WIDTH only: phones fire resize when the URL bar collapses on scroll -
-	   a height change is no reason to disturb an open panel. */
+	   a height change is no reason to disturb an open panel. (The old
+	   scroll/visualViewport re-glue listeners are gone with position:fixed -
+	   an absolute child of the sticky tray cannot drift from it.) */
 	var lastViewportWidth = window.innerWidth;
 
 	window.addEventListener('resize', function () {
@@ -1204,40 +1041,6 @@
 
 		reconcilePanelsToLayout();
 	});
-
-	/* Re-place on every viewport disturbance (rAF-coalesced, and a fast
-	   no-op while nothing is open). On desktop these all land on the same
-	   pixels - the tray is sticky, so the toolbar's rect holds still. They
-	   exist for iOS Safari, where the VISUAL viewport slides around the
-	   layout viewport (the URL bar collapsing/expanding, pinch zoom, the
-	   keyboard) - often without firing the window events desktop code
-	   listens to - and a panel placed once on open drifts away from its
-	   toolbar. Gluing the panel to the toolbar's live rect on every one of
-	   these signals is what makes placement hold still on a phone:
-
-	     - window scroll (the sticky toolbar's rect is live-tracked)
-	     - visualViewport resize + scroll (the iOS-only movements above) */
-	var panelReconcileQueued = false;
-
-	function schedulePanelReconcile() {
-		if (panelReconcileQueued || !openPanels.size) {
-			return;
-		}
-
-		panelReconcileQueued = true;
-
-		requestAnimationFrame(function () {
-			panelReconcileQueued = false;
-			reconcilePanelsToLayout();
-		});
-	}
-
-	window.addEventListener('scroll', schedulePanelReconcile, { passive: true });
-
-	if (window.visualViewport) {
-		window.visualViewport.addEventListener('resize', schedulePanelReconcile);
-		window.visualViewport.addEventListener('scroll', schedulePanelReconcile);
-	}
 
 	function tapIsOnTrigger(target) {
 		for (var i = 0; i < triggers.length; i++) {

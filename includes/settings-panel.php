@@ -1,7 +1,7 @@
 <?php /*
-	Two menus, two triggers, two panels (manual state machine + placePanel in
-	scripts/settings-panel.js - de-popovered 2026-08-11; the state comment
-	there carries the why):
+	Two menus, two triggers, two panels (absolute children of the tray, placed
+	by CSS per posture; open/close is the manual state machine in
+	scripts/settings-panel.js - de-popovered 2026-08-11):
 
 	  Pages (hamburger glyph) — site navigation. The PRIMARY member: every
 	    page, every scroll depth, first in the toolbar's DOM so the corner
@@ -26,14 +26,13 @@
 	the "these all need to be in a parent" note that used to live here).
 
 	It earns its keep twice over: it lets the triggers be styled/spaced as a set
-	independent of the tray, and it gives the panel-placement script a single
-	element whose axis (flex-direction) says where panels should open - row means
-	the group sits above the content so panels drop BELOW it; column means it sits
-	beside, so panels open BESIDE. The tray keeps PLACEMENT; the toolbar owns
-	ARRANGEMENT.
+	independent of the tray, and its axis (flex-direction) tracks where panels
+	open - row means the group sits above the content so panels sit BELOW it;
+	column means it sits beside, so panels open in-column or BESIDE. The tray
+	is the panels' containing block; the toolbar owns ARRANGEMENT.
 
-	The panel stays OUTSIDE it on purpose: it goes to the top layer as a
-	popover, placed against the toolbar's box by placePanel. */ ?>
+	The panels stay OUTSIDE the toolbar (siblings, below) so the toolbar can
+	stack ABOVE them - the circles ride clear of the card's top edge. */ ?>
 <div class='toolbar'>
 
 <?php /* DOM order is IMPORTANCE order, primary first (the toolbar's
@@ -118,14 +117,47 @@
 
 </div><?php /* end .toolbar */ ?>
 
-<?php /* The panels themselves live in includes/site-panels.php, included by
-	header.php AFTER the tray closes - they can't sit in here: the tray's
-	translateZ(0) (default-layout.css, the iOS sticky-flicker fix) makes it
-	the containing block for position:fixed descendants, so a panel inside
-	it would place relative to the tray's box, not the viewport. The native
-	popover's top layer used to escape that transform for free; the manual
-	panels (2026-08-11) escape it by standing outside. site-panels.php reads
-	$page_has_grid from this file's scope - include order matters. */ ?>
+<?php /* ---- The panels ----
+	Absolute children of the tray, siblings of the toolbar - a button opens
+	an element just below it, placed per posture by CSS (.panel in
+	settings-panel.css), driven by the manual state machine in
+	settings-panel.js. Sticky positioning makes the tray the containing
+	block, so the browser keeps panel and toolbar together natively -
+	no placement JS. Each panel's content sits in a .panel-scroll layer
+	(scroll + padding live there; the settings scroller doubles as the
+	.settings-panel rows grid, which the band instance wears with no
+	scroller - templates/pages/home.php). Closed = display:none via
+	.panel:not(.is-open). Without JS they never open - a decision, not a
+	gap: the settings are dead switches without JS anyway, and the footer's
+	site-map carries the same navigation the pages menu does.
+
+	The pages panel is a plain container - the nav landmark lives in the
+	partial. */ ?>
+
+<div
+	id='pages-menu'
+	class='panel'
+	data-ui='app'
+>
+	<div class='panel-scroll'>
+		<?= partial('settings/page-menu', ['pages' => $pages, 'slug' => $slug, 'target_query' => $target_query ?? '']) ?>
+	</div>
+</div>
+
+<div
+	id='settings-panel'
+	class='panel'
+	data-ui='app'
+	aria-label='Display settings'
+>
+	<div class='panel-scroll settings-panel'>
+		<?= partial('settings-rows', [
+			'id_suffix' => '',
+			'page_has_grid' => $page_has_grid,
+			'page_controls' => $page_controls ?? null,
+		]) ?>
+	</div>
+</div>
 
 <?php /* (The corner island used to float here - retired with the lab port.
 	Its jobs moved into the tray itself: the tray is a sticky column that rides

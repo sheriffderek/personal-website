@@ -201,14 +201,6 @@
 			<?php endif; ?>
 		</header>
 
-		<?php /* The menu panels stand OUTSIDE the tray: its translateZ(0)
-			would otherwise become their fixed-position containing block
-			(settings-panel.php's comment has the full story). Same gate as
-			the toolbar; reads $page_has_grid from its scope. */ ?>
-		<?php if ($settings_panel_on ?? false): ?>
-			<?php include INCLUDES_DIR . '/site-panels.php'; ?>
-		<?php endif; ?>
-
 		<?php /* One dim behind an open menu (phones/tablets). Root-level so it
 			isn't trapped in the tray's stacking context. Shown/hidden by
 			settings-panel.js; see .site-shade in modules/settings-panel.css for

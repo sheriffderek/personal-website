@@ -2,9 +2,10 @@
    ----------------
    Generic trigger + panel primitive (a glyph button opening a floating
    panel) + settings-specific rows.
-   Open/close, Esc, light-dismiss, and PLACEMENT are all JS
-   (settings-panel.js - manual state machine, de-popovered 2026-08-11);
-   CSS owns only size and skin.
+   Open/close, Esc, and light-dismiss are JS (settings-panel.js - manual
+   state machine, de-popovered 2026-08-11); PLACEMENT is pure CSS - the
+   panels are absolute children of the sticky tray, one short rule per
+   posture (see .panel below).
 
    Chrome lives inside [data-ui='app'] so a brand's font families
    don't leak into the panel chrome. Token names map to the project's
@@ -204,12 +205,11 @@
 
 /* Kill double-tap-to-zoom across the whole menu chrome. touch-action isn't
    inherited, so covering only the buttons leaves the gaps (glyph, labels,
-   panel background) able to trigger zoom on a stray double-tap. Scoped to the
-   bar + panels, so the carousel's own touch handling stays untouched. */
+   panel background) able to trigger zoom on a stray double-tap. The panels
+   are the tray's own children, so one scope covers the whole apparatus -
+   and the carousel's own touch handling stays untouched. */
 .site-tray,
-.site-tray *,
-.panel,
-.panel * {
+.site-tray * {
 	touch-action: manipulation;
 }
 
@@ -224,9 +224,10 @@
 
    Two locked rules ride on the axis (see the lab spec, layout-lab-notes.md):
 
-     1. THE AXIS DECIDES WHERE PANELS OPEN - placePanel reads this very
-        flex-direction, so a block that sets the axis has thereby already
-        decided the open direction. One source of truth.
+     1. THE AXIS TRACKS WHERE PANELS OPEN - the same breakpoints that set
+        this flex-direction also carry the panel placement rules (row ->
+        the card below the circles; column -> in-column or beside). Keep a
+        posture's axis and its .panel rule in the same breakpoint story.
      2. THE PRIMARY TAKES THE CORNER-MOST SLOT - DOM order is importance
         order, primary first (pages menu when it returns, then settings,
         then contextual extras). row-REVERSE lands the first DOM member at
@@ -239,6 +240,13 @@
 	flex-direction: row-reverse;
 	align-items: center;
 	gap: 0.5rem;
+
+	/* Above the panel (z 1) within the tray's stacking context: the panel
+	   tucks up under the circles' bottoms, and this is what keeps the
+	   circles - the REAL, tappable circles - clear of the card's corners.
+	   No clones, no pinning; siblings in one context, ordered. */
+	position: relative;
+	z-index: 2;
 }
 
 button.trigger {
@@ -293,37 +301,55 @@ button.trigger {
 }
 
 .panel {
-	/* WHERE the panel lands is set by JS (placePanel, settings-panel.js) - NOT
-	   by CSS anchor positioning, which is Chrome/Edge only and so could never
-	   be bulletproof on every browser (in Safari/Firefox it no-ops and the
-	   popover lands centred - on exactly the phones recruiters use). CSS here
-	   owns only the panel's SIZE and skin; the script reads the toolbar's rect
-	   on open, sets top/left, and clamps inside the viewport - identical in
-	   every browser. Fixed from the start so there's never a flow-positioned
-	   first frame; the script writes the position before paint. */
-	position: fixed;
-	inset: auto;
-	margin: 0;
+	/* A button opens an element just below it - so the panel is an ABSOLUTE
+	   CHILD of the sticky tray (markup in settings-panel.php, right after
+	   the toolbar), and each posture is a few lines of top/right/width.
+	   The browser keeps an absolute child glued to its parent natively -
+	   through scroll, iOS URL-bar collapse, and programmatic scroll
+	   corrections - which is why there is NO placement JavaScript (the old
+	   placePanel/visualViewport re-glue existed only because the panel once
+	   lived outside the tray in fixed/top-layer coordinates; 2026-08-11).
 
-	/* De-popovered (2026-08-11): the panel is a plain fixed box now, so its
-	   stack position is finally OURS, not the top layer's. Above the shade
-	   (4) and the tray (5) - identical to the popover's old stacking. The
-	   perch design lowers this below the tray in its own slice. */
-	z-index: 6;
+	   This base block IS the phone posture (tray = full-width top bar):
+	   the card hangs from the circles, top edge kissing their bottoms,
+	   right edge on the toolbar's own line, page visible to the left. */
+	position: absolute;
 
-	width: max-content;
+	/* Below the toolbar (z 2) inside the tray's own stacking context, so
+	   the circles sit clear of the card's top corners. Above the shade
+	   regardless - the whole tray context (z 5) outranks the shade (4). */
+	z-index: 1;
 
-	/* Size caps come from the shared --layout-panel-* tokens (default-layout
-	   .css); placePanel reads the same tokens, so structure and behaviour agree
-	   by construction. The viewport term keeps a gutter each side on screens
-	   narrower than the caps. */
-	min-width: min(var(--layout-panel-min), 100vw - var(--gutter) * 2);
-	max-width: min(var(--layout-panel-max), 100vw - var(--gutter) * 2);
+	/* Two phone-range compositions (Derek, 2026-08-12), split at 700 -
+	   phones keep the immersive card well past the smallest sizes; the
+	   dropdown takes over in tablet territory:
 
-	/* Scrolling lives on the INNER .panel-scroll, not here: the perch
-	   replicas straddle the panel's top edge, and an overflow on this box
-	   would clip their outside halves. The panel itself stays overflow
-	   visible (the default). */
+	   SMALL SCREENS (this base block) - the immersive card. Flush to the
+	   right edge (a sliver of page behind it read as a strange gap, and
+	   the controls need the room); a real ~5rem strip of page stays
+	   visible on the left so it reads as a card over the page, never a
+	   sheet; the circles straddle its top edge (the tray is one centered
+	   row, so 50% of its box IS their midline). */
+	top: 50%;
+	right: 0;
+	width: calc(100% - 5rem);
+
+	/* BIGGER SCREENS (700 up to the 1024 sidebar) - a classic anchored
+	   dropdown, three rules and nothing unstated (Derek, 2026-08-12:
+	   "clear spacing that has rules"):
+
+	     1. TOP: one rhythm unit (--layout-panel-gap, the tray's own
+	        0.5rem) below the band's bottom edge - a deliberate breath,
+	        not flush.
+	     2. RIGHT: on the toolbar's own line - the circles sit --gutter
+	        off the screen, and the card's right edge shares that line.
+	     3. WIDTH: the designed measure, always - the card is the same
+	        object at every size here. */
+	@media (width >= 700px) {
+		top: calc(100% + var(--layout-panel-gap));
+		right: var(--gutter);
+		width: var(--layout-panel-max);
+	}
 
 	font-family: var(--app-data-voice-font-family);
 	font-size: var(--app-data-voice-font-size);
@@ -345,9 +371,17 @@ button.trigger {
 	border-radius: var(--app-corners);
 	box-shadow: var(--app-shadow);
 
+	/* The small-screen card sits flush against the screen's right edge, so
+	   that side has no seam to draw: no right border, no right corners -
+	   the card blends into the edge instead of outlining against it. */
+	@media (width < 700px) {
+		border-right: none;
+		border-radius: var(--app-corners) 0 0 var(--app-corners);
+	}
+
 	/* A closed panel MUST be display:none - THE lesson that must not regress
 	   (it predates the manual state machine and survives it). Anything less
-	   leaves the "closed" panel as an invisible fixed box over the toolbar,
+	   leaves the "closed" panel as an invisible box over the toolbar,
 	   eating every click on the triggers (and, as an invisible
 	   overflow-y:auto layer over content, it was the best suspect for the
 	   old mobile scroll-freeze). .is-open is written only by the state
@@ -358,61 +392,58 @@ button.trigger {
 	}
 }
 
-/* The panel's scroll layer: caps at the space below the bar and scrolls
-   inside when content doesn't fit, so the panel can't run off the bottom of
-   the screen. A separate element (not overflow on .panel) so the perch
-   replicas can straddle the panel's top edge unclipped. In the settings
-   panel this same element wears .settings-panel, which lays out the rows. */
+/* The panel's scroll layer: caps at the viewport space below the panel's
+   own top and scrolls inside when content doesn't fit, so the panel can't
+   run off the bottom of the screen. The cap is posture-specific because the
+   panel's distance from the viewport top differs per posture - each
+   placement rule restates it beside its top/right. In the settings panel
+   this same element wears .settings-panel, which lays out the rows. */
 .panel-scroll {
+	/* Phone: panel top sits ~2.75rem down (tray height minus the tuck). */
 	max-height: calc(100dvh - 5rem);
 	overflow-y: auto;
 
 	padding: var(--gutter);
 }
 
-/* The perch replicas (built as clones by settings-panel.js - see its
-   comment): live copies of the menu triggers, absolutely pinned over the
-   real ones so the circles read as straddling the panel's top edge. They
-   exist only where the perch composition does (< 1024, the toolbar's row
-   posture); placePanel reads this display as THE perch switch - one
-   source, geometry and chrome can't disagree. */
-.panel-triggers {
-	display: none;
-}
-
-@media (width < 1024px) {
-	.panel-triggers {
-		display: contents;
-	}
-
-	.panel-triggers .trigger {
-		position: absolute;
-	}
-}
-
-/* Phone posture (< 1024, the toolbar's row axis): the panel's width is an
-   OPINION, not max-content fallout. It spans the page's own gutters - the
-   tray's triggers sit --gutter off the right edge, placePanel keeps right
-   edges aligned, so a gutter-to-gutter width lands the card symmetric inside
-   the content column by construction. Without this, width resolves from the
-   widest row's intrinsic size and the left edge cuts the page at an
-   arbitrary spot (Derek, 2026-08-11: "it just has to have an opinion that
-   fits with our spacing"). */
-@media (width < 1024px) {
-	.panel {
-		width: min(var(--layout-panel-max), 100vw - var(--gutter) * 2);
-	}
-}
-
-/* The dedicated sidebar (>= 1024, list view) is its own column
-   (--layout-tray-sidebar). Cap the panels to it so they live in that space
-   CONSISTENTLY - otherwise a wide panel spills past the content edge and dims
-   while a narrow one fits, and the same tray behaves two ways. placePanel
-   reads this cap as its shared side reference, so geometry and dim follow.
-   List only - the grid keeps the full --layout-panel-max beside the wall. */
+/* Desktop list (>= 1024): the tray is its own 300px sticky column
+   (--layout-tray-sidebar) - the card drops into that lane, covering
+   nothing (which is also why no dim: syncOverContent finds no overlap).
+   Same rules as the 700 dropdown, re-expressed for the column: right =
+   the toolbar's own line (the circles sit --gutter in from the column
+   edge, and the card shares that line); width = symmetric inside the
+   column, the matching --gutter on the left. TOP differs on purpose:
+   this tray is TRANSPARENT, so there's no band edge splitting the
+   space - top: 100% makes the tray's own 0.5rem padding the WHOLE
+   visible gap, matching the 0.5rem rhythm of the circle cluster.
+   (Adding --layout-panel-gap here doubled it to a raw 1rem - the one
+   vertical space that didn't match the others; Derek, 2026-08-12.) */
 @media (width >= 1024px) {
 	html:not([data-view="grid"]) .panel {
-		max-width: min(var(--layout-tray-sidebar), 100vw - var(--gutter) * 2);
+		top: 100%;
+		right: var(--gutter);
+		width: calc(100% - var(--gutter) * 2);
+	}
+
+	/* Panel top sits below sticky offset + tray + gap - deepest with the
+	   toolbar's contextual members present - so the cap shortens to keep
+	   the bottom reachable (an absolute child of a sticky tray never
+	   scrolls into view on its own). */
+	html:not([data-view="grid"]) .panel .panel-scroll {
+		max-height: calc(100dvh - 12rem);
+	}
+}
+
+/* Grid view (>= 1200 only - the media guard matches grid-view.css's own
+   breakpoint so a resize race can never hand phones this placement): the
+   tray is a thin column beside the wall, so the panel opens BESIDE it,
+   toward the wall, top-aligned with the toolbar. It covers the wall ->
+   syncOverContent writes [data-over] -> the shade dims. */
+@media (width >= 1200px) {
+	[data-view="grid"] .panel {
+		top: 0.5rem;
+		right: calc(100% - var(--gutter) + var(--layout-panel-gap));
+		width: var(--layout-panel-max);
 	}
 }
 
@@ -420,8 +451,8 @@ button.trigger {
    3. Site shade */
 
 /* An open panel dims the page behind it ONLY when it actually covers content.
-   That condition is named ONCE: placePanel (settings-panel.js) tests the
-   placed panel's rect against <main> and writes [data-over] on the panel -
+   That condition is named ONCE: syncOverContent (settings-panel.js) tests
+   the panel's rect against <main> and writes [data-over] on the panel -
    pure geometry, not a breakpoint. The shade is a CONSUMER of that flag (the
    fix the old $todo here prescribed): a panel dropping into the tray's own
    sidebar column isn't over content, so no dim - no `@media` display:none
@@ -442,7 +473,7 @@ button.trigger {
 	/* BELOW the tray (z-index 5): content dims, but the triggers stay bright
 	   and clickable ON TOP of the dim, so you can switch straight from one
 	   panel to the next without dismissing first. The open panel sits above
-	   both (z-index 6 on .panel - ours to set since the de-popovering). */
+	   both (the panel lives inside the tray's z-5 context). */
 	z-index: 4;
 
 	background: var(--scrim, rgb(0 0 0 / 0.15));

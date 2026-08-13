@@ -140,12 +140,11 @@ button.trigger[data-to-top] {
    grid-2-tray-over   (>= 1200, data-view='grid')
    The wall at 2 lanes. The shell keeps the same [content | tray] frame as
    the list sidebar - only the columns change: the wall takes the room, and
-   the tray is a thin sticky column beside it. The settings stay a POPOVER
-   (no persistent band yet - that starts at 1450), placed by placePanel:
-   the toolbar's column axis means panels open BESIDE, preferring the free
-   margin and flipping over the wall only when there's no room - where they
-   dim, because [data-over] says they cover content. Nothing here re-states
-   where panels go; the axis and the geometry decide.
+   the tray is a thin sticky column beside it. The settings stay a floating PANEL
+   (no persistent band yet - that starts at 1450), placed by the grid
+   posture rule in modules/settings-panel.css: the panel opens BESIDE the
+   thin tray, over the wall - where it dims, because [data-over] says it
+   covers content.
    ============================================================ */
 @media (width >= 1200px) {
 	[data-view="grid"] {
@@ -161,9 +160,8 @@ button.trigger[data-to-top] {
 		   from default-layout.css unchanged). */
 
 		/* The toolbar is a COLUMN here - a thin tray BESIDE the wall, not a
-		   bar above it. Per the locked axis rule that ALSO aims the panels
-		   (placePanel reads this very flex-direction): column -> beside.
-		   Plain column (not reverse) IS the corner rule on this axis: DOM is
+		   bar above it. The panels' grid posture rule (settings-panel.css)
+		   opens them beside it, matching this axis. Plain column (not reverse) IS the corner rule on this axis: DOM is
 		   importance-first, so the primary lands at the TOP for free. */
 		.toolbar {
 			flex-direction: column;
