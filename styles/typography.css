@@ -41,15 +41,23 @@ p {
 /* One short shared beat - just enough to say "transforming," not enough to
    watch. (Longer and per-size variants were tried 2026-08-10 and read weird:
    equal durations = unequal speeds, equal speeds = big type lagging alone.) */
-h1,
-h2,
-h3,
-h4,
-.strong-voice,
-.attention-voice,
-.loud-voice,
-.high-voice {
-	transition: font-size 150ms linear, line-height 150ms linear, font-weight 150ms linear;
+/* Large screens only (2026-08-12): the morph animates layout, and on phones
+   it fought the scroll anchor - the keep-your-place correction landed while
+   heights were still sliding, so the page lurched twice per notch. From
+   1024 the tray is a side column: the page is watched while it transforms
+   (the beat earns its keep) and there's no over-content panel churning
+   corrections. Small screens snap - which also spares their GPUs. */
+@media (width >= 1024px) {
+	h1,
+	h2,
+	h3,
+	h4,
+	.strong-voice,
+	.attention-voice,
+	.loud-voice,
+	.high-voice {
+		transition: font-size 150ms linear, line-height 150ms linear, font-weight 150ms linear;
+	}
 }
 
 .calm-voice,

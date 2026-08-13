@@ -18,6 +18,15 @@
 	var PHONE_FRAMES = {
 		'2026-job-search': '200 -550 1200 1600',
 		'equivalent-design': '238 -113 1125 1125',
+		'world-ia-day-2026': '250 -100 1100 1100',
+		'list-at-ease': '250 -100 1100 1100',
+		'better-life': '100 -150 1400 1400',
+		'pxl': '150 -150 1300 1300',
+		'agency-work': '150 -150 1300 1300',
+		'freelancing-2019': '200 -100 1200 1200',
+		'smart-text-editor': '150 -150 1300 1300',
+		'midi-sequencing': '150 -150 1300 1300',
+		'open-office-hours': '200 -100 1200 1200',
 	};
 
 	var phone = window.matchMedia('(max-width: 600px)');
