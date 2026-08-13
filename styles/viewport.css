@@ -1,5 +1,16 @@
 html {
 	scrollbar-gutter: stable;
+
+	/* The page never scrolls sideways - stated as a contract, not left as an
+	   emergent hope. iOS Safari produced horizontal panning at zoom 1 that no
+	   Blink probe could reproduce (2026-08-12: every character, width, and
+	   panel state measured clean at scrollWidth == clientWidth) - an
+	   engine-specific widener we couldn't name from here. CLIP, not hidden:
+	   hidden makes the root a scroll container (breaking position: sticky
+	   descendants - the tray); clip just refuses the overflow. If a future
+	   element genuinely needs to widen the page, it is wrong by definition -
+	   fix the element. */
+	overflow-x: clip;
 }
 
 html:has(dialog[open]) {

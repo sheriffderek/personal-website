@@ -7,9 +7,9 @@
 <svg class='poster-art' viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
 	role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
 
-	<rect width='1600' height='900' fill='var(--fill-primary)'/>
+	<rect x='-500' y='-500' width='2600' height='1900' fill='var(--fill-primary)'/>
 
-	<rect class='roundable' x='0' y='0' width='800' height='900' fill='var(--fill-secondary)'/>
+	<rect x='-500' y='-500' width='1300' height='1900' fill='var(--fill-secondary)'/>
 
 	<circle cx='420' cy='450' r='150' fill='var(--ink-primary)'/>
 
