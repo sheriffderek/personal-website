@@ -5,7 +5,7 @@
    0.8 opens the window to 1125, holding both circles, the seam, and the
    accent, centered, with ground filling above and below. */ ?>
 <svg class='poster-art' viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'
-	role='img' aria-hidden='true' style='--crop-scale: 0.8; fill-rule: evenodd; stroke-linejoin: round'>
+	role='img' aria-hidden='true' style='fill-rule: evenodd; stroke-linejoin: round'>
 
 	<rect width='1600' height='900' fill='var(--fill-primary)'/>
 

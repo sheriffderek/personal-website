@@ -140,6 +140,8 @@
 	data-ui='app'
 >
 	<div class='panel-scroll'>
+		<h2 class='app-data-voice panel-heading'>Menu</h2>
+
 		<?= partial('settings/page-menu', ['pages' => $pages, 'slug' => $slug, 'target_query' => $target_query ?? '']) ?>
 	</div>
 </div>

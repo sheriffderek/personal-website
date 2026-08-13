@@ -59,7 +59,7 @@
 		$poster_only = empty($media_items) && !empty($milestone['poster']);
 	?>
 
-	<?php if ($media_items): ?>
+	<?php if ($media_items && CAROUSEL_ENABLED): ?>
 
 		<figure class='media'>
 			<?php /* wrapAround with only 2 cells (poster + one item) can leave a
@@ -82,7 +82,7 @@
 			<?php include poster_ascii_path($milestone['slug']); ?>
 		</figure>
 
-	<?php elseif ($poster_only): ?>
+	<?php elseif ($media_items || $poster_only): ?>
 
 		<figure class='media'>
 			<div class='slide' data-type='poster'>

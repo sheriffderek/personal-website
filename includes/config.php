@@ -53,3 +53,10 @@ define('SLIDER_HINT_ENABLED', true);
    filter section of settings-panel.js, the minimap CSS) stays in place,
    untouched - flip to true and the full timeline + slider come back. */
 define('FILTER_ENABLED', true);
+
+/* CAROUSEL_ENABLED - the Flickity carousel on milestone cards. Off = every
+   card with media renders the poster SVG only, same as poster-only cards.
+   The media items stay in the JSON, Flickity stays loaded (it's cheap to
+   resume), the carousel markup just doesn't render. Flip to true to bring
+   the slides back. */
+define('CAROUSEL_ENABLED', false);
