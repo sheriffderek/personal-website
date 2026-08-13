@@ -11,6 +11,13 @@ html {
 	   element genuinely needs to widen the page, it is wrong by definition -
 	   fix the element. */
 	overflow-x: clip;
+
+	/* And no sideways rubber-band either: iOS will elastically bounce a page
+	   horizontally even when nothing overflows - a strong sideways drag shows
+	   a gap at the edge and snaps back, which reads as broken. The page has
+	   no sideways scroll, so it should have no sideways give. Vertical
+	   bounce stays - that's the platform's native scroll feel. */
+	overscroll-behavior-x: none;
 }
 
 html:has(dialog[open]) {
