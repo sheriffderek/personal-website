@@ -108,6 +108,29 @@
 	var pendingFrame = null;
 	var pendingShift = null;
 
+	/* Burst anchoring (the open-panel path in syncScroll): one pin held for
+	   a whole drag, one correction when it quiets. */
+	var burstPin = null;
+	var burstTop = 0;
+	var burstTimer = null;
+
+	function settleBurst() {
+		burstTimer = null;
+		var pin = burstPin;
+		burstPin = null;
+
+		if (!pin) return;
+
+		var box = pin.getBoundingClientRect();
+
+		/* A narrowing filter can delete the anchor mid-burst (it collapses
+		   to zero height) - no correction beats a jump to a vanished card. */
+		if (!box.height) return;
+
+		var shift = box.top - burstTop;
+		if (shift) window.scrollBy(0, shift);
+	}
+
 	function settlePending() {
 		if (!pendingShift) return;
 
@@ -132,24 +155,42 @@
 			pendingFrame = null;
 			pendingShift = null;
 
+			/* Same for a burst correction - its pin was measured in a layout
+			   the lane re-pack is about to replace. */
+			clearTimeout(burstTimer);
+			burstTimer = null;
+			burstPin = null;
+
 			applyChange();
 			return;
 		}
 
 		/* A panel open OVER the page (phone posture - [data-over], the same
-		   flag the shade reads) means the visitor is looking at the panel,
-		   not the page: the thing anchoring protects is behind a dim. Apply
-		   plainly - a drag fires this per notch, and the per-notch
-		   measure + scrollBy against a reflowing page was the repaint storm
-		   that read as the panel flashing on iOS (2026-08-12). Desktop is
-		   unaffected: there the panel sits in the tray's own column, not
-		   over content, so reading-position anchoring stays. */
+		   flag the shade reads): the page is behind a dim, so it doesn't
+		   need to hold still DURING the drag - but the reader still wants
+		   their place kept for when they close the panel. So anchoring goes
+		   per-BURST here, not per-notch: measure the anchor once at the
+		   start of the drag, apply every notch plainly, and settle with ONE
+		   scroll correction after the burst goes quiet. (Per-notch
+		   measure + scrollBy against a reflowing page was the iOS repaint
+		   storm that read as the panel flashing, 2026-08-12. Desktop keeps
+		   the per-change anchoring below: there the panel sits in the
+		   tray's own column and the page is genuinely being watched.) */
 		if (openPanel && openPanel.hasAttribute('data-over')) {
 			if (pendingFrame !== null) cancelAnimationFrame(pendingFrame);
 			pendingFrame = null;
 			pendingShift = null;
 
+			if (!burstPin) {
+				var burstAnchor = centeredSection(willSurvive);
+				burstPin = burstAnchor ? anchorPoint(burstAnchor) : null;
+				burstTop = burstPin ? burstPin.getBoundingClientRect().top : 0;
+			}
+
 			applyChange();
+
+			clearTimeout(burstTimer);
+			burstTimer = setTimeout(settleBurst, 250);
 			return;
 		}
 
