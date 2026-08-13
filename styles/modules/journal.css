@@ -1,11 +1,12 @@
-/* Article pages (/articles/<slug>): a date-title header, then a stack of
-   prose sections and figures. Almost all geometry - the voices carry the
-   type, the semantic tokens carry the color, and the shared .styled rules
-   in typography.css carry the paragraph rhythm. The specimen article
-   (/articles/specimen) is the living outline of every shape used here. */
+/* The journal: the list page (/journal) and the entry pages (/journal/<slug>) -
+   a date-title header, then a stack of prose sections and figures. Almost all
+   geometry - the voices carry the type, the semantic tokens carry the color,
+   and the shared .styled rules in typography.css carry the paragraph rhythm.
+   The specimen entry (/journal/specimen, unlisted) is the living outline of
+   every shape used here. */
 
-.article-page {
-	.article-header {
+.journal-entry {
+	.entry-header {
 		.date {
 			color: var(--ink-secondary);
 		}
@@ -20,7 +21,7 @@
 		margin-top: 2.5em;
 	}
 
-	.article-figure {
+	.entry-figure {
 		margin-block: 1.5em;
 
 		img {
@@ -38,6 +39,27 @@
 		figcaption {
 			margin-top: 0.5em;
 			max-width: 72ch;
+			color: var(--ink-secondary);
+		}
+	}
+}
+
+.journal-index {
+	.entry-list {
+		list-style: none;
+		padding: 0;
+		margin-top: 2em;
+
+		li + li {
+			margin-top: 2em;
+		}
+
+		.date {
+			color: var(--ink-secondary);
+		}
+
+		.summary {
+			margin-top: 0.5em;
 			color: var(--ink-secondary);
 		}
 	}

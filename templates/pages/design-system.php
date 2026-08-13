@@ -131,7 +131,7 @@
 
 	<h1 class='loud-voice'>Design system</h1>
 
-	<p>Every token and voice on one surface. Change the axes in the settings panel to see them all react together. The article template has its own surface: <a class='link' href='/articles/specimen'>the specimen article</a> renders every module an article can use.</p>
+	<p>Every token and voice on one surface. Change the axes in the settings panel to see them all react together. The journal template has its own surface: <a class='link' href='/journal/specimen'>the specimen entry</a> renders every module an entry can use.</p>
 
 	<section class='ds-section'>
 		<h2 class='attention-voice'>Color tokens</h2>

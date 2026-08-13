@@ -27,7 +27,7 @@
 			<?php if ($version['hash']): ?>
 				<?= $version['hash'] ?> ·
 			<?php endif; ?>
-			<?= date('Y-m-d H:i', $version['time']) ?>
+			<?= date('Y-m-d H:i:s', $version['time']) ?>
 		</p>
 
 		<?php /* Testing knob for the carousel nudge, riding its flag: the link

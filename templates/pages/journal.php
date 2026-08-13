@@ -4,6 +4,12 @@
 	// "unlisted" (the specimen) still has its page but stays off this list.
 	// Links carry $target_query forward like every internal link on the site.
 	$journal = load_json('journal.json');
+
+	// The listable entries. Until the first real one lands, the page says so
+	// plainly instead of rendering an empty list.
+	$listed = array_filter($journal, function ($entry) {
+		return empty($entry['unlisted']);
+	});
 ?>
 
 <text-content class='styled journal-index'>
@@ -12,10 +18,12 @@
 
 	<p>Videos and stories from the work. Takes on design and development that might not be what you expect, situations I find myself in, and the occasional tip or trick.</p>
 
-	<ol class='entry-list'>
-		<?php foreach ($journal as $slug => $entry): ?>
-			<?php if (!empty($entry['unlisted'])) continue; ?>
+	<?php if (empty($listed)): ?>
+		<p>First entries are on the way.</p>
+	<?php endif; ?>
 
+	<ol class='entry-list'>
+		<?php foreach ($listed as $slug => $entry): ?>
 			<li>
 				<p class='date high-voice'><?= $entry['date'] ?></p>
 

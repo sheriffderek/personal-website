@@ -237,7 +237,7 @@ function dev_stamp() {
 
 	$version = deployed_version();
 
-	return ($version['hash'] ? $version['hash'] . ' · ' : '') . date('G:i', $newest);
+	return ($version['hash'] ? $version['hash'] . ' · ' : '') . date('G:i:s', $newest);
 }
 
 /* Version stamp for the footer — confirms which commit is actually live, so a

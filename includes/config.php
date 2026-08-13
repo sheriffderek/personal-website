@@ -1,5 +1,11 @@
 <?php
 
+/* Every timestamp the site prints (the footer's deploy line, the dev stamp)
+   renders in Derek's own timezone, wherever the server lives - unset, PHP
+   defaults to UTC and the two stamps read 7-8 hours apart from the clock on
+   the wall (the 21:42-vs-14:42 confusion, 2026-08-13). */
+date_default_timezone_set('America/Los_Angeles');
+
 define('SITE_ROOT', dirname(__DIR__));
 define('CONTENT_DIR', SITE_ROOT . '/content');
 define('TEMPLATES_DIR', SITE_ROOT . '/templates');
