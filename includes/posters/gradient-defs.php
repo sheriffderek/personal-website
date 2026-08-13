@@ -11,8 +11,15 @@
    tokens and is the SAME ramp across the wall (which is the point: one
    analogous system). If a cell ever needs per-flavor ramps, it adds named
    defs here. Zero-size but never display:none - hidden svgs can drop their
-   paint servers in some engines. */ ?>
-<svg class='poster-gradient-defs' width='0' height='0' style='position: absolute' aria-hidden='true' focusable='false'>
+   paint servers in some engines.
+
+   The zero size MUST be in the inline style, not just the attributes:
+   setup.css gives every svg width: 100%, and CSS beats attributes - so the
+   attribute-only version silently inflated to full viewport width and,
+   sitting 1rem into main, ended 16px past the right edge. WebKit extends
+   the page's scroll canvas for that; Blink doesn't - THE iOS-only
+   horizontal-scroll bug on the home page (2026-08-12). */ ?>
+<svg class='poster-gradient-defs' style='position: absolute; width: 0; height: 0' aria-hidden='true' focusable='false'>
 	<defs>
 		<linearGradient id='poster-ramp' x1='0' y1='0' x2='1' y2='1'>
 			<stop offset='0' style='stop-color: var(--poster-ramp-from, var(--fill-secondary))'/>
