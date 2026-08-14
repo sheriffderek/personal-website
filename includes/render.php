@@ -206,12 +206,9 @@ function stylesheet_paths($web_path = '/styles/index.css') {
 	return [$web_path];
 }
 
-/* The dev stamp: "<hash> · <H:MM>" where the time is the NEWEST save across
-   every code file - so a just-saved, not-yet-committed change still bumps it.
-   Phone QA reads the corner instead of guessing about caches: if the stamp
-   matches what was just changed, the page is fresh. Rendered only off
-   production (the host gate lives at the call site in header.php). */
-function dev_stamp() {
+/* The code files that make up a build - one list shared by the dev stamp and
+   the fingerprint, so they can never disagree about what "the code" is. */
+function code_files() {
 	$patterns = [
 		SITE_ROOT . '/index.php',
 		SITE_ROOT . '/includes/*.php',
@@ -223,64 +220,58 @@ function dev_stamp() {
 		SITE_ROOT . '/styles/*/*.css',
 	];
 
-	$newest = 0;
+	$files = [];
 
 	foreach ($patterns as $pattern) {
 		foreach (glob($pattern) as $file) {
-			$time = filemtime($file);
-
-			if ($time > $newest) {
-				$newest = $time;
-			}
+			$files[] = $file;
 		}
 	}
 
-	$version = deployed_version();
-
-	return ($version['hash'] ? $version['hash'] . ' · ' : '') . date('G:i:s', $newest);
+	return $files;
 }
 
-/* Version stamp for the footer — confirms which commit is actually live, so a
-   stale cache can't quietly lie about what's deployed. Reads .git directly
-   (loose ref, then packed-refs) so it needs no git binary and no build step.
-   Falls back to the deploy time (index.php's mtime) if .git isn't on the
-   server, so it always shows something useful. */
-function deployed_version() {
-	$git = SITE_ROOT . '/.git';
-	$hash = null;
-	$time = null;
+/* The build fingerprint: 7 characters derived from the CONTENTS of every
+   code file. Same files = same fingerprint, on any machine, however the
+   files got there - no git, no deploy step, nothing to wire. Its one job
+   (Derek, 2026-08-13: "I don't care if it's real - I just need something
+   that confirms we're looking at the right thing"): when the phone and the
+   editor show the same seven characters, they are looking at the same code. */
+function build_fingerprint() {
+	$digest = hash_init('md5');
 
-	if (is_file($git . '/HEAD')) {
-		$head = trim(file_get_contents($git . '/HEAD'));
+	foreach (code_files() as $file) {
+		hash_update($digest, $file);
+		hash_update_file($digest, $file);
+	}
 
-		if (strpos($head, 'ref:') === 0) {
-			$ref = trim(substr($head, 4));
+	return substr(hash_final($digest), 0, 7);
+}
 
-			if (is_file($git . '/' . $ref)) {
-				$hash = trim(file_get_contents($git . '/' . $ref));
-				$time = filemtime($git . '/' . $ref);
-			} elseif (is_file($git . '/packed-refs')) {
-				foreach (file($git . '/packed-refs') as $line) {
-					if ($line[0] !== '#' && $line[0] !== '^' && substr(trim($line), -strlen($ref)) === $ref) {
-						$hash = substr($line, 0, 40);
-						break;
-					}
-				}
-				$time = filemtime($git . '/packed-refs');
-			}
-		} else {
-			/* detached HEAD — the hash sits directly in HEAD */
-			$hash = $head;
-			$time = filemtime($git . '/HEAD');
+/* The dev stamp: "<fingerprint> · <H:MM:SS>" where the time is the NEWEST
+   save across every code file - so a just-saved, not-yet-committed change
+   still bumps it. Phone QA reads the corner instead of guessing about
+   caches: if the stamp matches what was just changed, the page is fresh.
+   Rendered only off production (the host gate lives at the call site in
+   header.php). */
+function newest_save() {
+	$newest = 0;
+
+	foreach (code_files() as $file) {
+		$time = filemtime($file);
+
+		if ($time > $newest) {
+			$newest = $time;
 		}
 	}
 
-	if ($time === null) {
-		$time = filemtime(SITE_ROOT . '/index.php');
-	}
-
-	return [
-		'hash' => $hash ? substr($hash, 0, 7) : null,
-		'time' => $time,
-	];
+	return $newest;
 }
+
+function dev_stamp() {
+	return build_fingerprint() . ' · ' . date('G:i:s', newest_save());
+}
+
+/* (deployed_version - the .git/version.txt reader - lived here until
+   2026-08-13, replaced by build_fingerprint above: a content hash needs no
+   deploy wiring at all.) */

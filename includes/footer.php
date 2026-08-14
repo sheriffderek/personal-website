@@ -19,15 +19,15 @@
 
 		---- end footer nav ---- */ ?>
 
-		<?php $version = deployed_version(); ?>
-
 		<p class='data-voice'>&copy; <?= SITE_TITLE ?></p>
 
+		<?php /* The build line: fingerprint (7 chars derived from the code
+			files' contents - same files, same code, on any machine, however
+			they got there) plus the newest code-file save time. THE freshness
+			check: when the phone and the editor show the same fingerprint,
+			they're looking at the same build. */ ?>
 		<p class='data-voice'>
-			<?php if ($version['hash']): ?>
-				<?= $version['hash'] ?> ·
-			<?php endif; ?>
-			<?= date('Y-m-d H:i:s', $version['time']) ?>
+			<?= build_fingerprint() ?> · <?= date('Y-m-d H:i:s', newest_save()) ?>
 		</p>
 
 		<?php /* Testing knob for the carousel nudge, riding its flag: the link
