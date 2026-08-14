@@ -36,6 +36,18 @@
    material (kraft, terrazzo), music (jazz club, rave, grunge) are legal
    taxonomies on the same shelf.
 
+   BRANDS MAP ONTO THE AXIS, NEVER INTO IT (Derek, 2026-08-14): a flavor is
+   never named for a company, and never for a meaning a company attaches to
+   a color ("community" is what GoFundMe MEANS by green; earth is what the
+   green IS - the next community brand might be purple). A target company
+   picks an existing archetype (?target= would carry data-flavor="earth",
+   never ="gofundme"); a new company never adds a value, though it may
+   rarely motivate a new archetype other brands could also wear. Archetype
+   as the name, brand association as a comment beside it. This is also why
+   no mood x character cell may name a hue: the cell says how color is
+   SPENT, the flavor says which family it comes from (the register sheet
+   in theme-model.md is the per-cell measuring stick).
+
    Ordering truth: authority is the LAYER order in settings.css (variants
    below this file, red-light above everything). Selector law (2026-07-28):
    index-0 axis values (product, expressive, default-flavor) are NEVER
@@ -64,9 +76,9 @@
      product x expressive   -> WILD, the Figma-rainbow cell: same paper-ground
                                items model, accents pushed across the whole
                                wheel (orange, fuchsia, lime, cyan).
-     marketing x expressive -> ON-BRAND ANALOGOUS, the GoFundMe cell: every
-                               slot lives in the green-yellow-amber family;
-                               cool loses its indigo linework here.
+     marketing x expressive -> de-branded 2026-08-11: falls through to the
+                               expressive base (the Figma-marketing rainbow);
+                               company hues arrive by flavor (GoFundMe=earth).
      product x technical    -> STRIPE, analogous blue-violet: technical's
                                first poster palette (elsewhere technical
                                stays neutral). Cool tones dominate with ONE
@@ -99,35 +111,14 @@ html:not([data-brand-character]):not([data-brand-mood]) [data-variant="moss"] {
 	--poster-accent: light-dark(var(--color-orange-500), var(--color-orange-400));
 }
 
-/* --- marketing x expressive: the green-yellow-amber family --- */
-html[data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="warm"] {
-	--poster-accent: light-dark(var(--color-emerald-600), var(--color-emerald-400));
-}
-
-html[data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="cool"] {
-	--poster-ink: light-dark(var(--color-stone-900), var(--color-lime-100));
-	--poster-fill-secondary: light-dark(var(--color-lime-300), var(--color-lime-800));
-
-	--poster-accent: light-dark(var(--color-green-700), var(--color-green-300));
-}
-
-html[data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="stone"] {
-	--poster-accent: light-dark(var(--color-green-600), var(--color-green-400));
-}
-
-html[data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="night"] {
-	--poster-accent: var(--color-lime-300);
-}
-
-html[data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="moss"] {
-	--poster-accent: light-dark(var(--color-amber-500), var(--color-amber-400));
-}
-
-html[data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="rose"] {
-	--poster-fill-secondary: light-dark(var(--color-amber-300), var(--color-amber-800));
-
-	--poster-accent: light-dark(var(--color-emerald-600), var(--color-emerald-400));
-}
+/* --- marketing x expressive: DE-BRANDED (Derek, 2026-08-11). This cell
+   used to hardwire the green-yellow-amber family - but that was a company's
+   identity (the GoFundMe read) living in a cell default, and company hues
+   are the FLAVOR axis's job ("anyone should be able to find their closest
+   theme to their company"). The default cell now falls through to the
+   expressive base takes - the house rainbow, i.e. the Figma-marketing read
+   - and the GoFundMe-green read is findable as flavor=earth; a bank finds
+   cool; Lemonaid finds sweet. No default-cell takes here on purpose. --- */
 
 /* --- SWEET (was "berry" until the naming rule landed, 2026-08-11) - the
    first named flavor range (2026-07-28), proving the axis: the marketing
@@ -269,6 +260,103 @@ html[data-flavor="cool"][data-brand-character="marketing"]:not([data-brand-mood]
 	--poster-fill-secondary: light-dark(var(--color-cyan-200), var(--color-cyan-800));
 
 	--poster-accent: light-dark(var(--color-blue-600), var(--color-blue-400));
+}
+
+/* ----------------------------------------------------------------------------
+   FLAVOR x MOOD PAGE OVERLAYS (Derek, 2026-08-11): "flavor either totally
+   goes away - or it works for everything." It works for everything, and THIS
+   is the mechanism that keeps that affordable: a flavor overlays each MOOD
+   (3 x 3 = nine small blocks), not each of the sixty cells. The mood keeps
+   its policy; the flavor picks which part of the wheel the policy runs on -
+   Technical stays analogous whether the family is green (earthy fintech),
+   blue (the Stripe home), or pink (the Lemonaid read). Partial restatement
+   on purpose: only the tokens the family bends; everything else falls
+   through to the mood. The marketing-cell ranges above stay - they are
+   cell-level DRESSING (year pill, per-variant takes) on top of these. */
+
+/* --- EARTH x expressive: the default page is already earth-adjacent
+   (olive paper, green accent), so this overlay just leans it browner. --- */
+html[data-flavor="earth"]:not([data-brand-mood]) {
+	--fill-secondary: light-dark(var(--color-amber-100), var(--color-olive-800));
+	--accent: light-dark(var(--color-green-700), var(--color-green-400));
+}
+
+/* --- EARTH x technical: the earthy-analogous fintech - Technical's
+   discipline run on the green family. --- */
+html[data-flavor="earth"][data-brand-mood="technical"] {
+	--fill-primary: light-dark(white, var(--color-green-950));
+	--fill-secondary: light-dark(var(--color-green-100), var(--color-green-900));
+	--fill-auxiliary: light-dark(var(--color-green-200), var(--color-green-800));
+
+	--stroke-primary: light-dark(var(--color-green-300), var(--color-green-700));
+	--stroke-secondary: light-dark(var(--color-green-200), var(--color-green-800));
+	--stroke-auxiliary: light-dark(var(--color-green-100), var(--color-green-800));
+
+	--accent: light-dark(var(--color-emerald-600), var(--color-emerald-400));
+
+	--selection-fill: var(--color-green-200);
+	--selection-ink: var(--color-green-950);
+
+	/* Stripe-land's signature ramp spins with the family. */
+	--poster-ramp-from: light-dark(var(--color-lime-300), var(--color-green-800));
+	--poster-ramp-to: light-dark(var(--color-emerald-400), var(--color-teal-600));
+}
+
+/* --- EARTH x quiet: the little hint goes sage. --- */
+html[data-flavor="earth"][data-brand-mood="quiet"] {
+	--accent: light-dark(var(--color-olive-600), var(--color-olive-400));
+}
+
+/* --- COOL x expressive: the rainbow gets a cool cast. --- */
+html[data-flavor="cool"]:not([data-brand-mood]) {
+	--fill-secondary: light-dark(var(--color-sky-100), var(--color-blue-900));
+	--accent: light-dark(var(--color-teal-600), var(--color-teal-400));
+}
+
+/* --- COOL x technical: this IS Technical's home family (the Stripe cell),
+   so the overlay only ticks the accent toward teal - the notch still does
+   something, but the room was already blue. --- */
+html[data-flavor="cool"][data-brand-mood="technical"] {
+	--accent: light-dark(var(--color-teal-600), var(--color-teal-400));
+
+	--poster-ramp-from: light-dark(var(--color-sky-300), var(--color-blue-800));
+	--poster-ramp-to: light-dark(var(--color-teal-400), var(--color-cyan-600));
+}
+
+/* --- COOL x quiet: the little hint goes sky. --- */
+html[data-flavor="cool"][data-brand-mood="quiet"] {
+	--accent: light-dark(var(--color-sky-700), var(--color-sky-400));
+}
+
+/* --- SWEET x expressive: the rainbow warms into candy. --- */
+html[data-flavor="sweet"]:not([data-brand-mood]) {
+	--fill-secondary: light-dark(var(--color-rose-100), var(--color-rose-900));
+	--accent: light-dark(var(--color-fuchsia-600), var(--color-fuchsia-400));
+}
+
+/* --- SWEET x technical: the Lemonaid read - Technical's discipline run on
+   the pink family. --- */
+html[data-flavor="sweet"][data-brand-mood="technical"] {
+	--fill-primary: light-dark(white, var(--color-rose-950));
+	--fill-secondary: light-dark(var(--color-pink-100), var(--color-pink-900));
+	--fill-auxiliary: light-dark(var(--color-pink-200), var(--color-pink-800));
+
+	--stroke-primary: light-dark(var(--color-pink-300), var(--color-pink-700));
+	--stroke-secondary: light-dark(var(--color-pink-200), var(--color-pink-800));
+	--stroke-auxiliary: light-dark(var(--color-pink-100), var(--color-pink-800));
+
+	--accent: light-dark(var(--color-pink-600), var(--color-pink-400));
+
+	--selection-fill: var(--color-pink-200);
+	--selection-ink: var(--color-rose-950);
+
+	--poster-ramp-from: light-dark(var(--color-rose-300), var(--color-rose-800));
+	--poster-ramp-to: light-dark(var(--color-fuchsia-400), var(--color-purple-600));
+}
+
+/* --- SWEET x quiet: the little hint goes rose. --- */
+html[data-flavor="sweet"][data-brand-mood="quiet"] {
+	--accent: light-dark(var(--color-rose-600), var(--color-rose-400));
 }
 
 html[data-flavor="cool"][data-brand-character="marketing"]:not([data-brand-mood]) [data-variant="night"] {

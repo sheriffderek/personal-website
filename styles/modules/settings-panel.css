@@ -584,7 +584,8 @@ button.trigger {
 		gap: 0.45rem;
 		padding: 0.3rem 0.6rem;
 
-		border: var(--app-border-width) solid color-mix(in oklch, var(--app-ink) 8%, var(--app-fill));
+		border: var(--app-border-width) solid
+			color-mix(in oklch, var(--app-ink) 8%, var(--app-fill));
 		background: color-mix(in oklch, var(--app-ink) 6%, var(--app-fill));
 		color: var(--app-ink);
 		border-radius: 0px;

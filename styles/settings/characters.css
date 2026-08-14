@@ -163,9 +163,10 @@ html[data-brand-character="marketing"]:not([data-brand-mood]) {
 	--year-fill: light-dark(var(--color-yellow-300), var(--color-yellow-900));
 	--year-ink: light-dark(var(--color-stone-900), var(--color-yellow-100));
 
-	/* Milestone headings take the brand green in this cell (first take,
-	   2026-07-28 - the .heading a slot in milestone.css). Likely future:
-	   per-flavor heading colors, same seam as the per-flavor year tags
-	   noted below. */
-	--milestone-heading-color: light-dark(var(--color-green-700), var(--color-green-300));
+	/* The green heading this cell used to state moved out with the
+	   de-branding (2026-08-11, see flavors.css) - company hues are the
+	   flavor axis's job, and the flavor ranges state their own heading
+	   colors. Default headings just wear the page ink. (Open question: the
+	   yellow pill above is arguably a company hue too - kept for now as the
+	   house-playful take; the pill SHAPE is the register either way.) */
 }

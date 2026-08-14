@@ -78,6 +78,16 @@ $pages = [
 		'title' => 'Layout lab - ' . SITE_TITLE,
 		'description' => SITE_DESCRIPTION,
 	],
+
+	// Derek's own index of everything - every page (public and internal),
+	// journal entries, target previews, experiments, feature flags. All
+	// derived live from the real sources, so it can't go stale. No 'menu'
+	// key: reachable by URL only.
+	'site-map' => [
+		'file' => 'site-map.php',
+		'title' => 'Site index - ' . SITE_TITLE,
+		'description' => SITE_DESCRIPTION,
+	],
 ];
 
 // Journal entries live at /journal/<slug>. The metadata layer (title, date,

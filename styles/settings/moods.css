@@ -13,6 +13,12 @@
    values can be adjusted against the words, not re-guessed. When a value
    and its brief disagree, the brief wins; adjust the value.
 
+   THREE IS THE SET (Derek, 2026-08-11). Candidate fourth moods came up
+   (mono = zero hue at high contrast, pastel = wide range gone soft,
+   duotone = one hue used hard) and were deliberately NOT added: those
+   looks arrive on the FLAVOR layer within the existing policies. Don't
+   grow this axis without re-opening that decision.
+
    MOOD CONTRACT --------------------------------------------------------------
    Every mood block MUST declare these 10 CORE tokens, in this exact order and
    grouping, so a missing one is visible at a glance (that is the whole point of

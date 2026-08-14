@@ -76,6 +76,50 @@ character's `light-dark()` pairs just express its own posture.
 
 **Dark mode "where applicable"** is the answer to *"what if a theme has no dark colors?"* - not every cell needs one. Under `light-dark()` that costs nothing: a cell with no dark design simply does not call the function and stays itself.
 
+### The register sheet (2026-08-14) - the measuring stick
+
+The table above names each cell; this sheet makes each one *testable*. Every mood x character combination gets: what it is, the real-world reference (internal shorthand only, per the rule above), and a **wrong when** tell you can grade a rendered page against. If a live combination fails its tell, the CSS is wrong, not the sheet.
+
+**The sheet's one law: definitions are flavor-free.** A cell may state how much color there is and which ROLES it lands on - never a named hue. Writing "green" into marketing x expressive was the original mistake (that green belongs to a flavor GoFundMe happens to wear, not to the cell); the flavor axis supplies the hue family, the cell only says how it's spent. The acceptance test for the whole model: any cell should be fillable for ANY flavor by derivation alone - "that's the flavor's primary reduced to one hint on near-neutral" is a passing answer.
+
+Mood, restated as pure policy (the board's own column headers, hue-free):
+
+- **Expressive** - color at full voice: many hues allowed, high presence.
+- **Technical** - color controlled: the family narrowed to neighbors, spent with discipline.
+- **Quiet** - color nearly absent: space and neutrals, a single hint.
+
+**Product** (the default character - the friendly capable tool):
+
+- **x Expressive - "Figma."** A playful canvas: quiet paper, full-range accents living on chips, illustrations, and posters - never on body type. *Wrong when:* the page ground takes pigment, or headings go colorful.
+- **x Technical - "Stripe."** A capable tool presenting itself: white ground, one analogous family doing all the talking (at most one warm counterpoint anywhere), color spent on accents and a single gradient flourish. *Wrong when:* a second unrelated hue appears, or the family spreads into body ink.
+- **x Quiet - "Notion / Muji."** Gray on white, generous space; the flavor exists as one soft hint - a tinted surface or a single mark. *Wrong when:* anything demands attention by color. *(Proposal - this was the board's "?" cell.)*
+
+**Marketing** (the brochure):
+
+- **x Expressive - "GoFundMe."** Stacked full-bleed bands at full voice: the flavor's hues carry whole sections, display type is allowed to wear pigment, photography is warm. Band-to-band variety IS the register. *Wrong when:* the bands go timid, or every band lands on the same hue.
+- **x Technical - "general marketing."** The same stacked-band architecture, every band drawn from one narrowed family - monochromatic confidence. *Wrong when:* a neighboring hue sneaks into a band; the discipline is the point.
+- **x Quiet - "Lemonaid."** A brochure that whispers: white paper, line art and illustration doing the personality work, one hint of the flavor's primary. *Wrong when:* a full-bleed pigment band appears - that's Expressive leaking in.
+
+**Interface** (the dashboard):
+
+- **x Expressive - "Anthropic."** Warm humane chrome: the UI itself stays neutral, feature surfaces are allowed gentle pigment washes. Color says "friendly," never "alert." *Wrong when:* the chrome takes pigment, or an accent saturates to alarm level.
+- **x Technical - "Glitch / Stack Overflow / GitHub."** Utilitarian neutral chrome where color is DATA: tags, statuses, syntax - many small saturated marks, each one meaning something. *Wrong when:* color appears anywhere it doesn't encode information.
+- **x Quiet - "OpenAI / Linear."** Near-monochrome, generous gray; the accent's only job is marking the active thing. *Wrong when:* two things are marked at once.
+
+**Editorial** (the magazine):
+
+- **x Expressive - "WIRED."** Pigment is the headline act: display-scale type wearing clashing brights, art direction over restraint. *Wrong when:* color retreats to decoration.
+- **x Technical - "The Verge."** One family used hard - duotone-leaning art direction, saturated but single-minded. *Wrong when:* the family loosens.
+- **x Quiet - "Kinfolk."** Newsprint: paper, black text, one deliberate mark of the flavor per view. *Wrong when:* a second mark shows up.
+
+**Terminal** (the console). Stated honestly: Terminal flattens most of the mood axis by construction (mono, flat scale, ascii posters) - here mood ONLY moves the palette.
+
+- **x Expressive - "16-color ANSI."** Every accent a different terminal color; the ascii art gets the whole set.
+- **x Technical - "Solarized / Nord."** The canonical analogous console take: one tuned family on a dim ground.
+- **x Quiet - "Plan 9 / acme."** Pale paper, barely-there marks. *Wrong when (all three):* hierarchy arrives by size instead of weight - that's the character law breaking, not a mood problem.
+
+Dark takes stay as the per-character POSTURES defined above (full / partial / reading-mode / native) - a dark cell is graded against its light entry plus its character's posture, not against a separate definition.
+
 ---
 
 ## Themes are color-HARMONY rules (this is what makes it affordable)
@@ -329,34 +373,48 @@ That keeps **every beat of the story except #4**, and #4 is the one Derek himsel
 
 The real cost here is **not code - it is design time.** Every theme x emphasis band is a palette someone has to actually look at and approve. The oklch composition makes them *cheap to express*; it does not make them *automatically good*. Budget the eye time, not the keystrokes - that is what makes or breaks this.
 
-## The colorway axis (Derek, 2026-07-28 - planned, deliberately unbuilt)
+## The flavor axis absorbs the colorway plan (2026-08-14; supersedes the 2026-07-28 "colorway" section this replaced)
 
-Motivation: expressive x marketing currently pigments green-yellow (the
-GoFundMe register) - great, but not every target company wears those colors.
-A **colorway** is a palette variant sitting ON TOP of mood x character: same
-mood, same character, different pigment family. (Named "colorway" because
-"flavor" is taken by the per-milestone poster axis.)
+Motivation, unchanged: expressive x marketing once pigmented green-yellow (the
+GoFundMe register) directly - but not every target company wears those colors,
+and a hue written into a cell secretly hard-codes one company into the matrix.
+The palette variant sitting ON TOP of mood x character - same mood, same
+character, different pigment family - was going to be a fourth axis named
+"colorway," because "flavor" was then stuck on the per-milestone key. The
+2026-07-28 rename freed the word, and the built `data-flavor` axis IS this
+plan: no separate colorway axis will exist.
 
-What tokens a colorway would change - the plannable surface, all slots today:
+**The values-are-archetypes law (Derek, 2026-08-14).** A flavor is named for
+the color's CHARACTER - earth, berry, ocean - never for a company and never
+for a meaning a company attaches to it. "Community" is what GoFundMe *means*
+by green; "earth" is what the green *is* - and the next community brand might
+be purple, so the meaning can't be the name. Brands are MAPPINGS onto the
+axis, not values of it: `?target=gofundme` will say "dress in earth," never
+"dress in gofundme." A new target company never adds a value - it picks one,
+or (rarely) motivates a new archetype other brands could also wear. Archetype
+as the name, brand association as a comment beside it.
+
+What tokens a flavor range changes - the plannable surface, all slots today:
 
 - **Tier 1, page paint** (moods.css): the ~11 semantic tokens (fills, inks,
-  strokes, accent, selection). A colorway COULD restate these; probably
+  strokes, accent, selection). A flavor COULD restate these; probably
   shouldn't - whole-page repaint per company is the costume version.
 - **Tier 2, the expression layer** (what the combination takes state now,
-  and where a company's colors actually land): the per-flavor poster takes
-  (~2 slots x 6 flavors in flavors.css), the year tag pair (--year-fill /
-  --year-ink), --milestone-heading-color.
+  and where an archetype's pigments actually land): the per-variant poster
+  takes in flavors.css, the year tag pair (--year-fill / --year-ink),
+  --milestone-heading-color.
 - **Tier 3, optional finishes**: the media wash pair, link color.
 - **Out by contract**: the app chrome (--app-* aliases tier 1; stationary
-  contract holds under any colorway).
+  contract holds under any flavor).
 
-Shape when built: `data-colorway` on <html>, color-only by the same one-way
+Shape (as built): `data-flavor` on <html>, color-only by the same one-way
 law as mood; implementation is DIRECT RESTATEMENT of the tier-2 blocks per
-colorway (the --t-* indirection lesson stands - more CSS, no abstraction
-layer); a colorway defines takes only for the cells it cares about and
-everything else falls through. Realistic size: a dozen-ish declarations.
+flavor (the --t-* indirection lesson stands - more CSS, no abstraction
+layer); a flavor defines takes only for the cells it cares about and
+everything else falls through. Realistic size: a dozen-ish declarations -
+`berry` is the built proof.
 
 The long-game tie-in: ?target= already tailors copy per company; the same
-visit could carry the colorway, so a target company's view re-pigments to
-their family - the site dressing for the interview. url-state-plan.md is
-the carrier when that day comes.
+visit could carry the flavor, so a target company's view re-pigments to
+its archetype's family - the site dressing for the interview.
+url-state-plan.md is the carrier when that day comes.
