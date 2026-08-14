@@ -155,7 +155,7 @@
 	--label-voice-line-height: 1.3;
 
 	--stamp-voice-font-family: var(--font-ui);
-	--stamp-voice-font-size: var(--step-0);
+	--stamp-voice-font-size: var(--step-down-1);
 	--stamp-voice-font-weight: 400;
 	--stamp-voice-line-height: 1.2;
 	--stamp-voice-letter-spacing: 0.08em;
@@ -416,8 +416,14 @@ button.trigger {
    placement rule restates it beside its top/right. In the settings panel
    this same element wears .settings-panel, which lays out the rows. */
 .panel-scroll {
-	/* Phone: panel top sits ~2.75rem down (tray height minus the tuck). */
-	max-height: calc(100dvh - 5rem);
+	/* Phone: the cap stated as its parts - the panel's own top offset
+	   (~2.75rem, tray height minus the tuck) plus ONE rhythm unit of breath
+	   at the bottom edge (the same --layout-panel-gap the 700+ dropdown
+	   breathes at its top). The card runs close to the screen's bottom and
+	   the leftover is a decision, not a residue - the old flat 5rem left an
+	   arbitrary ~2.25rem below (Derek, 2026-08-12). dvh tracks Safari's
+	   collapsing chrome, so the gap holds through both bar states. */
+	max-height: calc(100dvh - 2.75rem - var(--layout-panel-gap));
 	overflow-y: auto;
 
 	padding: var(--gutter);

@@ -115,7 +115,7 @@
 
 	/* stamp-voice - official designations (dates, roles, section markers) */
 	--stamp-voice-font-family: var(--font-ui);
-	--stamp-voice-font-size: var(--step-0);
+	--stamp-voice-font-size: var(--step-down-1);
 	--stamp-voice-font-weight: 400;
 	--stamp-voice-line-height: 1.2;
 	--stamp-voice-letter-spacing: 0.08em;
