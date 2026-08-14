@@ -154,12 +154,12 @@
 	--label-voice-font-weight: 500;
 	--label-voice-line-height: 1.3;
 
-	--high-voice-font-family: var(--font-ui);
-	--high-voice-font-size: var(--step-down-1);
-	--high-voice-font-weight: 400;
-	--high-voice-line-height: 1.2;
-	--high-voice-letter-spacing: 0.08em;
-	--high-voice-text-transform: uppercase;
+	--stamp-voice-font-family: var(--font-ui);
+	--stamp-voice-font-size: var(--step-down-1);
+	--stamp-voice-font-weight: 400;
+	--stamp-voice-line-height: 1.2;
+	--stamp-voice-letter-spacing: 0.08em;
+	--stamp-voice-text-transform: uppercase;
 
 	--app-data-voice-font-family: var(--font-mono);
 	--app-data-voice-font-size: calc(var(--step-0) * 0.75);

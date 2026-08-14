@@ -22,7 +22,7 @@
 <article id='<?= $milestone['slug'] ?>' class='milestone' data-variant='<?= $milestone['variant'] ?? 'default' ?>' data-weight='<?= $milestone['weight'] ?? 6 ?>'<?= $poster_size ?><?= $invertible ?>>
 
 	<div class='setup'>
-		<p class='year high-voice'><?= $milestone['date'] ?></p>
+		<p class='year stamp-voice'><?= $milestone['date'] ?></p>
 
 		<?php
 			/* The optional swappable tail of the title. The one current use:

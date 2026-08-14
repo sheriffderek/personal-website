@@ -24,7 +24,7 @@
 		'strong-voice',
 		'attention-voice',
 		'loud-voice',
-		'high-voice',
+		'stamp-voice',
 	];
 
 	// Media-finish experiments. Each cell drops one treatment onto the same

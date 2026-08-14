@@ -25,7 +25,7 @@
 	<ol class='entry-list'>
 		<?php foreach ($listed as $slug => $entry): ?>
 			<li>
-				<p class='date high-voice'><?= $entry['date'] ?></p>
+				<p class='date stamp-voice'><?= $entry['date'] ?></p>
 
 				<h2 class='attention-voice'>
 					<a href='/journal/<?= $slug ?><?= $target_query ?>'><?= $entry['title'] ?></a>

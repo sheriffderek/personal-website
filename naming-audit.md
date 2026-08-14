@@ -24,7 +24,7 @@
 ### CSS Classes
 - **kebab-case** throughout (per Derek's documented rules: no BEM, no underscores)
 - **Semantic naming** over structural: `.milestone`, `.settings-panel`, `.carousel`, `.slide` (role-based, not `__child` patterns)
-- **Voice classes** as utilities: `.quiet-voice`, `.calm-voice`, `.label-voice`, `.strong-voice`, `.attention-voice`, `.loud-voice`, `.high-voice`
+- **Voice classes** as utilities: `.quiet-voice`, `.calm-voice`, `.label-voice`, `.strong-voice`, `.attention-voice`, `.loud-voice`, `.stamp-voice`
 - Descendant structure visible in CSS nesting, not class names: `.milestone .heading` (not `.milestone__heading`)
 - Settings toggles: `.theme-switcher`, `.mode-switcher`, `.sound-switcher`, `.filter-control`
 

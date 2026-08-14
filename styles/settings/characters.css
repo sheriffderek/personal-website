@@ -107,7 +107,7 @@
 	   (heading/body/ui; data already reads --font-code = mono), and
 	   scale-ratio 1 flattens the whole step ladder. Hierarchy comes from
 	   weight and case alone, like a real terminal: bold for headings, tracking
-	   + uppercase (high-voice's own habit) for eyebrows. The two size
+	   + uppercase (stamp-voice's own habit) for stamps. The two size
 	   overrides exist because those voices carry literal/derived sizes in
 	   base.css that would otherwise dodge the flat ladder. (--font-mono is the
 	   system stack for now - Fontshare has no mono; a picked code face slots
@@ -138,8 +138,8 @@
 	--calm-voice-line-height: 1.6;
 	--calm-voice-strong-font-weight: 700;
 
-	/* The eyebrow reads like an environment variable: wide and spare. */
-	--high-voice-letter-spacing: 0.14em;
+	/* The stamp reads like an environment variable: wide and spare. */
+	--stamp-voice-letter-spacing: 0.14em;
 }
 
 /* ----------------------------------------------------------------------------

@@ -55,7 +55,7 @@ p {
 	.strong-voice,
 	.attention-voice,
 	.loud-voice,
-	.high-voice {
+	.stamp-voice {
 		transition: font-size 150ms linear, line-height 150ms linear, font-weight 150ms linear;
 	}
 }
@@ -132,15 +132,19 @@ p strong {
 	line-height: var(--label-voice-line-height);
 }
 
-.high-voice {
-	/* I don't love this name! */
-	/* currently using it for loose support  for headings / way finding etc */
-	font-family: var(--high-voice-font-family);
-	font-size: var(--high-voice-font-size);
-	font-weight: var(--high-voice-font-weight);
-	line-height: var(--high-voice-line-height);
-	letter-spacing: var(--high-voice-letter-spacing);
-	text-transform: var(--high-voice-text-transform);
+.stamp-voice {
+	/* The official register (renamed from high-voice, 2026-07-28): a
+	   designation stamped ON a thing - dates, roles, section markers. Part of
+	   the record, never a note about it (incidental asides stay quiet-voice).
+	   It speaks in fragments that file, never sentences that speak - the
+	   uppercase + tracking kills word-shape reading, so the look enforces
+	   the rule. */
+	font-family: var(--stamp-voice-font-family);
+	font-size: var(--stamp-voice-font-size);
+	font-weight: var(--stamp-voice-font-weight);
+	line-height: var(--stamp-voice-line-height);
+	letter-spacing: var(--stamp-voice-letter-spacing);
+	text-transform: var(--stamp-voice-text-transform);
 }
 
 :where(article.styled, text-content.styled) {
