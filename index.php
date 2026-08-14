@@ -2,6 +2,12 @@
 require __DIR__ . '/includes/config.php';
 require __DIR__ . '/includes/render.php';
 
+// The build fingerprint, itemized (?stamp=debug): plain-text list of every
+// hashed code file, for diffing two machines to the exact differing file.
+if (($_GET['stamp'] ?? '') === 'debug') {
+	stamp_debug();
+}
+
 // What page did the browser ask for?
 // "/how-i-work?target=x" becomes "how-i-work". An empty path means home.
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);

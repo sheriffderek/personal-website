@@ -241,11 +241,30 @@ function build_fingerprint() {
 	$digest = hash_init('md5');
 
 	foreach (code_files() as $file) {
-		hash_update($digest, $file);
+		/* The path relative to the site root - an absolute path would bake
+		   the machine's directory layout into the fingerprint and no two
+		   machines would ever match. */
+		hash_update($digest, substr($file, strlen(SITE_ROOT)));
 		hash_update_file($digest, $file);
 	}
 
 	return substr(hash_final($digest), 0, 7);
+}
+
+/* The fingerprint, itemized: ?stamp=debug prints one line per code file
+   (path + its own 7 chars), so two machines that disagree can be diffed to
+   the exact file - ghost files a deploy never deleted, a file a sync
+   skipped. Plain text, no chrome; called from index.php before any page
+   renders. */
+function stamp_debug() {
+	header('Content-Type: text/plain; charset=utf-8');
+
+	foreach (code_files() as $file) {
+		echo substr(md5_file($file), 0, 7) . '  ' . substr($file, strlen(SITE_ROOT)) . "\n";
+	}
+
+	echo "\n" . build_fingerprint() . "  (the whole build)\n";
+	exit;
 }
 
 /* The dev stamp: "<fingerprint> · <H:MM:SS>" where the time is the NEWEST
