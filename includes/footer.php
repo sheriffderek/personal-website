@@ -21,13 +21,15 @@
 
 		<p class='data-voice'>&copy; <?= SITE_TITLE ?></p>
 
-		<?php /* The build line: fingerprint (7 chars derived from the code
-			files' contents - same files, same code, on any machine, however
-			they got there) plus the newest code-file save time. THE freshness
-			check: when the phone and the editor show the same fingerprint,
-			they're looking at the same build. */ ?>
+		<?php /* The build line: 7 chars derived from the code files' contents -
+			same files, same fingerprint, on any machine, however they got
+			there. THE freshness check: phone matches editor = same build. No
+			time on purpose (2026-08-14): file times are machine-truth (mtimes
+			differ per sync), the fingerprint is code-truth, and two numbers
+			where one can disagree just re-opens the "am I current?" question
+			this line exists to close. */ ?>
 		<p class='data-voice'>
-			<?= build_fingerprint() ?> · <?= date('Y-m-d H:i:s', newest_save()) ?>
+			<?= build_fingerprint() ?>
 		</p>
 
 		<?php /* Testing knob for the carousel nudge, riding its flag: the link
