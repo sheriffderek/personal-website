@@ -434,8 +434,12 @@
 	   index 0 is each cell's own default take, named ranges re-pigment only
 	   what they state. Value list must stay matched with the FOUC script in
 	   header.php and the slider max in includes/settings/flavor-switcher.php. */
+	/* Index 0 displays as "House" - the site's own palette, the establishment's
+	   colors (Derek, 2026-08-11). The internal slug stays 'default' because
+	   index-0 values are never written out anywhere (the selector law: the
+	   attribute is REMOVED, not set), so the slug is display-only plumbing. */
 	var FLAVORS      = ['default', 'earth', 'cool', 'sweet'];
-	var FLAVOR_NAMES = ['Default', 'Earth', 'Cool', 'Sweet'];
+	var FLAVOR_NAMES = ['House', 'Earth', 'Cool', 'Sweet'];
 
 	var applyFlavor = sliderSwitcher({
 		kind: 'flavor',
