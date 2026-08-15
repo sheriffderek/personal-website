@@ -589,6 +589,7 @@
 [data-brand-character="terminal"] .milestone {
 	.media {
 		border: 0;
+		margin-inline: 0; /* the phone bleed is for images, not text readouts */
 	}
 
 	/* Both media shapes: the carousel (poster + slides) and the lone poster
@@ -601,6 +602,7 @@
 	.poster-ascii {
 		display: block;
 		margin: 0;
+		max-width: 100%;
 		overflow: hidden; /* a long command line clips instead of widening the card */
 		background: none; /* the poster ground stands down - readouts sit on the page */
 		color: var(--ink-primary);

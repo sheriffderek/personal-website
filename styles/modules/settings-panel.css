@@ -175,14 +175,58 @@
 	--app-accent: var(--accent);
 	--app-shadow: var(--panel-shadow, 0 4px 12px rgb(0 0 0 / 0.12));
 
+	/* CHROME TAKES - PLANNED, NOT PAINTED (Derek, 2026-08-11; do not build
+	   until the go). The three sanctioned levers (color slots, --app-shadow,
+	   --app-corners) are enough to give each mood a chrome personality with
+	   nothing moving. The references:
+	     Expressive -> Nuxt UI: a little real color in the chrome (tinted
+	                   strokes/accent presence), soft friendly shadow.
+	     Technical  -> the Claude-vs-ChatGPT question: warm beige chrome vs
+	                   white/gray chrome - both are one --app-fill decision;
+	                   crisp, small shadow.
+	     Quiet      -> shadcn: strictly black-and-white chrome, hairline
+	                   strokes, shadow at or near none - flat.
+	   Shadow reads as depth-without-movement, which is exactly the kind of
+	   expression this scope allows - elevation may change per mood, position
+	   never. */
+
+	/* Trigger skin - its own slots, resting and open, rather than the base
+	   chrome slots read straight. A trigger is the one control that has to
+	   announce a STATE (its panel is open), and the default here is the
+	   inversion - but a mood may not want a straight flip (an accent take, a
+	   ring, a same-fill-different-ink read), so the open state gets named
+	   slots to repaint instead of a treatment hardcoded in the rule. Both
+	   sets default to the base chrome, so a theme that ignores them looks
+	   exactly as it does today. Color only: the button is content-box (see
+	   `all: unset` below), so border-WIDTH is geometry and stays frozen. */
+	--app-trigger-fill: var(--app-fill);
+	--app-trigger-ink: var(--app-ink);
+	--app-trigger-stroke: var(--app-stroke);
+
+	--app-trigger-open-fill: var(--app-ink);
+	--app-trigger-open-ink: var(--app-fill);
+	--app-trigger-open-stroke: var(--app-stroke);
+
 	/* Corners - the one free GEOMETRY lever (unfrozen 2026-08-11, see the
 	   contract above): radius never moves a target's center, so a theme may
 	   round the chrome. Default is the house square. */
 	--app-corners: 0px;
 
 	/* Geometry - frozen. The border stays as a color-matched placeholder (a
-	   theme fakes "no border" via --app-stroke, never by zeroing the width). */
+	   theme fakes "no border" via --app-stroke, never by zeroing the width).
+
+	   Frozen is not the same as raw: these are the primitive's real
+	   measurements, named once here so the rules below read as intent and a
+	   size change is one edit. Frozen says a THEME may not move them (law 1 -
+	   no axis resizes a control); it never meant the numbers should sit
+	   inline. The trigger size is the tap target, the glyph rides inside it,
+	   and the focus ring is stated so every chrome control rings alike. */
 	--app-border-width: 1px;
+	--app-trigger-size: 2.25rem;
+	--app-trigger-glyph-size: 1.65rem;
+	--app-trigger-radius: 50%;
+	--app-focus-width: 2px;
+	--app-focus-offset: 2px;
 
 	/* Control text sits between the body size and the data-voice labels: big
 	   enough to press, small enough that a pill doesn't outshout its own
@@ -245,7 +289,11 @@
 	display: flex;
 	flex-direction: row-reverse;
 	align-items: center;
-	gap: 0.5rem;
+
+	/* The same rhythm unit the panel keeps off the toolbar - the gaps
+	   between the circles and the gap below them are one measure, not two
+	   numbers that happen to match. */
+	gap: var(--layout-panel-gap);
 
 	/* Above the panel (z 1) within the tray's stacking context: the panel
 	   tucks up under the circles' bottoms, and this is what keeps the
@@ -273,30 +321,39 @@ button.trigger {
 	cursor: pointer;
 	font-size: 1.25rem;
 	line-height: 1;
-	color: var(--app-ink);
+	color: var(--app-trigger-ink);
 
 	/* The circular glyph-button chrome. Every toolbar member wears it (pages,
 	   settings, grid invite, back-to-top) - it used to live on a separate
 	   .settings-trigger class, but a skin every trigger wears IS the
 	   primitive's look, and "settings" was a lie on the other members. */
-	width: 2.25rem;
-	height: 2.25rem;
+	width: var(--app-trigger-size);
+	height: var(--app-trigger-size);
 	padding: 0;
-	border: var(--app-border-width) solid var(--app-stroke);
-	background: var(--app-fill);
-	border-radius: 50%;
+	border: var(--app-border-width) solid var(--app-trigger-stroke);
+	background: var(--app-trigger-fill);
+	border-radius: var(--app-trigger-radius);
+
+	/* OPEN. aria-expanded is the state the button already carries for the
+	   screen reader, so the sighted state reads from the same attribute -
+	   one truth, no companion class for the script to keep in sync. Only
+	   panel triggers wear the attribute; the plain buttons (back-to-top)
+	   never match and need no opt-out. */
+	&[aria-expanded='true'] {
+		border-color: var(--app-trigger-open-stroke);
+		background: var(--app-trigger-open-fill);
+		color: var(--app-trigger-open-ink);
+	}
 
 	&:focus-visible {
-		outline: 2px solid var(--app-accent);
-		outline-offset: 2px;
+		outline: var(--app-focus-width) solid var(--app-accent);
+		outline-offset: var(--app-focus-offset);
 	}
 }
 
 .glyph {
-	--glyph-size: 1.65rem;
-
-	width: var(--glyph-size);
-	height: var(--glyph-size);
+	width: var(--app-trigger-glyph-size);
+	height: var(--app-trigger-glyph-size);
 	display: block;
 
 	/* The glyphs are one filled icon set (Phosphor); one place colors them
@@ -568,6 +625,11 @@ button.trigger {
 	display: grid;
 	gap: 1.5rem;
 
+	.axes-group {
+		display: grid;
+		gap: 1.5rem;
+	}
+
 	/* Radio pills: a radio dot + label. The visible pill is deliberately slim
 	   (control-size type, light padding); the ::after overlay quietly extends
 	   the touch target back out to ~44px - same "small visual, big hit"
@@ -650,12 +712,21 @@ button.trigger {
                   small (WCAG target size is 24px).
      --range-dot  the solid visible dot's diameter.
      --range-halo the soft ring's outer diameter; fades to transparent.
+     --range-halo-strength  how solid the halo ring reads.
 
-   The gradient stops are radii, so each is half its diameter via calc. */
+   The gradient stops are radii, so each is half its diameter via calc.
+
+   PRESSED (:active, below): the dot swells and the halo firms up - "your
+   finger is on it" feedback, wanted most on phones where the finger hides
+   the dot and the halo is all you see. It works by re-declaring the knobs,
+   not the gradients: the thumbs read these custom properties, so the state
+   is two lines and both engines follow. Paint only - the swell stays inside
+   the fixed --range-hit box, so the target never moves under the finger. */
 .plain-range {
 	--range-hit: 36px;
 	--range-dot: 14px;
 	--range-halo: 30px;
+	--range-halo-strength: 22%;
 
 	-webkit-appearance: none;
 	appearance: none;
@@ -677,6 +748,13 @@ button.trigger {
 	   open panel mid-adjustment. */
 	touch-action: none;
 
+	/* Pressed - see the header comment. :active holds for the whole drag,
+	   so the swollen dot rides under the finger until release. */
+	&:active {
+		--range-dot: 18px;
+		--range-halo-strength: 45%;
+	}
+
 	&::-webkit-slider-runnable-track {
 		height: 4px;
 		background: var(--app-stroke-secondary);
@@ -695,7 +773,7 @@ button.trigger {
 		background: radial-gradient(
 			circle at center,
 			var(--app-ink) 0 calc(var(--range-dot) / 2),
-			color-mix(in oklch, var(--app-ink) 22%, transparent)
+			color-mix(in oklch, var(--app-ink) var(--range-halo-strength), transparent)
 				calc(var(--range-dot) / 2 + 1px) calc(var(--range-halo) / 2),
 			transparent calc(var(--range-halo) / 2)
 		);
@@ -715,7 +793,7 @@ button.trigger {
 		background: radial-gradient(
 			circle at center,
 			var(--app-ink) 0 calc(var(--range-dot) / 2),
-			color-mix(in oklch, var(--app-ink) 22%, transparent)
+			color-mix(in oklch, var(--app-ink) var(--range-halo-strength), transparent)
 				calc(var(--range-dot) / 2 + 1px) calc(var(--range-halo) / 2),
 			transparent calc(var(--range-halo) / 2)
 		);

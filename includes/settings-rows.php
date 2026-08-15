@@ -12,10 +12,13 @@
 	  page_controls  the page's own controls partial (the timeline filter) */ ?>
 <?php $id_suffix = $id_suffix ?? ''; ?>
 <?= partial('settings/mode-switcher', ['id_suffix' => $id_suffix]) ?>
-<?= partial('settings/character-switcher', ['id_suffix' => $id_suffix]) ?>
-<?= partial('settings/mood-switcher', ['id_suffix' => $id_suffix]) ?>
+<div class='axes-group'>
+	<?= partial('settings/character-switcher', ['id_suffix' => $id_suffix]) ?>
 
-<?= partial('settings/flavor-switcher', ['id_suffix' => $id_suffix]) ?>
+	<?= partial('settings/mood-switcher', ['id_suffix' => $id_suffix]) ?>
+
+	<?= partial('settings/flavor-switcher', ['id_suffix' => $id_suffix]) ?>
+</div>
 <?php if (!empty($page_has_grid)): ?>
 	<?= partial('settings/view-switcher', ['id_suffix' => $id_suffix]) ?>
 <?php endif; ?>

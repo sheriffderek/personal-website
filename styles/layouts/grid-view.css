@@ -329,20 +329,13 @@ button.trigger[data-to-top] {
 		   map. */
 		.settings-band .settings-panel {
 			display: grid;
-			grid-template-columns: max-content minmax(0, 1fr) minmax(0, 1fr);
-			/* The right side defines the fine row rhythm (label, slider, tier
-			   name, map, toggles); the left axes span GROUPS of those rows.
-			   Without the spans, each short right-side piece sits alone in a
-			   row as tall as the switcher beside it, and the label drifts far
-			   from its slider (seen 2026-07-29). The tall map row absorbs the
-			   slack instead. */
+			grid-template-columns: max-content minmax(0, 1fr) fit-content(10rem);
 			grid-template-areas:
 				"scheme    filter-label filter-label"
 				"scheme    slider       slider"
-				"character tier-name    layout"
-				"character map          layout"
-				"mood      map          sounds"
-				"flavor    map          red-light";
+				"axes      tier-name    layout"
+				"axes      map          sounds"
+				"axes      map          red-light";
 			gap: 1.25rem 2.5rem;
 			align-items: start;
 		}
@@ -361,16 +354,8 @@ button.trigger[data-to-top] {
 			grid-area: scheme;
 		}
 
-		.settings-band .character-switcher {
-			grid-area: character;
-		}
-
-		.settings-band .mood-switcher {
-			grid-area: mood;
-		}
-
-		.settings-band .flavor-switcher {
-			grid-area: flavor;
+		.settings-band .axes-group {
+			grid-area: axes;
 		}
 
 		.settings-band .view-switcher {

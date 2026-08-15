@@ -70,7 +70,7 @@
 
 	/* calm-voice - default body copy (and bare <p>), incl. its em / strong */
 	--calm-voice-font-family: var(--font-body);
-	--calm-voice-font-size: 1.1rem;
+	--calm-voice-font-size: var(--step-0);
 	--calm-voice-font-weight: 300;
 	--calm-voice-line-height: 1.5;
 	--calm-voice-em-font-style: italic; /* not sure if this is the best way - we can revisit */
