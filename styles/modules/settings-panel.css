@@ -764,6 +764,7 @@ button.trigger {
 	   so the swollen dot rides under the finger until release. */
 	&:active {
 		--range-dot: 18px;
+		--range-halo: 40px;
 		--range-halo-strength: 45%;
 	}
 
