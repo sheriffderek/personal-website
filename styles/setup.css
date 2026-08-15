@@ -57,6 +57,17 @@ a.relaxed,
 	text-underline-offset: 0.15em;
 }
 
+/* Terminal character: no underlines anywhere - a terminal marks its links
+   with COLOR, not decoration (Derek, 2026-08-11: "it needs to actually all
+   look like a terminal window, or it's a waste"). Every link speaks in the
+   link color, relaxed ones included - a quiet unmarked link would simply
+   vanish here, and terminals have no whisper register. The ::after glyph
+   marks (rel arrows) stay; they're very terminal already. */
+[data-brand-character="terminal"] :is(p a, a.link, a.relaxed, .relaxed a) {
+	color: var(--link-color);
+	text-decoration: none;
+}
+
 /* Link marks - the relationship each link has to this page, said by glyph
    and enforced by selector, so content never remembers to add an icon:
    +  unfolds in place (the read-more summaries, hardcoded in the templates)

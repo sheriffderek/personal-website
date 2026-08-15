@@ -232,6 +232,18 @@
 	   enough to press, small enough that a pill doesn't outshout its own
 	   section label. Font size is metrics is geometry - frozen like the rest. */
 	--app-control-font-size: calc(var(--step-0) * 0.85);
+
+	/* App surfaces don't select. The chrome's text is all operational -
+	   labels, pill captions, the filter count - and on touch a near-miss or
+	   a held press turns it into blue-highlighted text with the iOS copy
+	   callout over the very control being aimed at (same family of accident
+	   as the pinch-zoom the touch-action scope below kills). Nothing in
+	   here is prose anyone quotes; the scope-wide none is the rule, no
+	   per-control re-enable needed. If a text INPUT ever joins the chrome,
+	   it must restate user-select: text on itself. (-webkit- prefix: iOS
+	   Safari still requires it.) */
+	-webkit-user-select: none;
+	user-select: none;
 }
 
 .app-data-voice {

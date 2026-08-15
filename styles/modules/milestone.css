@@ -587,6 +587,29 @@
    the page's own mono size, natural height, no frame, no ground. Structure
    swap, so it keys off the character axis. */
 [data-brand-character="terminal"] .milestone {
+	/* The card reads as terminal output top to bottom (Derek's mock,
+	   2026-08-11): the year/title header stands down and the readout's
+	   command line - $ open <slug>  # <date> - IS the card's header. The
+	   real heading stays in the DOM but doesn't paint (accepted: this is a
+	   visitor-chosen dress, and the command line carries the identity). */
+	.setup {
+		display: none;
+	}
+
+	/* Read more wears command dress: $-prefixed, lowercase, no underline -
+	   it reads as the next thing you could type. */
+	.read-more {
+		text-transform: lowercase;
+
+		.link {
+			text-decoration: none;
+
+			&::before {
+				content: '$ ';
+			}
+		}
+	}
+
 	.media {
 		border: 0;
 		margin-inline: 0; /* the phone bleed is for images, not text readouts */
