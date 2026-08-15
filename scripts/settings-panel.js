@@ -323,6 +323,83 @@
 		});
 	});
 
+	/* Grab vs tap on the slider primitive (Derek, 2026-08-14). A native range
+	   fuses two gestures the design wants separate: TAP the line = "go to
+	   that notch" (a command), GRAB the handle = "I'm holding it, drag
+	   follows" (the pressed halo is grab feedback). Native behavior also
+	   splits by platform - desktop lets a drag start anywhere on the line,
+	   iOS only from the handle - so a line press showed the halo and then
+	   refused to drag on exactly the phones recruiters use: a false
+	   affordance. This wiring makes ONE rule true everywhere:
+
+	     press the HANDLE -> .is-grabbed (the halo, settings-panel.css) and
+	     the native drag takes it from there;
+	     press the LINE   -> jump to that notch, no halo, never a drag.
+
+	   Keyboard is untouched - arrows still step the focused slider. */
+	function hookGrabAndTap(slider) {
+		/* The handle's box is --range-hit wide; its center travels
+		   (track width - handle width) as the value runs min -> max. Same
+		   math the engines use to place the thumb, reused for hit-testing
+		   and for the tap's notch. */
+		function handleWidth() {
+			return parseFloat(getComputedStyle(slider).getPropertyValue('--range-hit')) || 40;
+		}
+
+		function handleCenterX() {
+			var rect = slider.getBoundingClientRect();
+			var width = handleWidth();
+			var min = parseFloat(slider.min) || 0;
+			var max = parseFloat(slider.max) || 0;
+			var fraction = ((parseFloat(slider.value) || 0) - min) / (max - min || 1);
+			return rect.left + fraction * (rect.width - width) + width / 2;
+		}
+
+		function notchAtX(x) {
+			var rect = slider.getBoundingClientRect();
+			var width = handleWidth();
+			var min = parseFloat(slider.min) || 0;
+			var max = parseFloat(slider.max) || 0;
+			var fraction = (x - rect.left - width / 2) / (rect.width - width || 1);
+			fraction = Math.max(0, Math.min(1, fraction));
+			return Math.round(min + fraction * (max - min));
+		}
+
+		function release() {
+			slider.classList.remove('is-grabbed');
+		}
+
+		slider.addEventListener('pointerdown', function (event) {
+			if (!event.isPrimary) return;
+
+			if (Math.abs(event.clientX - handleCenterX()) <= handleWidth() / 2) {
+				slider.classList.add('is-grabbed');
+				return;
+			}
+
+			/* Line press: the tap. preventDefault stops desktop engines
+			   from also starting their native anywhere-drag (the gesture
+			   iOS never had) - so the two platforms finally agree. It also
+			   swallows the press's focus, so focus is restated by hand to
+			   keep the keyboard flow the native press would have given. */
+			event.preventDefault();
+			var notch = notchAtX(event.clientX);
+			if (String(notch) !== slider.value) {
+				slider.value = String(notch);
+				slider.dispatchEvent(new Event('input', { bubbles: true }));
+			}
+			slider.focus();
+		});
+
+		/* On document, not the slider: a mouse grab released off the
+		   element never fires pointerup on it (touch gets implicit capture,
+		   mouse doesn't). */
+		document.addEventListener('pointerup', release);
+		document.addEventListener('pointercancel', release);
+	}
+
+	document.querySelectorAll('.plain-range').forEach(hookGrabAndTap);
+
 	/* Character + emphasis — the two design-system axes, each a slider (not
 	   buttons). Index maps to a slug. The first slug is the default: it means
 	   "no attribute on <html>" (the :root block in settings.css IS the

@@ -244,10 +244,16 @@
 	   Safari still requires it.) */
 	-webkit-user-select: none;
 	user-select: none;
+
+	/* And app surfaces don't offer the iOS long-press callout (Share /
+	   Copy) either - a held slider drag is a press on the control, not a
+	   request to share the page. Separate switch from user-select: the
+	   callout is its own iOS behavior with its own property, and killing
+	   selection alone doesn't silence it. */
+	-webkit-touch-callout: none;
 }
 
 .app-data-voice {
-	margin: 0 0 0.4rem;
 	font-family: var(--app-data-voice-font-family);
 	font-size: var(--app-data-voice-font-size);
 	/* Weight stated, not inherited: these labels are <p>s, and the bare-p
@@ -406,6 +412,16 @@ button.trigger {
 	   so this costs nothing while the menus are shut. */
 	transform: translateZ(0);
 
+	/* The companion hint translateZ alone doesn't carry: promotion leaves
+	   WebKit free to drop and re-rasterize the layer's backing store under
+	   pressure - and a dropped store composites as a BLANK tile for a frame
+	   (the intermittent see-through flash while the page reflows behind an
+	   open panel). backface-visibility: hidden tells WebKit to keep the
+	   raster. Belt-and-suspenders with the opaque .panel-scroll fill below -
+	   two independent layers must BOTH miss for the page to show through. */
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+
 	/* Two phone-range compositions (Derek, 2026-08-12), split at 700 -
 	   phones keep the immersive card well past the smallest sizes; the
 	   dropdown takes over in tablet territory:
@@ -490,12 +506,29 @@ button.trigger {
 	   at the bottom edge (the same --layout-panel-gap the 700+ dropdown
 	   breathes at its top). The card runs close to the screen's bottom and
 	   the leftover is a decision, not a residue - the old flat 5rem left an
-	   arbitrary ~2.25rem below (Derek, 2026-08-12). dvh tracks Safari's
-	   collapsing chrome, so the gap holds through both bar states. */
-	max-height: calc(100dvh - 2.75rem - var(--layout-panel-gap));
+	   arbitrary ~2.25rem below (Derek, 2026-08-12).
+
+	   svh, NOT dvh (2026-08-14): dvh re-resolves continuously while
+	   Safari's URL bar animates - and the filter's keep-your-place scrollBy
+	   can set that animation off, so a dvh cap re-laid-out and repainted
+	   the OPEN panel on every frame of the correction. That per-frame
+	   invalidation is prime fuel for the missed-raster flash (see .panel's
+	   backface note). svh is the small, STABLE viewport: the panel's
+	   height never moves mid-scroll; the cost is a slightly deeper bottom
+	   gap while the bar is collapsed. Stability beats the perfect gap. */
+	max-height: calc(100svh - 2.75rem - var(--layout-panel-gap));
 	overflow-y: auto;
 
 	padding: var(--gutter);
+
+	/* iOS gives every overflow scroller its own compositor layer - so this
+	   fill is a SECOND opaque cover on a second layer, behind the content
+	   the visitor actually reads. If the outer .panel layer misses a raster
+	   (the flash this section is hardening against), the scroll layer still
+	   paints solid. Inherit the radius so a rounded brand's corners aren't
+	   squared by the child's fill. */
+	background: var(--app-fill);
+	border-radius: inherit;
 }
 
 /* Desktop list (>= 1024): the tray is its own 300px sticky column
@@ -522,7 +555,10 @@ button.trigger {
 	   the bottom reachable (an absolute child of a sticky tray never
 	   scrolls into view on its own). */
 	html:not([data-view="grid"]) .panel .panel-scroll {
-		max-height: calc(100dvh - 12rem);
+		/* svh for the same stability reason as the phone cap above - iPads
+		   have collapsing Safari chrome too, and a stable cap never repaints
+		   the panel mid-scroll. */
+		max-height: calc(100svh - 12rem);
 	}
 }
 
@@ -728,14 +764,24 @@ button.trigger {
 
    The gradient stops are radii, so each is half its diameter via calc.
 
-   PRESSED (:active, below): the dot swells and the halo firms up - "your
-   finger is on it" feedback, wanted most on phones where the finger hides
-   the dot and the halo is all you see. It works by re-declaring the knobs,
-   not the gradients: the thumbs read these custom properties, so the state
-   is two lines and both engines follow. Paint only - the swell stays inside
-   the fixed --range-hit box, so the target never moves under the finger. */
+   GRABBED (.is-grabbed, below): the dot swells and the halo firms up -
+   "you are holding the handle for sure" feedback, wanted most on phones
+   where the finger hides the dot and the halo is all you see. The class is
+   set by the grab-vs-tap wiring in settings-panel.js, NOT :active - the
+   whole strip goes :active on any press, but a press on the line is a tap
+   ("go to that notch"), not a grab, and showing grab feedback for it was a
+   false affordance (iOS refuses to drag from the line). It works by
+   re-declaring the knobs, not the gradients: the thumbs read these custom
+   properties, so the state is a few lines and both engines follow. Paint
+   only - the swell stays inside the fixed --range-hit box, so the target
+   never moves under the finger. */
 .plain-range {
-	--range-hit: 36px;
+	/* 40, not 36: the halo paints inside the thumb's own box, so the box
+	   must fit the LARGEST halo (the pressed 40px) or it clips flat at the
+	   edges. The box can't grow during :active instead - thumb width feeds
+	   the engine's position math, and a mid-drag size change makes the dot
+	   jump under the finger. */
+	--range-hit: 40px;
 	--range-dot: 14px;
 	--range-halo: 30px;
 	--range-halo-strength: 22%;
@@ -760,9 +806,9 @@ button.trigger {
 	   open panel mid-adjustment. */
 	touch-action: none;
 
-	/* Pressed - see the header comment. :active holds for the whole drag,
+	/* Grabbed - see the header comment. The class holds for the whole drag,
 	   so the swollen dot rides under the finger until release. */
-	&:active {
+	&.is-grabbed {
 		--range-dot: 18px;
 		--range-halo: 40px;
 		--range-halo-strength: 45%;
@@ -862,6 +908,14 @@ button.trigger {
 		margin: 0;
 		padding: 0;
 		list-style: none;
+
+		/* Own compositor layer: a filter change runs a 0.5s background
+		   transition on every bar at once - without this, that half-second
+		   of invalidation repaints the ENTIRE panel layer each frame, right
+		   while the page reflow behind it has the main thread pinned (the
+		   missed-raster flash - see .panel). Isolated, the churn stays in
+		   this one small cheap layer and the panel's raster stays clean. */
+		transform: translateZ(0);
 
 		li {
 			height: 4px;

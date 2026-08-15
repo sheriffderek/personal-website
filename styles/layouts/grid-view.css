@@ -331,11 +331,11 @@ button.trigger[data-to-top] {
 			display: grid;
 			grid-template-columns: max-content minmax(0, 1fr) fit-content(10rem);
 			grid-template-areas:
-				"scheme    filter-label filter-label"
-				"scheme    slider       slider"
-				"axes      tier-name    layout"
-				"axes      map          sounds"
-				"axes      map          red-light";
+				"scheme       filter-label filter-label"
+				"axes         slider       slider"
+				"axes         tier-name    layout"
+				"axes         map          sounds"
+				"axes         map          red-light";
 			gap: 1.25rem 2.5rem;
 			align-items: start;
 		}
