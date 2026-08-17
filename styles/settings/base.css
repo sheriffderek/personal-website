@@ -121,15 +121,6 @@
 	--stamp-voice-letter-spacing: 0.08em;
 	--stamp-voice-text-transform: uppercase;
 
-	--setting-button-corners: 0px;
-
-	/* $todo WIP (Derek) - trigger hover-theming experiment; red/blue/
-	   green are debug placeholders. These want to become --app-* chrome tokens
-	   (settings-panel.css) once the hover design lands. */
-	--trigger-fill: red;
-	--trigger-hover: blue;
-	--trigger-corners: 8px;
-	--trigger-border-color: green;
 }
 
 /* Apply the resolved base tokens to the page. Reads whatever mood is active. */

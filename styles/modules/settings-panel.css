@@ -37,10 +37,12 @@
 	      whole point is that the controls stay put under the visitor's hand
 	      while the page transforms around them.
 
-	   2. THE ONLY DOOR IN IS THE --app-* COLOR SLOTS. They alias the global
-	      semantic tokens below, so the chrome repaints with the theme for
-	      free; a theme wanting bespoke chrome overrides those slots and
-	      nothing else. Color. That's the whole menu.
+	   2. THE ONLY DOOR IN IS THE --app-* COLOR SLOTS. They hold the chrome's
+	      own scheme-aware NEUTRAL baseline (2026-08-11 - they used to alias
+	      the page's semantic tokens, which let every theme's hues wash in
+	      passively). Chrome color changes ONLY as a deliberate take
+	      repainting these slots with clear direction. Color. That's the
+	      whole menu.
 
 	   3. EVERYTHING ELSE IS SEALED, EXPLICITLY. Geometry tokens are frozen.
 	      Font families are pinned to the UI stacks AND the metrics (size,
@@ -166,13 +168,20 @@
 	--app-data-voice-line-height: 1.4;
 	--app-data-voice-letter-spacing: 0.01em;
 
-	/* Color slots - free levers (a theme may repaint these). */
-	--app-fill: var(--fill-primary);
-	--app-ink: var(--ink-primary);
-	--app-ink-secondary: var(--ink-secondary);
-	--app-stroke: var(--stroke-primary);
-	--app-stroke-secondary: var(--stroke-secondary);
-	--app-accent: var(--accent);
+	/* Color slots - the door in, now holding the chrome's OWN NEUTRAL
+	   baseline (Derek, 2026-08-11 - these used to alias the page's semantic
+	   tokens, so the chrome passively picked up every theme's hues; a blue
+	   panel under Technical was the tell). The chrome is scheme-aware
+	   (light-dark) but theme-neutral: gray like an OS settings panel. Future
+	   chrome color arrives ONLY as a deliberate take repainting these slots
+	   with clear direction - the chrome-takes plan below - never by aliasing
+	   a page token back in. */
+	--app-fill: light-dark(var(--color-neutral-50), var(--color-neutral-900));
+	--app-ink: light-dark(var(--color-neutral-900), var(--color-neutral-100));
+	--app-ink-secondary: light-dark(var(--color-neutral-600), var(--color-neutral-400));
+	--app-stroke: light-dark(var(--color-neutral-400), var(--color-neutral-600));
+	--app-stroke-secondary: light-dark(var(--color-neutral-300), var(--color-neutral-700));
+	--app-accent: light-dark(var(--color-neutral-900), var(--color-neutral-100));
 	--app-shadow: var(--panel-shadow, 0 4px 12px rgb(0 0 0 / 0.12));
 
 	/* CHROME TAKES - PLANNED, NOT PAINTED (Derek, 2026-08-11; do not build
@@ -675,7 +684,7 @@ button.trigger {
 
 	.axes-group {
 		display: grid;
-		gap: 1.5rem;
+		gap: 12px; /* the three axis sliders read as one instrument - tighter than the panel's row rhythm; px per the control-geometry units rule */
 	}
 
 	/* Radio pills: a radio dot + label. The visible pill is deliberately slim
@@ -743,7 +752,6 @@ button.trigger {
    radio dot. */
 .mode-button-group {
 	display: flex;
-	flex-wrap: wrap;
 	gap: 0.4rem;
 }
 
@@ -785,6 +793,7 @@ button.trigger {
 	--range-dot: 14px;
 	--range-halo: 30px;
 	--range-halo-strength: 22%;
+	--range-ink: var(--app-ink);
 
 	-webkit-appearance: none;
 	appearance: none;
@@ -807,8 +816,19 @@ button.trigger {
 	touch-action: none;
 
 	/* Grabbed - see the header comment. The class holds for the whole drag,
-	   so the swollen dot rides under the finger until release. */
+	   so the feedback rides under the pointer until release. Sized to the
+	   gesture via data-pointer (stamped by the grab wiring): the base take
+	   is the quiet one for a mouse - the cursor never hides the dot, so
+	   nothing needs to grow; the dot turning accent IS the confirmation
+	   (Derek, 2026-08-14: sizes swelling was "too obvious on macbook"). */
 	&.is-grabbed {
+		--range-ink: var(--app-accent);
+	}
+
+	/* A finger DOES hide the dot - the swollen halo is all you can see of
+	   the handle, so touch gets the loud take: bigger everything, on top
+	   of the accent ink. */
+	&.is-grabbed[data-pointer='touch'] {
 		--range-dot: 18px;
 		--range-halo: 40px;
 		--range-halo-strength: 45%;
@@ -831,8 +851,8 @@ button.trigger {
 		border-radius: 50%;
 		background: radial-gradient(
 			circle at center,
-			var(--app-ink) 0 calc(var(--range-dot) / 2),
-			color-mix(in oklch, var(--app-ink) var(--range-halo-strength), transparent)
+			var(--range-ink) 0 calc(var(--range-dot) / 2),
+			color-mix(in oklch, var(--range-ink) var(--range-halo-strength), transparent)
 				calc(var(--range-dot) / 2 + 1px) calc(var(--range-halo) / 2),
 			transparent calc(var(--range-halo) / 2)
 		);
@@ -851,8 +871,8 @@ button.trigger {
 		border-radius: 50%;
 		background: radial-gradient(
 			circle at center,
-			var(--app-ink) 0 calc(var(--range-dot) / 2),
-			color-mix(in oklch, var(--app-ink) var(--range-halo-strength), transparent)
+			var(--range-ink) 0 calc(var(--range-dot) / 2),
+			color-mix(in oklch, var(--range-ink) var(--range-halo-strength), transparent)
 				calc(var(--range-dot) / 2 + 1px) calc(var(--range-halo) / 2),
 			transparent calc(var(--range-halo) / 2)
 		);

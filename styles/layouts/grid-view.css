@@ -40,7 +40,7 @@
 @media (width >= 1200px) {
 	:root {
 		--layout-wall-columns: 2;
-		--layout-wall-lane: 36rem;
+		--layout-wall-lane: 44rem;
 		--layout-wall-gap: 4rem;
 		--layout-wall-max: calc(var(--layout-wall-columns) * var(--layout-wall-lane) + (var(--layout-wall-columns) - 1) * var(--layout-wall-gap));
 
@@ -329,13 +329,14 @@ button.trigger[data-to-top] {
 		   map. */
 		.settings-band .settings-panel {
 			display: grid;
-			grid-template-columns: max-content minmax(0, 1fr) fit-content(10rem);
+			grid-template-columns: max-content minmax(0, 1fr) minmax(0, 1fr);
 			grid-template-areas:
-				"scheme       filter-label filter-label"
-				"axes         slider       slider"
-				"axes         tier-name    layout"
-				"axes         map          sounds"
-				"axes         map          red-light";
+				"scheme    filter-label filter-label"
+				"scheme    slider       slider"
+				"axes      tier-name    layout"
+				"axes      map          layout"
+				"axes      map          sounds"
+				"axes      map          red-light";
 			gap: 1.25rem 2.5rem;
 			align-items: start;
 		}

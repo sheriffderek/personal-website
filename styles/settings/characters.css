@@ -87,10 +87,15 @@
 	--scale-ratio: 1.414;
 
 	/* Display serifs carry contrast in their strokes, so the heading voices
-	   run light and tight - weight would coarsen the face. */
+	   run light and tight - weight would coarsen the face. Each heading
+	   voice sits ONE STEP below its base rung (attention up-3 -> up-2, loud
+	   up-4 -> up-3): the 1.414 ratio makes each step so dramatic that the
+	   base rungs blew past display-size into billboard (Derek, 2026-08-11). */
 	--font-heading-weight: 400;
+	--attention-voice-font-size: var(--step-up-2);
 	--attention-voice-font-weight: 400;
 	--attention-voice-line-height: 1.1;
+	--loud-voice-font-size: var(--step-up-3);
 	--loud-voice-font-weight: 400;
 	--loud-voice-line-height: 1.05;
 	--strong-voice-font-weight: 500;

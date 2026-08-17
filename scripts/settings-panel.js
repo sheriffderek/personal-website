@@ -373,6 +373,11 @@
 			if (!event.isPrimary) return;
 
 			if (Math.abs(event.clientX - handleCenterX()) <= handleWidth() / 2) {
+				/* What grabbed it rides along ('touch' | 'mouse' | 'pen') so
+				   the CSS can size the feedback to the actual gesture - a
+				   finger hides the dot and needs the loud halo; a mouse
+				   cursor doesn't, and the full swell reads as shouting. */
+				slider.setAttribute('data-pointer', event.pointerType);
 				slider.classList.add('is-grabbed');
 				return;
 			}
