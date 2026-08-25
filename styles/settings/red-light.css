@@ -58,6 +58,12 @@
 	   in) - no take-colored masses in the two-color room. */
 	--poster-fill-secondary: initial;
 
+	/* The ground GRADIENT tokens too (leak caught live 2026-08-25: cool's
+	   indigo->violet night panel glowed purple in the red room). Invalid ->
+	   both stops fall back to --poster-fill and the ground goes flat red. */
+	--poster-gradient-from: initial;
+	--poster-gradient-to: initial;
+
 	/* Focal marks rejoin the red accent - stomps every take, flavor, and
 	   per-poster custom accent (this article-level line beats them all by
 	   layer, which is the finale's whole contract). */

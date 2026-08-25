@@ -262,6 +262,24 @@
 	-webkit-touch-callout: none;
 }
 
+
+/* THE FIRST CHROME TAKE: red light (Derek, 2026-08-25 - "the tool they're
+   holding follows along"). The finale is the one theme allowed to repaint
+   the chrome, and it enters through the sanctioned door only: the --app-*
+   color slots, in the red room's own palette. Nothing moves - color only.
+   Lives HERE, not red-light.css: this file is unlayered, so a layered
+   red-light rule could never override these slots; same-file + higher
+   specificity is the one working door. */
+[data-red-light] [data-ui="app"] {
+	--app-fill: light-dark(#d40003, oklch(21% 0.07 26));
+	--app-ink: light-dark(oklch(16% 0.05 26), var(--color-red-300));
+	--app-ink-secondary: light-dark(var(--color-red-950), var(--color-red-400));
+	--app-stroke: light-dark(var(--color-red-800), var(--color-red-800));
+	--app-stroke-secondary: light-dark(var(--color-red-700), var(--color-red-900));
+	--app-accent: light-dark(oklch(16% 0.05 26), var(--color-red-500));
+	--app-shadow: 0 4px 12px rgb(0 0 0 / 0.35);
+}
+
 .app-data-voice {
 	font-family: var(--app-data-voice-font-family);
 	font-size: var(--app-data-voice-font-size);

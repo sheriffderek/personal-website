@@ -23,6 +23,9 @@
 Judge every combo as: "does this still evoke the character's feeling, under
 this mood's policy, in this flavor's family?"
 
+**Red light (2026-08-25): APPROVED both schemes** - chrome joins the room
+(the first sanctioned chrome take), gradient-token leak sealed.
+
 **Sweep note (2026-08-25): flavors blanket-approved "fine for now"** - the
 Earth/Cool/Sweet rows stand as built unless a specific note below says
 otherwise. Remaining walk: the un-judged characters (Editorial everywhere,
