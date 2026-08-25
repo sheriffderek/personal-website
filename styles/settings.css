@@ -7,7 +7,8 @@
 
      CHARACTER  [data-brand-character]  ->  settings/characters.css
         Structure: type pair, corner radius, scale rhythm. WHO the surface is.
-        Product (default = :root) · Marketing · Interface. Never names a hue.
+        Product (default = :root) · Marketing · Interface · Editorial ·
+        Terminal. Never names a hue.
 
      MOOD       [data-brand-mood]       ->  settings/moods.css
         Color: a full palette on the semantic slots. WHAT color it is.
@@ -36,6 +37,23 @@
      - A mood restates the FULL color set every time (the MOOD CONTRACT at the
        top of moods.css) - no chaining, no var-of-var, so nothing goes
        unaccounted and a dropped token is visible at a glance.
+
+   GENERAL vs OVERRIDE (Derek, 2026-08-23) - where a value is allowed to
+   live. The test is the SELECTOR: count the axes it names.
+     - ZERO OR ONE axis -> it's a GENERAL value and lives in that axis's own
+       file (base = Product's structure, characters = structure deltas,
+       moods = whole palettes, variants = the role safety net). An axis file
+       never mentions another axis - that's what keeps 5 x 3 x 4 x 2
+       composable from ~25 decisions.
+     - TWO OR MORE axes -> it's an OVERRIDE and lives in flavors.css, the
+       one assignment layer, scoped to its cell and commented with its
+       reason. Everything cross-axis is there by design: the cell takes
+       (how a mood x character spends color), the flavor x mood overlays
+       (which family), the flavor ranges (cell dressing), the postures
+       (marketing's white paper), the per-card scopes (House's grounds and
+       link colors).
+   If you're about to write a second axis into a selector anywhere else,
+   stop - it goes in flavors.css or it doesn't go in.
 
    AUTHORITY is declared, not accidental (2026-07-28): each file is a cascade
    LAYER, and the @layer statement below is the whole law - a later layer

@@ -30,35 +30,12 @@ p {
 	text-wrap: pretty;
 }
 
-/* A character swap re-sizes the whole ladder; easing the size makes the
-   transformation legible instead of a jump-cut - the theme system performing
-   itself, so functional motion per the motion policy (no reduced-motion gate:
-   the visitor pulled the switch). HEADING voices only, deliberately: flowing
-   body text re-wraps on every frame of a size glide (and its 72ch measure
-   breathes with it), which read as churn (Derek, 2026-08-10) - so prose
-   snaps, and the drama lives where text doesn't wrap. The family still
-   snaps everywhere - families can't crossfade - and that's accepted. */
-/* One short shared beat - just enough to say "transforming," not enough to
-   watch. (Longer and per-size variants were tried 2026-08-10 and read weird:
-   equal durations = unequal speeds, equal speeds = big type lagging alone.) */
-/* Large screens only (2026-08-12): the morph animates layout, and on phones
-   it fought the scroll anchor - the keep-your-place correction landed while
-   heights were still sliding, so the page lurched twice per notch. From
-   1024 the tray is a side column: the page is watched while it transforms
-   (the beat earns its keep) and there's no over-content panel churning
-   corrections. Small screens snap - which also spares their GPUs. */
-@media (width >= 1024px) {
-	h1,
-	h2,
-	h3,
-	h4,
-	.strong-voice,
-	.attention-voice,
-	.loud-voice,
-	.stamp-voice {
-		transition: font-size 150ms linear, line-height 150ms linear, font-weight 150ms linear;
-	}
-}
+/* NO type transitions on character swaps (Derek, 2026-08-23 - removed for
+   good after a long audition). The history, so it isn't re-derived: one
+   shared duration = unequal speeds; speed-matched durations = big type
+   lagging alone; heading-only at 150ms was livable but still fought the
+   scroll anchor and never quite earned its keep. Type SNAPS between
+   characters; the demonstration is the change itself, not the tween. */
 
 .calm-voice,
 p,
@@ -177,4 +154,12 @@ code {
 
 :where(a, span).link {
 	text-decoration: underline;
+}
+
+/* The unfold summaries read as part of the prose, so they wear the prose
+   ink - being <summary>s, not <p>s, they'd otherwise inherit full primary
+   and sit darker than every paragraph around them (caught 2026-08-23).
+   Card-scoped read-more colors (milestone.css) outrank this. */
+summary.read-more {
+	color: var(--prose-ink, var(--ink-secondary));
 }

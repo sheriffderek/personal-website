@@ -162,11 +162,13 @@
    sits on the article and .year is inside it, so the expressive take blocks
    (flavors.css) can state --year-fill / --year-ink per variant slot and the
    tags follow the card's palette with no new wiring. */
-html[data-brand-character="marketing"]:not([data-brand-mood]) {
+[data-brand-character="marketing"] {
+	/* SHAPE only - the pill's fill/ink moved to flavors.css (2026-08-23,
+	   the audit's one violation: pigment on the character axis, surviving
+	   every flavor change - the same bug as the css-tricks card). The pill
+	   is the register; its color is the flavor's. */
 	--year-padding: 0.25em 0.75em;
 	--year-corners: 1em;
-	--year-fill: light-dark(var(--color-yellow-300), var(--color-yellow-900));
-	--year-ink: light-dark(var(--color-stone-900), var(--color-yellow-100));
 
 	/* The green heading this cell used to state moved out with the
 	   de-branding (2026-08-11, see flavors.css) - company hues are the

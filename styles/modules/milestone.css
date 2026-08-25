@@ -109,7 +109,13 @@
 
 	.media {
 		margin: 0;
-		border: var(--border-width) solid var(--ink-secondary);
+		/* Stroke, not ink (2026-08-23): ink-secondary is TEXT ink and read
+		   too dark as a frame. And the frame RECEDES in dark (Derek, same
+		   day: "darker than the background") - a light ring around a dark
+		   panel reads as glow, so the dark half is a translucent black
+		   line, which lands darker than any mood's ground without naming
+		   a color. */
+		border: var(--border-width) solid light-dark(var(--stroke-primary), rgb(0 0 0 / 0.4));
 		/* --corners is brand-owned (settings.css): each brand states its corner
 		   personality and every media frame follows. */
 		border-radius: var(--corners, 0);
@@ -147,7 +153,7 @@
 		}
 
 		/* Themable media wash - OFF by default (normal blend over a
-		   transparent backdrop = the photo as shot). An emphasis may opt
+		   transparent backdrop = the photo as shot). A mood may opt
 		   real photos/videos into its palette by declaring the pair in
 		   settings.css: --media-blend (the mode) + --media-blend-fill (the
 		   backdrop it resolves against) - e.g. red-light's luminosity over
@@ -465,7 +471,10 @@
 		}
 
 		.read-more {
-			color: var(--link-color);
+			/* Optional per-scope slot: a cell may re-point this (e.g. the
+			   default cell ties it to the card's own poster accent - see
+			   flavors.css). Unstated, it's the ordinary link color. */
+			color: var(--read-more-color, var(--link-color));
 		}
 
 		.more {
@@ -523,7 +532,7 @@
 		/* Themable dot ink + difference so it inverts against whatever slide
 		   is behind it - visible over a light photo, a dark video, or any
 		   flavor's poster cover, without knowing the backdrop. White by
-		   default; an emphasis may repaint it (red-light sets --dot-ink to
+		   default; a mood may repaint it (red-light sets --dot-ink to
 		   its red, so the inversion stays inside the theme - white there
 		   would flash cyan). The .carousel isolates the blend so it can't
 		   punch through the media to the page. */
@@ -574,8 +583,11 @@
 		border-width: 0;
 		border-radius: 0;
 
-		border-top: var(--border-width) solid var(--ink-secondary);
-		border-bottom: var(--border-width) solid var(--ink-secondary);
+		/* No top/bottom rules on the bleed (removed 2026-08-23): with
+		   paper-toned poster grounds they read as stray lines across the
+		   screen, not as a frame. They MIGHT earn a place back under some
+		   character (Derek: "we'll have to see") - if so they return as a
+		   character-owned token, not a hardcode here. */
 	}
 }
 

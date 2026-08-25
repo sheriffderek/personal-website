@@ -405,7 +405,7 @@
 
 	document.querySelectorAll('.plain-range').forEach(hookGrabAndTap);
 
-	/* Character + emphasis — the two design-system axes, each a slider (not
+	/* Character + mood — two of the design-system axes, each a slider (not
 	   buttons). Index maps to a slug. The first slug is the default: it means
 	   "no attribute on <html>" (the :root block in settings.css IS the
 	   default), and no storage key is written for it so first-load defaults
@@ -489,7 +489,7 @@
 	}
 
 	/* Keep these lists matched to the FOUC script in includes/header.php and
-	   the sliders' max in includes/settings/{character,emphasis}-switcher.php.
+	   the sliders' max in includes/settings/{character,mood}-switcher.php.
 	   Index 0 is the default (Product = :root, no attribute written). */
 	var CHARACTERS      = ['product', 'marketing', 'interface', 'editorial', 'terminal'];
 	var CHARACTER_NAMES = ['Product', 'Marketing', 'Interface', 'Editorial', 'Terminal'];

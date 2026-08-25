@@ -13,7 +13,7 @@ label {
 	-webkit-tap-highlight-color: transparent;
 }
 
-/* Selection is a token pair each emphasis declares in settings.css -
+/* Selection is a token pair a mood may declare (settings/moods.css) -
    default is a calm highlighter yellow, red-light inverts, etc. The
    fallback (a knocked-back inversion of the scope's own ink and fill)
    covers any scope that repaints tokens without saying a selection. */
@@ -23,6 +23,24 @@ label {
 		color-mix(in oklab, var(--ink-primary) 75%, transparent)
 	);
 	color: var(--selection-ink, var(--fill-primary));
+}
+
+/* Ink hierarchy - the DEFAULT for every theme (Derek, 2026-08-23):
+   headings in primary ink, prose in secondary, meta in auxiliary (.year
+   already reads auxiliary in milestone.css). The defaults live in these
+   fallbacks; a theme that wants all type at full ink opts OUT by
+   declaring --prose-ink: var(--ink-primary) (and --heading-ink exists
+   for the reverse experiment). Stated on elements, never inside a voice
+   class (voices carry no color, house law). */
+h1,
+h2,
+h3,
+h4 {
+	color: var(--heading-ink, var(--ink-primary));
+}
+
+p {
+	color: var(--prose-ink, var(--ink-secondary));
 }
 
 a {
@@ -42,9 +60,9 @@ a.link {
 
 /* The subtle link: wears the surrounding text's color and lets a quiet
    underline carry the linkness - for links that shouldn't shout in a
-   sentence. Both knobs are optional per-emphasis tokens (settings.css);
+   sentence. Both knobs are optional per-mood tokens (settings/moods.css);
    undeclared, it inherits its color and underlines in the scope's own
-   quiet stroke - so every emphasis gets a correct relaxed link for free. */
+   quiet stroke - so every mood gets a correct relaxed link for free. */
 a.relaxed,
 .relaxed a {
 	display: inline;

@@ -1,8 +1,6 @@
 # Layout lab - working notes
 
-Scratch notes for the shell rework. These are decisions as we hone them - not final CLAUDE.md rules yet.
-The live lab is now **`layout-sandbox.html`** (static file, http://derek:8888/layout-sandbox.html) - NOT the
-old `/layout-lab` PHP page. It will port into the real shell once proven.
+**Status (2026-08-14): the port is DONE.** The shell these notes designed is live in the real site (`.site-tray`, ported 2026-07-19); the ✅ CANONICAL SPEC section below is the reference CLAUDE.md points at, and everything after it is the dated reasoning record. The lab artifacts are history now: `experiments/shell.html` is the proven standalone the port came from, `layout-sandbox.html` was its working scratchpad, and the `/layout-lab` PHP route predates both.
 
 ---
 

@@ -30,32 +30,6 @@ function load_target($requested) {
 	return $target;
 }
 
-function load_markdown($path) {
-	$full = CONTENT_DIR . '/' . $path;
-	if (!file_exists($full)) return ['meta' => [], 'body' => ''];
-
-	$raw = file_get_contents($full);
-	$meta = [];
-	$body = $raw;
-
-	if (strpos($raw, '---') === 0) {
-		$parts = explode("---", $raw, 3);
-		if (count($parts) === 3) {
-			foreach (explode("\n", trim($parts[1])) as $line) {
-				if (strpos($line, ':') !== false) {
-					[$k, $v] = explode(':', $line, 2);
-					$meta[trim($k)] = trim($v);
-				}
-			}
-			$body = trim($parts[2]);
-		}
-	}
-
-	require_once SITE_ROOT . '/lib/Parsedown.php';
-	$parser = new Parsedown();
-	return ['meta' => $meta, 'body' => $parser->text($body)];
-}
-
 function render($template, $data = []) {
 	extract($data);
 	require TEMPLATES_DIR . '/' . $template . '.php';

@@ -21,7 +21,7 @@
 	   The claim being tested (theme-model.md): a palette is not a hand-authored
 	   thing, it is a composition of three channels -
 
-	     BAND (emphasis) -> lightness      the L in oklch
+	     BAND (mood) -> lightness          the L in oklch
 	     FLAVOR          -> hue            the H
 	     THEME           -> the hue SET + a chroma multiplier
 
@@ -263,7 +263,7 @@
 
 	/* Same layered tiles, soft-light instead of multiply. Soft-light both
 	   lightens AND darkens, so unlike multiply it survives dark and colored
-	   fills - flip the scheme/emphasis and watch it hold where multiply turns
+	   fills - flip the scheme/mood and watch it hold where multiply turns
 	   to mud. On the pure-white default it's nearly invisible (white has no
 	   headroom to lighten) - that IS the cross-theme lesson. */
 	.media-sample.grain-softlight {

@@ -1,9 +1,10 @@
 	</main>
 
 	<footer class='site-footer'>
-		<?php /* ---- Footer nav - disabled alongside the Pages menu in settings-panel.php ----
-			How I work / Now / Contact are still placeholders, leaving home as the only
-			link. Routes and templates untouched - uncomment when those pages are real.
+		<?php /* ---- Footer nav - disabled while its pages are placeholders ----
+			How I work / Now / Contact aren't real yet, leaving home as the only
+			link; the live Pages menu (settings-panel.php) carries navigation
+			meanwhile. Routes and templates untouched - uncomment when the pages are real.
 
 		<nav class='footer-menu' aria-label='Footer'>
 			<ul role='list'>
@@ -48,6 +49,10 @@
 
 </div>
 
+	<?php /* The playback script serves carousel media only (every rule below
+		lives behind the window.Flickity guard), so it rides the same flag -
+		off = no weight, per the config.php contract. */ ?>
+	<?php if (CAROUSEL_ENABLED): ?>
 	<script>
 		// ------------------------------------------------------------------
 		// THE PLAYBACK RULEBOOK - what a tester should expect, in plain rules.
@@ -464,6 +469,7 @@
 			});
 		});
 	</script>
+	<?php endif; ?>
 
 </body>
 </html>

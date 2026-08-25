@@ -10,11 +10,16 @@
 	   layer. The video streams on press (preload='none').
 
 	   Responsive source + poster: data-src-wide/square and data-poster-wide/square
-	   are picked per breakpoint by the shared script in includes/footer.php (that
-	   logic targets any video[data-src-wide], not just milestone cards). The wide
-	   file is also a plain <source> so the element is valid without that swap
-	   script - but the player itself needs JS (the trigger is the only control),
-	   so with JS off the poster still is the whole experience. */
+	   are picked per breakpoint by the swap logic in includes/footer.php (it
+	   targets any video[data-src-wide], not just milestone cards). $todo: that
+	   logic currently lives INSIDE the carousel playback script - behind both
+	   CAROUSEL_ENABLED and its window.Flickity guard - so with the carousel off
+	   it never runs. Before this component (or any standalone page video, e.g.
+	   the planned how-i-work clip) ships live, extract the swap into its own
+	   small script that loads with the feature. The wide file is also a plain
+	   <source> so the element is valid without the swap - and the player itself
+	   needs JS (the trigger is the only control), so with JS off the poster
+	   still is the whole experience. */
 	$src_square = $src_square ?? '';
 	$poster = $poster ?? '';
 	$poster_square = $poster_square ?? '';

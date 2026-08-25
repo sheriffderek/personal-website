@@ -11,6 +11,18 @@ RewriteEngine On
 # still serves normally. Do not remove this - it is the privacy guarantee.
 RewriteRule ^content/.*\.json$ - [F,L]
 
+# Working notes (*.md at any depth) are for the repo, not the site - several
+# quarry the same private material the json wall above protects. Same
+# guarantee, same mechanism. CLAUDE.md rides along; nothing public links to
+# any of them.
+RewriteRule \.md$ - [F,L]
+
+# /experiments (the bare path) is a routed PAGE, but a real directory with
+# that name also exists (the labs), and the folder rule below would win and
+# 403 (no index file in it). Claim the page path first; the labs inside
+# (^experiments/<file>) still serve as plain files.
+RewriteRule ^experiments/?$ index.php [L]
+
 # Real files and folders (css, js, images) are served as-is.
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d

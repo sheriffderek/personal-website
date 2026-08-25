@@ -72,7 +72,7 @@
 	--calm-voice-font-family: var(--font-body);
 	--calm-voice-font-size: var(--step-0);
 	--calm-voice-font-weight: 300;
-	--calm-voice-line-height: 1.5;
+	--calm-voice-line-height: 1.55;
 	--calm-voice-em-font-style: italic; /* not sure if this is the best way - we can revisit */
 	--calm-voice-strong-font-weight: 410;
 
@@ -82,9 +82,10 @@
 	--strong-voice-font-weight: 500;
 	--strong-voice-line-height: 1.2;
 
-	/* attention-voice - milestone headings */
+	/* attention-voice - milestone headings. One step shy of its old up-3
+	   rung (Derek, 2026-08-23: a little smaller on Product). */
 	--attention-voice-font-family: var(--font-heading);
-	--attention-voice-font-size: var(--step-up-3);
+	--attention-voice-font-size: var(--step-up-2);
 	--attention-voice-font-weight: 530;
 	--attention-voice-line-height: 1.2;
 

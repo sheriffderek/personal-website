@@ -1,10 +1,4 @@
 <?php
-	/*
-		<span class='weight quiet-voice'>(<?= $milestone['weight'] ?? '?' ?>)</span>
-	*/
-?>
-
-<?php
 	/* Poster sizes are purpose-made, never derived: the "poster" key is
 	   true for the full 16:9 cover, or a named size ("large", "medium",
 	   "small") for a heading-graphic frame - same poster-shapes tech,
@@ -112,7 +106,7 @@
 				</summary>
 
 				<text-content class='styled more-body'>
-					<div>→</div>
+					<p>→</p>
 					<?= $milestone['details'] ?>
 				</text-content>
 			</details>

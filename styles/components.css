@@ -1,1 +1,3 @@
-/* @import 'components/card.css'; */
+/* Components load per feature: welcome-video.css rides its flag in
+   header.php (TOUR_ENABLED), so an off flag costs no bytes. A component
+   every page needs would be imported here. */

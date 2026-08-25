@@ -25,5 +25,37 @@
 			<stop offset='0' style='stop-color: var(--poster-ramp-from, var(--fill-secondary))'/>
 			<stop offset='1' style='stop-color: var(--poster-ramp-to, var(--fill-secondary))'/>
 		</linearGradient>
+
+		<?php /* House x technical's color (Derek, 2026-08-23, refined same
+		   day): NOT one full rainbow - at chip size the whole spectrum is
+		   noise. Instead the rainbow is cut into analogous SLICES, one per
+		   variant slot (the door rules in flavors.css assign them): big
+		   masses show a real fade, small chips read near-solid, and the
+		   wall's slices add up to the spectrum. Fixed stops on purpose -
+		   these ARE House's pigment statement. */ ?>
+		<linearGradient id='poster-slice-warm' x1='0' y1='0' x2='1' y2='1'>
+			<stop offset='0' style='stop-color: var(--color-fuchsia-500)'/>
+			<stop offset='1' style='stop-color: var(--color-amber-400)'/>
+		</linearGradient>
+
+		<linearGradient id='poster-slice-cool' x1='0' y1='0' x2='1' y2='1'>
+			<stop offset='0' style='stop-color: var(--color-teal-400)'/>
+			<stop offset='1' style='stop-color: var(--color-sky-400)'/>
+		</linearGradient>
+
+		<linearGradient id='poster-slice-stone' x1='0' y1='0' x2='1' y2='1'>
+			<stop offset='0' style='stop-color: var(--color-sky-400)'/>
+			<stop offset='1' style='stop-color: var(--color-indigo-400)'/>
+		</linearGradient>
+
+		<linearGradient id='poster-slice-moss' x1='0' y1='0' x2='1' y2='1'>
+			<stop offset='0' style='stop-color: var(--color-emerald-400)'/>
+			<stop offset='1' style='stop-color: var(--color-teal-400)'/>
+		</linearGradient>
+
+		<linearGradient id='poster-slice-rose' x1='0' y1='0' x2='1' y2='1'>
+			<stop offset='0' style='stop-color: var(--color-indigo-400)'/>
+			<stop offset='1' style='stop-color: var(--color-fuchsia-500)'/>
+		</linearGradient>
 	</defs>
 </svg>

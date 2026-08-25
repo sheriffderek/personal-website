@@ -85,6 +85,14 @@ $pages = [
 		'description' => SITE_DESCRIPTION,
 	],
 
+	// Index of standalone experiments (shell, posters, trio, tap lab).
+	// No 'menu' key: reachable by URL only.
+	'experiments' => [
+		'file' => 'experiments.php',
+		'title' => 'Experiments - ' . SITE_TITLE,
+		'description' => SITE_DESCRIPTION,
+	],
+
 	// Derek's own index of everything - every page (public and internal),
 	// journal entries, target previews, experiments, feature flags. All
 	// derived live from the real sources, so it can't go stale. No 'menu'

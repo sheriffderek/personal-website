@@ -135,3 +135,38 @@ inline on the page.
 
 - [ ] `fill='context-stroke'` on marker defs (arrowheads) so they inherit the arrow's `--ink-primary` automatically.
 - [ ] Mark the whole SVG decorative: `role='img'` + `aria-hidden='true'`.
+
+## Parked: conditional poster layers (2026-08-23)
+
+Derek: posters "might even add additional areas to the graphics that get hid
+in other cases." The mechanism when we want it is the invertible pattern
+reused: the poster AUTHORS an extra group (e.g. `<g class='flourish'>` -
+bonus marks, denser texture), hidden by default, and a mood x character cell
+ACTIVATES it (the Figma-vibes default cell being the obvious first customer;
+quiet cells never show it). Candidacy in the art, activation in the takes -
+no new machinery. Not built; parked until a real poster wants its first
+flourish layer.
+
+Sharpened by Derek's Artboard22 mock (same day): the layers are translucent
+FIELDS, not just extra marks - panels and rings that OVERLAP the base
+composition at partial opacity, so the intersections make third tones (the
+dome splitting where a panel crosses it). Opacity is the mechanism: a layer
+composes with whatever ground the active flavor painted, so one authored
+layer works under every palette. And the layers could ANIMATE ON HOVER
+(Derek, same breath) - there's precedent: the poster already breathes its
+stroke-width on hover, so layer motion would ride the same gesture (hover
+is visitor-initiated, so no reduced-motion gate per the motion policy).
+The compositional constraint: the fields sit on a 10x8 GRID behind the
+scenes (Derek - visible as the checkering in his mock; on the 1600x900
+canvas that's 160 x 112.5 per cell), so layers snap to shared geometry
+instead of floating free - one grid, every poster, and the panels read as
+deliberate zones rather than loose washes. (His mock is one way it could
+look, not the spec.) And further out: a CLICKABLE AREA on each poster
+that starts an animation sequence (Derek - "GSAP or something"). Cautions
+already known for that day: a whole-poster tap handler fires on carousel
+swipes too (the exact reason the play BUTTON, not the video body, toggles
+playback - footer.php), so the trigger is a small dedicated hit area; and
+GSAP is a new dependency on a site that ships almost none - weigh CSS
+animation first. Click-started motion is visitor-initiated either way, so
+no reduced-motion gate (motion policy). Still parked; still
+activation-by-cell.

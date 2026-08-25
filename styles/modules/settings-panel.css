@@ -122,7 +122,7 @@
 	--calm-voice-font-family: var(--font-body);
 	--calm-voice-font-size: 1.1rem;
 	--calm-voice-font-weight: 300;
-	--calm-voice-line-height: 1.5;
+	--calm-voice-line-height: 1.55; /* matched to base.css, 2026-08-23 */
 	--calm-voice-strong-font-weight: 410;
 
 	--strong-voice-font-family: var(--font-heading);
@@ -131,7 +131,7 @@
 	--strong-voice-line-height: 1.2;
 
 	--attention-voice-font-family: var(--font-heading);
-	--attention-voice-font-size: var(--step-up-3);
+	--attention-voice-font-size: var(--step-up-2); /* matched to base.css, 2026-08-23 */
 	--attention-voice-font-weight: 530;
 	--attention-voice-line-height: 1.2;
 
@@ -696,7 +696,7 @@ button.trigger {
 	   Selected is MONOCHROME on purpose (Derek, 2026-07-28) - filled dot,
 	   deeper ink tint, stronger ink stroke. An accent tint was tried and
 	   clashed under the darker palettes (accent-into-dark-fill goes muddy);
-	   ink/fill mixes track every scheme and emphasis by definition. The ink
+	   ink/fill mixes track every scheme and mood by definition. The ink
 	   stays --app-ink in both states. */
 	button {
 		font: inherit;

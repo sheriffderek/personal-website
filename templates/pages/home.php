@@ -23,33 +23,6 @@ $target = isset($_GET['target']) ? load_target($_GET['target']) : null;
 $target_notes = $target['milestones'] ?? [];
 ?>
 
-<style>
-	/*
-	.page-header {
-		border: 4px solid red;
-	}
-
-	.page-wrapper {
-		border: 4px solid orange;
-
-		> 	.site-tray {
-			border: 4px solid blue;
-		}
-	}
-
-	.tray-sentinel {
-		border: 4px solid green;
-	}
-
-	.timeline {
-		border: 4px solid green;
-	}
-	*/
-
-
-
-</style>
-
 <header class='page-header'>
 	<?php /* The lockup: big name over a small caps role line - identity loud,
 	         metadata quiet. Each span carries its own voice; the h1 is just
@@ -85,7 +58,7 @@ $target_notes = $target['milestones'] ?? [];
 	<text-content class='styled'>
 		<p>I help teams do their best work, whether that's big-picture vision and strategy, research and user testing, interfaces and code, design systems and cross-team collaboration, or auditing and maintaining what's already shipped.</p>
 
-		<p>I've done it across agencies, startups, and product teams. And for the last 6+ years, I've been teaching full-stack product design while keeping a hand in a range of design roles the whole time.</p>
+		<p>I've done it across agencies, startups, and product teams for over 15 years. And for the last 6+ years, I've been teaching full-stack product design while keeping a hand in a range of design roles the whole time.</p>
 
 		<?php if (!empty($target['hero'])): ?>
 			<p class='target-note'>

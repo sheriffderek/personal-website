@@ -13,6 +13,14 @@
    values can be adjusted against the words, not re-guessed. When a value
    and its brief disagree, the brief wins; adjust the value.
 
+   DARK KEEPS THE PIGMENTS (Derek, 2026-08-23, from the dark-mode pass):
+   dark mode must NOT dull the colors - it's the same hues at full strength,
+   with LESS FILL (darker grounds, smaller painted areas), not paler
+   pigments. The prevailing light-dark(x-600, x-400) habit hands dark a
+   washed cousin of every color; when the deferred color pass happens, dark
+   halves keep the light half's chroma (same value or a near sibling) and
+   the darkness comes from the grounds. Fills recede, pigments don't.
+
    THREE IS THE SET (Derek, 2026-08-11). Candidate fourth moods came up
    (mono = zero hue at high contrast, pastel = wide range gone soft,
    duotone = one hue used hard) and were deliberately NOT added: those
@@ -51,24 +59,25 @@
      LIGHT: warm paper, vivid marks - a sunny studio with art everywhere.
      DARK: the same studio at night - velvet ground, every color glowing
      one step brighter, never dimmed into gray.
-   DRIFT NOTE (2026-08-11): today's values are one warm family (olive paper,
-   stone ink, green accent) - the rainbow currently lives only in the poster
-   flavors, so the PAGE reads calmer than the brief. If Expressive should
-   feel rainbow at the page level too, the secondary fills/strokes are the
-   slots with room to take on more hues. --- */
+   FIRST COLOR PASS (Derek, 2026-08-25, from the FoF / Config / GSAP refs:
+   "light and dark here - more rainbow / wide range / figma gsap ish"):
+   LIGHT = cream studio paper (GSAP's butter, not clinical white); DARK =
+   warm NEAR-BLACK room with CREAM type (the GSAP/Config read - not the old
+   olive velvet), the rainbow carried by the per-card streams and accents.
+   The page grounds stay calm so the work is what's loud. --- */
 :root,
 [data-brand-mood="expressive"] {
-	--fill-primary: light-dark(var(--color-olive-50), var(--color-olive-900));
-	--fill-secondary: light-dark(var(--color-olive-100), var(--color-olive-800));
-	--fill-auxiliary: light-dark(var(--color-olive-200), var(--color-olive-700));
+	--fill-primary: light-dark(var(--color-olive-50), var(--color-stone-950)); /* light back to the warm-white olive - the butter cream read too yellow (Derek, 2026-08-25); dark stays the approved near-black */
+	--fill-secondary: light-dark(var(--color-olive-100), var(--color-stone-900));
+	--fill-auxiliary: light-dark(var(--color-olive-200), var(--color-stone-800));
 
-	--ink-primary: light-dark(var(--color-stone-900), var(--color-stone-100));
+	--ink-primary: light-dark(var(--color-stone-900), var(--color-yellow-50));
 	--ink-secondary: light-dark(var(--color-stone-600), var(--color-stone-300));
 	--ink-auxiliary: light-dark(var(--color-stone-500), var(--color-stone-400));
 
-	--stroke-primary: light-dark(var(--color-olive-400), var(--color-olive-600));
-	--stroke-secondary: light-dark(var(--color-olive-300), var(--color-olive-700));
-	--stroke-auxiliary: light-dark(var(--color-olive-200), var(--color-olive-800));
+	--stroke-primary: light-dark(var(--color-olive-400), var(--color-stone-700));
+	--stroke-secondary: light-dark(var(--color-olive-300), var(--color-stone-800));
+	--stroke-auxiliary: light-dark(var(--color-olive-200), var(--color-stone-900));
 
 	--accent: light-dark(var(--color-green-600), var(--color-green-400));
 
@@ -97,22 +106,31 @@
 	   text is slate, not blue-on-blue), and the accent is the blurple -
 	   indigo, the signature. The blue family stays in the secondary fills
 	   and strokes as the cool cast. */
-	--fill-primary: light-dark(white, var(--color-blue-950));
-	--fill-secondary: light-dark(var(--color-blue-100), var(--color-blue-900));
-	--fill-auxiliary: light-dark(var(--color-blue-200), var(--color-blue-800));
+	/* Grounds are NEUTRAL too (2026-08-25, same reasoning as the strokes
+	   below): House x technical is the utilitarian b&w room (the GitHub
+	   read) where the rainbow slices are the only color - the blue rooms
+	   moved to the cool flavor with the rest of the Stripe/Linear identity. */
+	--fill-primary: light-dark(white, var(--color-slate-950));
+	--fill-secondary: light-dark(var(--color-slate-100), var(--color-slate-900));
+	--fill-auxiliary: light-dark(var(--color-slate-200), var(--color-slate-800));
 
 	--ink-primary: light-dark(var(--color-slate-900), var(--color-slate-100));
 	--ink-secondary: light-dark(var(--color-slate-600), var(--color-slate-300));
 	--ink-auxiliary: light-dark(var(--color-slate-500), var(--color-slate-400));
 
-	--stroke-primary: light-dark(var(--color-blue-300), var(--color-blue-700));
-	--stroke-secondary: light-dark(var(--color-blue-200), var(--color-blue-800));
-	--stroke-auxiliary: light-dark(var(--color-blue-100), var(--color-blue-800));
+	/* Strokes are NEUTRAL slate (2026-08-23): under House's b&w-plus-slices
+	   take, blue frames read as unexplained pigment - so the blue hairline
+	   cast moved to the cool flavor (flavors.css), where the Stripe identity
+	   lives. */
+	--stroke-primary: light-dark(var(--color-slate-300), var(--color-slate-700));
+	--stroke-secondary: light-dark(var(--color-slate-200), var(--color-slate-800));
+	--stroke-auxiliary: light-dark(var(--color-slate-100), var(--color-slate-800));
 
 	--accent: light-dark(var(--color-indigo-500), var(--color-indigo-400));
 
-	--selection-fill: var(--color-blue-200);
-	--selection-ink: var(--color-blue-950);
+	--selection-fill: var(--color-slate-200);
+	--selection-ink: var(--color-slate-950);
+
 }
 
 /* --- QUIET ----------------------------------------------------------------
@@ -124,23 +142,35 @@
      LIGHT: soft gray paper, gray ink a step short of full black - the
      whole page pulled toward the middle.
      DARK: warm charcoal, ink a step short of white - dim, not stark.
-   DRIFT NOTES (2026-08-11): ink runs stone-900-on-white / stone-50-on-900
-   today - that's full contrast, louder than the brief; both ends want a
-   step toward the middle. And the accent is still the blue placeholder,
-   not the rust/sage hint. Inherits Expressive's yellow highlighter (no
-   selection restated) - arguably too loud for this room too. --- */
+   Drifts closed 2026-08-23: paper off-white (stone-50), ink pulled a step
+   from both ends (800/200), the hint is RUST (orange-800/400 - sage was
+   the alternate; swap the accent line if it reads better), and the
+   highlighter is restated gray so the yellow marker doesn't shout here. --- */
 [data-brand-mood="quiet"] {
-	--fill-primary: light-dark(white, var(--color-stone-900));
-	--fill-secondary: light-dark(var(--color-stone-100), var(--color-stone-800));
-	--fill-auxiliary: light-dark(var(--color-stone-200), var(--color-stone-700));
+	/* Ground pulled grayer again (Derek, 2026-08-23 second pass: "less
+	   contrast between black and white") - the whole sheet steps one deeper
+	   into the middle. */
+	--fill-primary: light-dark(var(--color-stone-100), var(--color-stone-900));
+	--fill-secondary: light-dark(var(--color-stone-200), var(--color-stone-800));
+	--fill-auxiliary: light-dark(var(--color-stone-300), var(--color-stone-700));
 
-	--ink-primary: light-dark(var(--color-stone-900), var(--color-stone-50));
-	--ink-secondary: light-dark(var(--color-stone-600), var(--color-stone-300));
-	--ink-auxiliary: light-dark(var(--color-stone-500), var(--color-stone-400));
+	--ink-primary: light-dark(var(--color-stone-800), var(--color-stone-200));
+	--ink-secondary: light-dark(var(--color-stone-600), var(--color-stone-400));
+	--ink-auxiliary: light-dark(var(--color-stone-500), var(--color-stone-500));
 
 	--stroke-primary: light-dark(var(--color-stone-400), var(--color-stone-600));
 	--stroke-secondary: light-dark(var(--color-stone-300), var(--color-stone-700));
 	--stroke-auxiliary: light-dark(var(--color-stone-200), var(--color-stone-800));
 
-	--accent: light-dark(var(--color-blue-900), var(--color-blue-300));
+	/* SAGE - APPROVED (Derek, 2026-08-23 walk verdict: "I enjoy the theme
+	   for this combo," dark especially). Sage is the House green at quiet
+	   volume - even the whisper is recognizably his. This value is a
+	   verdict, not a placeholder; don't re-tune it casually. */
+	--accent: light-dark(var(--color-olive-700), var(--color-olive-400));
+
+	/* The quiet marker: a gray highlighter, not the shared yellow - nothing
+	   shouts in this room, the selection included. */
+	--selection-fill: var(--color-stone-300);
+	--selection-ink: var(--color-stone-900);
+
 }

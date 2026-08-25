@@ -13,6 +13,10 @@
 <?php $id_suffix = $id_suffix ?? ''; ?>
 <?= partial('settings/mode-switcher', ['id_suffix' => $id_suffix]) ?>
 <div class='axes-group'>
+	<?php /* Character first by IMPORTANCE (Derek, 2026-08-23: "if I could
+		only have 1, it would be character") - the UI order ranks the axes
+		for the visitor; it is not the cascade order and not the order we
+		work through them (calibration goes mood-first). */ ?>
 	<?= partial('settings/character-switcher', ['id_suffix' => $id_suffix]) ?>
 
 	<?= partial('settings/mood-switcher', ['id_suffix' => $id_suffix]) ?>

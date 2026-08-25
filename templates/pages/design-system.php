@@ -1,6 +1,6 @@
 <?php
 	// The design-system tester. It renders the site's raw materials - color
-	// tokens, type voices, and one real poster card - so any brand/emphasis/
+	// tokens, type voices, and one real poster card - so any character/mood/
 	// scheme change (from the settings panel) can be checked against all of
 	// them at once. Finishes (grain) land here first, next to the solid tokens.
 
@@ -30,7 +30,7 @@
 	// Media-finish experiments. Each cell drops one treatment onto the same
 	// sample mark so they compare side by side. Adding an experiment is one
 	// array entry - this grid is meant to grow (grain now, squiggle and
-	// edge-erosion later). No emphasis wiring yet: each cell names its finish
+	// edge-erosion later). No mood wiring yet: each cell names its finish
 	// explicitly, so nothing here depends on the material-axis decision.
 	$finish_experiments = [
 		['label' => 'Solid (no finish)', 'class' => ''],
@@ -88,7 +88,7 @@
 			</div>";
 	}
 
-	// One inert slider - the brand / emphasis shape. The name span mirrors the
+	// One inert slider - the character / mood shape. The name span mirrors the
 	// live label that updates as the thumb moves; here it just states the value.
 	function demo_slider($label, $value_name, $max, $value) {
 		return "
@@ -123,7 +123,7 @@
 		'variant' => 'warm',
 		'poster' => true,
 		'title' => 'Sample poster card',
-		'description' => '<p>The live poster card, rendered through the real milestone template. Change brand, emphasis, or scheme in the settings panel and watch this repaint with everything above it.</p>',
+		'description' => '<p>The live poster card, rendered through the real milestone template. Change character, mood, or scheme in the settings panel and watch this repaint with everything above it.</p>',
 	];
 ?>
 
@@ -440,7 +440,7 @@
 	<section class='ds-section'>
 		<h2 class='attention-voice'>Media finishes</h2>
 
-		<p>The same mark under every finish, to compare directions. Two families: <em>grain</em> (procedural noise, blended into the fill - organic but DPR-sensitive) and <em>vector</em> (halftone / hatch / vignette - CSS gradients in token colors, so they stay crisp at any resolution and repaint with the theme). Flip the emphasis and scheme in the settings panel to see which survive dark and colored fills - that is the "works for any theme" test. The <code>multiply</code> grains will mud out on dark; the soft-light and vector ones should hold.</p>
+		<p>The same mark under every finish, to compare directions. Two families: <em>grain</em> (procedural noise, blended into the fill - organic but DPR-sensitive) and <em>vector</em> (halftone / hatch / vignette - CSS gradients in token colors, so they stay crisp at any resolution and repaint with the theme). Flip the mood and scheme in the settings panel to see which survive dark and colored fills - that is the "works for any theme" test. The <code>multiply</code> grains will mud out on dark; the soft-light and vector ones should hold.</p>
 
 		<ol class='experiments'>
 			<?php foreach ($finish_experiments as $experiment): ?>

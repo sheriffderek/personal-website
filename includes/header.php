@@ -47,7 +47,7 @@
 				if (scheme && scheme !== 'system') html.setAttribute('data-scheme', scheme);
 
 				/* Character (type + shape) and mood (color) are separate axes.
-				   Absent attribute = the default (Product character / TODO mood),
+				   Absent attribute = the default (Product character, Expressive mood),
 				   so only a non-default saved choice gets written. Unknown values
 				   (e.g. a stale 'brand-preference'-era slug) are ignored. Keep
 				   these lists matched to CHARACTERS / MOODS in settings-panel.js. */
@@ -183,8 +183,6 @@
 			the sealed app-chrome scope (settings-panel.css) - without it the
 			toolbar triggers read --app-* tokens that never resolve. */ ?>
 		<header class='site-tray' data-ui='app'>
-			<!--<a class='site-name' href='<?= '/' . ($target_query ?? '') ?>'>Derek Wood</a>-->
-
 			<?php /* Dev stamp - which code am I looking at, at a glance. Top-left
 				so phone QA never scrolls to the footer's version line: commit hash
 				plus the clock time of the newest code-file save (an uncommitted

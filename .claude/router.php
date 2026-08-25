@@ -14,6 +14,12 @@ if (preg_match('#^/content/.*\.json$#', $path)) {
 	return true;
 }
 
+// Mirror the .htaccess md wall too: working notes are repo-only.
+if (preg_match('#\.md$#', $path)) {
+	http_response_code(404);
+	return true;
+}
+
 if ($path !== '/' && is_file($root . $path)) {
 	return false; // let the built-in server serve the static file
 }

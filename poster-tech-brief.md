@@ -2,7 +2,7 @@
 
 Everything you need to author a milestone **poster cover** (the generated SVG art). This is ONLY about the cover graphic and how it's colored - not media, carousels, or files.
 
-Reference implementation: `includes/posters/poster-shapes.php` (the SVG) + `styles/modules/milestone.css` (`.milestone`, `.poster-art`) + `styles/settings.css` (the flavor palettes).
+Reference implementation: `includes/posters/poster-shapes.php` (the SVG) + `styles/modules/milestone.css` (`.milestone`, `.poster-art`) + `styles/settings/flavors.css` (the flavor palettes).
 
 ## The frame
 
@@ -40,7 +40,7 @@ Net look: bold token-colored outlines (boxes / circle / arrow) + a filled second
 
 ## Flavors (the color moods)
 
-`data-flavor` on the `.milestone` swaps the palette by setting **`--poster-fill` + `--poster-ink`** (a two-tone pair). Current set (in `settings.css`, currently flat two-tones):
+`data-flavor` on the `.milestone` swaps the palette by setting **`--poster-fill` + `--poster-ink`** (a two-tone pair). Current set (in `styles/settings/flavors.css`, currently flat two-tones):
 
 | flavor | `--poster-fill` | `--poster-ink` |
 |---|---|---|

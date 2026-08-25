@@ -1,6 +1,6 @@
-# Theme model (proposed, 2026-07-14)
+# Theme model (design notes, 2026-07-14; BUILT 2026-08-10)
 
-**Status: proposal.** Nothing here is built. The current system is documented in the Theme system section of `CLAUDE.md`; this is the model that would replace it. Read it whole, then decide - including the "is a simpler version better?" section at the end, which is the real question.
+**Status: built.** This started as a proposal and the system it describes now exists - the axes live in `styles/settings/` (one file each; the header of `styles/settings.css` is the live map) and the rules live in CLAUDE.md's Theme system section. Kept as the design reasoning behind the model; where this file and the code disagree, the code and CLAUDE.md win.
 
 ---
 
@@ -91,12 +91,17 @@ Mood, restated as pure policy (the board's own column headers, hue-free):
 **Product** (the default character - the friendly capable tool):
 
 - **x Expressive - "Figma."** A playful canvas: quiet paper, full-range accents living on chips, illustrations, and posters - never on body type. *Wrong when:* the page ground takes pigment, or headings go colorful.
+  *Walk verdict (2026-08-23):* type approved (attention stepped to up-2, calm at 1.55); the COLOR APPLICATION isn't loved yet - more Figma-ish rainbow expected, but deliberately deferred. Work the simpler cells' type first; return to this cell's color last.
+  *Reference digest (2026-08-23, from Derek's Config + figma.com screenshots):* the posture, not the palette - full-pigment card panels with BREADTH across the wheel (many hues, house colors, never Figma's own), texture in the marks (the parked flourish layers + the dormant grain token are the mechanisms), and scheme behavior per the Config read: cards keep the same pigments in dark - the ROOM goes black, the panels don't dim. Candidate rule when the color pass lands: this cell's poster fills are scheme-invariant, like the night card's "a black card is a black card" generalized to every color.
 - **x Technical - "Stripe."** A capable tool presenting itself: white ground, one analogous family doing all the talking (at most one warm counterpoint anywhere), color spent on accents and a single gradient flourish. *Wrong when:* a second unrelated hue appears, or the family spreads into body ink.
+  *Walk verdict (2026-08-23):* the flavor row under Technical is fully mapped and working - House = blue (free to diverge later), Earth = climate-fintech green ("going great"), Cool owns the Stripe-light/Linear-dark reference, Sweet = the Lemonaid pink. Earth and Sweet re-family the whole poster set; the amber warm note holds across all four as the mood's spending rule.
 - **x Quiet - "Notion / Muji."** Gray on white, generous space; the flavor exists as one soft hint - a tinted surface or a single mark. *Wrong when:* anything demands attention by color. *(Proposal - this was the board's "?" cell.)*
+  *Walk verdict (2026-08-23):* Product x Quiet x House in DARK - "I enjoy the theme for this combo." The warm charcoal room with the pulled-in grays and sage hint is a keeper as-is; treat this cell's dark as a reference state when tuning neighbors.
 
 **Marketing** (the brochure):
 
 - **x Expressive - "GoFundMe."** Stacked full-bleed bands at full voice: the flavor's hues carry whole sections, display type is allowed to wear pigment, photography is warm. Band-to-band variety IS the register. *Wrong when:* the bands go timid, or every band lands on the same hue.
+  *Walk verdict (2026-08-23):* makes its point - bigger display font, roundy corners, more white background, and (after the selector widening) the same house paint as Product, so the flip reads as pure structure change. Open: the yellow year pill (company hue on the character axis) and the band architecture itself, which the timeline page doesn't really exercise yet.
 - **x Technical - "general marketing."** The same stacked-band architecture, every band drawn from one narrowed family - monochromatic confidence. *Wrong when:* a neighboring hue sneaks into a band; the discipline is the point.
 - **x Quiet - "Lemonaid."** A brochure that whispers: white paper, line art and illustration doing the personality work, one hint of the flavor's primary. *Wrong when:* a full-bleed pigment band appears - that's Expressive leaking in.
 
