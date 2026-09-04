@@ -1,5 +1,9 @@
 # Derek Thomas Wood - Personal Website
 
+## Goal
+
+**The public proof.** A recruiter lands here and thinks "wow - breadth + depth + 15 years of doing this, let's talk." This site is the one public surface of the job hunt: the timeline portfolio, the journal articles, and the per-job `?target=` pages. If a stranger will see it, it lives here. If it's raw history or strategy, it lives in `resume-exploration/` (private) and this site pulls from it; if it's about the state of an application, it lives in the shared `job-search` repo.
+
 ## What this is
 
 derekthomaswood.com is Derek's personal "hire me" site for full-time/salary roles. It's a reverse-chronological timeline of his work, visual-first, with short video walkthroughs instead of formal case studies.
