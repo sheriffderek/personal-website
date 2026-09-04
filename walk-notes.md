@@ -1,5 +1,23 @@
 # Theme walk notes (2026-08-25, pre-show)
 
+## NEXT SESSION - start here ("let's work on the themes")
+
+1. **Chrome overlays (decided 2026-08-25, unbuilt).** Each theme DECIDES if
+   it dresses the chrome - chosen, never derived. Neutral baseline stays
+   default; an opting theme adds one block repainting the --app-* slots.
+   All overlay blocks live in styles/modules/settings-panel.css (it's
+   unlayered - nothing else can win those slots; the red-light take there
+   is the first example and the pattern). Motivating case: the settings
+   BAND sits bare on colored page grounds (fixed grays clash - see the
+   green-room complaint). First candidates: Quiet, Technical.
+2. **Un-walked cells**: Editorial everywhere, Terminal light, Marketing x
+   Technical/Quiet, Interface x Expressive.
+3. **Saved for last**: Expressive-light poster/graphics colors (refs
+   digested in theme-model.md, Product x Expressive entry).
+4. **Post-show**: Interface's code-sample identity; marketing card
+   backgrounds (parked under its evocation below); Product rename question.
+
+
 ## What each character EVOKES (Derek, 2026-08-25 - the measuring stick)
 
 - **Product** - approachable competence... but Derek: "a little confusing."

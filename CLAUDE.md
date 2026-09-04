@@ -230,6 +230,9 @@ Locked-in markup pattern (same in the home page-header `templates/pages/home.php
 
 ## Theme system (locked-in rules)
 
+**Live working state: `walk-notes.md`** — the combo walk sheet with per-cell aims, verdicts, and the NEXT SESSION block at the top. "Let's work on the themes" = open that file and start at item 1.
+
+
 The theming behavior is a load-bearing artifact of this site — it's part of the design-system-mastery demo, not just a nicety. Decisions below are pinned; don't re-litigate without a reason. **The live map is the header comment in `styles/settings.css`** — one file per axis under `styles/settings/`, and that header is kept current; this section carries the rules and reasons, the header carries the wiring.
 
 **Rules here are tested hypotheses, not doctrine (Derek, 2026-08-23).** This system is beyond the norm — bleeding edge, no established "right way" — and we're finding the best 2026 way WHILE building. Every "locked" rule below is the current best answer plus the evidence that earned it; any of them can be overturned by a live test that beats it. Cite the history when a rule comes up (so we never re-lose the hours that produced it), but never veto an experiment with it. Getting hung up on rules that aren't constantly re-tested ruins the whole point.
