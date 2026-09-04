@@ -1,0 +1,94 @@
+/* CodeStudy bridge - the theme adapter for the vendored code-study editor
+   (see includes/code-study.php for the vendoring story). The editor's whole
+   skin is token slots with fallbacks, so this file is almost pure paint-wiring:
+   it maps OUR semantic tokens onto THEIR slots, scoped to the embed wrapper.
+   Nothing here names a hue - the active mood/character/scheme supplies
+   everything, which is the point: flip the settings panel and the editor
+   repaints like any other component on the site.
+
+   The one deliberate design move: code-study's own themes use a multi-hue
+   syntax palette, but our semantic set carries a single --accent. So this is a
+   MONOCHROME + ACCENT code theme - structure words get the accent, literals sit
+   at full ink, connective tissue drops to auxiliary. A finding for the
+   portability write-up, not a bug. */
+code-study-embed {
+	display: block;
+	margin-block: 1.5em;
+
+	/* Chrome */
+	--code-background: var(--fill-secondary);
+	--code-text-color: var(--ink-primary);
+	--code-font-family: var(--font-code);
+	--code-font-size: var(--data-voice-font-size);
+	--study-selection-background: var(--selection-fill);
+	--study-cursor-color: var(--ink-primary);
+	--study-divider-color: var(--stroke-primary);
+	--study-output-background: var(--fill-primary);
+	--console-log: var(--ink-primary);
+	--console-border: var(--stroke-primary);
+
+	/* The console's warn/error defaults are pastel text for a dark ground -
+	   invisible on a light fill. The site has no semantic status hues, so the
+	   text goes to full ink and the STATUS reads from the icon plus the faint
+	   tinted band the bundle keeps behind each entry. Same story for the
+	   cursor above: anything that must contrast with the background can't be
+	   left to a fixed default. */
+	--console-text-color: var(--ink-primary);
+	--console-warn: var(--ink-primary);
+	--console-error: var(--ink-primary);
+
+	/* Gutter (only shows when line numbers are on) */
+	--study-gutter-background: var(--fill-auxiliary);
+	--study-gutter-active-background: var(--fill-auxiliary);
+	--study-gutter-text-color: var(--ink-auxiliary);
+	--study-gutter-border: var(--stroke-primary);
+
+	/* Syntax - monochrome + accent (see header comment) */
+	--code-keyword-color: var(--accent);
+	--code-tag-color: var(--accent);
+	--code-selector-color: var(--accent);
+	--code-property-color: var(--ink-primary);
+	--code-attribute-color: var(--ink-secondary);
+	--code-class-color: var(--ink-secondary);
+	--code-function-color: var(--ink-primary);
+	--code-variable-color: var(--ink-primary);
+	--code-string-color: var(--ink-secondary);
+	--code-number-color: var(--accent);
+	--code-unit-color: var(--accent);
+	--code-constant-color: var(--ink-secondary);
+	--code-special-color: var(--ink-secondary);
+	--code-meta-color: var(--ink-auxiliary);
+	--code-regexp-color: var(--ink-secondary);
+	--code-comment-color: var(--ink-auxiliary);
+	--code-punctuation-color: var(--ink-auxiliary);
+	--code-operator-color: var(--ink-auxiliary);
+	--code-bracket-color: var(--ink-auxiliary);
+
+	.study-frame {
+		border: 1px solid var(--stroke-primary);
+		border-radius: var(--corners);
+		overflow: clip;
+	}
+
+	/* Portability finding: the vendored stylesheet re-declares the pane-header
+	   tokens directly on `.code-study > .pane-header` (literal values, inner
+	   scope), so the wrapper-level tokens above can't reach the code pane's
+	   header. Matching the selector to win is the workaround; the fix belongs
+	   upstream in code-study (declare defaults at the component root only). */
+	.code-study > .pane-header,
+	.study-console > .pane-header,
+	.pane-header {
+		--pane-header-bg: var(--fill-auxiliary);
+		--pane-header-border: var(--stroke-primary);
+		--pane-header-text: var(--ink-secondary);
+	}
+}
+
+/* Before the lazy loader mounts (see scripts/code-study-loader.js), the embed
+   is an empty div - hold some ground so the page doesn't jump when the editor
+   arrives. */
+code-study-embed .code-study-mount:empty {
+	min-height: 16rem;
+	border: 1px dashed var(--stroke-primary);
+	border-radius: var(--corners);
+}

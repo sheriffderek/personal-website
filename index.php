@@ -29,6 +29,9 @@ $target_query = $target_slug !== '' ? '?target=' . $target_slug : '';
 // 'menu' is the short label shown in the menu + footer (pages without it,
 // like 404, stay out of the menu). 'controls' names an optional partial
 // of page-specific controls that rides in the menu panel.
+// Each page template may also open with a $brief block - the page's design
+// brief, stated where the page lives ('goal' is the first key; the footer
+// prints it to the console for curious visitors).
 $pages = [
 	'home' => [
 		'file' => 'home.php',
@@ -109,6 +112,14 @@ $pages = [
 // templates/journal/<slug>.php (markup is template-land, data is content-land).
 // Both must exist for the page to exist - a JSON entry without a body file, or
 // a stray body file without its entry, is still a 404.
+// The journal's RSS feed - a document, not a page, so it renders its own XML
+// (templates/journal-feed.php) and skips the site chrome entirely. Claimed
+// before the entry lookup below so "feed" is never mistaken for an entry slug.
+if ($slug === 'journal/feed') {
+	require TEMPLATES_DIR . '/journal-feed.php';
+	exit;
+}
+
 if (strpos($slug, 'journal/') === 0) {
 	$entry_slug = substr($slug, strlen('journal/'));
 	$journal = load_json('journal.json');
@@ -122,6 +133,14 @@ if (strpos($slug, 'journal/') === 0) {
 			'title' => $entry['title'] . ' - ' . SITE_TITLE,
 			'description' => $entry['description'],
 		];
+
+		/* Share image by presence, same contract as the target PDFs: drop
+		   meta.jpg in the entry's media folder (content/journal/<slug>/) and
+		   the share card uses it; no file = the site default. */
+		$entry_image = '/content/journal/' . $entry_slug . '/meta.jpg';
+		if (is_file(SITE_ROOT . $entry_image)) {
+			$pages[$slug]['image'] = $entry_image;
+		}
 	}
 }
 
@@ -139,6 +158,7 @@ if (!isset($pages[$slug])) {
 $current = $pages[$slug];
 $page_title = $current['title'];
 $page_description = $current['description'];
+$page_image = $current['image'] ?? null;
 $page_controls = $current['controls'] ?? null;
 
 // The settings panel is back on site-wide with the lab-port shell (JS panel

@@ -1,0 +1,18 @@
+/* How I work - the process walkthrough page. One video up top (the talk-through),
+   prose below. Same media framing as the journal's entry-figure: 16:9 frame,
+   character corners, quiet ground while the embed loads. */
+
+.page-video {
+	margin: 2em 0 0;
+
+	iframe {
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		border: 0;
+		border-radius: var(--corners, 0);
+		/* Ink, not a fill: video wants a dark ground while the embed
+		   paints in, and ink-primary is the darkest slot every mood
+		   already tunes per scheme. */
+		background: var(--ink-primary);
+	}
+}

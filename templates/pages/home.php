@@ -1,6 +1,10 @@
 <?php
-// The home page: the reverse-chronological timeline of milestones.
-// The "how much to show" filter lives here and nowhere else.
+$brief = [
+	'goal' => 'This page is the whole pitch. You scroll the timeline and think "breadth, '
+		. 'depth, fifteen years of doing this - let\'s talk." Every other page supports '
+		. 'that moment. The filter and theme controls are not decoration - watching the '
+		. 'system perform is part of the evidence.',
+];
 
 $all_milestones = load_json('milestones.json');
 

@@ -124,6 +124,23 @@ p strong {
 	text-transform: var(--stamp-voice-text-transform);
 }
 
+/* THE SPACING MODEL (and its honest tradeoff - Derek, 2026-08-25).
+   Two lanes, by role:
+     - READING RHYTHM (the gaps between text, these rules + component rules
+       like entry-preview's date kicker) is written in EM, so it derives from
+       the type it sits against: one --scale-ratio per character re-spaces
+       everything, and no character states a spacing value. Zero authored
+       spacing decisions across five characters - that's the derivation pitch.
+     - STRUCTURE (gutters, lanes, panel gaps) is rem/px tokens
+       (--gutter, --layout-*) that deliberately do NOT track type.
+   The tradeoff, named: derivation costs ADDRESSABILITY. There is no token a
+   designer can point at to tune one gap (the Figma-person question), and the
+   proportions themselves (1em, 1.3em, 0.3em...) are hand-authored literals
+   scattered through rules - so today is a bit of the worst of both worlds:
+   not an enumerable token sheet, not single-source derivation either. The
+   door, when a real need arrives: --rhythm-* tokens, character-owned like
+   --corners, with these literals becoming their defaults. Not built on
+   purpose (the sizing rule: additions must earn their multiplication). */
 :where(article.styled, text-content.styled) {
 	p + p {
 		margin-top: 1em;

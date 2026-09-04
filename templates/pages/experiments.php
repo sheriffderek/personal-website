@@ -1,3 +1,11 @@
+<?php
+$brief = [
+	'goal' => 'Work in the open. These are the half-built things most portfolios hide - '
+		. 'showing them says the polish everywhere else is a choice, not a limit. If '
+		. 'you\'re poking around in here, you\'re the intended audience.',
+];
+?>
+
 <text-content class='styled'>
 	<h1 class='loud-voice'>Experiments</h1>
 

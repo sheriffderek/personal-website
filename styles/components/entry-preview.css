@@ -1,0 +1,22 @@
+/* Entry preview - one journal entry's compact card on the /journal list
+   (markup: includes/entry-preview.php). Geometry and secondary inks only;
+   voices carry the type, the scope's tokens carry the color. */
+
+.entry-preview {
+	.date {
+		color: var(--ink-secondary);
+	}
+
+	/* The date is a kicker ON its title, not a paragraph before a new prose
+	   section - so the shared .styled p + h2 breath (1.3em) is wrong here.
+	   Pull the pair tight. (.styled rules are :where()-wrapped, zero
+	   specificity, so this simply wins.) */
+	.date + h2 {
+		margin-top: 0.3em;
+	}
+
+	.summary {
+		margin-top: 0.5em;
+		color: var(--ink-secondary);
+	}
+}

@@ -1,8 +1,9 @@
 <?php
-	// The journal list: every entry in content/journal.json, in the order the
-	// JSON declares (newest first is the authoring convention). An entry marked
-	// "unlisted" (the specimen) still has its page but stays off this list.
-	// Links carry $target_query forward like every internal link on the site.
+	$brief = [
+		'goal' => 'The person behind the timeline. Lower polish than the milestone cards on '
+			. 'purpose - after reading an entry you should feel like you\'ve heard Derek '
+			. 'talk. The register matters more than any topic.',
+	];
 	$journal = load_json('journal.json');
 
 	// The listable entries. Until the first real one lands, the page says so
@@ -25,15 +26,7 @@
 	<ol class='entry-list'>
 		<?php foreach ($listed as $slug => $entry): ?>
 			<li>
-				<p class='date stamp-voice'><?= $entry['date'] ?></p>
-
-				<h2 class='attention-voice'>
-					<a href='/journal/<?= $slug ?><?= $target_query ?>'><?= $entry['title'] ?></a>
-				</h2>
-
-				<?php if (!empty($entry['summary'])): ?>
-					<p class='summary'><?= $entry['summary'] ?></p>
-				<?php endif; ?>
+				<?= partial('entry-preview', ['slug' => $slug, 'entry' => $entry, 'target_query' => $target_query]) ?>
 			</li>
 		<?php endforeach; ?>
 	</ol>

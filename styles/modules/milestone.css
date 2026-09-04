@@ -634,6 +634,12 @@
 		display: none;
 	}
 
+	/* (A night-panel background behind the readout was tried 2026-08-25 and
+	   pulled the same hour - it read as a stray block. The ghost-text
+	   problem it solved is handled upstream now: the flavor ranges' family
+	   INK baselines outrank the pale panel inks, so readouts are legible
+	   flush on the page. If a pale-ink case resurfaces, fix that take's
+	   ink - don't bring the panel back.) */
 	.poster-ascii {
 		display: block;
 		margin: 0;

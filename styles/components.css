@@ -1,3 +1,4 @@
-/* Components load per feature: welcome-video.css rides its flag in
-   header.php (TOUR_ENABLED), so an off flag costs no bytes. A component
-   every page needs would be imported here. */
+/* Always-on components import here; per-feature ones ride their flag in
+   header.php instead (welcome-video.css behind TOUR_ENABLED), so an off
+   flag costs no bytes. */
+@import 'components/entry-preview.css';

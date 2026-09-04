@@ -46,7 +46,7 @@ flavor-free spending briefs; the flavor line above them supplies the hues.
 - [x] Marketing: GoFundMe bands - full-bleed sections at full voice, display type may wear pigment. Wrong when: bands go timid or all land one hue | VERDICT: approved - structure makes its point; pill + band architecture open
 - [ ] Interface: Anthropic - warm humane chrome, gentle washes on feature surfaces. Wrong when: chrome takes pigment or an accent hits alarm level
 - [ ] Editorial: WIRED - pigment as the headline act at display scale. Wrong when: color retreats to decoration
-- [ ] Terminal: the colored-streams console (dark is home); readouts each their own hue
+- [x] Terminal: the colored-streams console (dark is home); readouts each their own hue | VERDICT 08-25: "this one makes sense" - colored-readout model confirmed (Option 1); panel-variants keep their panel under terminal (the ghost-text fix)
 
 ### Expressive x Earth
 *Aim: the rainbow anchored in greens/browns: amber secondary fills, green accent*
@@ -54,7 +54,7 @@ flavor-free spending briefs; the flavor line above them supplies the hues.
 - [ ] Marketing: GoFundMe bands - full-bleed sections at full voice, display type may wear pigment. Wrong when: bands go timid or all land one hue
 - [ ] Interface: Anthropic - warm humane chrome, gentle washes on feature surfaces. Wrong when: chrome takes pigment or an accent hits alarm level
 - [ ] Editorial: WIRED - pigment as the headline act at display scale. Wrong when: color retreats to decoration
-- [ ] Terminal: the colored-streams console (dark is home); readouts each their own hue
+- [x] Terminal: the colored-streams console (dark is home); readouts each their own hue | VERDICT 08-25: "this one makes sense" - colored-readout model confirmed (Option 1); panel-variants keep their panel under terminal (the ghost-text fix)
 
 ### Expressive x Cool
 *Aim: the rainbow with a cool cast: sky secondary fills, teal accent*
@@ -62,7 +62,7 @@ flavor-free spending briefs; the flavor line above them supplies the hues.
 - [ ] Marketing: GoFundMe bands - full-bleed sections at full voice, display type may wear pigment. Wrong when: bands go timid or all land one hue
 - [ ] Interface: Anthropic - warm humane chrome, gentle washes on feature surfaces. Wrong when: chrome takes pigment or an accent hits alarm level
 - [ ] Editorial: WIRED - pigment as the headline act at display scale. Wrong when: color retreats to decoration
-- [ ] Terminal: the colored-streams console (dark is home); readouts each their own hue
+- [x] Terminal: the colored-streams console (dark is home); readouts each their own hue | VERDICT 08-25: "this one makes sense" - colored-readout model confirmed (Option 1); panel-variants keep their panel under terminal (the ghost-text fix)
 
 ### Expressive x Sweet
 *Aim: the rainbow warmed into candy: rose secondary fills, fuchsia accent*
@@ -70,7 +70,7 @@ flavor-free spending briefs; the flavor line above them supplies the hues.
 - [ ] Marketing: GoFundMe bands - full-bleed sections at full voice, display type may wear pigment. Wrong when: bands go timid or all land one hue
 - [ ] Interface: Anthropic - warm humane chrome, gentle washes on feature surfaces. Wrong when: chrome takes pigment or an accent hits alarm level
 - [ ] Editorial: WIRED - pigment as the headline act at display scale. Wrong when: color retreats to decoration
-- [ ] Terminal: the colored-streams console (dark is home); readouts each their own hue
+- [x] Terminal: the colored-streams console (dark is home); readouts each their own hue | VERDICT 08-25: "this one makes sense" - colored-readout model confirmed (Option 1); panel-variants keep their panel under terminal (the ghost-text fix)
 
 ## Technical - color controlled - one family, spent with discipline; white lab light / deep room dark, hue holds
 

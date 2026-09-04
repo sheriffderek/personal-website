@@ -1,9 +1,28 @@
 {
-	"specimen": {
-		"title": "The journal specimen",
+	"testing-code-study": {
+		"title": "Taking our code editor to a second site",
 		"date": "August 2026",
-		"description": "The living outline for journal entries on this site: every module an entry can use, in order, described as it demonstrates itself.",
-		"summary": "Every module a journal entry can use, in order. This page is the outline new entries start from, and the style-guide surface where the entry template gets checked against theme changes.",
+		"description": "CodeStudy was built for Perpetual Education lessons. How hard is it to run somewhere else? This entry is the live experiment.",
+		"summary": "A portability trial of CodeStudy, the live code editor from Perpetual Education lessons - mounted and themed on this site, with an honest friction log. The examples in the entry are the test running.",
 		"unlisted": true
+	},
+	"kitchen-sink": {
+		"title": "The kitchen sink",
+		"date": "August 2026",
+		"description": "Every module a journal entry can use, in one entry - the living outline new entries copy their shapes from.",
+		"summary": "Every module a journal entry can use, in order. New entries start by copying shapes from this page, and it doubles as the style-guide surface where the entry template gets checked against theme changes.",
+		"unlisted": true
+	},
+	"new-website-direction": {
+		"title": "A new direction for this website",
+		"date": "September 2026",
+		"description": "What this site is now, why it works the way it does, and the kind of writing that will land here.",
+		"summary": "A little about the rebuilt site - the timeline, the theme system, the playground posture - and what I plan to write about in this journal."
+	},
+	"officially-looking": {
+		"title": "Officially looking for a new long-term role",
+		"date": "September 2026",
+		"description": "The search is on: a full-time senior product design role with a team I can invest in for the long haul.",
+		"summary": "After years of consulting and teaching in parallel, I'm looking for one team to go deep with - a senior product design or design leadership role, full-time, long-term."
 	}
 }

@@ -1,7 +1,9 @@
 <?php
-// The "now" page: what Derek's focused on at the moment.
-// A ?target=companyname loads a tailored note for that company, same as the
-// timeline's target notes on the home page.
+$brief = [
+	'goal' => 'Proof of life. You should feel like you\'re catching Derek mid-stride, not '
+		. 'reading a site that launched once and went quiet. Timeliness is the whole '
+		. 'value - a stale Now page would work against the site instead of for it.',
+];
 $target = isset($_GET['target']) ? load_target($_GET['target']) : null;
 ?>
 

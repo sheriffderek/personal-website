@@ -1,3 +1,48 @@
+/* Monaspace - GitHub's monospace family (self-hosted variable woff2).
+   Five variations, each a different personality on the same metrics:
+     Neon    - Neo-grotesque sans (the default, closest to SF Mono)
+     Argon   - Humanist sans
+     Xenon   - Slab serif
+     Krypton - Mechanical sans (the most "code editor")
+     Radon   - Handwriting (the comments/margin-notes voice)
+   All are variable fonts (weight 200-800). Full Unicode coverage
+   including block elements and geometric shapes - the reason we
+   switched from system Menlo, which lacks them. */
+@font-face {
+	font-family: 'Monaspace Neon';
+	src: url('/fonts/monaspace/monaspace-neon-var.woff2') format('woff2');
+	font-weight: 200 800;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Monaspace Argon';
+	src: url('/fonts/monaspace/monaspace-argon-var.woff2') format('woff2');
+	font-weight: 200 800;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Monaspace Xenon';
+	src: url('/fonts/monaspace/monaspace-xenon-var.woff2') format('woff2');
+	font-weight: 200 800;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Monaspace Krypton';
+	src: url('/fonts/monaspace/monaspace-krypton-var.woff2') format('woff2');
+	font-weight: 200 800;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Monaspace Radon';
+	src: url('/fonts/monaspace/monaspace-radon-var.woff2') format('woff2');
+	font-weight: 200 800;
+	font-display: swap;
+}
+
 :root {
 	/* The three stacks the theme bundles pair up (see settings.css).
 	   Fontshare families first, system fonts as the readable fallback tail.
@@ -6,10 +51,20 @@
 	     sans:  General Sans, Switzer, Supreme, Spline Sans, Hind, Poppins,
 	            Quicksand, Nunito, Pilcrow Rounded, Bebas Neue (display)
 	     serif: Boska, Bonny, Gambarino, Sentient
-	     mono:  none on Fontshare - stays system. */
+	     mono:  Monaspace (self-hosted, five variations - see @font-face above) */
 	--font-sans: 'General Sans', system-ui, sans-serif;
 	--font-serif: 'Boska', Georgia, serif;
-	--font-mono: Menlo, Consolas, monospace;
+	--font-mono: 'Monaspace Neon', Menlo, Consolas, monospace;
+
+	/* Per-variation tokens so moods can swap the mono personality.
+	   The comment voice (Radon) is separate - it's always the handwriting
+	   variation, regardless of mood, for code comments and margin notes. */
+	--font-mono-neon: 'Monaspace Neon', Menlo, Consolas, monospace;
+	--font-mono-argon: 'Monaspace Argon', Menlo, Consolas, monospace;
+	--font-mono-xenon: 'Monaspace Xenon', Menlo, Consolas, monospace;
+	--font-mono-krypton: 'Monaspace Krypton', Menlo, Consolas, monospace;
+	--font-mono-radon: 'Monaspace Radon', Menlo, Consolas, monospace;
+	--font-mono-comment: var(--font-mono-radon);
 }
 
 :root {

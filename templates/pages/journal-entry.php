@@ -1,9 +1,8 @@
 <?php
-	// The shared journal-entry shell: date, title, optional summary, then the
-	// entry's own body file. $entry arrives from the journal block in
-	// index.php (the journal.json entry plus its slug). The body is plain
-	// sections of markup at templates/journal/<slug>.php - the specimen
-	// entry (/journal/specimen) is the outline new bodies start from.
+	$brief = [
+		'goal' => 'Get out of the way of one entry. Date, title, body - nothing competing with '
+			. 'the writing. If you notice this shell, it\'s failing.',
+	];
 ?>
 
 <article class='styled journal-entry'>

@@ -162,6 +162,12 @@ html[data-flavor="sweet"][data-brand-character="marketing"]:not([data-brand-mood
    own per-variant blocks below outrank this. Every flavor range needs this
    rule - a flavor covers a cell's accents wholesale or not at all. */
 html[data-flavor="sweet"]:not([data-brand-mood]) [data-variant] {
+	/* The family INK (2026-08-25): Terminal showed that flavors spoke only
+	   in fills and accents - the channels it hides - so flavor flips barely
+	   registered there ("the flavor layer isn't really working"). The
+	   baseline ink puts the family into the linework and readouts; named
+	   variant takes still override for per-card variety. */
+	--poster-ink: light-dark(var(--color-rose-700), var(--color-pink-300));
 	--poster-accent: light-dark(var(--color-fuchsia-600), var(--color-fuchsia-400));
 }
 
@@ -207,6 +213,12 @@ html[data-flavor="earth"][data-brand-character="marketing"]:not([data-brand-mood
 /* The cell-wide accent baseline (same rule as sweet's - a flavor covers a
    cell's accents wholesale or not at all). */
 html[data-flavor="earth"]:not([data-brand-mood]) [data-variant] {
+	/* The family INK (2026-08-25): Terminal showed that flavors spoke only
+	   in fills and accents - the channels it hides - so flavor flips barely
+	   registered there ("the flavor layer isn't really working"). The
+	   baseline ink puts the family into the linework and readouts; named
+	   variant takes still override for per-card variety. */
+	--poster-ink: light-dark(var(--color-green-700), var(--color-emerald-300));
 	--poster-accent: light-dark(var(--color-green-700), var(--color-green-400));
 }
 
@@ -251,6 +263,12 @@ html[data-flavor="cool"][data-brand-character="marketing"]:not([data-brand-mood]
 
 /* The cell-wide accent baseline (same rule as sweet's). */
 html[data-flavor="cool"]:not([data-brand-mood]) [data-variant] {
+	/* The family INK (2026-08-25): Terminal showed that flavors spoke only
+	   in fills and accents - the channels it hides - so flavor flips barely
+	   registered there ("the flavor layer isn't really working"). The
+	   baseline ink puts the family into the linework and readouts; named
+	   variant takes still override for per-card variety. */
+	--poster-ink: light-dark(var(--color-blue-700), var(--color-sky-300));
 	--poster-accent: light-dark(var(--color-teal-600), var(--color-teal-400));
 }
 
@@ -585,6 +603,18 @@ html[data-brand-mood="technical"] [data-variant="night"] {
 	--poster-gradient-to: var(--color-slate-800);
 
 	--poster-accent: var(--color-stone-100);
+}
+
+/* Only EXPRESSIVE prints the terminal readouts in color (Derek,
+   2026-08-25: "only expressive should have all the color in the ascii
+   graphics") - the streams are full-voice spending. Under the disciplined
+   moods the readout collapses to page ink (color stays on the accent mark
+   and in the drawn posters' linework, which keep their family takes).
+   Mechanism: initial makes the readout's --poster-ink guaranteed-invalid,
+   the .poster-art re-point collapses, and the text inherits the page ink.
+   Cross-axis (character + mood), so it lives here in the assignment layer. */
+html[data-brand-mood][data-brand-character="terminal"] .milestone .poster-ascii {
+	--poster-ink: initial;
 }
 
 /* ----------------------------------------------------------------------------

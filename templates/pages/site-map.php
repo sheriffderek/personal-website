@@ -1,10 +1,9 @@
 <?php
-	// Derek's own map of the whole site. Everything on this page is DERIVED -
-	// the $pages array in index.php, journal.json, the content/targets/
-	// folders, the experiments/ directory, and the feature flags in config.php
-	// are each read live, so this page states nothing it could get wrong.
-	// Internal only (no 'menu' key in the router), but nothing here is secret -
-	// it links to pages, it doesn't reveal content.
+	$brief = [
+		'goal' => 'A map that can\'t lie. Everything on this page is derived live from the '
+			. 'site\'s own data - pages, journal entries, targets, feature flags - so it '
+			. 'always answers "what exists right now" truthfully.',
+	];
 
 	$journal = load_json('journal.json');
 

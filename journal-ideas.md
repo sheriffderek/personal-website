@@ -8,6 +8,7 @@ Running list of entries to write - from the notebook (2026-08-14) and whatever c
 - **Ready for a new job** - why? why now? what type?
 - **Exploring product trio** - why is this confusing? Where I fit / how we teach it.
 - **How I work** - see the series note below.
+- **Dev tools for normal people** - a list of fun stuff anyone can do in the browser console/inspector (2026-09-02). The excuse to talk about easter eggs: this site prints each page's brief to the console (`$brief` in the page templates), and that's the reveal - dev tools are where sites talk to the curious. Could round up other sites' console easter eggs too.
 - **What I've applied to so far** - HOLD until the search has an ending. Great candor for a retrospective, but mid-search it hands every recruiter a list of who else I'm talking to.
 
 ## How I work - the yearly series

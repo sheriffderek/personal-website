@@ -471,5 +471,16 @@
 	</script>
 	<?php endif; ?>
 
+<?php if (isset($brief['goal'])) { ?>
+	<script>
+		/* For the curious: every page carries its brief - the goal it answers
+		   to - at the top of its template (templates/pages/). Printed here on
+		   purpose: if you're reading the console, you're the audience for it.
+		   json_encode is the PHP-to-JS bridge: quotes and apostrophes in the
+		   prose would break a hand-built string literal. */
+		console.log('The brief for this page:', <?= json_encode($brief['goal']) ?>);
+	</script>
+<?php } ?>
+
 </body>
 </html>

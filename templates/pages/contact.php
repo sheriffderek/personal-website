@@ -1,3 +1,11 @@
+<?php
+$brief = [
+	'goal' => 'Zero friction between "I want to talk to this person" and talking. The '
+		. 'booked call is the best door; email and the meetups are the softer ones. '
+		. 'Nothing here should make you hesitate.',
+];
+?>
+
 <text-content class='styled'>
 	<h1 class='loud-voice'>Contact</h1>
 

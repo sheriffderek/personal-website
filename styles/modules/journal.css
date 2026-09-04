@@ -2,8 +2,21 @@
    a date-title header, then a stack of prose sections and figures. Almost all
    geometry - the voices carry the type, the semantic tokens carry the color,
    and the shared .styled rules in typography.css carry the paragraph rhythm.
-   The specimen entry (/journal/specimen, unlisted) is the living outline of
+   The kitchen-sink entry (/journal/kitchen-sink, unlisted) is the living outline of
    every shape used here. */
+
+/* $todo OPEN QUESTION (Derek, 2026-09-02) - wide shapes in the entry column.
+   The prose measure is per-element (72ch on p), so embeds/figures already span
+   the full inner-column - but for wide shapes (code-study-embed, and likely
+   wide images/entry-figure too) that still isn't much room. Direction being
+   considered, TBC - not built on purpose:
+   - a RIGHT-SIDE-ONLY breakout (roughly margin-right: -200px on the wide
+     shape), keeping the prose column and left edge stable;
+   - the settings panel may overlay the widened shape (it's an overlay anyway) -
+     but note the console pane's Clear button lives in that far-right corner;
+   - per PAGE TYPE the floating menu/settings overlay might need pulling back
+     in (an entry page reads differently than the timeline).
+   Decide with Derek before building - it changes how every entry sits. */
 
 .journal-entry {
 	.entry-header {
@@ -19,6 +32,46 @@
 
 	section {
 		margin-top: 2.5em;
+	}
+
+	/* Prose extras beyond the shared .styled rhythm (typography.css covers
+	   p/h flow; the journal's own shapes state their spacing here). */
+	ul,
+	ol {
+		margin-block: 1em;
+		padding-inline-start: 1.4em;
+
+		li + li {
+			margin-top: 0.4em;
+		}
+	}
+
+	blockquote {
+		margin: 1.5em 0;
+		padding-inline-start: 1.25em;
+		border-inline-start: 2px solid var(--stroke-primary);
+		color: var(--ink-secondary);
+
+		footer {
+			margin-top: 0.5em;
+		}
+	}
+
+	.entry-code {
+		margin: 1.5em 0;
+		padding: 1em 1.25em;
+		background: var(--fill-secondary);
+		border-radius: var(--corners, 0);
+		/* Sideways scroll instead of wrapping, so the code's shape survives
+		   on phones (the page body must never scroll horizontally). */
+		overflow-x: auto;
+	}
+
+	hr {
+		margin: 2.5em auto;
+		width: 6em;
+		border: 0;
+		border-top: 1px solid var(--stroke-primary);
 	}
 
 	.entry-figure {
@@ -41,10 +94,23 @@
 			max-width: 72ch;
 			color: var(--ink-secondary);
 		}
+
+		/* Side-by-side comparison (an autonomous custom element - purely
+		   structural, so no class needed). Stacks on phones. */
+		image-pair {
+			display: grid;
+			gap: 0.75em;
+
+			@media (min-width: 700px) {
+				grid-template-columns: 1fr 1fr;
+			}
+		}
 	}
 }
 
 .journal-index {
+	/* The list owns the stack rhythm; each entry's card is the entry-preview
+	   component (includes/entry-preview.php + components/entry-preview.css). */
 	.entry-list {
 		list-style: none;
 		padding: 0;
@@ -52,15 +118,6 @@
 
 		li + li {
 			margin-top: 2em;
-		}
-
-		.date {
-			color: var(--ink-secondary);
-		}
-
-		.summary {
-			margin-top: 0.5em;
-			color: var(--ink-secondary);
 		}
 	}
 }

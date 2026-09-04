@@ -1,8 +1,10 @@
 <?php
-	// The design-system tester. It renders the site's raw materials - color
-	// tokens, type voices, and one real poster card - so any character/mood/
-	// scheme change (from the settings panel) can be checked against all of
-	// them at once. Finishes (grain) land here first, next to the solid tokens.
+	$brief = [
+		'goal' => 'The receipts. Every theme axis on this site gets checked against the raw '
+			. 'materials here - color tokens, type voices, one real card - so this page is '
+			. 'proof the theming is a real token system underneath, not a set of '
+			. 'hand-painted looks. Flip the settings and watch it repaint.',
+	];
 
 	// The semantic color slots, in hierarchy order. Each swatch paints itself
 	// with the token it names, so the strip repaints live as the axes change.
@@ -131,7 +133,7 @@
 
 	<h1 class='loud-voice'>Design system</h1>
 
-	<p>Every token and voice on one surface. Change the axes in the settings panel to see them all react together. The journal template has its own surface: <a class='link' href='/journal/specimen'>the specimen entry</a> renders every module an entry can use.</p>
+	<p>Every token and voice on one surface. Change the axes in the settings panel to see them all react together. The journal template has its own surface: <a class='link' href='/journal/kitchen-sink'>the kitchen-sink entry</a> renders every module an entry can use.</p>
 
 	<section class='ds-section'>
 		<h2 class='attention-voice'>Color tokens</h2>

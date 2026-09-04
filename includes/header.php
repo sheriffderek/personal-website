@@ -78,6 +78,11 @@
 			}
 		})();
 	</script>
+	<?php /* Feed discovery: readers and browser extensions find the journal's
+		RSS at this address from any page on the site. The feed itself is
+		templates/journal-feed.php, routed in index.php. */ ?>
+	<link rel='alternate' type='application/rss+xml' title='<?= SITE_TITLE ?> - Journal' href='/journal/feed'>
+
 	<link rel='preconnect' href='https://api.fontshare.com'>
 	<link rel='preconnect' href='https://cdn.fontshare.com' crossorigin>
 
