@@ -38,6 +38,16 @@ The per-company `?target=` notes (`content/targets/<company>/target.json`) have 
 
 Round 1 target: GoFundMe Senior Product Designer application. Five entries needed. See `timeline-content-plan.md` for the full plan and `SESSION-HANDOFF.md` for latest state.
 
+## Resume pages (built 2026-09-06)
+
+`/resume` + `/resume/<lane>` - the three-lane resume (Product Designer / Design Engineer / Advocate & Educator), and its one-page PDF exports. **This page is deliberately a one-off document posture** - it opts out of the shell's desktop grid (the page IS the resume, the tray overlays as a plain sticky bar); don't "fix" it back into the page-with-sidebar system. Where the truth lives:
+
+- **Content**: `content/resume.json` - facts once, lanes carry only their deltas (role, intro, skills). Wording source of truth is the lane system in `job-search/briefing/` (resume-base.md + resume-two-lanes.md); the JSON renders it, never forks it.
+- **Layout + print**: `styles/modules/resume.css` - the file's comments carry the load-bearing knowledge (left-column-first grid, absolute-grid-item centering and its auto-end-line gotcha, and the whole measured PDF pipeline: Type 3 variable-font fix, paint-order-equals-extraction-order, the verification loop).
+- **Template**: `templates/pages/resume-lane.php` - semantic groups, reader-only ATS headings ("Experience" wording is deliberate), source order = reading order = parse order. Open `$todo`: advocate lane's `speaking_first`.
+- **Export**: headless Chrome `--print-to-pdf` per route (command in resume.css's print comment); exports land in `~/Desktop/resume-exports/` by convention.
+- **Journal raw material**: `resume-system-notes.md` (repo root, private).
+
 ## Motion policy (2026-07-14)
 
 **This site is a playground, not a government voting booth.** Motion is part of what it's demonstrating - the theme system performing itself IS the pitch. The bar is not "remove all motion for anyone who might not want it."

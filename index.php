@@ -48,6 +48,13 @@ $pages = [
 		'description' => 'How Derek Wood approaches a project, stage by stage, with examples from real work.',
 	],
 
+	'resume' => [
+		'file' => 'resume.php',
+		'menu' => 'Resume',
+		'title' => 'Resume - ' . SITE_TITLE,
+		'description' => 'Derek Wood\'s resume, told three ways - product designer, design engineer, and design advocate/educator.',
+	],
+
 	'now' => [
 		'file' => 'now.php',
 		'menu' => 'Now',
@@ -141,6 +148,27 @@ if (strpos($slug, 'journal/') === 0) {
 		if (is_file(SITE_ROOT . $entry_image)) {
 			$pages[$slug]['image'] = $entry_image;
 		}
+	}
+}
+
+// Resume lanes live at /resume/<lane>. One data file, content/resume.json,
+// drives the /resume index and every lane page: the `lanes` map holds what
+// differs per lane (intro, skills order), everything else is shared. The
+// wording source of truth is job-search/briefing/resume-base.md + the lane
+// spec beside it - this JSON is the public rendering of that, not a fork.
+// An unknown lane stays a 404.
+if (strpos($slug, 'resume/') === 0) {
+	$lane_slug = substr($slug, strlen('resume/'));
+	$resume = load_json('resume.json');
+
+	if (isset($resume['lanes'][$lane_slug])) {
+		$lane = $resume['lanes'][$lane_slug];
+
+		$pages[$slug] = [
+			'file' => 'resume-lane.php',
+			'title' => 'Resume: ' . $lane['label'] . ' - ' . SITE_TITLE,
+			'description' => 'Derek Wood\'s resume, angled for ' . strtolower($lane['label']) . ' roles.',
+		];
 	}
 }
 

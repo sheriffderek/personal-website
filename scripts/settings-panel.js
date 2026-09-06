@@ -1044,18 +1044,28 @@
 
 	function syncOverContent(panel) {
 		/* "Over content" is derived, not declared per situation: the panel
-		   covers content exactly when its rect overlaps <main>. Sitting
-		   inside the tray's own sidebar column does NOT overlap main -> not
-		   over; the phone card over the page and the grid's beside-panel
-		   over the wall DO -> over. We only write the boolean; the shade
-		   reads it to decide the dim. */
+		   covers content exactly when its rect overlaps something rendered
+		   inside <main> - measured against main's CHILDREN, not main's own
+		   box, because a page can be narrower than its main (the resume
+		   document centers at its own measure inside a full-width main; a
+		   panel hanging in that empty margin covers nothing and gets no
+		   dim). Sitting inside the tray's own sidebar column does NOT
+		   overlap -> not over; the phone card over the page and the grid's
+		   beside-panel over the wall DO -> over. We only write the boolean;
+		   the shade reads it to decide the dim. */
 		var mainElement = document.querySelector('main');
 		var over = false;
 
 		if (mainElement) {
 			var p = panel.getBoundingClientRect();
-			var m = mainElement.getBoundingClientRect();
-			over = p.left < m.right && p.right > m.left && p.top < m.bottom && p.bottom > m.top;
+
+			Array.prototype.forEach.call(mainElement.children, function (child) {
+				var m = child.getBoundingClientRect();
+
+				if (p.left < m.right && p.right > m.left && p.top < m.bottom && p.bottom > m.top) {
+					over = true;
+				}
+			});
 		}
 
 		panel.toggleAttribute('data-over', over);

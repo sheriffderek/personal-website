@@ -146,3 +146,15 @@ ol[role="list"] {
 :where(:not(:defined)) {
 	display: block;
 }
+
+/* Visually hidden, read aloud: for headings that name a group for readers
+   and parsers (nav landmarks, list group titles) where the visual design
+   already says it another way. The standard clip recipe. */
+.reader-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}

@@ -179,7 +179,11 @@
 		<p>This isn't television. Sit up straight. Turn that phone around.</p>
 	</div>
 
-	<div class='page-wrapper'>
+	<?php /* The wrapper knows which page it's wrapping, so page-specific
+		LAYOUT postures (the resume's full-width parallel timeline) can
+		re-template the shell grid from CSS - same move grid view makes via
+		data-view, scoped by page instead of by view. */ ?>
+	<div class='page-wrapper' data-page='<?= $slug ?>'>
 		<?php /* Zero-height marker: once it scrolls out the top, the tray is
 			stuck. sticky-header.js watches it and toggles .is-stuck. */ ?>
 		<div class='tray-sentinel' aria-hidden='true'></div>

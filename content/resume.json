@@ -1,0 +1,135 @@
+{
+	"header": {
+		"name": "Derek Wood",
+		"location": "Los Angeles, CA + Remote",
+		"phone": "(213) 400 6366",
+		"website": "derekthomaswood.com",
+		"email": "derekthomaswood@gmail.com",
+		"linkedin": "linkedin.com/in/derekthomaswood"
+	},
+	"current": {
+		"heading": "Experience",
+		"entries": [
+			{
+				"org": "Perpetual Education",
+				"dates": "2019 to present",
+				"title": "Founder & Principal Product Designer",
+				"body": [
+					"Designed, built, and operate a live learning platform: product strategy, UX, the design system, and the Vue front end, plus the business itself (hiring, budgets, go-to-market). 200+ interactive learning modules, overlapping cohorts run continuously for five years, then a full business-model transition from cohort-based to self-paced subscription, redesigned around direct evidence of where learners actually stalled. The product runs today with paying members."
+				]
+			}
+		]
+	},
+	"contracts": {
+		"heading": "Contract experience",
+		"entries": [
+			{
+				"org": "List at Ease",
+				"dates": "2024 to 2025",
+				"title": "Product Designer / Front-End Lead",
+				"body": [
+					"Green-field real estate platform that redesigns how MLS data is collected and teaches homeowners how to prepare and sell their home. Core design system and form library from scratch; led the dev team."
+				]
+			},
+			{
+				"org": "BetterLife",
+				"dates": "2023 to 2024",
+				"title": "Product / UI Designer",
+				"body": [
+					"Financial education platform scattered across third-party systems, unified under single sign-on. Dashboards, design system, gamified onboarding, living style guide."
+				]
+			},
+			{
+				"org": "Equivalent Design",
+				"dates": "2022",
+				"title": "Accessibility Consultant",
+				"body": [
+					"R&D for accessible SVG and animated graphics that adapt to any environment. Built tools that teach teams accessible design through interactive stories."
+				]
+			}
+		]
+	},
+	"earlier": {
+		"heading": "Earlier experience",
+		"entries": [
+			{
+				"org": "PXL Agency",
+				"dates": "2018 to 2019",
+				"title": "Senior Design Engineer",
+				"body": [
+					"Interactive experiences for entertainment brands including DreamWorks and Universal: dreamworks.com, interactive quiz games, marketing microsites. Participated in pitch brainstorms for film campaigns. Mentored junior developers."
+				]
+			},
+			{
+				"org": "ChromaDex (Tru Niagen)",
+				"dates": "2017 to 2018",
+				"title": "Senior Product Designer",
+				"body": [
+					"Founding designer for the Tru Niagen product arm. Worked with scientists and doctors to translate complex biology into approachable interfaces. Designed a health tracking system letting customers monitor their own energy and wellness metrics in place of claims the company could not legally make. Built component libraries and style guides, ran user testing, organized external contractors and 3D/dev teams, then hired a UI designer to take over execution and moved on when the foundation was set."
+				]
+			},
+			{
+				"org": "Early career: agencies & startups",
+				"dates": "2011 to 2017",
+				"title": "Product Designer & Front-End Developer",
+				"body": [
+					"Responsive, mobile-first sites and educational experiences: game-based learning systems for AAA Insurance, a criminal-justice education game shown at the White House, sites and microsites for entertainment, publishing, and consumer brands. Introduced teams to version control, modern build tooling, and design-systems thinking before it had the name. Early adopter of responsive design."
+				]
+			}
+		]
+	},
+	"speaking": {
+		"heading": "Speaking & teaching",
+		"body": "Speaker at AICAD Symposium, ArtCenter (2024). Co-chair of World IA Day LA (2026). Published in CSS-Tricks (2021). Guest lecturer at Turing School. Weekly public office hours for designers and developers since 2024."
+	},
+	"education": {
+		"heading": "Education",
+		"body": "BFA, California College of the Arts (2005). Individualized major: printmaking, painting, cross-disciplinary art and technology."
+	},
+	"lanes": {
+		"product-designer": {
+			"label": "Product Designer",
+			"covers": "Product Designer, Senior/Staff Product Designer, Technical Product Designer, Founding Designer, UX Designer.",
+			"intro": "Product designer focused on making complex systems approachable. Fifteen years across education, health science, entertainment, fintech, and real estate - research, strategy, prototyping, high-fidelity design, and working front-end code. I design in Figma and prototype in real code, so what I hand off already accounts for how it gets built. Currently consulting for two early-stage health-tech companies while running the design education platform I founded.",
+			"skills": [
+				"Figma (Variables, Modes, token workflows)",
+				"user research & usability testing",
+				"design systems",
+				"prototyping (Figma + code)",
+				"Vue.js / JavaScript / HTML / CSS",
+				"accessibility (WCAG)"
+			],
+			"role": "Senior Product Designer"
+		},
+		"design-engineer": {
+			"label": "Design Engineer",
+			"covers": "Design Engineer, Design Technologist, UX Engineer, Design Systems Engineer, Technical Product Designer (when the posting is code-forward).",
+			"intro": "Design engineer who owns the seam between design and code. Fifteen years building products end to end - I turn design systems into working front-end (Vue, tokens, theming, states), prototype the hard interactions in real code, and give design and engineering one shared language. I design the system and the visual language, then make the specialists cohere. Currently consulting for two early-stage health-tech companies while running the design education platform I founded and built.",
+			"skills": [
+				"Vue.js / JavaScript / HTML / CSS",
+				"design systems & tokens (Figma Variables & Modes to code)",
+				"coded prototyping",
+				"front-end architecture",
+				"accessibility (WCAG)",
+				"user research & product design"
+			],
+			"role": "Design Engineer"
+		},
+		"advocate": {
+			"label": "Advocate & Educator",
+			"covers": "Developer Advocate, Design Advocate, Developer Experience (DX), Design Educator, Learning Experience Designer, Curriculum/Education Designer at a product company.",
+			"intro": "I teach product design and front-end development, and I've done both for real for 15 years. I founded and ran Perpetual Education, a full-stack design school: 200+ learning modules, the curriculum, the platform, and daily teaching for years. I use the tools I'd advocate for as a practitioner, not a presenter - Figma for years, Vue and the full front-end - so when I show a designer or developer how something works, it's from having shipped it, and I can feel where they actually get stuck. Comfortable on camera, on stage, and in the docs.",
+			"skills": [
+				"Teaching & curriculum design",
+				"public speaking / on-camera / workshops",
+				"developer & designer education",
+				"Figma (power user, Variables & Modes)",
+				"front-end (Vue / JS / HTML / CSS)",
+				"design systems",
+				"docs & learning content"
+			],
+			"speaking_first": true,
+			"role": "Design Advocate & Educator"
+		}
+	}
+}

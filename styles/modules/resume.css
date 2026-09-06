@@ -1,0 +1,467 @@
+/* Resume - /resume and its lane pages (/resume/<lane>).
+
+   The page IS the resume: a centered document at its own measure (the
+   on-screen stand-in for the 8.5x11 sheet it exports to), opted out of the
+   shell's desktop grid - the tray overlays as a simple sticky bar.
+
+   The wide layout thinks left-column-first: the left column (header with
+   intro, current role, earlier roles) stacks NATURALLY, each piece its own
+   row, its rhythm untouched. The right pieces (contracts, speaking/education)
+   are ADDED AFTER that calculation - absolutely-positioned grid items
+   centered on the left row they pair with (see the wide block below).
+
+   Narrow screens: one flex column; `order` puts speaking/education after
+   the earlier roles - current, contracts, earlier, more.
+
+   All type comes from the voices; this file is geometry only. */
+
+:root {
+	--layout-resume-page: 66rem;
+}
+
+.resume {
+	max-width: var(--layout-resume-page);
+	margin-inline: auto;
+
+	/* Flex column for the gap: the container's gap IS the spacing between
+	   pieces - pieces carry no margins of their own (entries inside a
+	   section still use margins for their own rhythm). Source order is the
+	   narrow reading order AND the parse order (ATS bucketing: all work
+	   sections before speaking/education, so the experience bucket never
+	   gets interrupted). */
+	display: flex;
+	flex-direction: column;
+	gap: 3em;
+
+	/* The role sits on its own line under the name - one h1 (name + role
+	   stay a single heading for readers and parsers), broken visually. */
+	.resume-role {
+		display: block;
+	}
+
+	/* Contact links stay links, but speak in the surrounding ink instead
+	   of the accent - the header shouldn't shout its plumbing. */
+	.resume-header a {
+		color: inherit;
+		text-decoration-color: var(--stroke-secondary);
+	}
+
+	.resume-intro {
+		max-width: 44em;
+		margin-top: 1.5em;
+
+		/* The intro speaks in the accent - the one colored voice on the
+		   sheet (per the Figma comp), painted from the scope's slot so
+		   every mood/flavor re-inks it. */
+		color: var(--accent);
+	}
+
+	/* Rhythm inside a section: entries sit a unit apart (the container's
+	   gap spaces the sections themselves). */
+	.resume-entry,
+	.resume-more .resume-education {
+		margin-top: 2.5em;
+	}
+
+	.resume-entry {
+		h3 {
+			margin-top: 0.3em;
+		}
+
+		p {
+			margin-top: 0.75em;
+		}
+
+		.stamp-voice {
+			margin: 0;
+		}
+	}
+
+	/* The axis only exists where the parallel columns do. */
+	.timeline-axis {
+		display: none;
+	}
+
+	.resume-lane-nav {
+		margin-top: 1em;
+	}
+}
+
+@media (min-width: 1024px) {
+	/* The lane pages opt OUT of the shell's desktop grid: this page is the
+	   document, not a page-with-sidebar composition. Block flow is the
+	   phone posture, which works at every width. The panel's placement for
+	   this posture is restated beside the other posture rules in
+	   settings-panel.css. The /resume index (data-page 'resume', no slash)
+	   keeps the normal shell. */
+	.page-wrapper[data-page^='resume/'] {
+		display: block;
+	}
+
+	.resume {
+		display: grid;
+		grid-template-columns: 3fr 2fr;
+		column-gap: 4em;
+		row-gap: 3em;
+		align-items: start;
+		position: relative;
+
+		/* The left column stacks naturally, each piece its own row. */
+		.resume-header {
+			grid-column: 1;
+			grid-row: 1;
+		}
+
+		.resume-current {
+			grid-column: 1;
+			grid-row: 2;
+		}
+
+		.resume-earlier {
+			grid-column: 1;
+			grid-row: 3;
+		}
+
+		/* The right column is CALCULATED FROM the left one, never the other
+		   way around. Each right piece is an absolutely-positioned grid
+		   item: it still takes its grid area as its containing block (the
+		   grid is position: relative), but it no longer sizes the track -
+		   so the left column's flow is untouchable by anything over here.
+		   Contracts use PE's row as their reference box and center on it,
+		   overflowing above and below as their height needs; the
+		   speaking/education block does the same against the earlier-roles
+		   row. */
+		/* NOTE the explicit end lines: on absolutely-positioned grid items
+		   an auto end line means "to the edge of the grid", not "span 1" -
+		   without /4 the reference box runs to the article's bottom and
+		   the centering lands way low. */
+		.resume-contracts {
+			position: absolute;
+			grid-column: 2 / 3;
+			grid-row: 2 / 3;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 100%;
+		}
+
+		.resume-more {
+			position: absolute;
+			grid-column: 2 / 3;
+			grid-row: 3 / 4;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 100%;
+		}
+
+		/* Section tops align across the columns. */
+		.resume-current li:first-child,
+		.resume-earlier li:first-child,
+		.resume-contracts li:first-child {
+			margin-top: 0;
+		}
+
+		/* The axis is drawn, not a grid track: an absolute line standing in
+		   the column gap, at the 3/5 seam plus half the gap. */
+		.timeline-axis {
+			display: block;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: calc((100% - 4em) * 0.6 + 2em);
+			width: 2px;
+			background: var(--stroke-primary);
+
+			&::before {
+				content: '';
+				position: absolute;
+				border-left: 7px solid transparent;
+				border-right: 7px solid transparent;
+				border-bottom: 12px solid var(--stroke-primary);
+				transform: translateX(-6px);
+			}
+		}
+
+		.resume-lane-nav {
+			grid-column: 1 / -1;
+			grid-row: 4;
+		}
+	}
+}
+
+/* PRINT - the resume routes export to a designed letter PDF (the ground
+   truth is headless Chrome's --print-to-pdf, not the browser preview).
+   Measured facts this block designs around (2026-09-06, verified in
+   exported PDFs - don't re-derive):
+     - print media queries evaluate at ~741px viewport width, so the
+       screen breakpoints serve the narrow layout to print; the print
+       layout is fully declared here with fixed dimensions, no
+       min/max-width logic.
+     - letter is 816x1056 CSS px; with @page margin 0.45in the content
+       box is ~730px wide.
+     - Chrome never auto-shrinks - overflow becomes extra pages, so page
+       count is the fit signal.
+   Scoped to the resume pages via data-page so the rest of the site's
+   print behavior is untouched.
+
+   The verification loop (run after ANY change in here):
+     chrome --headless --print-to-pdf=out.pdf --no-pdf-header-footer <route>
+     pdfinfo out.pdf   -> exactly 1 page
+     pdffonts out.pdf  -> zero Type 3 (Type 3 = broken copy/paste)
+     PDFKit (osascript) landmark offsets strictly increasing - the true
+     probe for Preview copy/paste order; pdftotext alone misses paint-
+     order regressions from positioned elements. */
+
+/* Print fonts - STATIC cuts of the Product pair, self-hosted. Chrome
+   embeds VARIABLE fonts into PDFs as Type 3 glyph programs with custom
+   encoding, which breaks copy/paste and ATS text extraction ("Iteach
+   productdesign"); static cuts embed as CID TrueType and extract clean
+   (diagnosed 2026-09-06, resume-exploration session, via pdffonts).
+   Distinct "* Print" family names so they can never shadow the screen's
+   variable faces; the @media print block below points the font tokens at
+   them. Files from Fontshare's static API (same faces the site already
+   licenses), living in /fonts/print/. */
+@font-face {
+	font-family: 'Quicksand Print';
+	font-weight: 500;
+	src: url('/fonts/print/quicksand-500.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Quicksand Print';
+	font-weight: 600;
+	src: url('/fonts/print/quicksand-600.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Quicksand Print';
+	font-weight: 700;
+	src: url('/fonts/print/quicksand-700.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Spline Sans Print';
+	font-weight: 400;
+	src: url('/fonts/print/spline-sans-400.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Spline Sans Print';
+	font-weight: 500;
+	src: url('/fonts/print/spline-sans-500.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'General Sans Print';
+	font-weight: 400;
+	src: url('/fonts/print/general-sans-400.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'General Sans Print';
+	font-weight: 500;
+	src: url('/fonts/print/general-sans-500.woff2') format('woff2');
+}
+
+@media print {
+	@page {
+		size: letter;
+		margin: 0.4in;
+	}
+
+	/* The print type scale: every voice derives from the root, so this one
+	   knob sizes the whole sheet. Tuned by page count (the fit signal) -
+	   down only as far as comfortably readable; if it ever can't fit at
+	   this size, that's a content-editing problem, not a smaller number. */
+	html {
+		font-size: 13px;
+	}
+
+	/* The hidden group headings ("Experience", ...) must make it into the
+	   PDF TEXT LAYER for ATS segmenters, but stay invisible on the sheet.
+	   The screen clip recipe (1px box) drops the glyphs from Chrome's
+	   print output entirely, so print swaps the mechanism: in flow with
+	   zero height and transparent ink - no layout, no pixels, but the
+	   text run lands in the PDF at its true position. */
+	.resume .reader-only {
+		position: static;
+		width: auto;
+		height: 0;
+		overflow: visible;
+		clip-path: none;
+		white-space: normal;
+		line-height: 0;
+		margin: 0;
+		color: transparent;
+	}
+
+	/* Nothing on the sheet that isn't resume: chrome, nav, footer. The
+	   @page margin owns the sheet's margins, so main's screen padding
+	   (including the 80px --page-top) hands its space back. The sheet
+	   itself is paper-white regardless of theme - the one deliberate
+	   color (the intro's accent) opts in via print-color-adjust below. */
+	[data-page^='resume/'] {
+		background: #fff;
+
+		main {
+			padding: 0;
+			background: #fff;
+		}
+
+		.site-tray,
+		.site-shade,
+		.tray-sentinel,
+		.rotate-notice,
+		.site-footer,
+		.resume-lane-nav {
+			display: none;
+		}
+	}
+
+	/* The static print families take over the tokens the voices read
+	   from. This MUST land at :root - the voice family tokens
+	   (--calm-voice-font-family etc.) are defined there, and a var()
+	   inside a custom property resolves on the element that defines it,
+	   so a lower-scope override never reaches them (same reason the
+	   characters swap fonts on <html>). Scoped to resume pages via :has. */
+	:root:has([data-page^='resume/']) {
+		--font-heading: 'Quicksand Print', 'Quicksand', system-ui, sans-serif;
+		--font-body: 'Spline Sans Print', 'Spline Sans', system-ui, sans-serif;
+		--font-sans: 'General Sans Print', 'General Sans', system-ui, sans-serif;
+	}
+
+	.resume {
+		display: grid;
+		grid-template-columns: 1fr 260px;
+		column-gap: 44px;
+		row-gap: 1.25em;
+		position: relative;
+		max-width: none;
+
+		/* Paper rhythm is tighter than screen rhythm - the sheet has a
+		   budget. Line-height too: screen reading air (~1.6) is a web
+		   convention; print resumes conventionally set solid (~1.4). */
+		p {
+			line-height: 1.4;
+		}
+
+		.resume-entry,
+		.resume-more .resume-education {
+			margin-top: 1.25em;
+		}
+
+		.resume-entry p {
+			margin-top: 0.5em;
+		}
+
+		.resume-intro {
+			margin-top: 1em;
+		}
+
+		/* The timeline spine, drawn in the column gap - arrowhead up top
+		   (reverse chronology: time flows upward), then the line. */
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: calc(100% - 282px);
+			transform: translateX(-50%);
+			border-left: 5px solid transparent;
+			border-right: 5px solid transparent;
+			border-bottom: 9px solid var(--stroke-primary);
+		}
+
+		&::after {
+			content: '';
+			position: absolute;
+			top: 9px;
+			bottom: 0;
+			left: calc(100% - 282px);
+			width: 1px;
+			background: var(--stroke-primary);
+		}
+
+		.resume-header {
+			grid-column: 1;
+			grid-row: 1;
+		}
+
+		.resume-current {
+			grid-column: 1;
+			grid-row: 2;
+		}
+
+		.resume-earlier {
+			grid-column: 1;
+			grid-row: 3;
+		}
+
+		/* Every section joins the POSITIONED paint phase (relative, no
+		   offsets - zero visual effect). Why: the contracts block below is
+		   position: absolute, and positioned boxes paint AFTER normal
+		   flow - which pushed the contracts to the END of the PDF's
+		   content stream, breaking extraction order (measured via PDFKit,
+		   2026-09-06). With every sibling positioned, paint order = DOM
+		   order, and the text stream reads: current, contracts, earlier,
+		   speaking/education. */
+		.resume-header,
+		.resume-current,
+		.resume-earlier,
+		.resume-more {
+			position: relative;
+		}
+
+		/* Same move as the screen layout: an absolutely-positioned grid
+		   item takes PE's row as its containing block and centers on it,
+		   sizing nothing. (Safe here because the sheet is one page - an
+		   absolute block never fragments across pages.) */
+		.resume-contracts {
+			position: absolute;
+			grid-column: 2 / 3;
+			grid-row: 2 / 3;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 100%;
+		}
+
+		/* Centered on the earlier-roles band, same as the screen layout -
+		   the row is much taller than this block, so centering costs no
+		   height and sits clear of the contracts' tail above. */
+		.resume-more {
+			grid-column: 2;
+			grid-row: 3 / 4;
+			align-self: center;
+
+			/* The contracts above are out of flow, so the section break
+			   between their tail and this block can't derive naturally -
+			   the top margin biases the centering down (a centered box
+			   shifts by half its margin) to restore the site's section
+			   air. */
+			margin-top: 5em;
+		}
+
+		.resume-entry,
+		.resume-speaking,
+		.resume-education {
+			break-inside: avoid;
+		}
+
+		/* Links read as text on paper - the URLs already say what they
+		   are; underlines read "webpage". The ::after glyph marks (the
+		   outward arrows from setup.css) come off too: they pull a system
+		   font into the PDF and mean nothing on paper. */
+		a {
+			text-decoration: none;
+			color: inherit;
+
+			&::after {
+				content: none;
+			}
+		}
+
+		/* The intro keeps its accent - the one deliberate color on the
+		   sheet - so ask the printer to honor it. */
+		.resume-intro {
+			print-color-adjust: exact;
+		}
+	}
+}

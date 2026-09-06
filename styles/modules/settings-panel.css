@@ -994,3 +994,16 @@ button.trigger {
 		}
 	}
 }
+
+/* Resume lane pages (>= 1024): the page opts out of the shell's desktop
+   grid (resume.css) - the tray is a top bar again, so the panel keeps the
+   700-up anchored-dropdown posture instead of the side-column drop. Same
+   three rules as that posture: one rhythm unit below the bar, right edge
+   on the toolbar's line, the designed measure. */
+@media (width >= 1024px) {
+	.page-wrapper[data-page^='resume/'] .panel {
+		top: calc(100% + var(--layout-panel-gap));
+		right: var(--gutter);
+		width: var(--layout-panel-max);
+	}
+}
