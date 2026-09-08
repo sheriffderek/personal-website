@@ -76,6 +76,15 @@
 	--calm-voice-em-font-style: italic; /* not sure if this is the best way - we can revisit */
 	--calm-voice-strong-font-weight: 410;
 
+	/* firm-voice - calm's assertive sibling: body copy metrics, bolder
+	   weight, headline-snug leading. For headings that should sit at text
+	   size instead of stepping up (strong-voice reads too big there) -
+	   minted for the resume's entry titles (Derek, 2026-09-07). */
+	--firm-voice-font-family: var(--font-body);
+	--firm-voice-font-size: var(--step-0);
+	--firm-voice-font-weight: 600;
+	--firm-voice-line-height: 1.3;
+
 	/* strong-voice */
 	--strong-voice-font-family: var(--font-heading);
 	--strong-voice-font-size: var(--step-up-1);

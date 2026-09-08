@@ -70,6 +70,13 @@ p strong {
 	line-height: var(--quiet-voice-line-height);
 }
 
+.firm-voice {
+	font-family: var(--firm-voice-font-family);
+	font-size: var(--firm-voice-font-size);
+	font-weight: var(--firm-voice-font-weight);
+	line-height: var(--firm-voice-line-height);
+}
+
 .strong-voice {
 	font-family: var(--strong-voice-font-family);
 	font-size: var(--strong-voice-font-size);
