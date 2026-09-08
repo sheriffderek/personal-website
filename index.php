@@ -161,14 +161,32 @@ if (strpos($slug, 'resume/') === 0) {
 	$lane_slug = substr($slug, strlen('resume/'));
 	$resume = load_json('resume.json');
 
+	// Each lane also carries its cover letter at /resume/<lane>/cover-letter -
+	// same sheet family, same print pipeline. Letter prose lives in
+	// content/letters.json (wording source of truth: the letter files in
+	// job-search/briefing/); the identity header comes from resume.json.
+	$is_cover_letter = false;
+	if (substr($lane_slug, -strlen('/cover-letter')) === '/cover-letter') {
+		$lane_slug = substr($lane_slug, 0, -strlen('/cover-letter'));
+		$is_cover_letter = true;
+	}
+
 	if (isset($resume['lanes'][$lane_slug])) {
 		$lane = $resume['lanes'][$lane_slug];
 
-		$pages[$slug] = [
-			'file' => 'resume-lane.php',
-			'title' => 'Resume: ' . $lane['label'] . ' - ' . SITE_TITLE,
-			'description' => 'Derek Wood\'s resume, angled for ' . strtolower($lane['label']) . ' roles.',
-		];
+		if ($is_cover_letter) {
+			$pages[$slug] = [
+				'file' => 'cover-letter.php',
+				'title' => 'Cover letter: ' . $lane['label'] . ' - ' . SITE_TITLE,
+				'description' => 'Derek Wood\'s cover letter for ' . strtolower($lane['label']) . ' roles.',
+			];
+		} else {
+			$pages[$slug] = [
+				'file' => 'resume-lane.php',
+				'title' => 'Resume: ' . $lane['label'] . ' - ' . SITE_TITLE,
+				'description' => 'Derek Wood\'s resume, angled for ' . strtolower($lane['label']) . ' roles.',
+			];
+		}
 	}
 }
 

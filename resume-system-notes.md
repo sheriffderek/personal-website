@@ -136,10 +136,16 @@ like to a machine" section quotes from there.
   in the print block.
 - Print fonts double as the start of the self-host-before-launch plan that
   was already queued for the whole site.
-- Cover letter PDFs (queued, Derek 2026-09-08): when a target wants a
-  cover letter as PDF, it should come out of this same pipeline - same
-  layout, same header, same timeline arrow as the resume sheet. Not
-  built yet.
+- ~~Cover letter PDFs~~ - BUILT (2026-09-08): /resume/<lane>/cover-letter,
+  one per lane - same identity header (extracted to
+  includes/resume-header.php), same print pipeline, spine + arrow in the
+  same spot, letter prose in the left column. Content is
+  content/letters.json (placeholder bodies seeded from
+  job-search/briefing/cover-letter-*.md; Derek's approved revisions land
+  letter by letter). Bespoke per-target letters ride ?target= via the
+  targets map (structure only, none authored). Exports to
+  job-search/briefing/ deliberately NOT wired yet - waits for approved
+  copy; the fit-check script grows letter routes then.
 - Review flag (2026-09-08, unresolved): the print block declares
   `--resume-space-section: 22px`, which nothing consumes - it looks like
   the section->lead token rename missed the print block. Left as-is

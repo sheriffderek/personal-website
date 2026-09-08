@@ -1,0 +1,35 @@
+{
+	"_comment": "Cover letters, one per resume lane, rendered at /resume/<lane>/cover-letter. PLACEHOLDER CONTENT: seeded 2026-09-08 from job-search/briefing/cover-letter-*.md while Derek revises all three there - approved text arrives letter by letter, placed verbatim (same protocol as the resumes; the briefing files stay the wording source of truth). The drafts' optional [WHY-THEM] line is omitted here - these are the blind-send bodies; a per-company why-them sentence arrives via a bespoke targets entry. The targets map holds occasional bespoke letters keyed by target slug (the ?target= system); a target entry overrides its lane's body wholesale. No bespoke letters authored yet.",
+	"lanes": {
+		"product-designer": {
+			"greeting": "Hi, I'm Derek.",
+			"body": [
+				"I'm a product designer with 15 years across the whole arc of making software. I started by writing code, moved into designing interfaces, learned to run research and testing, and eventually owned entire products. For the last six years I founded and ran Perpetual Education, a small design school where I built the curriculum, the platform, and the business. The school now runs self-paced, and I'm looking to join a team of people I can learn from and build with for the long haul.",
+				"What I actually do: I sit where design, engineering, and the business meet, and make them cohere. I design in Figma and prototype in working code, so engineers get specs that account for real integration instead of happy-path mockups. I care about design systems as an operating discipline (tokens, theming, naming, states) because that's what keeps fifty screens feeling like one product.",
+				"Some proof. At Tru Niagen I led product design for a supplement that legally couldn't make health claims, so the constraint became the product: a tracking system where customers' own data tells the story. At List at Ease I took a green-field real estate platform from whiteboard sketch to designed product while leading a small dev team. And I've taught working designers and developers nearly every day for six years, which means I explain complex things clearly, give useful critique, and take it well.",
+				"My path is nontraditional. I haven't collected the usual logos; instead I've done every part of the product job for real, repeatedly, and I know exactly which part I want to go deep on with a team around me. If you want someone who raises the bar of the people around them and doesn't need to be managed toward the goal, that's what I've been practicing for 15 years."
+			],
+			"signoff": "Thanks for reading."
+		},
+		"design-engineer": {
+			"greeting": "Hi, I'm Derek.",
+			"body": [
+				"I'm a design engineer with 15 years spanning both sides of the design-to-code seam. I started by writing code, moved into product design and research, and kept both - today I design systems and prototype the hard parts in working front-end code (Vue, tokens, theming, states) so design and engineering share one language instead of throwing files over a wall.",
+				"What I actually do: I own the visual and system language of a product, build the prototypes that prove the interactions, and turn a design system into real components. I treat tokens, theming, naming, and states as an operating discipline, because that's what keeps fifty screens feeling like one product and keeps engineers unblocked.",
+				"Some proof. I founded and ran Perpetual Education for six years, where I built the curriculum, the Vue platform, and the design system myself. At List at Ease I took a green-field real estate platform from whiteboard sketch to shipped product while leading the dev team. At Tru Niagen I built the component libraries and coded prototypes that let a supplement brand tell its story through customers' own data. And I've taught working designers and developers nearly every day for six years, so I make complex systems legible to whoever needs them.",
+				"My path is nontraditional - I haven't collected the usual logos; I've done every part of the job for real, repeatedly. I know exactly the seam I want to own with a strong team around me. If you want someone who can hold design vision and technical reality in the same head, that's what I've been practicing for 15 years."
+			],
+			"signoff": "Thanks for reading."
+		},
+		"advocate": {
+			"greeting": "Hi, I'm Derek.",
+			"body": [
+				"I teach product design and front-end development, and I've been doing both for real for 15 years. I founded and ran Perpetual Education, a full-stack design school - I built the curriculum, the platform, and taught working designers and developers nearly every day for six years. Before that I shipped products as a designer and a front-end developer, so I teach from having done the thing, not from reading about it.",
+				"What I actually do: make hard technical and design ideas click for the people who need them. I've done it on stage (AICAD symposium, World IA Day), in writing (CSS-Tricks), on camera and on podcasts, in weekly public office hours, and one-on-one for years. I use the tools I'd advocate for as a practitioner - Figma for years, Vue and the full front-end - so when I show someone how something works it's from having shipped it, and I can feel where they're actually getting stuck.",
+				"My path is nontraditional, and for this work that's the point: I've been the designer, the developer, and the teacher, which is exactly the combination a good advocate needs. I speak both audiences' languages because I've lived in both. If you want someone who can grow a community, make your product legible, and mean it because they actually use it, that's been my whole career."
+			],
+			"signoff": "Thanks for reading."
+		}
+	},
+	"targets": {}
+}

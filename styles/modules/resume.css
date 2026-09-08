@@ -294,6 +294,42 @@
 
 }
 
+/* COVER LETTER - the resume's sibling sheet (/resume/<lane>/cover-letter).
+   The article wears both classes (.resume .cover-letter), so the identity
+   header, the spacing dials, the wide grid with its axis, and the whole
+   print pipeline all come from the resume rules above - this block is only
+   the letter's own geometry: one column of prose in the left column, the
+   right column deliberately empty (the wide margin is the letter's own
+   posture; the axis still stands in the gap, same arrow, same accent). */
+.cover-letter {
+	.letter-body {
+		margin-top: var(--resume-space-lead);
+		max-width: 44em;
+	}
+
+	.letter-body p + p {
+		margin-top: var(--resume-space-cluster);
+	}
+
+	.letter-signature {
+		margin-top: var(--resume-space-lead);
+	}
+}
+
+@media (min-width: 1024px) {
+	.cover-letter {
+		.letter-body {
+			grid-column: 1;
+		}
+
+		/* The letter has no rows 2-3 of resume sections - let the nav
+		   land after the letter naturally. */
+		.resume-lane-nav {
+			grid-row: auto;
+		}
+	}
+}
+
 /* PRINT - the resume routes export to a designed letter PDF (the ground
    truth is headless Chrome's --print-to-pdf, not the browser preview).
    Measured facts this block designs around (2026-09-06, verified in
@@ -675,6 +711,27 @@
 		   sheet - so ask the printer to honor it. */
 		.resume-intro {
 			print-color-adjust: exact;
+		}
+	}
+
+	/* The cover letter on paper: prose in the left column of the same
+	   print grid, the right column empty on purpose - the spine and
+	   arrow stand in the gap exactly where the resume puts them, so the
+	   pair reads as one set. Letter prose sits at the resume's body size
+	   with a touch more air (it's a letter, not a listing). */
+	.cover-letter {
+		.letter-body {
+			grid-column: 1;
+			margin-top: var(--resume-space-lead);
+		}
+
+		.letter-body p {
+			font-size: 11.5px;
+			line-height: 1.5;
+		}
+
+		.letter-signature {
+			margin-top: var(--resume-space-lead);
 		}
 	}
 
