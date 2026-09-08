@@ -1,15 +1,14 @@
 {
-	"_comment": "Cover letters, one per resume lane, rendered at /resume/<lane>/cover-letter. product-designer is APPROVED copy (Derek, 2026-09-08, placed verbatim); design-engineer and advocate are still placeholders seeded from job-search/briefing/cover-letter-*.md - approved text arrives letter by letter (the briefing files stay the wording source of truth). A lane's letter exports only once approved (the lane list in bin/resume-fit-check.sh). The optional signature key signs the letter; without it the sheet ends at the signoff. The drafts' optional [WHY-THEM] line is omitted here - these are the blind-send bodies; a per-company why-them sentence arrives via a bespoke targets entry. The targets map holds occasional bespoke letters keyed by target slug (the ?target= system); a target entry overrides its lane's body wholesale. No bespoke letters authored yet.",
+	"_comment": "Cover letters, one per resume lane, rendered at /resume/<lane>/cover-letter. ALL THREE ARE APPROVED COPY (Derek, 2026-09-08, placed verbatim - the base letter is a COMPLETE letter; wording source of truth is the letter system in job-search/briefing/). Tailored variants live in the targets map keyed by target slug (the ?target= system): a target entry overrides its lane's fields wholesale and is where 1-3 company-specific sentences get inserted - the generic pages render nothing at that position. No bespoke letters authored yet. The signature key signs the sheet.",
 	"lanes": {
 		"product-designer": {
 			"greeting": "Hi, I'm Derek.",
 			"body": [
-				"I'm a technical product designer with 15 years across the whole arc of making software. I started in art school, moved into writing code, then into designing interfaces, learned to run research and testing, and eventually owned entire products.",
-				"For seven years I ran Perpetual Education, a small design school where I built the curriculum, the platform, and the business. The school now runs self-paced, and I'm looking to join a team of people I can learn from and build with for the long haul.",
-				"What I actually do: I sit where design, engineering, and the business meet, and make them cohere. I design in Figma and prototype in working code, so engineers get specs that account for real integration instead of happy-path mockups. I care about design systems as an operating discipline (tokens, theming, naming, states) because that's what keeps fifty screens feeling like one product.",
-				"Some proof. At Niagen Bioscience I led product design for a supplement that legally couldn't make health claims, so the constraint became the product: a tracking system where customers' own data tells the story. At List at Ease I took a green-field real estate platform from whiteboard sketch to shipped product while running the project end to end.",
-				"And I've taught working designers and developers for seven years, which means I explain complex things clearly, give useful critique, and take it well.",
-				"My path is nontraditional. I haven't collected the usual logos; instead I've done every part of the product job for real, repeatedly, and I know exactly which part I want to go deep on with a team around me. If you want someone who raises the bar of the people around them and doesn't need to be managed toward the goal, that's what I've been practicing for 15 years."
+				"Early on, working in agencies, I kept seeing the same problem: designers who didn't understand how their work would be built, developers who'd let basic design fundamentals stay mysterious, and teams somehow having more meetings without understanding each other any better.",
+				"I got a little obsessed with that problem. Eventually I built Perpetual Education around it. I designed the curriculum, the platform, the business, and the systems behind all of it, then spent years watching hundreds of designers and developers work through real problems together. It made me much better at seeing where a product, a team, or an idea is actually getting stuck.",
+				"I kept doing product work in parallel. One project was a green-field real estate platform where the forms, legal machinery, seller education, messaging, and actual product all had to be figured out together. Another brought a bunch of disconnected financial education tools into one coherent product. Different problems, same basic job: figure out what we're really trying to do, then make all the pieces agree.",
+				"That's the kind of product design I like. I can research the problem, work through the IA and flows, design the interface, prototype in code, and stay with it long enough to find out whether any of our assumptions were right. We can always flip through Mobbin and find some nice UI flourishes. The bigger system is the interesting part.",
+				"I've spent about 15 years learning how to do the whole thing. Now I want a strong team where I can go deeper, learn from people who are really good at their part, and make something better than any one of us would make alone."
 			],
 			"signoff": "Thanks for reading.",
 			"signature": "Derek Thomas Wood"
@@ -17,21 +16,30 @@
 		"design-engineer": {
 			"greeting": "Hi, I'm Derek.",
 			"body": [
-				"I'm a design engineer with 15 years spanning both sides of the design-to-code seam. I started by writing code, moved into product design and research, and kept both - today I design systems and prototype the hard parts in working front-end code (Vue, tokens, theming, states) so design and engineering share one language instead of throwing files over a wall.",
-				"What I actually do: I own the visual and system language of a product, build the prototypes that prove the interactions, and turn a design system into real components. I treat tokens, theming, naming, and states as an operating discipline, because that's what keeps fifty screens feeling like one product and keeps engineers unblocked.",
-				"Some proof. I founded and ran Perpetual Education for six years, where I built the curriculum, the Vue platform, and the design system myself. At List at Ease I took a green-field real estate platform from whiteboard sketch to shipped product while leading the dev team. At Tru Niagen I built the component libraries and coded prototypes that let a supplement brand tell its story through customers' own data. And I've taught working designers and developers nearly every day for six years, so I make complex systems legible to whoever needs them.",
-				"My path is nontraditional - I haven't collected the usual logos; I've done every part of the job for real, repeatedly. I know exactly the seam I want to own with a strong team around me. If you want someone who can hold design vision and technical reality in the same head, that's what I've been practicing for 15 years."
+				"I've spent most of my career being the person who can make the design and also figure out how it's actually going to work.",
+				"Sometimes that meant building a weird interactive thing for a campaign that only needed to live for a few weeks. Other times it meant designing something that had to become a real system and survive years of new features, new people, and changing requirements. Doing both taught me when to move fast, when to slow down, and which decisions you're going to regret pretending don't matter.",
+				"Eventually I got interested enough in that overlap to build a school around it. At Perpetual Education, I taught designers how the web actually works and developers how typography, hierarchy, interaction, and visual systems work. Teaching it over and over also gave me a ridiculous amount of time to test my own ideas about how design and engineering should fit together.",
+				"I'm usually thinking about the stuff between the mockup and the component: naming, states, tokens, typography, responsive behavior, theming, scope, what belongs in the system and what really is just a one-off. The little decisions that determine whether fifty screens still feel like one product six months later.",
+				"I've also always been the person who'll whip out a working prototype during the meeting because it's faster than arguing about it. AI makes that possible for a lot more people now, which is exciting - and creates a whole new set of problems around how teams actually use what they're making.",
+				"I've worked across design and development for about 15 years. I know the part I want to own now: that space between the two, with a really good team around me."
 			],
-			"signoff": "Thanks for reading."
+			"signoff": "Thanks for reading.",
+			"signature": "Derek Thomas Wood"
 		},
 		"advocate": {
 			"greeting": "Hi, I'm Derek.",
 			"body": [
-				"I teach product design and front-end development, and I've been doing both for real for 15 years. I founded and ran Perpetual Education, a full-stack design school - I built the curriculum, the platform, and taught working designers and developers nearly every day for six years. Before that I shipped products as a designer and a front-end developer, so I teach from having done the thing, not from reading about it.",
-				"What I actually do: make hard technical and design ideas click for the people who need them. I've done it on stage (AICAD symposium, World IA Day), in writing (CSS-Tricks), on camera and on podcasts, in weekly public office hours, and one-on-one for years. I use the tools I'd advocate for as a practitioner - Figma for years, Vue and the full front-end - so when I show someone how something works it's from having shipped it, and I can feel where they're actually getting stuck.",
-				"My path is nontraditional, and for this work that's the point: I've been the designer, the developer, and the teacher, which is exactly the combination a good advocate needs. I speak both audiences' languages because I've lived in both. If you want someone who can grow a community, make your product legible, and mean it because they actually use it, that's been my whole career."
+				"I learned to build for the web by digging through Stack Overflow threads, documentation, blog posts, and whatever else I could find. Sometimes I'd lose half a day trying to understand something, finally get it working, and realize... wait, that's it?",
+				"That happened enough times that I got really interested in why some explanations work and others don't.",
+				"Eventually I started helping other people through the same things. That turned into mentoring, then workshops, and eventually Perpetual Education, the design and programming school I built and ran for seven years. I've now watched hundreds of designers and developers get stuck in just about every way imaginable.",
+				"And I love it. The moment somebody's mental model changes and suddenly the thing that seemed impossible five minutes ago is obvious? That's fun.",
+				"I've interviewed hundreds of designers and developers, spent a frankly unreasonable number of hours in forums and late-night video calls, taught daily workshops and public office hours, written articles, given talks, made videos, and worked directly with people trying to use unfamiliar tools to do real work.",
+				"I'm also still a product designer and developer. So whether the job is writing docs, interviewing users, designing an example project, making a tutorial, doing some weird R&D, running a workshop, or figuring out why everyone keeps getting stuck on the same feature, I'm interested.",
+				"I don't really think of advocacy as explaining features. I think it's helping people get far enough into a tool that they can start having ideas the people who made it didn't anticipate.",
+				"That's the part I love."
 			],
-			"signoff": "Thanks for reading."
+			"signoff": "Thanks for reading.",
+			"signature": "Derek Thomas Wood"
 		}
 	},
 	"targets": {}

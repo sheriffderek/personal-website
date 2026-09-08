@@ -23,7 +23,8 @@ done
 # joins this list when Derek approves its letter copy in letters.json
 # (placeholder letters render at their routes but never export).
 # Export names use the short lane words: product / engineer / advocate.
-LETTER_LANES="product-designer"
+# All three approved 2026-09-08.
+LETTER_LANES="product-designer design-engineer advocate"
 BRIEFING="$HOME/projects/job-search/briefing"
 
 letter_short() {
