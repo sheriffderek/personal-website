@@ -30,8 +30,10 @@ LETTER_LANES="product-designer design-engineer advocate"
 # in the job-search repo - each lane's resume and letter live together.
 # (Replaced the Desktop-set + briefing dual scheme; dual destinations
 # were a sync-bug class, and a Finder alias to this folder covers the
-# Desktop habit. Bespoke target letters are separate one-offs in
-# job-search/targets/<company>/.)
+# Desktop habit.) Bespoke target letters are manual one-off exports
+# into a company folder beside the lane's pair -
+# resumes/<lane>/<company>/derek-wood-cover-letter-<company>.pdf
+# (the letter's source md and job record stay in targets/<company>/).
 KIT="$HOME/projects/job-search/resumes"
 
 letter_short() {
