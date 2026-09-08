@@ -1,0 +1,17 @@
+{
+	"hooks": {
+		"PostToolUse": [
+			{
+				"matcher": "Write|Edit",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "grep -q 'content/resume.json' && \"${CLAUDE_PROJECT_DIR:-.}/bin/resume-fit-check.sh\" || true",
+						"timeout": 60,
+						"statusMessage": "Resume fit check (1-page assert per lane)..."
+					}
+				]
+			}
+		]
+	}
+}
