@@ -44,5 +44,16 @@
 			"signature": "Derek Thomas Wood"
 		}
 	},
-	"targets": {}
+	"targets": {
+		"outsmart": {
+			"lane": "product-designer",
+			"body": [
+				"Education has been this weird recurring thing in my life. I grew up in an alternative elementary program with mixed-grade classrooms, flexible learning paths, older kids teaching younger kids, and a surprising amount of learning through games. Later I went to an arts high school, designed my own major in college, then basically taught myself the web through forums, documentation, and other people on the internet.",
+				"By the time I started designing curriculum myself, I'd also spent years looking at online courses and talking to bootcamp grads, CS students, designers, and developers about what they'd learned, what they hadn't, and where they were getting stuck. What doesn't work and why, how you organize information, when you give someone an answer and when you let them struggle with it — I've spent a frankly unreasonable amount of my life thinking about this stuff.",
+				"The funny thing is, I eventually realized I'd rebuilt a lot of my elementary school at Perpetual Education. Peer teaching. People moving at different speeds. Milestones and skill trees instead of everyone marching through the same sequence. It wasn't intentional. Those were just the things that kept working.",
+				"That's why Outsmart caught my attention. You're not just building education software. You're asking what college should look like now. I spent seven years asking a smaller version of that question, and I'd love to work on it with Product, Engineering, Academics, and people who have spent their careers thinking about parts of education I haven't.",
+				"I've spent about 15 years learning this stuff in pretty obsessive detail. I don't need to be the person doing every part. I want to understand the parts well enough to help everyone do their best work. Give me the messy problem, the people who understand different pieces of it, a whiteboard, Figma, some code — whatever we need to make the idea real enough to test, measure, and refine. My job is to make sure everybody has what they need to succeed, we're learning from each other, and we're actually getting closer to the goal."
+			]
+		}
+	}
 }

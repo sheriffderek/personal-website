@@ -20,7 +20,15 @@ $letters = load_json('letters.json');
 $letter = $letters['lanes'][$lane_slug];
 
 if ($target_slug !== '' && isset($letters['targets'][$target_slug])) {
-	$letter = array_merge($letter, $letters['targets'][$target_slug]);
+	$bespoke = $letters['targets'][$target_slug];
+
+	/* A bespoke letter belongs to ONE lane (its lane key) - on any other
+	   lane's letter page the target param changes nothing, so a stray
+	   ?target= can never put the product pitch under the engineer role
+	   line. No lane key = applies wherever it's asked for. */
+	if (($bespoke['lane'] ?? $lane_slug) === $lane_slug) {
+		$letter = array_merge($letter, $bespoke);
+	}
 }
 ?>
 
