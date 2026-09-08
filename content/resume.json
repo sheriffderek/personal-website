@@ -12,10 +12,11 @@
 		"entries": [
 			{
 				"org": "Perpetual Education",
-				"dates": "2019 to present",
+				"dates": "2019–2026",
 				"title": "Founder & Principal Product Designer",
 				"body": [
-					"Designed, built, and operate a live learning platform: product strategy, UX, the design system, and the Vue front end, plus the business itself (hiring, budgets, go-to-market). 200+ interactive learning modules, overlapping cohorts run continuously for five years, then a full business-model transition from cohort-based to self-paced subscription, redesigned around direct evidence of where learners actually stalled. The product runs today with paying members."
+					"Designed and built a cross-disciplinary product design program covering the full product lifecycle, from information architecture and accessibility through visual design, engineering, design systems, and product strategy. Created the platform, curriculum, progression model, and supporting systems from scratch.",
+					"Guided multiple concurrent cohorts over four years, helping hundreds of designers and engineers develop the shared language, systems thinking, and collaborative habits needed to work effectively on cross-functional product teams. Prototype everything: Figma, code, AI, whatever tested an idea fastest. Taught designers and developers to think in systems: structure, reusability, typography, and color, intertwined across graphic design, the medium of the web, and beyond. Graduates now work across the whole range: product design, UX, design engineering, and development. The curriculum and platform evolved through continuous learner feedback into a self-paced program that now runs on its own."
 				]
 			}
 		]
@@ -25,18 +26,18 @@
 		"entries": [
 			{
 				"org": "List at Ease",
-				"dates": "2024 to 2025",
+				"dates": "2024–2025",
 				"title": "Product Designer / Front-End Lead",
 				"body": [
-					"Green-field real estate platform that redesigns how MLS data is collected and teaches homeowners how to prepare and sell their home. Core design system and form library from scratch; led the dev team."
+					"Green-field real estate platform; ran the project end to end: discovery and research, all product design, the application architecture, and the full-stack build, using agent-driven, test-first workflows. Complex multi-step forms intertwined with education flows, seller/agent messaging, legal and security considerations. Design system and form library from scratch."
 				]
 			},
 			{
 				"org": "BetterLife",
-				"dates": "2023 to 2024",
+				"dates": "2023–2024",
 				"title": "Product / UI Designer",
 				"body": [
-					"Financial education platform scattered across third-party systems, unified under single sign-on. Dashboards, design system, gamified onboarding, living style guide."
+					"Financial education platform scattered across third-party systems, unified under single sign-on. Dashboards, design system, gamified onboarding, living style guide. Evolved the visual design system and color palette mid-project."
 				]
 			},
 			{
@@ -44,7 +45,7 @@
 				"dates": "2022",
 				"title": "Accessibility Consultant",
 				"body": [
-					"R&D for accessible SVG and animated graphics that adapt to any environment. Built tools that teach teams accessible design through interactive stories."
+					"R&D and user testing for accessible SVG and animated graphics that adapt to any environment. Built tools that teach teams accessible design through interactive stories. Focus on WCAG compliance and universal design principles."
 				]
 			}
 		]
@@ -54,43 +55,45 @@
 		"entries": [
 			{
 				"org": "PXL Agency",
-				"dates": "2018 to 2019",
-				"title": "Senior Design Engineer",
+				"dates": "2018–2019",
+				"title": "Senior Developer",
 				"body": [
-					"Interactive experiences for entertainment brands including DreamWorks and Universal: dreamworks.com, interactive quiz games, marketing microsites. Participated in pitch brainstorms for film campaigns. Mentored junior developers."
+					"Interactive experiences for entertainment brands including DreamWorks and Universal: dreamworks.com, quiz games, marketing microsites. Maintained large-scale content platforms with complex datasets. Consulted on UX and mentored junior developers."
 				]
 			},
 			{
-				"org": "ChromaDex (Tru Niagen)",
-				"dates": "2017 to 2018",
+				"org": "Niagen Bioscience",
+				"dates": "2017–2018",
 				"title": "Senior Product Designer",
 				"body": [
-					"Founding designer for the Tru Niagen product arm. Worked with scientists and doctors to translate complex biology into approachable interfaces. Designed a health tracking system letting customers monitor their own energy and wellness metrics in place of claims the company could not legally make. Built component libraries and style guides, ran user testing, organized external contractors and 3D/dev teams, then hired a UI designer to take over execution and moved on when the foundation was set."
+					"Helped build out the product design department for the Tru Niagen product arm. Worked with scientists and doctors to translate complex biology into approachable interfaces. Designed a health tracking system letting customers monitor their own energy and wellness metrics in place of claims the company could not legally make. Unified the design system, ran stakeholder interviews and user testing, then hired a UI designer to take over execution and moved on when the foundation was set."
 				]
 			},
 			{
 				"org": "Early career: agencies & startups",
-				"dates": "2011 to 2017",
+				"dates": "2011–2017",
 				"title": "Product Designer & Front-End Developer",
 				"body": [
-					"Responsive, mobile-first sites and educational experiences: game-based learning systems for AAA Insurance, a criminal-justice education game shown at the White House, sites and microsites for entertainment, publishing, and consumer brands. Introduced teams to version control, modern build tooling, and design-systems thinking before it had the name. Early adopter of responsive design."
+					"Front-end development for a wide variety of clients across agencies and startups, increasingly pulled into UI and UX work: game-based learning systems for AAA Insurance, a data-driven internal app for Fox Films, sites and microsites for entertainment, publishing, and consumer brands. Often brought in to set up in-house process: version control, modern build tooling, and design-systems thinking."
 				]
 			}
 		]
 	},
 	"speaking": {
 		"heading": "Speaking & teaching",
-		"body": "Speaker at AICAD Symposium, ArtCenter (2024). Co-chair of World IA Day LA (2026). Published in CSS-Tricks (2021). Guest lecturer at Turing School. Weekly public office hours for designers and developers since 2024."
+		"body": "Speaker at AICAD Symposium, ArtCenter (2024). Co-chair of World IA Day LA (2026). Published in CSS-Tricks. Guest lecturer and guest crits at colleges/bootcamps. Active moderator in design/dev learning communities. Hosting weekly public office hours for designers and developers since 2023."
 	},
 	"education": {
 		"heading": "Education",
-		"body": "BFA, California College of the Arts (2005). Individualized major: printmaking, painting, cross-disciplinary art and technology."
+		"body": "BFA, California College of the Arts (2005). Individualized major: printmaking, painting, cross-disciplinary art and technology. Workshops on design-token architecture with Brad Frost and multi-brand theming at scale with Sam Gordashko."
 	},
 	"lanes": {
 		"product-designer": {
 			"label": "Product Designer",
 			"covers": "Product Designer, Senior/Staff Product Designer, Technical Product Designer, Founding Designer, UX Designer.",
-			"intro": "Product designer focused on making complex systems approachable. Fifteen years across education, health science, entertainment, fintech, and real estate - research, strategy, prototyping, high-fidelity design, and working front-end code. I design in Figma and prototype in real code, so what I hand off already accounts for how it gets built. Currently consulting for two early-stage health-tech companies while running the design education platform I founded.",
+			"intro": [
+				"Cross-disciplinary product designer with 15+ years of experience. I started in art school, became a front-end engineer, moved into product design and larger design systems, and eventually owned products from concept to launch. Mentoring throughout led to founding and running a full-stack product design school in parallel with my consulting/design practice. Whether it's Figma, prototyping in code, or AI agentic workflows, I'm excited to bring that systems thinking and cross-functional experience to a product team that I can grow with."
+			],
 			"skills": [
 				"Figma (Variables, Modes, token workflows)",
 				"user research & usability testing",
@@ -99,12 +102,14 @@
 				"Vue.js / JavaScript / HTML / CSS",
 				"accessibility (WCAG)"
 			],
-			"role": "Senior Product Designer"
+			"role": "Technical Product Designer"
 		},
 		"design-engineer": {
 			"label": "Design Engineer",
 			"covers": "Design Engineer, Design Technologist, UX Engineer, Design Systems Engineer, Technical Product Designer (when the posting is code-forward).",
-			"intro": "Design engineer who owns the seam between design and code. Fifteen years building products end to end - I turn design systems into working front-end (Vue, tokens, theming, states), prototype the hard interactions in real code, and give design and engineering one shared language. I design the system and the visual language, then make the specialists cohere. Currently consulting for two early-stage health-tech companies while running the design education platform I founded and built.",
+			"intro": [
+				"Design engineer who owns the seam between design and code. Fifteen years building products end to end: I've built component systems since jQuery and Knockout; these days mostly Vue, and I pick up whatever a team ships in. I turn design systems into working front-end (tokens, theming, states), prototype the hard interactions in real code, and give design and engineering one shared language. I build live style guides, and I drive design-system adoption through education and advocacy. I'm excited to bring that to a product team I can grow with."
+			],
 			"skills": [
 				"Vue.js / JavaScript / HTML / CSS",
 				"design systems & tokens (Figma Variables & Modes to code)",
@@ -113,12 +118,22 @@
 				"accessibility (WCAG)",
 				"user research & product design"
 			],
-			"role": "Design Engineer"
+			"role": "Design Engineer",
+			"entry_overrides": {
+				"Perpetual Education": {
+					"body": [
+						"Designed, built, and operated the platform behind a full-stack design school: the design system, component library, live style guide, and content system. The program teaches a wide range of languages and frameworks, accessibility, design systems, and product strategy.",
+						"Guided multiple concurrent cohorts over four years, helping hundreds of designers and engineers develop the shared language, systems thinking, and collaborative habits needed to work effectively on cross-functional product teams. Prototype everything: Figma, code, AI, whatever tested an idea fastest. The curriculum and platform evolved through continuous learner feedback into a self-paced program that now runs on its own."
+					]
+				}
+			}
 		},
 		"advocate": {
 			"label": "Advocate & Educator",
 			"covers": "Developer Advocate, Design Advocate, Developer Experience (DX), Design Educator, Learning Experience Designer, Curriculum/Education Designer at a product company.",
-			"intro": "I teach product design and front-end development, and I've done both for real for 15 years. I founded and ran Perpetual Education, a full-stack design school: 200+ learning modules, the curriculum, the platform, and daily teaching for years. I use the tools I'd advocate for as a practitioner, not a presenter - Figma for years, Vue and the full front-end - so when I show a designer or developer how something works, it's from having shipped it, and I can feel where they actually get stuck. Comfortable on camera, on stage, and in the docs.",
+			"intro": [
+				"Cross-disciplinary dev and designer with 15+ years of experience. I started in art school, got obsessed with web dev in the early days of responsive design, and moved into product design and larger design systems. Answering questions on Stack Overflow led to mentoring, and eventually to founding and running Perpetual Education, a full-stack design school: hundreds of workshops and resources, interconnected by an overarching module system. Comfortable on camera, on stage, and in the docs, and excited to bring that mix of making and teaching to a product team that I can grow with."
+			],
 			"skills": [
 				"Teaching & curriculum design",
 				"public speaking / on-camera / workshops",
@@ -128,8 +143,15 @@
 				"design systems",
 				"docs & learning content"
 			],
-			"speaking_first": true,
-			"role": "Design Advocate & Educator"
+			"role": "Technical Product Designer",
+			"entry_overrides": {
+				"Perpetual Education": {
+					"body": [
+						"Designed and built a cross-disciplinary product design program covering the full product lifecycle, from information architecture and accessibility through visual design, engineering, design systems, and product strategy. Created the platform, curriculum, progression model, and supporting systems from scratch.",
+						"Guided multiple concurrent cohorts over four years, helping hundreds of designers and engineers develop the shared language, systems thinking, and collaborative habits needed to work effectively on cross-functional product teams. Prototype everything: Figma, code, AI, whatever tested an idea fastest. The curriculum and platform evolved through continuous learner feedback into a self-paced program that now runs on its own."
+					]
+				}
+			}
 		}
 	}
 }

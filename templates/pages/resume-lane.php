@@ -16,16 +16,28 @@ $brief = [
 
 /* Renders one entry (an <li>) - same shape for work and contract groups.
    stamp-voice is the eyebrow: org + dates + the contract mark are a
-   designation stamped on the entry, exactly that voice's job. */
-function resume_entry($entry, $is_contract = false) {
+   designation stamped on the entry, exactly that voice's job.
+   A lane may override an entry's fields via its entry_overrides map
+   (keyed by org) - whole fields only, merged over the shared entry. */
+function resume_entry($entry, $lane, $is_contract = false) {
+	if (isset($lane['entry_overrides'][$entry['org']])) {
+		$entry = array_merge($entry, $lane['entry_overrides'][$entry['org']]);
+	}
 ?>
 	<li class='resume-entry'>
 
-		<p class='stamp-voice'>
-			<?= $entry['org'] ?> (<?= $entry['dates'] ?>)<?= $is_contract ? ' · contract' : '' ?>
-		</p>
+		<?php /* The eyebrow and title are one designation cluster - hgroup
+			makes that real (a p before the heading is valid hgroup
+			content), so even their tight spacing is a container gap. */ ?>
+		<hgroup>
 
-		<h3 class='strong-voice'><?= $entry['title'] ?></h3>
+			<p class='stamp-voice'>
+				<?= $entry['org'] ?> (<?= $entry['dates'] ?>)<?= $is_contract ? ' · contract' : '' ?>
+			</p>
+
+			<h3 class='firm-voice'><?= $entry['title'] ?></h3>
+
+		</hgroup>
 
 		<?php foreach ($entry['body'] as $paragraph): ?>
 			<p><?= $paragraph ?></p>
@@ -35,10 +47,12 @@ function resume_entry($entry, $is_contract = false) {
 <?php
 }
 
-/* $todo - lane C's speaking_first flag (advocate lane leads with teaching
-   evidence) is authored in the JSON but not applied to the layout yet. */
 ?>
 
+<?php /* One layout for all lanes - contracts, then Speaking & teaching,
+   then Education - no per-lane section reordering, ever (Derek,
+   2026-09-07, after seeing a speaking-first variant and reverting it).
+   Lane variance is content-only: role line, intro, entry overrides. */ ?>
 <article class='resume' aria-label='Resume - <?= $lane['label'] ?>'>
 
 	<header class='resume-header'>
@@ -46,7 +60,7 @@ function resume_entry($entry, $is_contract = false) {
 		<h1 class='attention-voice'>
 			<strong><?= $resume['header']['name'] ?></strong>
 
-			<span class='resume-role strong-voice'><?= $lane['role'] ?></span>
+			<span class='resume-role firm-voice'><?= $lane['role'] ?></span>
 		</h1>
 
 		<p>
@@ -61,7 +75,15 @@ function resume_entry($entry, $is_contract = false) {
 			<a class='link' href='https://<?= $resume['header']['linkedin'] ?>' target='_blank'><?= $resume['header']['linkedin'] ?></a>
 		</p>
 
-		<p class='resume-intro'><?= $lane['intro'] ?></p>
+		<?php /* The intro is an array of paragraphs (same shape as entry
+			bodies) - every lane's, even single-paragraph ones. */ ?>
+		<text-content class='resume-intro'>
+
+			<?php foreach ($lane['intro'] as $paragraph): ?>
+				<p><?= $paragraph ?></p>
+			<?php endforeach; ?>
+
+		</text-content>
 
 	</header>
 
@@ -74,7 +96,7 @@ function resume_entry($entry, $is_contract = false) {
 		<ol role='list'>
 
 			<?php foreach ($resume['current']['entries'] as $entry): ?>
-				<?php resume_entry($entry); ?>
+				<?php resume_entry($entry, $lane); ?>
 			<?php endforeach; ?>
 
 		</ol>
@@ -88,7 +110,7 @@ function resume_entry($entry, $is_contract = false) {
 		<ol role='list'>
 
 			<?php foreach ($resume['contracts']['entries'] as $entry): ?>
-				<?php resume_entry($entry, true); ?>
+				<?php resume_entry($entry, $lane, true); ?>
 			<?php endforeach; ?>
 
 		</ol>
@@ -103,7 +125,7 @@ function resume_entry($entry, $is_contract = false) {
 		<ol role='list'>
 
 			<?php foreach ($resume['earlier']['entries'] as $entry): ?>
-				<?php resume_entry($entry); ?>
+				<?php resume_entry($entry, $lane); ?>
 			<?php endforeach; ?>
 
 		</ol>
@@ -114,7 +136,7 @@ function resume_entry($entry, $is_contract = false) {
 
 		<section class='resume-speaking'>
 
-			<h2 class='strong-voice'><?= $resume['speaking']['heading'] ?></h2>
+			<h2 class='firm-voice'><?= $resume['speaking']['heading'] ?></h2>
 
 			<p><?= $resume['speaking']['body'] ?></p>
 
@@ -122,7 +144,7 @@ function resume_entry($entry, $is_contract = false) {
 
 		<section class='resume-education'>
 
-			<h2 class='strong-voice'><?= $resume['education']['heading'] ?></h2>
+			<h2 class='firm-voice'><?= $resume['education']['heading'] ?></h2>
 
 			<p><?= $resume['education']['body'] ?></p>
 
@@ -132,14 +154,24 @@ function resume_entry($entry, $is_contract = false) {
 
 	<nav class='resume-lane-nav' aria-label='Other resume versions'>
 
-		<p class='quiet-voice'>
-			Also told for:
+		<?php /* All three lanes, current one included (marked, unlinked) -
+			it reads as a lens picker, and the reader always knows which
+			lens they're on. Assembled in PHP so the commas sit tight
+			against their words. */ ?>
+		<?php
+		$lens_parts = [];
 
-			<?php foreach ($resume['lanes'] as $other_slug => $other_lane): ?>
-				<?php if ($other_slug !== $lane_slug): ?>
-					<a class='link' href='/resume/<?= $other_slug ?><?= $target_query ?>'><?= $other_lane['label'] ?></a>
-				<?php endif; ?>
-			<?php endforeach; ?>
+		foreach ($resume['lanes'] as $nav_slug => $nav_lane) {
+			if ($nav_slug === $lane_slug) {
+				$lens_parts[] = "<span aria-current='page'>" . $nav_lane['label'] . '</span>';
+			} else {
+				$lens_parts[] = "<a class='link' href='/resume/" . $nav_slug . $target_query . "'>" . $nav_lane['label'] . '</a>';
+			}
+		}
+		?>
+
+		<p class='quiet-voice'>
+			Through the lens of: <?= implode(', ', $lens_parts) ?>
 		</p>
 
 	</nav>
