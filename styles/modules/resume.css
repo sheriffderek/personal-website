@@ -19,6 +19,34 @@
 	--layout-resume-page: 66rem;
 }
 
+/* The /resume index lane picker - each lane is a small choice cluster
+   (the label link, the roles it covers, its letter): air between the
+   clusters, tight lines within - the same shape as the sheet's
+   designation clusters. The em literals match the hand-authored rhythm
+   in typography.css's .styled block. */
+.resume-lanes {
+	margin-top: 1.6em;
+
+	li + li {
+		margin-top: 1.4em;
+	}
+
+	li p {
+		margin-top: 0.35em;
+		max-width: 44em;
+	}
+
+	/* One voice per line: the global a.link rule carries calm-voice
+	   metrics, which would bump these links a step over their
+	   quiet-voice sentences (same fight as .resume-lane-nav). */
+	li p a {
+		font-family: inherit;
+		font-size: inherit;
+		font-weight: inherit;
+		line-height: inherit;
+	}
+}
+
 .resume {
 	max-width: var(--layout-resume-page);
 	margin-inline: auto;
@@ -270,7 +298,12 @@
 		.timeline-axis {
 			display: block;
 			position: absolute;
-			top: 0;
+
+			/* The line starts 11px down, tucked behind the arrowhead's
+			   solid base - at top: 0 it ran up behind the head's
+			   transparent corners and its tip poked out past the apex
+			   (Derek, 2026-09-08). The head pulls itself back up. */
+			top: 11px;
 			bottom: 0;
 			left: calc((100% - 4em) * 0.6 + 2em);
 			width: 2px;
@@ -279,6 +312,7 @@
 			&::before {
 				content: '';
 				position: absolute;
+				top: -11px;
 				border-left: 7px solid transparent;
 				border-right: 7px solid transparent;
 				border-bottom: 12px solid var(--accent);

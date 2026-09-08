@@ -24,6 +24,12 @@ $resume = load_json('resume.json');
 
 					<p class='quiet-voice'>For roles like: <?= $lane['covers'] ?></p>
 
+					<?php /* Each lane travels as a pair - the label opens the
+						resume; its letter rides along here. */ ?>
+					<p class='quiet-voice'>
+						With a matching <a class='link' href='/resume/<?= $lane_slug ?>/cover-letter<?= $target_query ?>'>cover letter</a>.
+					</p>
+
 				</li>
 			<?php endforeach; ?>
 
