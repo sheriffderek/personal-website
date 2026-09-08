@@ -51,16 +51,18 @@ if [ -z "$FAIL" ]; then
 		cp "$OUT/$lane.pdf" "$HOME/Desktop/resume-exports/derek-wood-$lane.pdf"
 	done
 
+	# Approved letters publish straight to the job-search briefing folder -
+	# they are application-ready the moment the check is green - and join
+	# the Desktop export set beside the resumes (Derek, 2026-09-08).
+	for lane in $LETTER_LANES; do
+		cp "$OUT/letter-$lane.pdf" "$BRIEFING/derek-wood-letter-$(letter_short "$lane").pdf"
+		cp "$OUT/letter-$lane.pdf" "$HOME/Desktop/resume-exports/derek-wood-letter-$(letter_short "$lane").pdf"
+	done
+
 	# The version stamp - answers "are these PDFs current?" at a glance
 	# without putting a build hash on the sheet itself (the text layer
 	# stays clean by contract). Content hash = resume.json, so the same
 	# hash means the same words.
-	# Approved letters publish straight to the job-search briefing folder -
-	# they are application-ready the moment the check is green.
-	for lane in $LETTER_LANES; do
-		cp "$OUT/letter-$lane.pdf" "$BRIEFING/derek-wood-letter-$(letter_short "$lane").pdf"
-	done
-
 	{
 		echo "exported:  $(date '+%Y-%m-%d %H:%M:%S')"
 		echo "content:   $(md5 -q "$(dirname "$0")/../content/resume.json" | cut -c1-8)"
