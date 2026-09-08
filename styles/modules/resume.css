@@ -23,15 +23,86 @@
 	max-width: var(--layout-resume-page);
 	margin-inline: auto;
 
-	/* Flex column for the gap: the container's gap IS the spacing between
-	   pieces - pieces carry no margins of their own (entries inside a
-	   section still use margins for their own rhythm). Source order is the
-	   narrow reading order AND the parse order (ATS bucketing: all work
-	   sections before speaking/education, so the experience bucket never
-	   gets interrupted). */
+	/* THE SPACING SYSTEM - Derek's pill sizes (his marked-up Figma
+	   print, 2026-09-07), split per the house spacing model:
+
+	   STRUCTURAL DIALS - plain rem (px in print), deliberately NOT
+	   tracking type. Turn these to tune the sheet's composition:
+	     --resume-space-entry  TEAL: between jobs, every column
+	     --resume-space-lead   PURPLE: section leads (intro->first job,
+	                           between the page's pieces)
+
+	   READING RHYTHM - em, derives from the type it sits against
+	   (these are the paragraph-level spaces, not layout dials):
+	     --resume-space-cluster  RED: title->body, para->para
+	     --resume-space-eyebrow  eyebrow->title inside a designation */
+	--resume-space-entry: 1.5rem;
+	--resume-space-lead: 2.6rem;
+	--resume-space-break: 3.25rem;
+
+	--resume-space-cluster: 0.75em;
+	--resume-space-eyebrow: 0.3em;
+
+	/* Source order is the narrow reading order AND the parse order (ATS
+	   bucketing: all work sections before speaking/education). No gap at
+	   this level - each piece states its own space above (the wide and
+	   print grids re-state these per their geometry). */
 	display: flex;
 	flex-direction: column;
-	gap: 3em;
+
+	/* Narrow reads as one continuous job list (the section headings are
+	   reader-only), so section boundaries between jobs use the JOB
+	   rhythm; only the intro->first-job boundary is a lead. */
+	.resume-current {
+		margin-top: var(--resume-space-lead);
+	}
+
+	.resume-contracts,
+	.resume-earlier {
+		margin-top: var(--resume-space-entry);
+	}
+
+	/* The closing group (speaking/education) opens with the BREAK - the
+	   one space on the sheet bigger than a lead. */
+	.resume-more {
+		margin-top: var(--resume-space-break);
+	}
+
+
+	/* Two mechanisms, by the house spacing model: READING RHYTHM is em
+	   margins on siblings (the token values are em, so they resolve
+	   against the type they sit beside); STRUCTURE (the piece stack, the
+	   entry lists) is container gap below. */
+	.resume-header p,
+	.resume-speaking p,
+	.resume-education p,
+	.resume-entry p {
+		margin-top: var(--resume-space-cluster);
+	}
+
+	.resume-intro p + p {
+		margin-top: var(--resume-space-cluster);
+	}
+
+	.resume-entry hgroup h3 {
+		margin-top: var(--resume-space-eyebrow);
+	}
+
+	/* The left column's jobs sit a full entry apart; the right column's
+	   groups (the contracts, speaking/education) run slightly tighter -
+	   proximity keeps each block reading as one visual group (Derek,
+	   2026-09-08). Stated as a ratio of the entry dial, so tuning entry
+	   keeps the relationship. */
+	ol[role='list'] {
+		display: grid;
+		gap: var(--resume-space-entry);
+	}
+
+	.resume-contracts ol[role='list'],
+	.resume-more {
+		display: grid;
+		gap: calc(var(--resume-space-entry) * 0.75);
+	}
 
 	/* The role sits on its own line under the name - one h1 (name + role
 	   stay a single heading for readers and parsers), broken visually. */
@@ -46,36 +117,32 @@
 		text-decoration-color: var(--stroke-secondary);
 	}
 
+
 	.resume-intro {
 		max-width: 44em;
-		margin-top: 1.5em;
 
 		/* The intro speaks in the accent - the one colored voice on the
 		   sheet (per the Figma comp), painted from the scope's slot so
-		   every mood/flavor re-inks it. */
+		   every mood/flavor re-inks it. On the p too: the typography
+		   layer gives p its own color. */
 		color: var(--accent);
-	}
-
-	/* Rhythm inside a section: entries sit a unit apart (the container's
-	   gap spaces the sections themselves). */
-	.resume-entry,
-	.resume-more .resume-education {
-		margin-top: 2.5em;
-	}
-
-	.resume-entry {
-		h3 {
-			margin-top: 0.3em;
-		}
 
 		p {
-			margin-top: 0.75em;
-		}
-
-		.stamp-voice {
-			margin: 0;
+			color: var(--accent);
 		}
 	}
+
+	/* Zero the margins the typography layer gives text elements - inside
+	   the resume, ALL rhythm is container gap. */
+	p,
+	h1,
+	h2,
+	h3,
+	hgroup {
+		margin: 0;
+	}
+
+
 
 	/* The axis only exists where the parallel columns do. */
 	.timeline-axis {
@@ -83,7 +150,18 @@
 	}
 
 	.resume-lane-nav {
-		margin-top: 1em;
+		/* The meta nav sits two leads below the sheet - it's not resume. */
+		margin-top: calc(2 * var(--resume-space-lead));
+
+		/* One voice for the whole line: the global a.link rule carries
+		   calm-voice metrics, which made the links shout over their
+		   quiet-voice sentence. */
+		a {
+			font-family: inherit;
+			font-size: inherit;
+			font-weight: inherit;
+			line-height: inherit;
+		}
 	}
 }
 
@@ -102,9 +180,20 @@
 		display: grid;
 		grid-template-columns: 3fr 2fr;
 		column-gap: 4em;
-		row-gap: 3em;
 		align-items: start;
 		position: relative;
+
+		/* No row-gap - each left row states its space above: a lead
+		   before the first job, the JOB rhythm between the job sections
+		   (separate sections for parsing, one continuous list to the
+		   eye). */
+		.resume-current {
+			margin-top: var(--resume-space-lead);
+		}
+
+		.resume-earlier {
+			margin-top: var(--resume-space-entry);
+		}
 
 		/* The left column stacks naturally, each piece its own row. */
 		.resume-header {
@@ -142,6 +231,10 @@
 			top: 50%;
 			transform: translateY(-50%);
 			width: 100%;
+			/* The narrow stack's piece margin must not shift this
+			   absolute box - placement here is the positioning math. */
+			margin-top: 0;
+			anchor-name: --resume-contracts;
 		}
 
 		.resume-more {
@@ -151,17 +244,29 @@
 			top: 50%;
 			transform: translateY(-50%);
 			width: 100%;
+
+			/* Centering can't see the contracts' tail hanging into this
+			   band from the row above - bias the block down a BREAK so
+			   the closing-group space survives content growth up there. */
+			margin-top: var(--resume-space-break);
 		}
 
-		/* Section tops align across the columns. */
-		.resume-current li:first-child,
-		.resume-earlier li:first-child,
-		.resume-contracts li:first-child {
-			margin-top: 0;
+		/* The real rule: the closing group hangs exactly one BREAK below
+		   the contracts' actual bottom edge - computed per lane (their
+		   contracts columns end at different heights), never a magic
+		   number. The margin rule above is the no-anchor fallback. */
+		@supports (top: anchor(top)) {
+			.resume-more {
+				top: calc(anchor(--resume-contracts bottom) + var(--resume-space-break));
+				transform: none;
+				margin-top: 0;
+			}
 		}
 
 		/* The axis is drawn, not a grid track: an absolute line standing in
 		   the column gap, at the 3/5 seam plus half the gap. */
+		/* The axis wears the accent, like the intro - the story and its
+		   direction are the same voice, re-inked by every mood/flavor. */
 		.timeline-axis {
 			display: block;
 			position: absolute;
@@ -169,14 +274,14 @@
 			bottom: 0;
 			left: calc((100% - 4em) * 0.6 + 2em);
 			width: 2px;
-			background: var(--stroke-primary);
+			background: var(--accent);
 
 			&::before {
 				content: '';
 				position: absolute;
 				border-left: 7px solid transparent;
 				border-right: 7px solid transparent;
-				border-bottom: 12px solid var(--stroke-primary);
+				border-bottom: 12px solid var(--accent);
 				transform: translateX(-6px);
 			}
 		}
@@ -186,6 +291,7 @@
 			grid-row: 4;
 		}
 	}
+
 }
 
 /* PRINT - the resume routes export to a designed letter PDF (the ground
@@ -251,6 +357,12 @@
 }
 
 @font-face {
+	font-family: 'Spline Sans Print';
+	font-weight: 600;
+	src: url('/fonts/print/spline-sans-600.woff2') format('woff2');
+}
+
+@font-face {
 	font-family: 'General Sans Print';
 	font-weight: 400;
 	src: url('/fonts/print/general-sans-400.woff2') format('woff2');
@@ -265,33 +377,101 @@
 @media print {
 	@page {
 		size: letter;
-		margin: 0.4in;
+
+		/* Top is taller on purpose: Derek's physical test print clipped
+		   nearly the full name height at 0.4in - real printers' grip
+		   margins eat into the sheet's top edge. */
+		margin: 0.65in 0.4in 0.4in;
 	}
 
-	/* The print type scale: every voice derives from the root, so this one
-	   knob sizes the whole sheet. Tuned by page count (the fit signal) -
-	   down only as far as comfortably readable; if it ever can't fit at
-	   this size, that's a content-editing problem, not a smaller number. */
+	/* THE SHEET'S TYPE SPEC - pinned, not derived. The PDF bounces from
+	   ONE theme (Derek's call, 2026-09-06), so print typography doesn't
+	   stay theme-generic: each pattern gets an exact size/leading measured
+	   against the Figma comp. px on purpose - print is a fixed medium and
+	   these are design decisions, not preferences to scale. The root size
+	   still feeds the em-based spacing below. */
 	html {
-		font-size: 13px;
+		font-size: 12.5px;
+	}
+
+	.resume {
+		/* Name and role: a compact identity cluster, not a hero. */
+		h1 {
+			font-size: 15px;
+			line-height: 1.2;
+		}
+
+		.resume-role {
+			font-size: 12.5px;
+			line-height: 1.3;
+		}
+
+		/* Contact line: quiet plumbing. Links inherit the line's size -
+		   the global a.link rule carries calm-voice metrics and would
+		   otherwise bump them a step up. */
+		.resume-header > p {
+			font-size: 10.5px;
+			line-height: 1.4;
+		}
+
+		.resume-header a {
+			font-size: inherit;
+			line-height: inherit;
+		}
+
+		.resume-intro p {
+			font-size: 11.5px;
+			line-height: 1.45;
+		}
+
+		/* Eyebrow: small, tracked, sitting tight over its title. The
+		   selector must out-rank ".resume-entry p" (the body-size rule) -
+		   the eyebrow IS a p, and a bare .stamp-voice loses that fight
+		   (which silently swallowed three size changes, 2026-09-07). */
+		.resume-entry p.stamp-voice {
+			font-size: 9px;
+			letter-spacing: 0.08em;
+		}
+
+		/* Entry titles: one confident step above body. */
+		.resume-entry h3,
+		.resume-more h2 {
+			font-size: 13px;
+			line-height: 1.25;
+		}
+
+		/* Body: solid paragraph color, set snug. */
+		.resume-entry p,
+		.resume-more p {
+			font-size: 11.5px;
+			line-height: 1.42;
+		}
 	}
 
 	/* The hidden group headings ("Experience", ...) must make it into the
 	   PDF TEXT LAYER for ATS segmenters, but stay invisible on the sheet.
 	   The screen clip recipe (1px box) drops the glyphs from Chrome's
 	   print output entirely, so print swaps the mechanism: in flow with
-	   zero height and transparent ink - no layout, no pixels, but the
-	   text run lands in the PDF at its true position. */
+	   a small real band and transparent ink - no pixels, but the text
+	   run lands in the PDF at its true position. */
 	.resume .reader-only {
 		position: static;
 		width: auto;
-		height: 0;
 		overflow: visible;
 		clip-path: none;
 		white-space: normal;
-		line-height: 0;
 		margin: 0;
 		color: transparent;
+
+		/* The invisible glyphs own a REAL 12px band IN FLOW - no overlap
+		   tricks (a negative-margin overlay left them a hair from the
+		   eyebrow's line and extractors interleaved the two; a transform
+		   shoved them to the stream's end via paint order). The band's
+		   height is paid for by the row-gap below, so the visual lead
+		   space stays exactly one purple. */
+		font-size: 8px;
+		height: 12px;
+		line-height: 12px;
 	}
 
 	/* Nothing on the sheet that isn't resume: chrome, nav, footer. The
@@ -317,6 +497,22 @@
 		}
 	}
 
+	/* THE PRINT ACCENT - pinned, not inherited from the live theme (the
+	   export's color must never be an accident of theme defaults). A
+	   VIVID royal blue on purpose: blue is the one hue whose saturation
+	   is nearly free in black-and-white (luminance is ~71% green, ~21%
+	   red, ~7% blue), so this pops in color yet still grays to near-body
+	   dark - unlike the screen green, which IS brightness and washes
+	   out. A per-target brand color would re-dial this one token. */
+	.resume {
+		--resume-print-accent: #2a4abf;
+
+		.resume-intro,
+		.resume-intro p {
+			color: var(--resume-print-accent);
+		}
+	}
+
 	/* The static print families take over the tokens the voices read
 	   from. This MUST land at :root - the voice family tokens
 	   (--calm-voice-font-family etc.) are defined there, and a var()
@@ -330,31 +526,29 @@
 	}
 
 	.resume {
+		/* The four space tokens, re-valued for paper (Derek's print check,
+		   2026-09-07: one even rhythm between ALL jobs - section and entry
+		   spaces are deliberately equal on the sheet). */
+		--resume-space-section: 22px;
+		--resume-space-entry: 22px;
+		--resume-space-cluster: 7px;
+		--resume-space-eyebrow: 2px;
+
 		display: grid;
 		grid-template-columns: 1fr 260px;
 		column-gap: 44px;
-		row-gap: 1.25em;
 		position: relative;
 		max-width: none;
 
-		/* Paper rhythm is tighter than screen rhythm - the sheet has a
-		   budget. Line-height too: screen reading air (~1.6) is a web
-		   convention; print resumes conventionally set solid (~1.4). */
-		p {
-			line-height: 1.4;
+		/* No row-gap - each left row states its space above, minus the
+		   hidden 12px heading band each section opens with: a lead before
+		   the first job, the JOB rhythm between the job sections. */
+		.resume-current {
+			margin-top: calc(var(--resume-space-lead) - 12px);
 		}
 
-		.resume-entry,
-		.resume-more .resume-education {
-			margin-top: 1.25em;
-		}
-
-		.resume-entry p {
-			margin-top: 0.5em;
-		}
-
-		.resume-intro {
-			margin-top: 1em;
+		.resume-earlier {
+			margin-top: calc(var(--resume-space-entry) - 12px);
 		}
 
 		/* The timeline spine, drawn in the column gap - arrowhead up top
@@ -367,9 +561,11 @@
 			transform: translateX(-50%);
 			border-left: 5px solid transparent;
 			border-right: 5px solid transparent;
-			border-bottom: 9px solid var(--stroke-primary);
+			border-bottom: 9px solid var(--resume-print-accent);
 		}
 
+		/* The spine wears the accent too - the intro and the timeline are
+		   the same voice: this is the story, this is its direction. */
 		&::after {
 			content: '';
 			position: absolute;
@@ -377,7 +573,7 @@
 			bottom: 0;
 			left: calc(100% - 282px);
 			width: 1px;
-			background: var(--stroke-primary);
+			background: var(--resume-print-accent);
 		}
 
 		.resume-header {
@@ -421,6 +617,10 @@
 			top: 50%;
 			transform: translateY(-50%);
 			width: 100%;
+			/* The narrow stack's piece margin must not shift this
+			   absolute box - placement here is the positioning math. */
+			margin-top: 0;
+			anchor-name: --resume-contracts;
 		}
 
 		/* Centered on the earlier-roles band, same as the screen layout -
@@ -431,12 +631,25 @@
 			grid-row: 3 / 4;
 			align-self: center;
 
-			/* The contracts above are out of flow, so the section break
-			   between their tail and this block can't derive naturally -
-			   the top margin biases the centering down (a centered box
-			   shifts by half its margin) to restore the site's section
-			   air. */
-			margin-top: 5em;
+			/* The contracts above are out of flow, so the space between
+			   their tail and this block can't derive naturally - the
+			   margin biases the centering down by a BREAK (doubled: a
+			   centered box shifts by only half its margin). */
+			margin-top: calc(2 * var(--resume-space-break));
+		}
+
+		/* The real rule: one BREAK below the contracts' actual bottom,
+		   computed per lane - never a magic number. The margin rule
+		   above is the no-anchor-support fallback; headless Chrome,
+		   the entire print pipeline, takes this one. */
+		@supports (top: anchor(top)) {
+			.resume-more {
+				position: absolute;
+				top: calc(anchor(--resume-contracts bottom) + var(--resume-space-break));
+				align-self: auto;
+				width: 100%;
+				margin-top: 0;
+			}
 		}
 
 		.resume-entry,
@@ -464,4 +677,5 @@
 			print-color-adjust: exact;
 		}
 	}
+
 }
