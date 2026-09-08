@@ -47,14 +47,23 @@ done
 # exporting are one gesture). A failing check publishes nothing, so the
 # last good exports survive.
 if [ -z "$FAIL" ]; then
+	# Every sheet goes to BOTH destinations - the Desktop set and the
+	# job-search briefing folder are the same six-sheet kit, never
+	# allowed to drift (the resumes briefly went Desktop-only while the
+	# letters went to both; caught 2026-09-08 when briefing's resumes
+	# missed a role-line change).
+	# Names differ by destination on purpose: briefing speaks the
+	# job-search kit's paired scheme (derek-wood-resume-<short> beside
+	# derek-wood-letter-<short>); the Desktop set keeps its original
+	# full-lane names.
 	mkdir -p "$HOME/Desktop/resume-exports"
 	for lane in product-designer design-engineer advocate; do
 		cp "$OUT/$lane.pdf" "$HOME/Desktop/resume-exports/derek-wood-$lane.pdf"
+		cp "$OUT/$lane.pdf" "$BRIEFING/derek-wood-resume-$(letter_short "$lane").pdf"
 	done
 
-	# Approved letters publish straight to the job-search briefing folder -
-	# they are application-ready the moment the check is green - and join
-	# the Desktop export set beside the resumes (Derek, 2026-09-08).
+	# Approved letters ride the same two destinations - a lane's letter
+	# joins via LETTER_LANES once its copy is approved.
 	for lane in $LETTER_LANES; do
 		cp "$OUT/letter-$lane.pdf" "$BRIEFING/derek-wood-letter-$(letter_short "$lane").pdf"
 		cp "$OUT/letter-$lane.pdf" "$HOME/Desktop/resume-exports/derek-wood-letter-$(letter_short "$lane").pdf"
