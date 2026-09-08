@@ -38,7 +38,7 @@ if ($target_slug !== '' && isset($letters['targets'][$target_slug])) {
 			<p><?= $paragraph ?></p>
 		<?php endforeach; ?>
 
-		<p><?= $letter['signoff'] ?></p>
+		<p class='letter-signoff'><?= $letter['signoff'] ?></p>
 
 		<?php /* Approved letters sign with the full name (the letter's own
 			signature key); until then the header identity signs. */ ?>
