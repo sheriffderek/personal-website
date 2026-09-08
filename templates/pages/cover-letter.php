@@ -40,7 +40,9 @@ if ($target_slug !== '' && isset($letters['targets'][$target_slug])) {
 
 		<p><?= $letter['signoff'] ?></p>
 
-		<p class='letter-signature firm-voice'><?= $resume['header']['name'] ?></p>
+		<?php /* Approved letters sign with the full name (the letter's own
+			signature key); until then the header identity signs. */ ?>
+		<p class='letter-signature firm-voice'><?= $letter['signature'] ?? $resume['header']['name'] ?></p>
 
 	</section>
 

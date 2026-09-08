@@ -19,6 +19,28 @@ for lane in product-designer design-engineer advocate; do
 	[ "$pages" = "1" ] || FAIL=1
 done
 
+# Cover letters ride the same check, but only APPROVED lanes - a lane
+# joins this list when Derek approves its letter copy in letters.json
+# (placeholder letters render at their routes but never export).
+# Export names use the short lane words: product / engineer / advocate.
+LETTER_LANES="product-designer"
+BRIEFING="$HOME/projects/job-search/briefing"
+
+letter_short() {
+	case "$1" in
+		product-designer) echo "product" ;;
+		design-engineer) echo "engineer" ;;
+		advocate) echo "advocate" ;;
+	esac
+}
+
+for lane in $LETTER_LANES; do
+	"$CHROME" --headless --print-to-pdf="$OUT/letter-$lane.pdf" --no-pdf-header-footer "$BASE/$lane/cover-letter" >/dev/null 2>&1
+	pages=$(pdfinfo "$OUT/letter-$lane.pdf" 2>/dev/null | awk '/^Pages/{print $2}')
+	SUMMARY="$SUMMARY letter-$(letter_short "$lane")=${pages:-ERR}p"
+	[ "$pages" = "1" ] || FAIL=1
+done
+
 # On a green check, the verified PDFs ARE the deliverables - publish them
 # to the export folder instead of throwing them away (checking and
 # exporting are one gesture). A failing check publishes nothing, so the
@@ -33,6 +55,12 @@ if [ -z "$FAIL" ]; then
 	# without putting a build hash on the sheet itself (the text layer
 	# stays clean by contract). Content hash = resume.json, so the same
 	# hash means the same words.
+	# Approved letters publish straight to the job-search briefing folder -
+	# they are application-ready the moment the check is green.
+	for lane in $LETTER_LANES; do
+		cp "$OUT/letter-$lane.pdf" "$BRIEFING/derek-wood-letter-$(letter_short "$lane").pdf"
+	done
+
 	{
 		echo "exported:  $(date '+%Y-%m-%d %H:%M:%S')"
 		echo "content:   $(md5 -q "$(dirname "$0")/../content/resume.json" | cut -c1-8)"
