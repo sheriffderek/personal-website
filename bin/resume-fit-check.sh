@@ -51,15 +51,11 @@ for lane in $LETTER_LANES; do
 	[ "$pages" = "1" ] || FAIL=1
 done
 
-# Plain-text twins - the site's /text routes render the same JSON the
-# PDFs print from, for pasting into application portals. Checked here
-# (a fetch that comes back empty or as an error page fails the run)
-# and published beside the PDFs below.
-for lane in product-designer design-engineer advocate; do
-	curl -sf "$BASE/$lane/text" > "$OUT/$lane.txt"
-	grep -q "Derek Wood" "$OUT/$lane.txt" || { FAIL=1; SUMMARY="$SUMMARY $lane-txt=ERR"; }
-done
-
+# Plain-text twins, LETTERS ONLY (Derek, 2026-09-08): letter text gets
+# pasted into portal textboxes; resumes are always uploaded as PDF, so
+# a resume .txt would have no reader and doesn't export. (The site's
+# /resume/<lane>/text route still exists for on-demand use.) A fetch
+# that comes back empty or as an error page fails the run.
 for lane in $LETTER_LANES; do
 	curl -sf "$BASE/$lane/cover-letter/text" > "$OUT/letter-$lane.txt"
 	grep -q "Derek Wood" "$OUT/letter-$lane.txt" || { FAIL=1; SUMMARY="$SUMMARY letter-$(letter_short "$lane")-txt=ERR"; }
@@ -73,7 +69,6 @@ if [ -z "$FAIL" ]; then
 	for lane in product-designer design-engineer advocate; do
 		mkdir -p "$KIT/$lane"
 		cp "$OUT/$lane.pdf" "$KIT/$lane/derek-wood-resume-$(letter_short "$lane").pdf"
-		cp "$OUT/$lane.txt" "$KIT/$lane/derek-wood-resume-$(letter_short "$lane").txt"
 	done
 
 	# Approved letters land beside their lane's resume - a lane's letter
