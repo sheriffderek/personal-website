@@ -20,7 +20,7 @@
 
 		---- end footer nav ---- */ ?>
 
-		<p class='data-voice'>&copy; <?= SITE_TITLE ?></p>
+		<p class='data-voice'>&copy; Derek Thomas Wood <?= date('Y') ?></p>
 
 		<?php /* The build line: 7 chars derived from the code files' contents -
 			same files, same fingerprint, on any machine, however they got
@@ -30,7 +30,7 @@
 			where one can disagree just re-opens the "am I current?" question
 			this line exists to close. */ ?>
 		<p class='data-voice'>
-			<?= build_fingerprint() ?>
+			Version: <?= build_fingerprint() ?>
 		</p>
 
 		<?php /* Testing knob for the carousel nudge, riding its flag: the link
