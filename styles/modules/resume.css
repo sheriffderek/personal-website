@@ -62,14 +62,17 @@
 
 	   READING RHYTHM - em, derives from the type it sits against
 	   (these are the paragraph-level spaces, not layout dials):
-	     --resume-space-cluster  RED: title->body, para->para
-	     --resume-space-eyebrow  eyebrow->title inside a designation */
+	     --resume-space-cluster    RED: title->body, para->para in an entry
+	     --resume-space-eyebrow    eyebrow->title inside a designation
+	     --resume-space-paragraph  letter para->para: one blank em, the
+	                               typographic standard for prose */
 	--resume-space-entry: 1.5rem;
 	--resume-space-lead: 2.6rem;
 	--resume-space-break: 3.25rem;
 
 	--resume-space-cluster: 0.75em;
 	--resume-space-eyebrow: 0.3em;
+	--resume-space-paragraph: 1em;
 
 	/* Source order is the narrow reading order AND the parse order (ATS
 	   bucketing: all work sections before speaking/education). No gap at
@@ -341,14 +344,13 @@
 		max-width: 44em;
 	}
 
-	/* Letter paragraph rhythm: between cluster and entry, at the same
-	   0.75-of-entry ratio the resume's right-column groups use. The
-	   logic (walked with Derek, 2026-09-08): a job entry opens with a
-	   heading cluster, so full entry space earns its size announcing a
-	   new block; letter paragraphs are one continuous voice - cluster
-	   read as an undifferentiated wall, full entry as oversized gaps. */
+	/* Letter paragraph rhythm is READING rhythm, not a structural dial
+	   (walked with Derek, 2026-09-08 - cluster read as a wall, a
+	   structural entry-ratio read as arbitrary): its own em token,
+	   deriving from the type like all reading rhythm, at the one-blank-
+	   em typographic standard for prose. */
 	.letter-body p + p {
-		margin-top: calc(var(--resume-space-entry) * 0.75);
+		margin-top: var(--resume-space-paragraph);
 	}
 }
 
