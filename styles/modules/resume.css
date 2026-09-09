@@ -341,8 +341,12 @@
 		max-width: 44em;
 	}
 
+	/* Letter paragraphs sit an ENTRY apart - a letter's paragraphs are
+	   its only structure, so they need the between-jobs rhythm, not the
+	   tight title-to-body cluster (which read as an undifferentiated
+	   wall; Derek, 2026-09-08). */
 	.letter-body p + p {
-		margin-top: var(--resume-space-cluster);
+		margin-top: var(--resume-space-entry);
 	}
 }
 
@@ -759,8 +763,9 @@
 	/* The cover letter on paper: prose in the left column of the same
 	   print grid, the right column empty on purpose - the spine and
 	   arrow stand in the gap exactly where the resume puts them, so the
-	   pair reads as one set. Letter prose sits at the resume's body size
-	   with a touch more air (it's a letter, not a listing). */
+	   pair reads as one set. Letter prose sits at the resume's body
+	   size AND leading - the pair must read as one set (a looser 1.5
+	   was tried and read as mismatched; Derek, 2026-09-08). */
 	.cover-letter {
 		.letter-body {
 			grid-column: 1;
@@ -769,7 +774,7 @@
 
 		.letter-body p {
 			font-size: 11.5px;
-			line-height: 1.5;
+			line-height: 1.42;
 		}
 	}
 
