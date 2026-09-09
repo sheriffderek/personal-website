@@ -341,12 +341,14 @@
 		max-width: 44em;
 	}
 
-	/* Letter paragraphs sit an ENTRY apart - a letter's paragraphs are
-	   its only structure, so they need the between-jobs rhythm, not the
-	   tight title-to-body cluster (which read as an undifferentiated
-	   wall; Derek, 2026-09-08). */
+	/* Letter paragraph rhythm: between cluster and entry, at the same
+	   0.75-of-entry ratio the resume's right-column groups use. The
+	   logic (walked with Derek, 2026-09-08): a job entry opens with a
+	   heading cluster, so full entry space earns its size announcing a
+	   new block; letter paragraphs are one continuous voice - cluster
+	   read as an undifferentiated wall, full entry as oversized gaps. */
 	.letter-body p + p {
-		margin-top: var(--resume-space-entry);
+		margin-top: calc(var(--resume-space-entry) * 0.75);
 	}
 }
 
