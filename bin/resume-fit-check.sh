@@ -51,6 +51,20 @@ for lane in $LETTER_LANES; do
 	[ "$pages" = "1" ] || FAIL=1
 done
 
+# Plain-text twins - the site's /text routes render the same JSON the
+# PDFs print from, for pasting into application portals. Checked here
+# (a fetch that comes back empty or as an error page fails the run)
+# and published beside the PDFs below.
+for lane in product-designer design-engineer advocate; do
+	curl -sf "$BASE/$lane/text" > "$OUT/$lane.txt"
+	grep -q "Derek Wood" "$OUT/$lane.txt" || { FAIL=1; SUMMARY="$SUMMARY $lane-txt=ERR"; }
+done
+
+for lane in $LETTER_LANES; do
+	curl -sf "$BASE/$lane/cover-letter/text" > "$OUT/letter-$lane.txt"
+	grep -q "Derek Wood" "$OUT/letter-$lane.txt" || { FAIL=1; SUMMARY="$SUMMARY letter-$(letter_short "$lane")-txt=ERR"; }
+done
+
 # On a green check, the verified PDFs ARE the deliverables - publish them
 # to the export folder instead of throwing them away (checking and
 # exporting are one gesture). A failing check publishes nothing, so the
@@ -59,22 +73,31 @@ if [ -z "$FAIL" ]; then
 	for lane in product-designer design-engineer advocate; do
 		mkdir -p "$KIT/$lane"
 		cp "$OUT/$lane.pdf" "$KIT/$lane/derek-wood-resume-$(letter_short "$lane").pdf"
+		cp "$OUT/$lane.txt" "$KIT/$lane/derek-wood-resume-$(letter_short "$lane").txt"
 	done
 
 	# Approved letters land beside their lane's resume - a lane's letter
 	# joins via LETTER_LANES once its copy is approved.
 	for lane in $LETTER_LANES; do
 		cp "$OUT/letter-$lane.pdf" "$KIT/$lane/derek-wood-letter-$(letter_short "$lane").pdf"
+		cp "$OUT/letter-$lane.txt" "$KIT/$lane/derek-wood-letter-$(letter_short "$lane").txt"
 	done
 
-	# The version stamp - answers "are these PDFs current?" at a glance
+	# The version stamp - answers "is this kit current?" at a glance
 	# without putting a build hash on the sheet itself (the text layer
-	# stays clean by contract). Content hash = resume.json, so the same
-	# hash means the same words.
+	# stays clean by contract). Content hashes = resume.json +
+	# letters.json (same hash, same words); the per-file list makes
+	# staleness of any single artifact mechanically checkable.
 	{
 		echo "exported:  $(date '+%Y-%m-%d %H:%M:%S')"
-		echo "content:   $(md5 -q "$(dirname "$0")/../content/resume.json" | cut -c1-8)"
+		echo "resume:    $(md5 -q "$(dirname "$0")/../content/resume.json" | cut -c1-8)"
+		echo "letters:   $(md5 -q "$(dirname "$0")/../content/letters.json" | cut -c1-8)"
 		echo "code:      $(cd "$(dirname "$0")/.." && git rev-parse --short HEAD)$(cd "$(dirname "$0")/.." && [ -n "$(git status --porcelain)" ] && echo '+uncommitted')"
+		echo ""
+		echo "files (md5, first 8) - staleness is mechanically checkable:"
+		(cd "$KIT" && find . -name 'derek-wood-*' -type f | sort | while read -r f; do
+			echo "  $(md5 -q "$f" | cut -c1-8)  ${f#./}"
+		done)
 	} > "$KIT/version.txt"
 fi
 

@@ -17,12 +17,10 @@ $brief = [
 /* Renders one entry (an <li>) - same shape for work and contract groups.
    stamp-voice is the eyebrow: org + dates + the contract mark are a
    designation stamped on the entry, exactly that voice's job.
-   A lane may override an entry's fields via its entry_overrides map
-   (keyed by org) - whole fields only, merged over the shared entry. */
+   Lane overrides resolve through resolve_entry (render.php), shared
+   with the text rendering. */
 function resume_entry($entry, $lane, $is_contract = false) {
-	if (isset($lane['entry_overrides'][$entry['org']])) {
-		$entry = array_merge($entry, $lane['entry_overrides'][$entry['org']]);
-	}
+	$entry = resolve_entry($entry, $lane);
 ?>
 	<li class='resume-entry'>
 

@@ -42,6 +42,38 @@ function partial($name, $data = []) {
 	return ob_get_clean();
 }
 
+/* Resolves one resume entry for a lane: a lane may override an entry's
+   fields via its entry_overrides map (keyed by org) - whole fields only,
+   merged over the shared entry. Used by the resume page and its text
+   rendering, so the two can't disagree. */
+function resolve_entry($entry, $lane) {
+	if (isset($lane['entry_overrides'][$entry['org']])) {
+		$entry = array_merge($entry, $lane['entry_overrides'][$entry['org']]);
+	}
+
+	return $entry;
+}
+
+/* Resolves one lane's cover letter from letters.json: the lane's base,
+   with a bespoke target letter merged over it when the visit carries a
+   matching ?target= . A bespoke letter is pinned to ONE lane (its lane
+   key) - on any other lane the target param changes nothing, so a stray
+   ?target= can never put one lane's pitch under another's role line.
+   Used by the letter page and its text rendering. */
+function resolve_letter($letters, $lane_slug, $target_slug) {
+	$letter = $letters['lanes'][$lane_slug];
+
+	if ($target_slug !== '' && isset($letters['targets'][$target_slug])) {
+		$bespoke = $letters['targets'][$target_slug];
+
+		if (($bespoke['lane'] ?? $lane_slug) === $lane_slug) {
+			$letter = array_merge($letter, $bespoke);
+		}
+	}
+
+	return $letter;
+}
+
 /* Free-form prose placed inside a quoted HTML attribute — converts quote
    characters to entities so an apostrophe can't end the attribute early. */
 function quote_safe($text) {

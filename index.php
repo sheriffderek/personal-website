@@ -161,6 +161,17 @@ if (strpos($slug, 'resume/') === 0) {
 	$lane_slug = substr($slug, strlen('resume/'));
 	$resume = load_json('resume.json');
 
+	// A trailing /text asks for the plain-text rendering - a document,
+	// like the journal feed: it renders its own output and skips the
+	// chrome. It reads the same JSON as the page and PDF, so pasted
+	// text can never drift from the sent artifacts. The export script
+	// saves these beside the PDFs.
+	$is_text = false;
+	if (substr($lane_slug, -strlen('/text')) === '/text') {
+		$lane_slug = substr($lane_slug, 0, -strlen('/text'));
+		$is_text = true;
+	}
+
 	// Each lane also carries its cover letter at /resume/<lane>/cover-letter -
 	// same sheet family, same print pipeline. Letter prose lives in
 	// content/letters.json (wording source of truth: the letter files in
@@ -173,6 +184,11 @@ if (strpos($slug, 'resume/') === 0) {
 
 	if (isset($resume['lanes'][$lane_slug])) {
 		$lane = $resume['lanes'][$lane_slug];
+
+		if ($is_text) {
+			require TEMPLATES_DIR . '/' . ($is_cover_letter ? 'cover-letter-text.php' : 'resume-text.php');
+			exit;
+		}
 
 		if ($is_cover_letter) {
 			$pages[$slug] = [
