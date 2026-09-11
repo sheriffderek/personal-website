@@ -26,6 +26,18 @@ define('SITE_DESCRIPTION', 'I help teams do their best work, whether that\'s big
 define('SITE_URL', 'https://derekthomaswood.com');
 define('SITE_SHARE_IMAGE', '/default-meta.jpg');
 
+/* Production = any serve on the real domain (same host test the dev stamp
+   uses in header.php). Everything else - MAMP, staging - counts as local. */
+define('IS_PRODUCTION', strpos($_SERVER['HTTP_HOST'] ?? '', 'derekthomaswood.com') !== false);
+
+/* Pages still being built, per the progressive-disclosure rule (CLAUDE.md):
+   no placeholders in the visitor's path. Listed slugs stay fully visible on
+   local serves (so the work-in-progress is walkable) but drop out of the
+   menu - and everything else that lists menu'd pages - on production. The
+   route itself stays live everywhere; an unlinked URL is not in the path.
+   Finish a page = delete its slug here; that IS the ship gesture. */
+define('LOCAL_ONLY_PAGES', ['how-i-work']);
+
 /* Feature flags. A bolt-on system can ship dark or be pulled without touching
    its own code - flip the flag off and it stops loading entirely (no scripts,
    no weight), leaving the files in place, unused.

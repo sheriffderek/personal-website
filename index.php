@@ -222,6 +222,15 @@ if (strpos($slug, 'resume/') === 0) {
 	}
 }
 
+// The local-only pages (config.php): on production they leave the menu -
+// and with it every surface that lists menu'd pages (the Pages panel, the
+// site-map, the share-previews sweep) - while their routes stay live.
+if (IS_PRODUCTION) {
+	foreach (LOCAL_ONLY_PAGES as $local_only_slug) {
+		unset($pages[$local_only_slug]['menu']);
+	}
+}
+
 // Didn't recognize it? Show a 404 - still a real page with our normal chrome.
 if (!isset($pages[$slug])) {
 	http_response_code(404);
