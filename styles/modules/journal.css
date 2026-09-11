@@ -5,18 +5,14 @@
    The kitchen-sink entry (/journal/kitchen-sink, unlisted) is the living outline of
    every shape used here. */
 
-/* $todo OPEN QUESTION (Derek, 2026-09-02) - wide shapes in the entry column.
-   The prose measure is per-element (72ch on p), so embeds/figures already span
-   the full inner-column - but for wide shapes (code-study-embed, and likely
-   wide images/entry-figure too) that still isn't much room. Direction being
-   considered, TBC - not built on purpose:
-   - a RIGHT-SIDE-ONLY breakout (roughly margin-right: -200px on the wide
-     shape), keeping the prose column and left edge stable;
-   - the settings panel may overlay the widened shape (it's an overlay anyway) -
-     but note the console pane's Clear button lives in that far-right corner;
-   - per PAGE TYPE the floating menu/settings overlay might need pulling back
-     in (an entry page reads differently than the timeline).
-   Decide with Derek before building - it changes how every entry sits. */
+/* Wide shapes in the entry column - DECIDED (Derek, 2026-09-10; the open
+   question sat here from 2026-09-02): figures come in two sizes. Default =
+   the inner column; .figure-full = the RIGHT-SIDE-ONLY breakout, keeping
+   the prose column and left edge stable while the shape grows rightward
+   into the margin. The settings panel may overlay a widened shape - it's
+   an overlay anyway. Exists only where the room does (>= 1200); below
+   that every figure is column-width. code-study-embed can adopt the same
+   breakout when an entry needs it wide. */
 
 .journal-entry {
 	.entry-header {
@@ -74,6 +70,9 @@
 		border-top: 1px solid var(--stroke-primary);
 	}
 
+	/* The breakout depth is a structural dial, not per-figure tuning. */
+	--layout-figure-breakout: 200px;
+
 	.entry-figure {
 		margin-block: 1.5em;
 
@@ -93,6 +92,14 @@
 			margin-top: 0.5em;
 			max-width: 72ch;
 			color: var(--ink-secondary);
+		}
+
+		/* The wide size (.figure-full on the figure): the right-side-only
+		   breakout described at the top of this file. */
+		@media (min-width: 1200px) {
+			&.figure-full {
+				width: calc(100% + var(--layout-figure-breakout));
+			}
 		}
 
 		/* Side-by-side comparison (an autonomous custom element - purely

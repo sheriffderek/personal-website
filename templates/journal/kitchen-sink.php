@@ -30,6 +30,18 @@
 </section>
 
 <section>
+	<h2 class='attention-voice'>Full-size media</h2>
+
+	<p>Figures come in two sizes. The default holds the prose column. Adding <code>figure-full</code> gives the breakout size - the left edge stays on the prose line and the shape grows rightward into the margin, where the room exists (below 1200px every figure is column-width). For the video or image that IS the entry.</p>
+
+	<figure class='entry-figure figure-full'>
+		<iframe src='https://player.vimeo.com/video/76979871' title='Sample full-size Vimeo embed' allow='fullscreen; picture-in-picture' loading='lazy'></iframe>
+
+		<figcaption class='quiet-voice'>The same embed at the full size - compare its right edge with the paragraphs above.</figcaption>
+	</figure>
+</section>
+
+<section>
 	<h2 class='attention-voice'>Figures</h2>
 
 	<p>An image travels inside a figure with a caption. The caption is the quiet voice, and it should say something the image doesn't - what to notice, not what's depicted.</p>
