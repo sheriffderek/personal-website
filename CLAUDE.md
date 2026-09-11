@@ -95,6 +95,8 @@ For CSS-specific conventions (no BEM, no underscores/double-dashes, nesting scop
 
 ## Writing rules
 
+**The case-study rubric lives in `case-study-rubric.md` (repo root)** - the outline/checklist we compare cards against (narrative arc, per-card checks, site-level checks). Use it when writing or reviewing any entry's copy.
+
 **Loose copy notes live in `copy-notes.md` (repo root)** - running notes from copy-review sessions (copywriter feedback, applied/pending status per item, open questions like the `list-at-ease` slug rename). Check it when picking copy work back up.
 
 **Goal.** A recruiter scrolling the timeline thinks "wow — breadth + depth + 15 years of doing this, let's talk." Each card is a recruiter scan; the "Read more" is the dig-deeper. Derek is targeting **Head of Design** and **Senior Product Designer** roles where he'll lead and educate teams.
