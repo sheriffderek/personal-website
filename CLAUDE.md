@@ -60,6 +60,22 @@ This is the same line the spec draws - WCAG's reduced-motion guidance targets *n
 
 **Don't add a `prefers-reduced-motion` guard reflexively.** It is not an automatic include on every new transition, and proposing it per-feature as "non-negotiable" is the failure mode - run it through the test above, and if it's functional, leave it alone.
 
+## Progressive disclosure (the IA principle - Derek, 2026-09-11)
+
+**The least things possible - but enough to move forward - with a door
+deeper at every level.** This was already the site's native mechanic (the
+weight slider's 16-to-36 reveal, Read more, poster-then-carousel,
+list-then-grid, panel-then-band); it's now the governing IA rule:
+
+- Every area ships its minimum first layer plus one honest door deeper -
+  never the whole depth up front.
+- Removing is always on the table: an area that can't state its job in one
+  line isn't ready to be visible (the rubric's "judged by the weakest
+  visible thing"). Cut it or finish it - no placeholders in the visitor's
+  path.
+- "Should we add X?" gets judged here first: does X belong in a first
+  layer, behind an existing door, or not yet?
+
 ## Design notes
 
 - 16:9 poster cards for each entry
