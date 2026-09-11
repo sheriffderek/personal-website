@@ -2,3 +2,6 @@
 
 # Generated share cards - derived output, each machine grows its own (see meta-image/meta-image.php).
 meta-image/cache/
+
+# The theme-shots tool pulls puppeteer-core with npm install --no-save (see tools/theme-shots.js).
+node_modules/
