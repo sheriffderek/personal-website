@@ -11,6 +11,12 @@
 	$listed = array_filter($journal, function ($entry) {
 		return empty($entry['unlisted']);
 	});
+
+	// Newest at the top - the ISO date is the sortable truth, so the list
+	// never depends on the JSON's authoring order.
+	uasort($listed, function ($a, $b) {
+		return strcmp($b['date'], $a['date']);
+	});
 ?>
 
 <text-content class='styled journal-index'>

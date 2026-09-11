@@ -8,7 +8,7 @@
 <article class='styled journal-entry'>
 
 	<header class='entry-header'>
-		<p class='date stamp-voice'><?= $entry['date'] ?></p>
+		<p class='date stamp-voice'><?= journal_date($entry['date']) ?></p>
 
 		<h1 class='loud-voice'><?= $entry['title'] ?></h1>
 

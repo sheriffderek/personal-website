@@ -74,6 +74,13 @@ function resolve_letter($letters, $lane_slug, $target_slug) {
 	return $letter;
 }
 
+/* Journal dates are authored as ISO (2026-09-09) in journal.json - the
+   sortable truth - and rendered long-form (September 9, 2026) wherever a
+   person reads them. One formatter so every surface says it the same way. */
+function journal_date($iso) {
+	return date('F j, Y', strtotime($iso));
+}
+
 /* Free-form prose placed inside a quoted HTML attribute — converts quote
    characters to entities so an apostrophe can't end the attribute early. */
 function quote_safe($text) {

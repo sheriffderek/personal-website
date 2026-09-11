@@ -2,7 +2,7 @@
 	// The journal's RSS feed - the whole document, chrome-free. Routed from
 	// index.php at /journal/feed; everything here prints XML, not HTML.
 	// Same source and same rules as the journal page: content/journal.json,
-	// in the order the JSON declares (newest first), unlisted entries skipped.
+	// newest first by their ISO dates, unlisted entries skipped.
 
 	// Prose placed inside an XML element - a bare & or < would end the story
 	// early. Readers un-escape this on display, so any markup in a summary
@@ -15,6 +15,10 @@
 
 	$listed = array_filter($journal, function ($entry) {
 		return empty($entry['unlisted']);
+	});
+
+	uasort($listed, function ($a, $b) {
+		return strcmp($b['date'], $a['date']);
 	});
 
 	header('Content-Type: application/rss+xml; charset=utf-8');
@@ -36,10 +40,8 @@
 				<link><?= SITE_URL ?>/journal/<?= $entry_slug ?></link>
 				<guid><?= SITE_URL ?>/journal/<?= $entry_slug ?></guid>
 				<?php
-					// Entry dates are authored loose ("September 2026") on
-					// purpose - the feed pins each to the first of its month,
-					// which is enough for readers to sort by. A date PHP can't
-					// parse just goes without.
+					// Entry dates are authored as full ISO days in
+					// journal.json; a date PHP can't parse just goes without.
 					$published = strtotime($entry['date']);
 				?>
 				<?php if ($published): ?>
