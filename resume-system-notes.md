@@ -146,12 +146,11 @@ like to a machine" section quotes from there.
   targets map (structure only, none authored). Exports to
   job-search/briefing/ deliberately NOT wired yet - waits for approved
   copy; the fit-check script grows letter routes then.
-- Review flag (2026-09-08, unresolved): the print block declares
-  `--resume-space-section: 22px`, which nothing consumes - it looks like
-  the section->lead token rename missed the print block. Left as-is
-  because the approved print checks were made with `--resume-space-lead`
-  falling through to its screen value; re-valuing lead to 22px would
-  change the sheet. Needs Derek's eye, then either rename or delete.
+- ~~Review flag: orphaned `--resume-space-section`~~ - RESOLVED by
+  deletion (Derek, 2026-09-11): the approved sheets were printed with
+  lead/break riding their screen values, so the value that looks right
+  is the one already rendering - the orphan was just a lie in the file.
+  Deleted, zero pixels changed (fit check green after).
 
 ## Addendum (2026-09-07) - the system as it settled
 

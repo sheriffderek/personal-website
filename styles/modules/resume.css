@@ -612,10 +612,11 @@
 	}
 
 	.resume {
-		/* The four space tokens, re-valued for paper (Derek's print check,
-		   2026-09-07: one even rhythm between ALL jobs - section and entry
-		   spaces are deliberately equal on the sheet). */
-		--resume-space-section: 22px;
+		/* The paper re-values (Derek's print check, 2026-09-07): entry and
+		   the reading-rhythm pair get px values; lead and break
+		   deliberately ride their screen values (the approved sheets were
+		   printed that way - resolved 2026-09-11, closing the orphaned
+		   --resume-space-section flag noted in resume-system-notes.md). */
 		--resume-space-entry: 22px;
 		--resume-space-cluster: 7px;
 		--resume-space-eyebrow: 2px;
