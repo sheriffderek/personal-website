@@ -34,6 +34,12 @@ body {
 	--layout-list-column: 720px;
 	--layout-tray-sidebar: 300px;
 
+	/* How far a wide shape (the journal's .figure-full) reaches past the
+	   content column. Declared here because it is layout truth twice over:
+	   journal.css sizes the figure with it, and the entry-page grid below
+	   reserves a lane of exactly this width at full size. */
+	--layout-figure-breakout: 200px;
+
 	/* The drop gap is the tray's own 0.5rem block padding continuing below
 	   the bar - the panel hangs at the tray's rhythm, not a magic number.
 	   If the tray's padding changes, change this with it. */
@@ -166,6 +172,23 @@ main {
 		   scroll depth - it owns a real lane, no magic offset. */
 		top: 1rem;
 		background-color: transparent;
+	}
+}
+
+/* Entry pages at full width: the breakout gets its own lane between the
+   content column and the tray, so a full-size figure and the open panel
+   never contest - the panel sits off to the side past the media, and the
+   dim derives to not-over on its own (the extent test in settings-panel.js
+   needs no knowledge of this). Below 1450 the panel overlays and dims,
+   which is correct where the room doesn't exist. Scoped to journal pages
+   on purpose: other pages keep today's centered composition. */
+@media (width >= 1450px) {
+	.page-wrapper[data-page^='journal/'] {
+		grid-template-columns: 1fr minmax(0, var(--layout-list-column)) var(--layout-figure-breakout) var(--layout-tray-sidebar) 1fr;
+	}
+
+	.page-wrapper[data-page^='journal/'] > .site-tray {
+		grid-column: 4;
 	}
 }
 

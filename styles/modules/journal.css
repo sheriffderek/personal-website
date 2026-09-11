@@ -70,9 +70,9 @@
 		border-top: 1px solid var(--stroke-primary);
 	}
 
-	/* The breakout depth is a structural dial, not per-figure tuning. */
-	--layout-figure-breakout: 200px;
-
+	/* The breakout depth (--layout-figure-breakout) lives with the layout
+	   tokens in default-layout.css - the entry-page grid reserves a lane
+	   of the same width at full size. */
 	.entry-figure {
 		margin-block: 1.5em;
 
