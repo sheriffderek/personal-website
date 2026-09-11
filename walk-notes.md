@@ -16,6 +16,16 @@
    digested in theme-model.md, Product x Expressive entry).
 4. **Post-show**: Interface's code-sample identity; marketing card
    backgrounds (parked under its evocation below); Product rename question.
+5. **Journal pages barely theme (Derek, 2026-09-10 - noted for the missing
+   "emphasis" layer, not scheduled).** On an entry page the axes almost
+   don't show: it's all calm-voice prose, no posters, no variant-carrying
+   components - switching character/mood/flavor moves only type and inks,
+   subtly. The timeline demonstrates the system; the journal under-
+   demonstrates it. If/when an emphasis layer gets designed, the journal's
+   small surfaces are the candidates: entry-figure frames, blockquote
+   strokes, the date stamps, code panels - places a mood/flavor could
+   speak without touching the prose. Note only - the fix is a design
+   session, not a patch.
 
 
 ## What each character EVOKES (Derek, 2026-08-25 - the measuring stick)
