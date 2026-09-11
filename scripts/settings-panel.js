@@ -1042,6 +1042,45 @@
 		return !!trigger && getComputedStyle(trigger).display !== 'none';
 	}
 
+	/* The page's real horizontal content extent - the union of every
+	   rendered element inside <main>, so overflowing shapes (a journal
+	   breakout figure) count the same as boxes. Global state, refreshed
+	   only at the layout moments (load, fonts settling, and the reconcile's
+	   doors: width resize, view switch, band observer) - horizontal extent
+	   can't change with vertical scroll, so those moments are the complete
+	   list. One tree walk at those frequencies costs nothing. */
+	var contentExtent = null;
+
+	function measureContentExtent() {
+		var mainElement = document.querySelector('main');
+
+		if (!mainElement) {
+			contentExtent = null;
+			return;
+		}
+
+		var left = Infinity;
+		var right = -Infinity;
+
+		Array.prototype.forEach.call(mainElement.querySelectorAll('*'), function (element) {
+			var box = element.getBoundingClientRect();
+
+			if (box.width === 0 || box.height === 0) {
+				return;
+			}
+
+			if (box.left < left) {
+				left = box.left;
+			}
+
+			if (box.right > right) {
+				right = box.right;
+			}
+		});
+
+		contentExtent = right > left ? { left: left, right: right } : null;
+	}
+
 	function syncOverContent(panel) {
 		/* "Over content" is derived, not declared per situation: the panel
 		   covers content exactly when its rect overlaps something rendered
@@ -1053,19 +1092,20 @@
 		   overlap -> not over; the phone card over the page and the grid's
 		   beside-panel over the wall DO -> over. We only write the boolean;
 		   the shade reads it to decide the dim. */
-		var mainElement = document.querySelector('main');
+		/* "Over content" is a PAGE fact, not a moment fact: could this
+		   page's content sit under the panel at any scroll position? So the
+		   test is one axis - does the panel's x-range intersect the page's
+		   measured content extent - and it needs no scroll listener, no
+		   per-shape knowledge (a breakout figure overflows its article's
+		   box, which is why measuring boxes one level deep missed a panel
+		   sitting over a widened video, 2026-09-10). The extent comes from
+		   measureContentExtent below, refreshed at the layout moments. */
 		var over = false;
 
-		if (mainElement) {
+		if (contentExtent) {
 			var p = panel.getBoundingClientRect();
 
-			Array.prototype.forEach.call(mainElement.children, function (child) {
-				var m = child.getBoundingClientRect();
-
-				if (p.left < m.right && p.right > m.left && p.top < m.bottom && p.bottom > m.top) {
-					over = true;
-				}
-			});
+			over = p.left < contentExtent.right && p.right > contentExtent.left;
 		}
 
 		panel.toggleAttribute('data-over', over);
@@ -1086,6 +1126,10 @@
 	   before the panel wiring below has assigned it - nothing can be open
 	   that early, so there's nothing to reconcile. */
 	function reconcilePanelsToLayout() {
+		/* The extent refreshes at every reconcile door even with nothing
+		   open - the next open reads it without re-measuring. */
+		measureContentExtent();
+
 		if (!openPanels || !openPanels.size) {
 			return;
 		}
@@ -1402,6 +1446,16 @@
 			try { savedView = localStorage.getItem('view-preference'); } catch (error) {}
 			applyView(savedView === 'grid' ? 'grid' : 'list', { persist: false });
 		}
+	}
+
+	/* The extent's load-time measurements: now, and again once fonts settle
+	   (pre-font metrics can shift edges, same reason the grid re-deals).
+	   Fonts settling goes through the full reconcile so an already-open
+	   panel re-derives its over state too, not just the cached extent. */
+	measureContentExtent();
+
+	if (document.fonts && document.fonts.ready) {
+		document.fonts.ready.then(reconcilePanelsToLayout);
 	}
 
 	window.settings = {
