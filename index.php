@@ -222,12 +222,16 @@ if (strpos($slug, 'resume/') === 0) {
 	}
 }
 
-// The local-only pages (config.php): on production they leave the menu -
-// and with it every surface that lists menu'd pages (the Pages panel, the
-// site-map, the share-previews sweep) - while their routes stay live.
-if (IS_PRODUCTION) {
-	foreach (LOCAL_ONLY_PAGES as $local_only_slug) {
-		unset($pages[$local_only_slug]['menu']);
+// The menu derives from the MENU_PAGES list (config.php) - a page shows a
+// menu door only if the list says so for this environment. Every surface
+// that lists menu'd pages (the Pages panel, the site-map, the
+// share-previews sweep) follows automatically.
+foreach (array_keys($pages) as $menu_slug) {
+	$menu_status = MENU_PAGES[$menu_slug] ?? null;
+	$menu_shows = $menu_status === 'live' || ($menu_status === 'local' && !IS_PRODUCTION);
+
+	if (!$menu_shows) {
+		unset($pages[$menu_slug]['menu']);
 	}
 }
 

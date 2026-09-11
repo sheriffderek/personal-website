@@ -30,13 +30,22 @@ define('SITE_SHARE_IMAGE', '/default-meta.jpg');
    uses in header.php). Everything else - MAMP, staging - counts as local. */
 define('IS_PRODUCTION', strpos($_SERVER['HTTP_HOST'] ?? '', 'derekthomaswood.com') !== false);
 
-/* Pages still being built, per the progressive-disclosure rule (CLAUDE.md):
-   no placeholders in the visitor's path. Listed slugs stay fully visible on
-   local serves (so the work-in-progress is walkable) but drop out of the
-   menu - and everything else that lists menu'd pages - on production. The
-   route itself stays live everywhere; an unlinked URL is not in the path.
-   Finish a page = delete its slug here; that IS the ship gesture. */
-define('LOCAL_ONLY_PAGES', ['how-i-work']);
+/* THE MENU, as a list (Derek, 2026-09-11): these slugs ARE the site's
+   navigation - the Pages panel, the site-map, and anything else that
+   lists pages derives from it. A positive statement, not a filter:
+     live   - shows everywhere
+     local  - shows only off production (work in progress: walkable here,
+              invisible there; the route stays live for direct links)
+   Shipping a page = flipping its word to live. Order here mirrors the
+   $pages declaration in index.php, which still carries the labels. */
+define('MENU_PAGES', [
+	'home' => 'live',
+	'how-i-work' => 'local',
+	'resume' => 'live',
+	'now' => 'live',
+	'journal' => 'live',
+	'contact' => 'live',
+]);
 
 /* Feature flags. A bolt-on system can ship dark or be pulled without touching
    its own code - flip the flag off and it stops loading entirely (no scripts,
