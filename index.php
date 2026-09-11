@@ -104,6 +104,15 @@ $pages = [
 		'description' => SITE_DESCRIPTION,
 	],
 
+	// Internal tester - every page's social share preview (real og tags,
+	// fetched from the live routes, drawn as unfurl cards). No 'menu' key:
+	// reachable by URL only, like the other testers.
+	'share-previews' => [
+		'file' => 'share-previews.php',
+		'title' => 'Share previews - ' . SITE_TITLE,
+		'description' => SITE_DESCRIPTION,
+	],
+
 	// Derek's own index of everything - every page (public and internal),
 	// journal entries, target previews, experiments, feature flags. All
 	// derived live from the real sources, so it can't go stale. No 'menu'
