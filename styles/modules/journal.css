@@ -121,10 +121,15 @@
 .past-writing {
 	margin-top: 4em;
 
+	/* Group headings sit a section-breath above their list. */
+	h3 {
+		margin-top: 2em;
+	}
+
 	ul {
 		list-style: none;
 		padding: 0;
-		margin-top: 1.6em;
+		margin-top: 1em;
 	}
 
 	li + li {
