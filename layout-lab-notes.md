@@ -90,6 +90,67 @@ wiring).
 
 ---
 
+## 📐 LAYOUT POSTURE INVENTORY (named 2026-09-11 - the maintenance list)
+
+Every layout variation the site carries, by name. A new variation joins this
+list BEFORE it gets built (Derek: "documented and named so we know what
+we're maintaining"), and gets judged against it - additions must earn their
+multiplication. The living wiring is in the CSS files named per row; this
+list is the map of what exists and why.
+
+### Page skeletons - what .page-wrapper is
+
+1. **THE COLUMN** (< 1024, every page) - flex stack, tray = sticky top bar.
+   default-layout.css base.
+2. **THE SIDEBAR** (>= 1024, the default) - gutter | content 720 | tray 300
+   | gutter. default-layout.css @1024.
+3. **THE DOCUMENT** (>= 1024, resume + letter pages, opt-out by data-page) -
+   block flow, the page centers at its own measure, tray overlays as a
+   plain bar. The page IS the artifact (the printed sheet). resume.css.
+4. **THE SIDEBAR WITH BREAKOUT LANE** (>= 1450, journal entry pages) - the
+   sidebar plus a --layout-figure-breakout media lane between content and
+   tray, so a .figure-full and an open panel never contest.
+   default-layout.css @1450 journal block.
+5. **THE WALL** (grid view: >= 1200 AND the visitor's explicit choice, home
+   only) - inset | wall | tray lane | leftover. Internal tiers: 2 lanes
+   @1200 · settings band + reserved tray lane @1450 · 3 lanes @1600.
+   grid-view.css.
+
+### Panel placements - where an open menu sits (settings-panel.css)
+
+- **THE PHONE CARD** (< 700) - hangs from the circles, over the page, dims.
+- **THE DROPDOWN** (>= 700) - anchored below the bar, right-aligned, panel
+  measure.
+- **THE IN-COLUMN DROP** (>= 1024, sidebar postures) - below the toolbar in
+  the tray's own column; covers nothing, no dim.
+- **BESIDE-THE-TRAY** (grid) - opens toward the wall, top-aligned with the
+  toolbar; covers the wall, dims.
+- (**THE BAND**, >= 1450 grid, is not a placement - it's a second rendered
+  settings surface in main; the mirror model keeps every surface honest.)
+
+### The three mechanisms (be strict about which one a change uses)
+
+1. **Breakpoints** decide skeletons.
+2. **Page-type opt-outs** (data-page) decide exceptions - Document, Breakout
+   lane.
+3. **Derived state** decides behavior inside a posture - data-over (the
+   extent-derived dim), data-scrolled (band visibility / reveal members),
+   data-view (the visitor's grid choice). Derived facts refresh at the
+   layout moments (load, fonts, resize, view switch, band observer), never
+   on scroll.
+
+### Rejected / open - so they don't get re-invented
+
+- **THE CORNER POSTURE** (proposed 2026-09-10, not built): panel drops below
+  the toolbar into the wall's trailing leftover column when it's wide
+  enough (only ~2700px+ windows). Parked: a sixth placement serving one
+  width band didn't earn its multiplication - the real question is "what
+  does the top-right region do at each width," which wants one designed
+  answer. Revisit alongside the band/chrome-overlay threads in
+  walk-notes.md.
+
+---
+
 ## ⏭ SESSION HANDOFF / NEXT UP (last worked 2026-07-14)
 
 > **SUPERSEDED (2026-07-16) — read the ✅ CANONICAL SPEC at the top instead.** This block predates the
