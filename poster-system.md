@@ -170,3 +170,90 @@ GSAP is a new dependency on a site that ships almost none - weigh CSS
 animation first. Click-started motion is visitor-initiated either way, so
 no reduced-motion gate (motion policy). Still parked; still
 activation-by-cell.
+
+## Parked: texture / grain finish (2026-09-11)
+
+Sparked by a grainy-gradient graphic Derek liked (blurred color blobs under
+a uniform film-grain veil). Everything here is parked ideas, not decisions -
+and note up front: adopting ANY of it revises this file's own scope rule
+("no mix-blend-mode, no filter anywhere"). That rule was about theming
+staying a plain token repaint; a texture layer that is palette-free alpha
+doesn't break the repaint contract, but relaxing the rule is a deliberate
+call for that day, not a drift.
+
+**The constraint that shapes all of it:** texture must be palette-free
+alpha, so the tokens keep painting the color underneath and every mood x
+flavor x scheme re-tints it for free. Baked pigment is disqualified.
+
+**The deck model (the session's useful frame).** The poster figure is a
+three-deck sandwich, each deck in its own coordinate space:
+
+- CSS ground - fills/gradients, pixel-space, token-painted (already exists;
+  it's what fills the phone viewBox overflow).
+- SVG - the shape vocabulary, composition-space, token-painted.
+- CSS finish - grain, vignette, scanlines, borders: pixel-space, alpha-only,
+  painted on the HTML frame around the SVG. Doesn't exist yet.
+
+The deciding rule: composition-relative things (shapes, arcs) live in the
+SVG and SHOULD scale; device-pixel-relative things (grain, hairlines) live
+in CSS on the frame and hold 1px at every width. Grain especially belongs
+in the finish deck: film grain sits on the photograph, not in the scene -
+and feTurbulence inside the SVG would resize per phone-viewBox crop (its
+baseFrequency is user-units), the same disease as the strokes. Canvas
+stays out of the sandwich entirely: it can't read tokens reactively, so it
+structurally can't participate in repaint-from-above.
+
+**Grain options, ranked by fit:**
+
+1. A `::after` finish layer with a tiny data-URI noise tile (an SVG that is
+   just feTurbulence), low opacity, `mix-blend-mode: soft-light`/`overlay`.
+   Cheapest, pixel-true, closest to the reference image.
+2. `mask-image` with the same noise tile - texture that eats the shapes
+   (risograph/letterpress ink) rather than veiling them.
+3. feTurbulence filter inside the SVG - only if the grain must interact
+   with individual shapes; pays the viewBox-scaling tax and CPU cost.
+
+**Where it would live:** character-owned, like `--corners` - one finish
+token (e.g. `--grain-opacity`) defaulting to 0, consumed by the finish
+layer. Serious/chill balance: Product (the default) stays completely
+clean; ONE character wears the grain (Marketing the obvious wearer). Same
+posters, one panel flip, textured - restraint and range in the same click.
+No new axis; sizing-rule-compatible. Terminal could reuse the same slot
+for a scanline tile someday.
+
+**1px-honest strokes (related, separate decision):**
+`vector-effect: non-scaling-stroke` is CSS-settable, so pixel-locked vs
+proportional stroke weight could be a CHARACTER's call (Terminal/Interface
+lock to hairlines, Marketing stays proportional) - one rule per character
+block, no poster edits. This reframes the "nuclear option" note in
+CLAUDE.md's SVG-tradeoff section: nuclear as a global fix, legitimate as a
+per-character take. Gotchas: locked strokes read relatively HEAVY on
+phones (technical-pen aesthetic - you have to want it), and
+stroke-dasharray lengths still scale while the width doesn't, so dashed
+lines need a look. Cheap test: one scratch rule
+(`.poster-shapes * { vector-effect: non-scaling-stroke; }`), judge at
+phone + desktop width.
+
+**Animating texture, ranked by cost (all parked):**
+
+1. Jittered grain - never regenerate the noise; jump the static tile's
+   transform in a `steps()` loop (classic film-grain trick, compositor-only,
+   nearly free).
+2. `@property`-registered custom properties animating the ground's gradient
+   angles/positions - the color blobs drifting; "the tokens themselves are
+   moving" material.
+3. Crawling `mask-position` - weathering that migrates across shapes.
+4. Boiling lines - feTurbulence + feDisplacementMap stepping the seed a few
+   times a second (squigglevision; charming on line art, CPU-expensive -
+   one flagship poster maybe, never the grid wall).
+
+Motion-policy fit: ambient texture motion is decorative -> gated. The
+ungated version worth wanting: texture animating ONCE in response to a
+theme flip (grain washing in when Marketing lands), which is functional -
+the switch demonstrating itself - then settling still.
+
+**The sizing-rule verdict that ended the session:** the impressive thing
+is the ratio, not the effect count. The whole shelf above collapses to one
+candidate first move: one finish layer + one noise tile + one
+character-owned opacity token on Marketing, ~15 lines, judged live before
+anything else earns a slot.
