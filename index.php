@@ -1,6 +1,7 @@
 <?php
 require __DIR__ . '/includes/config.php';
 require __DIR__ . '/includes/render.php';
+require __DIR__ . '/meta-image/meta-image.php';
 
 // The build fingerprint, itemized (?stamp=debug): plain-text list of every
 // hashed code file, for diffing two machines to the exact differing file.
@@ -141,12 +142,18 @@ if (strpos($slug, 'journal/') === 0) {
 			'description' => $entry['description'],
 		];
 
-		/* Share image by presence, same contract as the target PDFs: drop
-		   meta.jpg in the entry's media folder (content/journal/<slug>/) and
-		   the share card uses it; no file = the site default. */
+		/* Share image, three floors down: a hand-made meta.jpg in the entry's
+		   media folder wins (presence contract, same as the target PDFs);
+		   else a card auto-generated from the title (the meta-image/ service);
+		   else the site default via the header's normal fallback. */
 		$entry_image = '/content/journal/' . $entry_slug . '/meta.jpg';
 		if (is_file(SITE_ROOT . $entry_image)) {
 			$pages[$slug]['image'] = $entry_image;
+		} else {
+			$generated_image = meta_image_url('journal-' . $entry_slug, $entry['title']);
+			if ($generated_image) {
+				$pages[$slug]['image'] = $generated_image;
+			}
 		}
 	}
 }
