@@ -115,6 +115,32 @@
 	}
 }
 
+/* The past-writing shelf on the index - the same choice-cluster shape as
+   the /resume lane picker: air between items, tight lines within. The em
+   literals match the hand-authored .styled rhythm. */
+.past-writing {
+	margin-top: 4em;
+
+	ul {
+		list-style: none;
+		padding: 0;
+		margin-top: 1.6em;
+	}
+
+	li + li {
+		margin-top: 1.4em;
+	}
+
+	li p {
+		margin-top: 0.35em;
+		max-width: 44em;
+	}
+
+	/* One voice per line - the global a.link calm-voice metrics would
+	   out-size these labels' quiet support lines only slightly, but the
+	   labels here ARE the primary line, so they keep the link default. */
+}
+
 .journal-index {
 	/* The list owns the stack rhythm; each entry's card is the entry-preview
 	   component (includes/entry-preview.php + components/entry-preview.css). */

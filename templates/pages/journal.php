@@ -37,4 +37,44 @@
 		<?php endforeach; ?>
 	</ol>
 
+	<?php /* The past-writing shelf (journal-plan.md): the receipts that
+		predate this journal, on the index itself so every visitor sees the
+		history without opening anything. Basic links for now - Derek's
+		card treatment comes later. */ ?>
+	<section class='past-writing'>
+
+		<h2 class='attention-voice'>Earlier writing, elsewhere</h2>
+
+		<p>This journal is new; the writing isn't. Before consolidating here, it lived in other places:</p>
+
+		<ul>
+
+			<li>
+
+				<a class='link' href='https://css-tricks.com/on-type-patterns-and-style-guides/' target='_blank'>On Type Patterns and Style Guides</a>
+
+				<p class='quiet-voice'>For CSS-Tricks (2021) - the type-pattern thinking that still runs this site.</p>
+
+			</li>
+
+			<li>
+
+				<a class='link' href='https://sheriffderek.substack.com/' target='_blank'>The Substack</a>
+
+				<p class='quiet-voice'>Working ideas out loud - design, development, and how people learn them.</p>
+
+			</li>
+
+			<li>
+
+				<a class='link' href='https://perpetual.education/blog/' target='_blank'>The Perpetual Education blog</a>
+
+				<p class='quiet-voice'>Years of writing from running the school - lessons, stories, and teaching material.</p>
+
+			</li>
+
+		</ul>
+
+	</section>
+
 </text-content>
