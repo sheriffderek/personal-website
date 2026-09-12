@@ -9,10 +9,6 @@
 
 	<h2 class='reader-only'>Introduction</h2>
 
-	<p>After spending years helping other people design and build their portfolios, it's my turn! How am I going to tell this story? A background in art college, web dev, consulting, product design... but not your average story in corporate America. Instead - a wide range of hands-on, fast-paced roles that lead to breadth and depth... we'll see!</p>
-
-	<p>I recorded a walkthrough of how this site is put together - the timeline, the weights, the theme system, and why it's structured the way it is. Easier to show than to write about.</p>
-
 	<figure class='entry-figure figure-full'>
 		<iframe src='https://player.vimeo.com/video/1225790200' title='A first look at the new portfolio structure' allow='fullscreen; picture-in-picture' loading='lazy'></iframe>
 	</figure>
