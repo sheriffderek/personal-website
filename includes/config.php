@@ -42,9 +42,9 @@ define('MENU_PAGES', [
 	'home' => 'live',
 	'how-i-work' => 'local',
 	'resume' => 'live',
-	'now' => 'live',
+	'now' => 'local',
 	'journal' => 'live',
-	'contact' => 'live',
+	'contact' => 'local',
 ]);
 
 /* Feature flags. A bolt-on system can ship dark or be pulled without touching
