@@ -10,9 +10,9 @@ $target = isset($_GET['target']) ? load_target($_GET['target']) : null;
 <text-content class='styled'>
 	<h1 class='loud-voice'>Now</h1>
 
-	<p>Hello! Is it summer already!?</p>
+	<p>Hello! Somehow it's already fall.</p>
 
-	<p>For the last five years, I've been designing curriculum and teaching digital product design at Perpetual Education. We've refined the program so thoroughly that students can now move through it autonomously.</p>
+	<p>For the last seven years, I've been designing curriculum and teaching digital product design at Perpetual Education. We've refined the program so thoroughly that students can now move through it autonomously.</p>
 
 	<p>I couldn't exactly have a full-time role while running a school ;), but I had bandwidth for interesting contracts - accessibility consulting, full product design/builds, research and development. I folded those experiences back into the curriculum to show students how it works in practice.</p>
 

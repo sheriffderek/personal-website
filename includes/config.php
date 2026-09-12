@@ -36,15 +36,17 @@ define('IS_PRODUCTION', strpos($_SERVER['HTTP_HOST'] ?? '', 'derekthomaswood.com
      live   - shows everywhere
      local  - shows only off production (work in progress: walkable here,
               invisible there; the route stays live for direct links)
-   Shipping a page = flipping its word to live. Order here mirrors the
+   The bar (Derek, 2026-09-12): unfinished-but-real may show - the site
+   is allowed to look alive and in progress - but stubbed or embarrassing
+   never does. Shipping a page = flipping its word to live. Order here mirrors the
    $pages declaration in index.php, which still carries the labels. */
 define('MENU_PAGES', [
 	'home' => 'live',
 	'how-i-work' => 'local',
 	'resume' => 'live',
-	'now' => 'local',
+	'now' => 'live',
 	'journal' => 'live',
-	'contact' => 'local',
+	'contact' => 'live',
 ]);
 
 /* Feature flags. A bolt-on system can ship dark or be pulled without touching
