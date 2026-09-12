@@ -1,18 +1,28 @@
 <?php
 	// Video entry - a walkthrough of the rebuilt portfolio's structure.
-	// Draft copy: shapes from the kitchen sink, words awaiting Derek's pass.
+	// Intro + section copy are Derek's (2026-09-12). Sections follow the
+	// named-landmark contract: heading always in the DOM (reader-only when
+	// the design hides it), stable id, aria-label from the name.
 ?>
 
-<section>
+<section id='introduction' aria-label='Introduction'>
+
+	<h2 class='reader-only'>Introduction</h2>
+
+	<p>After spending years helping other people design and build their portfolios, it's my turn! How am I going to tell this story? A background in art college, web dev, consulting, product design... but not your average story in corporate America. Instead - a wide range of hands-on, fast-paced roles that lead to breadth and depth... we'll see!</p>
+
 	<p>I recorded a walkthrough of how this site is put together - the timeline, the weights, the theme system, and why it's structured the way it is. Easier to show than to write about.</p>
+
+</section>
+
+<section id='process-back-story' aria-label='A good chunk of the process back story'>
+
+	<h2 class='attention-voice'>A good chunk of the process back story</h2>
 
 	<figure class='entry-figure figure-full'>
 		<iframe src='https://player.vimeo.com/video/1225790200' title='A first look at the new portfolio structure' allow='fullscreen; picture-in-picture' loading='lazy'></iframe>
 
-		<figcaption class='quiet-voice'>A tour of the structure - where things live and why.</figcaption>
+		<figcaption class='quiet-voice'>The natural progression of trying to answer this question up until September 9. I'm getting some key screenshots with more details added below right now.</figcaption>
 	</figure>
-</section>
 
-<section>
-	<p>If anything in there sparks a question, the <a class='link' href='/journal/new-website-direction'>first entry</a> covers what this site is now, and the timeline itself is one page up.</p>
 </section>
