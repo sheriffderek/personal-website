@@ -115,7 +115,7 @@ For CSS-specific conventions (no BEM, no underscores/double-dashes, nesting scop
 
 **Loose copy notes live in `copy-notes.md` (repo root)** - running notes from copy-review sessions (copywriter feedback, applied/pending status per item, open questions like the `list-at-ease` slug rename). Check it when picking copy work back up.
 
-**Goal.** A recruiter scrolling the timeline thinks "wow — breadth + depth + 15 years of doing this, let's talk." Each card is a recruiter scan; the "Read more" is the dig-deeper. Derek is targeting **Head of Design** and **Senior Product Designer** roles where he'll lead and educate teams.
+**Goal.** A recruiter scrolling the timeline thinks "wow — breadth + depth + 15 years of doing this, let's talk." Each card is a recruiter scan; the "Read more" is the dig-deeper. **Role targeting lives in `job-search/read-this-first.md` - read it before writing anything role-facing; don't restate it here where it can go stale.** (As of 2026-09: senior/principal IC product design is the core, player-coach at a small startup is fine, explicitly NOT Head of Design at a mid/large company, and the design-engineer lane is open for special companies.)
 
 ### Voice
 - No em dashes. A single spaced hyphen (` - `) for pacing IS Derek's voice and is allowed. Otherwise use periods, commas, or restructure.
