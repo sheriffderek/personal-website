@@ -34,7 +34,7 @@ $target_notes = $target['milestones'] ?? [];
 	<h1>
 		<span class='name loud-voice'>Derek Wood</span>
 
-		<span class='role stamp-voice'>Technical Product Designer etc. etc.</span>
+		<span class='role stamp-voice'>Technical Product Designer / Design Engineer</span>
 		<?php // specific role text could be target-based too ?>
 	</h1>
 
