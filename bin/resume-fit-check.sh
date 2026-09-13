@@ -44,6 +44,19 @@ letter_short() {
 	esac
 }
 
+# Export filenames are role -> type -> name (Derek, 2026-09-13): list views
+# truncate the tail, so the role leads and "derek-wood" closes. The role slug
+# quotes the sheet's own role line, trimmed to two words. Bespoke target
+# letters follow the same shape with the company in the role slot
+# (legalzoom-letter-derek-wood.pdf).
+role_slug() {
+	case "$1" in
+		product-designer) echo "product-designer" ;;
+		design-engineer) echo "design-engineer" ;;
+		advocate) echo "designer-advocate" ;;
+	esac
+}
+
 for lane in $LETTER_LANES; do
 	"$CHROME" --headless --print-to-pdf="$OUT/letter-$lane.pdf" --no-pdf-header-footer "$BASE/$lane/cover-letter" >/dev/null 2>&1
 	pages=$(pdfinfo "$OUT/letter-$lane.pdf" 2>/dev/null | awk '/^Pages/{print $2}')
@@ -68,14 +81,14 @@ done
 if [ -z "$FAIL" ]; then
 	for lane in product-designer design-engineer advocate; do
 		mkdir -p "$KIT/$lane"
-		cp "$OUT/$lane.pdf" "$KIT/$lane/derek-wood-resume-$(letter_short "$lane").pdf"
+		cp "$OUT/$lane.pdf" "$KIT/$lane/$(role_slug "$lane")-resume-derek-wood.pdf"
 	done
 
 	# Approved letters land beside their lane's resume - a lane's letter
 	# joins via LETTER_LANES once its copy is approved.
 	for lane in $LETTER_LANES; do
-		cp "$OUT/letter-$lane.pdf" "$KIT/$lane/derek-wood-letter-$(letter_short "$lane").pdf"
-		cp "$OUT/letter-$lane.txt" "$KIT/$lane/derek-wood-letter-$(letter_short "$lane").txt"
+		cp "$OUT/letter-$lane.pdf" "$KIT/$lane/$(role_slug "$lane")-letter-derek-wood.pdf"
+		cp "$OUT/letter-$lane.txt" "$KIT/$lane/$(role_slug "$lane")-letter-derek-wood.txt"
 	done
 
 	# The version stamp - answers "is this kit current?" at a glance
@@ -90,7 +103,7 @@ if [ -z "$FAIL" ]; then
 		echo "code:      $(cd "$(dirname "$0")/.." && git rev-parse --short HEAD)$(cd "$(dirname "$0")/.." && [ -n "$(git status --porcelain)" ] && echo '+uncommitted')"
 		echo ""
 		echo "files (md5, first 8) - staleness is mechanically checkable:"
-		(cd "$KIT" && find . -name 'derek-wood-*' -type f | sort | while read -r f; do
+		(cd "$KIT" && find . -name '*derek-wood*' -type f | sort | while read -r f; do
 			echo "  $(md5 -q "$f" | cut -c1-8)  ${f#./}"
 		done)
 	} > "$KIT/version.txt"
