@@ -423,8 +423,22 @@
 		var sliders = document.querySelectorAll('[data-set-' + cfg.kind + '-slider]');
 		var nameEls = document.querySelectorAll('[data-' + cfg.kind + '-name]');
 
-		function apply(idx, opts) {
-			var clamped = Math.max(0, Math.min(cfg.values.length - 1, idx));
+		/* Continuous-input, discrete-state (Derek, 2026-09-14): the input runs
+		   step='any' so the thumb rides the pointer smoothly; the derived
+		   value is round(rawValue), so a state change lands as the thumb
+		   crosses the halfway line between two stops. When a drag drives
+		   apply(), we do NOT write slider.value back - that's what caused the
+		   thumb to teleport between stops (the "clunky chunks" feel).
+		   Programmatic apply() calls (init, reflect-from-state) still snap
+		   the thumb to the integer position, since there's no live pointer
+		   to fight with. */
+		function apply(rawValue, opts) {
+			opts = opts || {};
+			var rawNum = typeof rawValue === 'number' ? rawValue : parseFloat(rawValue);
+			if (isNaN(rawNum)) rawNum = 0;
+			var clamped = Math.max(0, Math.min(cfg.values.length - 1, Math.round(rawNum)));
+			if (opts.fromInput && clamped === apply.lastIdx) return clamped;
+			apply.lastIdx = clamped;
 			var value = cfg.values[clamped];
 			if (value === cfg.values[0]) {
 				html.removeAttribute(cfg.attr);
@@ -443,7 +457,12 @@
 			nameEls.forEach(function (nameEl) {
 				nameEl.textContent = cfg.names[clamped];
 			});
+			/* Mirror model: when a drag on one instance crosses a threshold,
+			   the OTHER instance still needs its thumb snapped to the new
+			   integer so panel + band don't desync. The source slider (the
+			   one the pointer is on) keeps its continuous position. */
 			sliders.forEach(function (slider) {
+				if (opts.fromInput && slider === opts.source) return;
 				slider.value = String(clamped);
 			});
 
@@ -472,13 +491,23 @@
 			var initialIdx = saved ? cfg.values.indexOf(saved) : 0;
 			if (initialIdx < 0) initialIdx = 0;
 			apply(initialIdx, { persist: false });
+			var lastTickIdx = initialIdx;
 			sliders.forEach(function (slider) {
 				slider.addEventListener('input', function () {
+					var raw = parseFloat(slider.value);
+					if (isNaN(raw)) raw = 0;
+					/* Predict the derived idx before calling apply(): if it
+					   won't change, skip syncScroll's DOM work AND the
+					   apply() call - step='any' fires ~60 events/sec during
+					   a drag and most of them land between thresholds. */
+					var nextIdx = Math.max(0, Math.min(cfg.values.length - 1, Math.round(raw)));
+					if (nextIdx === apply.lastIdx) return;
 					syncScroll(function () {
-						apply(parseInt(slider.value, 10) || 0);
+						apply(raw, { fromInput: true, source: slider });
 					});
-					if (window.ui && window.ui.sound) {
-						var t = parseFloat(slider.value) / (cfg.values.length - 1);
+					if (window.ui && window.ui.sound && apply.lastIdx !== lastTickIdx) {
+						lastTickIdx = apply.lastIdx;
+						var t = (cfg.values.length > 1) ? (apply.lastIdx / (cfg.values.length - 1)) : 0;
 						window.ui.sound('tick', t);
 					}
 				});

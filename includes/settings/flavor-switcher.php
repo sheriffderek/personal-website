@@ -6,5 +6,5 @@
 <div class='flavor-switcher' role='group' aria-labelledby='flavor-switcher-label<?= $id_suffix ?? '' ?>'>
 	<p class='app-data-voice' id='flavor-switcher-label<?= $id_suffix ?? '' ?>'>Flavor: <span data-flavor-name>House</span></p>
 
-	<input type='range' min='0' max='3' step='1' value='0' data-set-flavor-slider class='plain-range' aria-label='Color flavor'>
+	<input type='range' min='0' max='3' step='any' value='0' data-set-flavor-slider class='plain-range' aria-label='Color flavor'>
 </div>
