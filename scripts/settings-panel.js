@@ -712,7 +712,13 @@
 				history.replaceState(null, '', window.location.pathname + window.location.search);
 			}
 		}
+		/* Mirror model + continuous input: on a drag-driven commit the
+		   source slider keeps its continuous position; every other instance
+		   snaps to the new integer so panel + band don't desync. Init and
+		   external reflection call without opts.source, so all sliders snap
+		   (there's no live pointer to fight). */
 		filterSliders.forEach(function (filterSlider) {
+			if (opts && opts.source === filterSlider) return;
 			filterSlider.value = String(tiersShown);
 		});
 
@@ -732,31 +738,52 @@
 	}
 
 	var filterCommitTimer = null;
+	/* Continuous input, discrete state (matches the theme sliders,
+	   2026-09-14): the input runs step='any' so the thumb rides the
+	   pointer; the derived tier is round(raw), and everything downstream
+	   (preview, mirror snap, commit debounce, tick) only fires when the
+	   derived tier actually crosses. At ~60 input events/sec during a
+	   drag, most land between thresholds - short-circuiting here keeps
+	   the minimap paint and Flickity resize storm at one-per-crossing. */
+	var lastTiersShown = initialFilter;
 
 	filterSliders.forEach(function (filterSlider) {
 		filterSlider.addEventListener('input', function () {
-			var tiersShown = parseInt(filterSlider.value, 10);
+			var raw = parseFloat(filterSlider.value);
+			if (isNaN(raw)) raw = initialFilter;
+			var nextTiers = Math.max(1, Math.min(MAX_WEIGHT, Math.round(raw)));
+			if (nextTiers === lastTiersShown) return;
+			lastTiersShown = nextTiers;
 
-			/* Per notch: the cheap feedback layer only. */
-			previewFilter(tiersShown);
+			/* Per crossing: the cheap feedback layer (count, minimap, name). */
+			previewFilter(nextTiers);
+
+			/* Mirror snap: every OTHER instance jumps to the new integer so
+			   panel + band stay in sync while the source keeps its
+			   continuous position under the pointer. */
+			filterSliders.forEach(function (other) {
+				if (other !== filterSlider) other.value = String(nextTiers);
+			});
 
 			/* Once the drag quiets: the real hide/show, anchored. The
 			   anchor measures at commit time, against the layout the
-			   correction will actually run in. */
+			   correction will actually run in. Source passed so the
+			   commit doesn't snap the source thumb out from under the
+			   pointer (see applyFilter's mirror-model note). */
 			clearTimeout(filterCommitTimer);
 			filterCommitTimer = setTimeout(function () {
 				syncScroll(
 					function () {
-						applyFilter(tiersShown);
+						applyFilter(nextTiers, { source: filterSlider });
 					},
 					function willSurvive(card) {
-						return cardWeight(card) <= tiersShown;
+						return cardWeight(card) <= nextTiers;
 					}
 				);
 			}, 180);
 
 			if (window.ui && window.ui.sound) {
-				var t = (parseFloat(filterSlider.value) - 1) / (MAX_WEIGHT - 1);
+				var t = (nextTiers - 1) / (MAX_WEIGHT - 1);
 				window.ui.sound('tick', t);
 			}
 		});

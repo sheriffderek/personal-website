@@ -1,8 +1,8 @@
 <div class='filter-control' role='group' aria-labelledby='filter-control-label<?= $id_suffix ?? '' ?>'>
-	<p class='app-data-voice' id='filter-control-label<?= $id_suffix ?? '' ?>'>Filter: <span class='filter-count'><span data-filter-count>0</span> / <span data-filter-total>0</span></span></p>
+	<p class='app-data-voice' id='filter-control-label<?= $id_suffix ?? '' ?>'>Scope: <span class='filter-count'><span data-filter-count>0</span> / <span data-filter-total>0</span></span></p>
 
 	<div class='filter-body'>
-		<input type='range' min='1' max='6' step='1' value='1' data-set-filter class='plain-range' aria-label='Filter level'>
+		<input type='range' min='1' max='6' step='any' value='1' data-set-filter class='plain-range' aria-label='Timeline scope'>
 
 		<?php /* The tier's descriptive name, under the slider. Hidden on the narrow
 		         popover (it would wrap); shown from the 1024px breakpoint where
