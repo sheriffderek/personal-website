@@ -401,7 +401,17 @@
      pdffonts out.pdf  -> zero Type 3 (Type 3 = broken copy/paste)
      PDFKit (osascript) landmark offsets strictly increasing - the true
      probe for Preview copy/paste order; pdftotext alone misses paint-
-     order regressions from positioned elements. */
+     order regressions from positioned elements.
+
+   $todo - per-target portfolio link (Derek, 2026-09-15). When a resume
+   is being exported for a specific application, ask whether the portfolio
+   link's href should carry the target: visible label stays
+   "derekthomaswood.com" (or "Portfolio ->"), href becomes
+   "derekthomaswood.com/<target>" so the tailored view survives the PDF
+   handoff. Print stylesheet must NOT append the href in parentheses for
+   this link (the whole point is that the URL stays hidden). Only worth it
+   for the few applications where the target notes exist and matter; skip
+   for general sends. */
 
 /* Print fonts - STATIC cuts of the Product pair, self-hosted. Chrome
    embeds VARIABLE fonts into PDFs as Type 3 glyph programs with custom

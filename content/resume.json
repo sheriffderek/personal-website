@@ -87,10 +87,18 @@
 		"heading": "Education",
 		"body": "BFA, California College of the Arts (2005). Individualized major: printmaking, painting, cross-disciplinary art and technology. Workshops on design-token architecture with Brad Frost and multi-brand theming at scale with Sam Gordashko."
 	},
+	"index": {
+		"intro": "",
+		"system_note": ""
+	},
 	"lanes": {
 		"product-designer": {
 			"label": "Product Designer",
 			"covers": "Product Designer, Senior/Staff Product Designer, Technical Product Designer, Founding Designer, UX Designer.",
+			"when_to_pick": "",
+			"resume_goal": "",
+			"letter_goal": "",
+			"stock_note": "",
 			"intro": [
 				"Cross-disciplinary product designer with 15+ years of experience. I started in art school, became a front-end engineer, moved into product design and larger design systems, and eventually owned products from concept to launch. Mentoring throughout led to founding and running a full-stack product design school in parallel with my consulting/design practice. Whether it's Figma, prototyping in code, or AI agentic workflows, I'm excited to bring that systems thinking and cross-functional experience to a product team that I can grow with."
 			],
