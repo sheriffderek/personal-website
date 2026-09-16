@@ -16,7 +16,28 @@
    digested in theme-model.md, Product x Expressive entry).
 4. **Post-show**: Interface's code-sample identity; marketing card
    backgrounds (parked under its evocation below); Product rename question.
-5. **Journal pages barely theme (Derek, 2026-09-10 - noted for the missing
+5. **PARKED IDEA (Derek, 2026-09-13): name what each combo emulates.**
+   When a cell settles, give it a little sentence/string citing the
+   real-world reference it's channeling - "Slack", "OpenAI", "Linear",
+   that register. Extends the per-character evocations below and the
+   per-mood chrome-take refs (settings-panel.css) down to the combo
+   level. Only for SETTLED cells - the string is a record of a verdict,
+   never an aim written in advance. Someday-maybe: surface it in the
+   panel as pitch copy ("this look channels Linear"). Note only.
+   THE SHELF so far (Derek, 2026-09-13 - raw riff, none settled):
+   Discord = dark; Linear = dark; Slack = purple-dark; DOS / old Macs =
+   green text on black; Photoshop = working gray; Reddit = light;
+   Claude = a little organic / wheat; editorial could go COLOR TEXT
+   (the Fuzzco all-red-type careers page); Chrome and Apple do pill
+   "islands" of circular controls (which the tray's trigger cluster
+   already is); Netflix = dark + red. Loose axis gravity: DOS/green ->
+   Terminal, Photoshop-gray/Linear -> Interface, wheat/organic ->
+   a warm Quiet or Technical take, Fuzzco red-type -> Editorial,
+   Netflix dark+red -> practically red-light's cousin. Vercel and
+   shadcn = strict black-and-white, hairline, flat -> Quiet (the
+   chrome-takes comment in settings-panel.css already cites shadcn
+   for Quiet's chrome; Vercel is the same citation at page scale).
+6. **Journal pages barely theme (Derek, 2026-09-10 - noted for the missing
    "emphasis" layer, not scheduled).** On an entry page the axes almost
    don't show: it's all calm-voice prose, no posters, no variant-carrying
    components - switching character/mood/flavor moves only type and inks,
