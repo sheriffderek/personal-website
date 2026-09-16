@@ -113,6 +113,16 @@ $pages = [
 		'description' => SITE_DESCRIPTION,
 	],
 
+	// Private log of every job applied to, when, and why - read live from
+	// the shared job-search repo's pipeline.md. Walled off from production
+	// AND non-loopback IPs below; no 'menu' key, no MENU_PAGES entry, no
+	// public discoverability. See templates/pages/applications.php.
+	'applications' => [
+		'file' => 'applications.php',
+		'title' => 'Applications - ' . SITE_TITLE,
+		'description' => SITE_DESCRIPTION,
+	],
+
 	// Derek's own index of everything - every page (public and internal),
 	// journal entries, target previews, experiments, feature flags. All
 	// derived live from the real sources, so it can't go stale. No 'menu'
@@ -232,6 +242,20 @@ foreach (array_keys($pages) as $menu_slug) {
 
 	if (!$menu_shows) {
 		unset($pages[$menu_slug]['menu']);
+	}
+}
+
+// Private routes: reachable only off production AND from a loopback IP.
+// Anything caught here 404s before the page lookup, so a slug that isn't
+// safe to expose can never leak by being added to the $pages map alone.
+// The list stays short and named - not a directory of "internal stuff",
+// a specific allowlist of pages that read local-only sources.
+$private_slugs = ['applications'];
+if (in_array($slug, $private_slugs, true)) {
+	$remote = $_SERVER['REMOTE_ADDR'] ?? '';
+	$is_loopback = ($remote === '127.0.0.1' || $remote === '::1');
+	if (IS_PRODUCTION || !$is_loopback) {
+		unset($pages[$slug]);
 	}
 }
 
