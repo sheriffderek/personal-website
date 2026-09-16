@@ -163,10 +163,17 @@
 	--stamp-voice-letter-spacing: 0.08em;
 	--stamp-voice-text-transform: uppercase;
 
-	--app-data-voice-font-family: var(--font-mono);
-	--app-data-voice-font-size: calc(var(--step-0) * 0.75);
-	--app-data-voice-line-height: 1.4;
-	--app-data-voice-letter-spacing: 0.01em;
+	/* ==================================================================
+	   THE OPEN BANK - the tokens a theme MAY repaint (2026-09-11, the
+	   two-bank grouping; the door widened from "color slots" to "surface
+	   slots"). Membership is one mechanical question: can this token
+	   change WITHOUT reflow, resize, or reposition? Pure paint passes -
+	   color, shadow, radius (a rounder box is the same box, nothing
+	   moves). Anything the layout engine re-measures fails - border
+	   WIDTH, fonts, sizes, spacing. A new token is assumed frozen until
+	   it passes this test out loud. Form is frozen; finish is
+	   per-theme.
+	   ================================================================== */
 
 	/* Color slots - the door in, now holding the chrome's OWN NEUTRAL
 	   baseline (Derek, 2026-08-11 - these used to alias the page's semantic
@@ -221,6 +228,15 @@
 	   round the chrome. Default is the house square. */
 	--app-corners: 0px;
 
+	/* ==================================================================
+	   THE FROZEN BANK - geometry and metrics. No axis may touch these.
+	   They live as named numbers so the rules below read as intent and a
+	   size change is ONE deliberate edit here - never a theme's move.
+	   (Fonts and sizes are here because metrics ARE geometry: a family
+	   swap rewraps labels and drifts control heights - the reflow test
+	   fails, so the whole type block stays sealed.)
+	   ================================================================== */
+
 	/* Geometry - frozen. The border stays as a color-matched placeholder (a
 	   theme fakes "no border" via --app-stroke, never by zeroing the width).
 
@@ -241,6 +257,12 @@
 	   enough to press, small enough that a pill doesn't outshout its own
 	   section label. Font size is metrics is geometry - frozen like the rest. */
 	--app-control-font-size: calc(var(--step-0) * 0.85);
+
+	/* The chrome's label voice, pinned. */
+	--app-data-voice-font-family: var(--font-mono);
+	--app-data-voice-font-size: calc(var(--step-0) * 0.75);
+	--app-data-voice-line-height: 1.4;
+	--app-data-voice-letter-spacing: 0.01em;
 
 	/* App surfaces don't select. The chrome's text is all operational -
 	   labels, pill captions, the filter count - and on touch a near-miss or
