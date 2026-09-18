@@ -141,6 +141,14 @@
 		display: block;
 	}
 
+	/* The name used to be a <strong> (swapped for a span - see the
+	   partial); this is the weight the browser gave it for free. Relative
+	   on purpose: one step bolder than whatever the voice says, in every
+	   character. */
+	.resume-name {
+		font-weight: bolder;
+	}
+
 	/* Contact links stay links, but speak in the surrounding ink instead
 	   of the accent - the header shouldn't shout its plumbing. */
 	.resume-header a {
@@ -399,6 +407,8 @@
      chrome --headless --print-to-pdf=out.pdf --no-pdf-header-footer <route>
      pdfinfo out.pdf   -> exactly 1 page
      pdffonts out.pdf  -> zero Type 3 (Type 3 = broken copy/paste)
+     pdfinfo -struct-text out.pdf -> zero "Syntax Error" lines (the tag
+     tree screen readers read - rule 7 in pdf-text-layer-forensics.md)
      PDFKit (osascript) landmark offsets strictly increasing - the true
      probe for Preview copy/paste order; pdftotext alone misses paint-
      order regressions from positioned elements.

@@ -4,20 +4,26 @@
 	(the current lane) in scope via partial(). */ ?>
 <header class='resume-header'>
 
+	<?php /* The name is a span, not a strong: Chrome's PDF export turns
+		<strong> into a /Strong structure tag, which isn't a valid tag
+		type in the PDF it writes (pdfinfo -struct-text flags it). */ ?>
 	<h1 class='attention-voice'>
-		<strong><?= $resume['header']['name'] ?></strong>
+		<span class='resume-name'><?= $resume['header']['name'] ?></span>
 
 		<span class='resume-role firm-voice'><?= $lane['role'] ?></span>
 	</h1>
 
+	<?php /* The separators are visual only - aria-hidden keeps a screen
+		reader from announcing "middle dot" between the contact links,
+		while the glyphs stay in the text layer for parsers. */ ?>
 	<p>
 		<?= $resume['header']['location'] ?>
 
-		<a class='link' href='tel:<?= preg_replace('/[^0-9]/', '', $resume['header']['phone']) ?>'><?= $resume['header']['phone'] ?></a> ·
+		<a class='link' href='tel:<?= preg_replace('/[^0-9]/', '', $resume['header']['phone']) ?>'><?= $resume['header']['phone'] ?></a> <span aria-hidden='true'>·</span>
 
 		<a class='link' href='https://<?= $resume['header']['website'] ?>'><?= $resume['header']['website'] ?></a>
 
-		<a class='link' href='mailto:<?= $resume['header']['email'] ?>'><?= $resume['header']['email'] ?></a> |
+		<a class='link' href='mailto:<?= $resume['header']['email'] ?>'><?= $resume['header']['email'] ?></a> <span aria-hidden='true'>|</span>
 
 		<a class='link' href='https://<?= $resume['header']['linkedin'] ?>' target='_blank'><?= $resume['header']['linkedin'] ?></a>
 	</p>

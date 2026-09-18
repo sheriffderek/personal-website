@@ -30,7 +30,7 @@ function resume_entry($entry, $lane, $is_contract = false) {
 		<hgroup>
 
 			<p class='stamp-voice'>
-				<?= $entry['org'] ?> (<?= $entry['dates'] ?>)<?= $is_contract ? ' · contract' : '' ?>
+				<?= $entry['org'] ?> (<?= $entry['dates'] ?>)<?= $is_contract ? " <span aria-hidden='true'>·</span> contract" : '' ?>
 			</p>
 
 			<h3 class='firm-voice'><?= $entry['title'] ?></h3>

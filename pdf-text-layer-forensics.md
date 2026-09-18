@@ -82,14 +82,16 @@ Whole words, reading order, every role an unbroken company > title > body block,
 4. **Print media queries see ~741px** regardless of `@page` margins, so a site's responsive breakpoints serve the wrong layout to print. Print layout must be declared in `@media print` at fixed letter geometry (816px paper, content box = 816 minus margins).
 5. **Chrome does not shrink to fit.** Overflow becomes page 2, so `pdfinfo | grep Pages` is a binary fit test.
 6. **Different readers, different failures.** `pdftotext -raw` (stream order), `pdftotext` (geometric), and PDFKit/Preview (Apple's clustering) can all disagree. The PDFKit check is the one that matches what a human's copy/paste does.
+7. **Screen readers read the TAG TREE, and it has its own probe** (2026-09-18). `pdfinfo -struct-text out.pdf` prints it: zero "Syntax Error" lines, headings and lists in reading order. Chrome builds the tags from the page's accessibility tree, so the HTML semantics ARE the PDF semantics - with two gotchas: `<strong>` becomes a `/Strong` tag the PDF doesn't allow (use a span and restate the weight), and a text separator like `·` gets spoken ("middle dot") unless it's wrapped `aria-hidden`, which drops it from the tags while keeping the glyph in the text layer for parsers. **VoiceOver in Preview is not a valid test** - it skipped whole paragraphs of a file whose tag tree and PDFKit accessibility tree were both complete and in order; the same file read correctly in Chrome's viewer. Test with VoiceOver in Chrome (or Acrobat).
 
-## Verification loop (the whole preflight in four commands)
+## Verification loop (the whole preflight in five commands)
 
 ```
 "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --print-to-pdf=out.pdf --no-pdf-header-footer http://derek.local:8888/resume/<lane>
 pdfinfo out.pdf | grep Pages        # must equal the page budget
 pdffonts out.pdf                    # zero Type 3 fonts
 pdftotext out.pdf -                 # reads as prose, in order
+pdfinfo -struct-text out.pdf 2>&1 | grep -c 'Syntax Error'   # tag tree: must be 0 (pdfinfo says Tagged: yes - Chrome tags by default, no flag)
 ```
 
 PDFKit order check (Preview's engine; offsets must be strictly increasing):
