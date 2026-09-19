@@ -16,16 +16,7 @@ Open calls, no rush: ChromaDex vs the real-estate mastermind as case study #3 (`
 
 ## Thinking about, not building yet: the sheriffderek circle (Derek, 2026-09-18)
 
-Derek's insignia across the internet is a little circle - soft pink / hot pink split by a slanted diagonal. It is already the favicon and share-card corner mark on sheriffderek.consulting, the ring around his face on Codementor, and the GitHub / Stack Overflow avatar. derekthomaswood.com is the one surface not wearing it (no favicon at all today).
-
-His sketch (done with the cursor ring on the live home page):
-- **At rest:** the circle sits above "Derek Wood" in the page header, in the flow. It scrolls away with everything else.
-- **On scroll up:** it reappears floating top-left, on the same row and at the same size as the tray circles, with a drop-shadow-type lift that each theme gets to style.
-- **Job:** the way home. On the home page that means back to the top.
-- **Second sketch (same night):** a much bigger circle peeking in from the top-left corner, mostly off the page, cropped by the viewport edge - the same move as the posters (the dome is a circle cropped by its frame). Could be instead of the small one, or a combo.
-- Also in the air: "maybe I just use my face" in places where a person is being decided on; the circle where he is being recognized. Codementor already combines them (face inside the ring).
-
-Open: does the mark keep its pink everywhere like a logo, or re-paint with the theme? And the cheap first step, whenever: a favicon.
+Derek's insignia (the little two-tone pink circle) as this site's way home: above his name at rest, reappearing as a floating circle on scroll-up, maybe a big corner version on wide screens. The settled part: every page needs a visible way home, top-left. **Full write-up, his sketches, where the real SVG lives, and the open questions: `notes/home-circle-idea.md`.** Cheap first step whenever he says go: a favicon (the site has none).
 
 ## First impression
 
@@ -94,6 +85,10 @@ Not yet committed to structurally; case studies need to exist before restructuri
 
 - [ ] **Themes dialed in more** — finalized fonts, color panels. Not redoing posters. The settings area and all the controls need to work good and be tight.
 - [ ] **Style the actual app UI specifically** (the settings panels). Opportunity to show a lot of detail — the app UI is itself a portfolio piece.
+- [ ] **Flip the starting mood back to Expressive when the colors land.** New visitors start in Quiet for now (2026-09-18) - `DEFAULT_MOOD` in `includes/config.php`; its comment lists the three places that move together (config, `MOODS` order + `DEFAULT_MOOD` in `scripts/settings-panel.js`, `$mood_names` order in `includes/settings/mood-switcher.php`).
+- [ ] **"Reset to default" control** (Derek's side thought, 2026-09-18 - talked through, not built). The way home from a rough combo. Where we landed: resets the LOOK only (scheme, character, mood, flavor, red light - not interface sounds, layout, or filter); always present and disabled at default rather than appearing/disappearing (app-ui form law); a quiet text-level control under the rows, not another button row. Nearly free mechanically - each slider's `apply(defaultIdx)` already clears its own key. Label is Derek's to write.
+- [ ] **Random - parked until the colors land** (Derek, 2026-09-18). Only in the settings band (grid view, >= 1450), the one place a visitor sees the whole wall repaint; band-only has precedent (`.filter-level-name`). Leaves scheme and red light alone. Parked because random showcases every cell, including the unfinished ones - the same reason the default went Quiet. Open question, unproven: draw only from combos with a passing verdict in `walk-notes.md`?
+- [ ] **Theme chat lives in the same spot** (Derek, 2026-09-18). The "tell us what you want" AI version - a visitor describes their brand and the site re-paints into it - is a third option sitting beside Reset and Random in the band: three ways to drive the same system (go home / surprise me / make it mine). Same band-only reasoning as Random (you need to see the wall repaint). Full plan stays in `notes/theme-chat-plan.md`; this is just where its door goes.
 
 ## Case studies
 
