@@ -22,6 +22,7 @@ His sketch (done with the cursor ring on the live home page):
 - **At rest:** the circle sits above "Derek Wood" in the page header, in the flow. It scrolls away with everything else.
 - **On scroll up:** it reappears floating top-left, on the same row and at the same size as the tray circles, with a drop-shadow-type lift that each theme gets to style.
 - **Job:** the way home. On the home page that means back to the top.
+- **Second sketch (same night):** a much bigger circle peeking in from the top-left corner, mostly off the page, cropped by the viewport edge - the same move as the posters (the dome is a circle cropped by its frame). Could be instead of the small one, or a combo.
 - Also in the air: "maybe I just use my face" in places where a person is being decided on; the circle where he is being recognized. Codementor already combines them (face inside the ring).
 
 Open: does the mark keep its pink everywhere like a logo, or re-paint with the theme? And the cheap first step, whenever: a favicon.
