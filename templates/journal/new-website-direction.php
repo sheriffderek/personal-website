@@ -5,6 +5,14 @@
 ?>
 
 <section>
+
+	<figure class='entry-figure figure-full'>
+		<iframe src='https://player.vimeo.com/video/1228247070' title='A new direction for this website' allow='fullscreen; picture-in-picture' loading='lazy'></iframe>
+	</figure>
+
+</section>
+
+<section>
 	<p>This site used to be a portfolio in the usual sense. I rebuilt it as something closer to a working demonstration - a timeline of fifteen years of projects, and a theme system that repaints the whole page while you watch. The settings panel isn't a gimmick on top of the work. It kind of is the work. If you're curious how it holds together, poke at it (the corners melting when you switch the character is my favorite part).</p>
 
 	<p>The timeline is the formal argument - here's what I've done, here's the range. This journal is the other register. Lower polish, more signal about how I actually think.</p>

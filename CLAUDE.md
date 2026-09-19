@@ -127,6 +127,16 @@ Visitor-facing copy is written by Derek or approved by him line by line. A reque
 
 **Why:** unapproved copy gets judged as his, and it turns into a mysterious todo list he never chose. It is better that he sits down and writes it right once. (Learned when the journal's past-writing shelf was asked for as an outline and came back with thirteen blurbs he never wrote, live on the site.)
 
+### Spelling is fixable; punctuation is Derek's (loose rule, 2026-09-18)
+
+Derek sometimes writes how he speaks. When tidying copy he typed:
+
+- **Fix freely:** plain misspellings and typos ("gauranteee", "lik ehere").
+- **Leave alone:** his rhythm marks - ` - `, `--`, ` / ` as a pause, a comma after "so", `(sorry;)`, a colon before "and". They may look odd and be on purpose. Point one out if it seems like a slip; never change it without his call.
+- **Never ship:** anything that is obviously a note-to-self or a hole - `[link]`, `[... figure this out]`, `what?`, `(maybe we need this in a config btw`, `TODO`. Those are placeholders, not voice. Resolve the obvious ones (wire the link), ask about the rest, and keep them out of the visitor's path until answered.
+
+The tell between the two: a rhythm mark sits *inside* a sentence that still says something; a placeholder stands *in place of* something that isn't there yet.
+
 ### Voice
 - No em dashes. A single spaced hyphen (` - `) for pacing IS Derek's voice and is allowed. Otherwise use periods, commas, or restructure.
 - Parentheses for mid-sentence asides.

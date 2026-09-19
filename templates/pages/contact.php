@@ -15,5 +15,5 @@ $brief = [
 
 	<p>I live in South Pasadena (Los Angeles). You can find me at the LA Design and Dev meetup, maybe the JavaScript meetup, or come to my weekly open office hours.</p>
 
-	<p>The fastest way to reach me is to grab a time: <a class='link' href='https://calendly.com/perpetual-education/priority-meeting'>book a call</a>.</p>
+	<p>The fastest way to reach me is to grab a time: <a class='link' href='<?= CALL_URL ?>'>book a call</a>.</p>
 </text-content>
