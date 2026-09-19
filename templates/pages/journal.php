@@ -3,6 +3,9 @@
 		'goal' => 'The person behind the timeline. Lower polish than the milestone cards on '
 			. 'purpose - after reading an entry you should feel like you\'ve heard Derek '
 			. 'talk. The register matters more than any topic.',
+		// 'check' is ours - the footer only prints 'goal'.
+		'check' => 'Finished thoughts only - never a pile of started things, never filler, even '
+			. 'while the journal is new. Every entry can say in one line what it shows about Derek.',
 	];
 	$journal = load_json('journal.json');
 
@@ -23,7 +26,7 @@
 
 	<h1 class='loud-voice'>Journal</h1>
 
-	<p>Videos and stories from the work. Takes on design and development that might not be what you expect, situations I find myself in, and the occasional tip or trick.</p>
+	<p>Videos and stories from the work.</p>
 
 	<?php if (empty($listed)): ?>
 		<p>First entries are on the way.</p>
@@ -37,15 +40,13 @@
 		<?php endforeach; ?>
 	</ol>
 
-	<?php /* The past-writing shelf (journal-plan.md): the receipts that
+	<?php /* The past-writing shelf (notes/journal-plan.md): the receipts that
 		predate this journal, on the index itself so every visitor sees the
 		history without opening anything. Basic links for now - Derek's
 		card treatment comes later. */ ?>
 	<section class='past-writing'>
 
 		<h2 class='attention-voice'>Earlier writing, elsewhere</h2>
-
-		<p>This journal is new; the writing isn't. Before consolidating here, it lived all over:</p>
 
 		<h3 class='strong-voice'>Answering questions</h3>
 
@@ -55,23 +56,17 @@
 
 				<a class='link' href='https://stackoverflow.com/users/1399456/sheriffderek' target='_blank'>Stack Overflow</a>
 
-				<p class='quiet-voice'>14 years, 2.3 million people reached - mostly HTML, CSS, and how the web actually works.</p>
-
 			</li>
 
 			<li>
 
 				<a class='link' href='https://www.quora.com/profile/Derek-Thomas-Wood' target='_blank'>Quora</a>
 
-				<p class='quiet-voice'>Around 1,500 answers about design, code, and learning.</p>
-
 			</li>
 
 			<li>
 
 				<a class='link' href='https://dev.to/sheriffderek' target='_blank'>dev.to</a>
-
-				<p class='quiet-voice'>Posts and conversations in the dev community.</p>
 
 			</li>
 
@@ -85,15 +80,11 @@
 
 				<a class='link' href='https://css-tricks.com/on-type-patterns-and-style-guides/' target='_blank'>On Type Patterns and Style Guides</a>
 
-				<p class='quiet-voice'>For CSS-Tricks (2021) - the type-pattern thinking that still runs this site.</p>
-
 			</li>
 
 			<li>
 
 				<a class='link' href='https://sheriffderek.substack.com/' target='_blank'>The Substack</a>
-
-				<p class='quiet-voice'>Working ideas out loud - design, development, and how people learn them.</p>
 
 			</li>
 
@@ -101,15 +92,11 @@
 
 		<h3 class='strong-voice'>Perpetual Education</h3>
 
-		<p>Hundreds of workshops for the school, and hundreds more resources, stories, and exercises around them. A few that show the range:</p>
-
 		<ul>
 
 			<li>
 
 				<a class='link' href='https://perpetual.education/resources/almost-all-user-interface-comes-down-to-this/' target='_blank'>Almost all user interface comes down to this</a>
-
-				<p class='quiet-voice'>A core UI principle, taught in one sitting.</p>
 
 			</li>
 
@@ -117,15 +104,11 @@
 
 				<a class='link' href='https://perpetual.education/an-analogy-for-the-designer-developer-relationship/' target='_blank'>An analogy for the designer-developer relationship</a>
 
-				<p class='quiet-voice'>The seam this whole career keeps working on.</p>
-
 			</li>
 
 			<li>
 
 				<a class='link' href='https://perpetual.education/resources/figma-variable-collection-composition/' target='_blank'>Figma variable collection composition</a>
-
-				<p class='quiet-voice'>Tooling deep-dives - design tokens where designers actually work.</p>
 
 			</li>
 
@@ -133,15 +116,11 @@
 
 				<a class='link' href='https://perpetual.education/resources/visual-design-foundations-fast/' target='_blank'>Visual design foundations, fast</a>
 
-				<p class='quiet-voice'>A timeboxed learning sprint - the teaching-format experiments.</p>
-
 			</li>
 
 			<li>
 
 				<a class='link' href='https://perpetual.education/stories/snow-fall/' target='_blank'>Snow Fall</a>
-
-				<p class='quiet-voice'>A story from the school.</p>
 
 			</li>
 
@@ -155,15 +134,11 @@
 
 				<a class='link' href='https://perpetual.education/open-office-hours/' target='_blank'>Open office hours</a>
 
-				<p class='quiet-voice'>Weekly public sessions - bring a design or code question, leave with a plan.</p>
-
 			</li>
 
 			<li>
 
 				<a class='link' href='https://discord.gg/css' target='_blank'>The CSS Discord</a>
-
-				<p class='quiet-voice'>Helping out in the community where the CSS questions live now.</p>
 
 			</li>
 
@@ -176,8 +151,6 @@
 			<li>
 
 				<a class='link' href='https://perpetual.education/stories/is-your-portfolio-doing-its-job-with-don-the-developer/' target='_blank'>Is your portfolio doing its job?</a>
-
-				<p class='quiet-voice'>With Don the Developer - the first of the podcast conversations.</p>
 
 			</li>
 

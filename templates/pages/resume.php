@@ -3,6 +3,9 @@ $brief = [
 	'goal' => 'Route the reader to the right telling. One career, three angles - the reader '
 		. 'picks the lane that matches the role they are hiring for, and every lane is the '
 		. 'same facts re-led, never a different person.',
+	// 'check' is ours - the footer only prints 'goal'.
+	'check' => 'The intro is 100% Derek\'s voice - he would say it on camera. A visitor picks a '
+		. 'lane in seconds and does not wonder if they picked wrong.',
 ];
 $resume = load_json('resume.json');
 ?>
@@ -11,7 +14,7 @@ $resume = load_json('resume.json');
 
 	<h1 class='loud-voice'>Resume</h1>
 
-	<p>Fifteen years of the same career, told three ways. Pick the one that matches the role you're hiring for - the facts don't change between them, just what leads.</p>
+	<p>Fifteen years of the same career, told three ways.</p>
 
 	<nav class='resume-lanes' aria-label='Resume versions'>
 

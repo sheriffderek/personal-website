@@ -4,6 +4,9 @@ $brief = [
 		. 'depth, fifteen years of doing this - let\'s talk." Every other page supports '
 		. 'that moment. The filter and theme controls are not decoration - watching the '
 		. 'system perform is part of the evidence.',
+	// 'check' is ours - the footer only prints 'goal'.
+	'check' => 'The page matches its share image and metadata: same name, same role words. '
+		. 'Show it to a stranger for 10 seconds - they can say who this is and what job he wants.',
 ];
 
 $all_milestones = load_json('milestones.json');
@@ -34,7 +37,7 @@ $target_notes = $target['milestones'] ?? [];
 	<h1>
 		<span class='name loud-voice'>Derek Wood</span>
 
-		<span class='role stamp-voice'>Technical Product Designer / Design Engineer</span>
+		<span class='role stamp-voice'>Technical Product Designer</span>
 		<?php // specific role text could be target-based too ?>
 	</h1>
 

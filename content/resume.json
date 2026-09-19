@@ -112,30 +112,6 @@
 			],
 			"role": "Technical Product Designer"
 		},
-		"design-engineer": {
-			"label": "Design Engineer",
-			"covers": "Design Engineer, Design Technologist, UX Engineer, Design Systems Engineer, Technical Product Designer (when the posting is code-forward).",
-			"intro": [
-				"Design engineer who owns the seam between design and code. Fifteen years building products end to end: I've built component systems since jQuery and Knockout; these days mostly Vue, and I pick up whatever a team ships in. I turn design systems into working front-end (tokens, theming, states), prototype the hard interactions in real code, and give design and engineering one shared language. I build live style guides, and I drive design-system adoption through education and advocacy. I'm excited to bring that to a product team I can grow with."
-			],
-			"skills": [
-				"Vue.js / JavaScript / HTML / CSS",
-				"design systems & tokens (Figma Variables & Modes to code)",
-				"coded prototyping",
-				"front-end architecture",
-				"accessibility (WCAG)",
-				"user research & product design"
-			],
-			"role": "Design Engineer",
-			"entry_overrides": {
-				"Perpetual Education": {
-					"body": [
-						"Designed, built, and operated the platform behind a full-stack design school: the design system, component library, live style guide, and content system. The program teaches a wide range of languages and frameworks, accessibility, design systems, and product strategy.",
-						"Guided multiple concurrent cohorts over four years, helping hundreds of designers and engineers develop the shared language, systems thinking, and collaborative habits needed to work effectively on cross-functional product teams. Prototype everything: Figma, code, AI, whatever tested an idea fastest. The curriculum and platform evolved through continuous learner feedback into a self-paced program that now runs on its own."
-					]
-				}
-			}
-		},
 		"advocate": {
 			"label": "Advocate & Educator",
 			"covers": "Developer Advocate, Design Advocate, Developer Experience (DX), Design Educator, Learning Experience Designer, Curriculum/Education Designer at a product company.",
@@ -156,6 +132,30 @@
 				"Perpetual Education": {
 					"body": [
 						"Designed and built a cross-disciplinary product design program covering the full product lifecycle, from information architecture and accessibility through visual design, engineering, design systems, and product strategy. Created the platform, curriculum, progression model, and supporting systems from scratch.",
+						"Guided multiple concurrent cohorts over four years, helping hundreds of designers and engineers develop the shared language, systems thinking, and collaborative habits needed to work effectively on cross-functional product teams. Prototype everything: Figma, code, AI, whatever tested an idea fastest. The curriculum and platform evolved through continuous learner feedback into a self-paced program that now runs on its own."
+					]
+				}
+			}
+		},
+		"design-engineer": {
+			"label": "Design Engineer",
+			"covers": "Design Engineer, Design Technologist, UX Engineer, Design Systems Engineer, Technical Product Designer (when the posting is code-forward).",
+			"intro": [
+				"Design engineer who owns the seam between design and code. Fifteen years building products end to end: I've built component systems since jQuery and Knockout; these days mostly Vue, and I pick up whatever a team ships in. I turn design systems into working front-end (tokens, theming, states), prototype the hard interactions in real code, and give design and engineering one shared language. I build live style guides, and I drive design-system adoption through education and advocacy. I'm excited to bring that to a product team I can grow with."
+			],
+			"skills": [
+				"Vue.js / JavaScript / HTML / CSS",
+				"design systems & tokens (Figma Variables & Modes to code)",
+				"coded prototyping",
+				"front-end architecture",
+				"accessibility (WCAG)",
+				"user research & product design"
+			],
+			"role": "Design Engineer",
+			"entry_overrides": {
+				"Perpetual Education": {
+					"body": [
+						"Designed, built, and operated the platform behind a full-stack design school: the design system, component library, live style guide, and content system. The program teaches a wide range of languages and frameworks, accessibility, design systems, and product strategy.",
 						"Guided multiple concurrent cohorts over four years, helping hundreds of designers and engineers develop the shared language, systems thinking, and collaborative habits needed to work effectively on cross-functional product teams. Prototype everything: Figma, code, AI, whatever tested an idea fastest. The curriculum and platform evolved through continuous learner feedback into a self-paced program that now runs on its own."
 					]
 				}
