@@ -14,6 +14,18 @@ One at a time, commit after each. The sentence pass works like this: name the th
 
 Open calls, no rush: ChromaDex vs the real-estate mastermind as case study #3 (`case-studies-plan.md`); the home page's `goal` brief line gets rewritten by Derek when the home page changes.
 
+## Thinking about, not building yet: the sheriffderek circle (Derek, 2026-09-18)
+
+Derek's insignia across the internet is a little circle - soft pink / hot pink split by a slanted diagonal. It is already the favicon and share-card corner mark on sheriffderek.consulting, the ring around his face on Codementor, and the GitHub / Stack Overflow avatar. derekthomaswood.com is the one surface not wearing it (no favicon at all today).
+
+His sketch (done with the cursor ring on the live home page):
+- **At rest:** the circle sits above "Derek Wood" in the page header, in the flow. It scrolls away with everything else.
+- **On scroll up:** it reappears floating top-left, on the same row and at the same size as the tray circles, with a drop-shadow-type lift that each theme gets to style.
+- **Job:** the way home. On the home page that means back to the top.
+- Also in the air: "maybe I just use my face" in places where a person is being decided on; the circle where he is being recognized. Codementor already combines them (face inside the ring).
+
+Open: does the mark keep its pink everywhere like a logo, or re-paint with the theme? And the cheap first step, whenever: a favicon.
+
 ## First impression
 
 - [ ] **Hello video on the site** — Derek saying hello, on camera. The tradeoff Derek named (2026-09-15): in some ways it's giving them too much information — but if they don't like him right away, that's a pretty big hurdle to get over, and he wants people who want somebody who's enthusiastic and outgoing. So the video *is* the filter, and better upfront than after three interview rounds.
