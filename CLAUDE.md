@@ -10,7 +10,7 @@ derekthomaswood.com is Derek's personal "hire me" site for full-time/salary role
 
 ## Local development
 
-Served locally by **MAMP at `http://derek.local:8888/`** (plain PHP, no build step - the router is `index.php`). So the design-system tester is `http://derek.local:8888/design-system`, a target preview is `http://derek.local:8888/?target=gofundme`, and so on. This is the URL to hit for any browser verification - don't guess `.test`/Herd, this project isn't on Herd. Derek runs MAMP himself; agents never start or stop it.
+Served locally by **MAMP at `http://derek.local:8888/`** (plain PHP, no build step - the router is `index.php`). So the design-system tester is `http://derek.local:8888/design-system`, a target preview is `http://derek.local:8888/?target=gofundme`, and so on. This is the URL to hit for any browser verification - don't guess `.test`/Herd, this project isn't on Herd. Derek runs MAMP himself; agents never start or stop it. **MAMP serves PHP 7.4 with a 60-second file cache** (`opcache.revalidate_freq=60`): an edited PHP file can keep serving its old version for up to a minute, and the command-line `php` is a newer version that shows the change instantly. If an edit "didn't take," wait a minute and re-check before debugging. Code has to run on 7.4.
 
 ## Related projects
 
@@ -408,6 +408,18 @@ Type comes from [Fontshare](https://www.fontshare.com) via its CSS API. The audi
 ## Future: journal page
 
 Eventually the site should have a journal section. Blog-style entries, dated, casual. The point is the *register*, not the topic — Derek talking about how he's feeling about a given moment, reminiscing about something, working an idea out loud. Adjacent to the timeline but not part of it. Lower polish than the timeline cards, higher signal about who Derek is as a person and a thinker. Not for Round 1.
+
+## Editing a journal entry (checklist, 2026-09-18)
+
+The journal wants as much reach as possible and it has to be correct. Every time an entry is created or edited, check all of it - the truth for each box lives in `content/journal.json` (the entry's row), `templates/journal/<slug>.php` (the body), and the article block in `includes/header.php` (what machines read).
+
+1. **Fix or update?** A typo or small wording fix keeps the original date and adds nothing. A real change to what the entry says gets an `updated` date in its journal.json row (shows an "Updated" line, fills `dateModified`). Moving the publish `date` itself is Derek's call only.
+2. **Every visible line is Derek's** - title, `summary` (index + entry header + RSS), `description` (meta + share card + JSON-LD), body. See "No sentence ships without Derek's OK."
+3. **No placeholders left** - `[link]`, `{{...}}`, notes-to-self.
+4. **Meta reads right** - view source on the entry: `og:title` is the entry's title, `og:type` is `article`, the dates in the `article:` tags and the JSON-LD block match journal.json, the description is the intended one, canonical is the plain URL. A hand-made `content/journal/<slug>/meta.jpg` wins as the share image when present.
+5. **Feed and order** - the index is still in date order. The RSS `guid` is the entry URL, so a fix never re-announces an entry; a changed slug would, so slugs don't change after publishing.
+6. **Links** - each one works; external ones open in a new tab.
+7. **Look at it** on `derek.local:8888`: `/journal` and the entry.
 
 ## Future fun: AI interfaces on the timeline (parked 2026-07-14, nothing scheduled)
 
