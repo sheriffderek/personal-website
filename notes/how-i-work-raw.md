@@ -2,8 +2,7 @@
 
 This is the source of truth: Derek's own messages from the "how I work" conversation,
 **unedited** — typos and all, in the order he said them. Nothing here is sharpened,
-reframed, or added to. If `how-i-work-notes.md` ever starts sounding like someone else's
-voice, this is what to come back to.
+reframed, or added to.
 
 ---
 

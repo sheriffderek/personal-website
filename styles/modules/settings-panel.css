@@ -339,7 +339,7 @@
    beside, panels open BESIDE). The tray owns placement, the toolbar owns
    arrangement.
 
-   Two locked rules ride on the axis (see the lab spec, layout-lab-notes.md):
+   Two locked rules ride on the axis (see the lab spec, notes/layout-lab-notes.md):
 
      1. THE AXIS TRACKS WHERE PANELS OPEN - the same breakpoints that set
         this flex-direction also carry the panel placement rules (row ->

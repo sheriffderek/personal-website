@@ -408,7 +408,7 @@
      pdfinfo out.pdf   -> exactly 1 page
      pdffonts out.pdf  -> zero Type 3 (Type 3 = broken copy/paste)
      pdfinfo -struct-text out.pdf -> zero "Syntax Error" lines (the tag
-     tree screen readers read - rule 7 in pdf-text-layer-forensics.md)
+     tree screen readers read - rule 7 in notes/pdf-text-layer-forensics.md)
      PDFKit (osascript) landmark offsets strictly increasing - the true
      probe for Preview copy/paste order; pdftotext alone misses paint-
      order regressions from positioned elements.
@@ -636,7 +636,7 @@
 		   the reading-rhythm pair get px values; lead and break
 		   deliberately ride their screen values (the approved sheets were
 		   printed that way - resolved 2026-09-11, closing the orphaned
-		   --resume-space-section flag noted in resume-system-notes.md). */
+		   --resume-space-section flag noted in notes/resume-system-notes.md). */
 		--resume-space-entry: 22px;
 		--resume-space-cluster: 7px;
 		--resume-space-eyebrow: 2px;

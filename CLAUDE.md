@@ -20,23 +20,27 @@ Served locally by **MAMP at `http://derek.local:8888/`** (plain PHP, no build st
 
 The long-term source of truth would be in the resume-exploration project (or in it's own history) - so, anytime we're confirming something - we can look there -- and also, if we unearth any new info - we can save it there too. Got it?
 
+## Working notes
+
+The repo root holds only the files in active use (`CLAUDE.md`, `next-up.md`, `case-studies-plan.md`, `case-study-rubric.md`, `copy-notes.md`). Everything else - specs for built systems, plans for unbuilt ones, raw material for future writing - lives in `notes/`, flat, grouped by filename prefix. All `*.md` is walled off from HTTP at any depth (`.htaccess` + `.claude/router.php`). Temporary notes get deleted when their job is done, not archived - git is the archive.
+
 ## Content model
 
 Three layers, top to bottom:
 
 1. **`resume-exploration/source-materials/dereks-history.md`** - raw truth, real dates, internal notes. Never public.
-2. **`timeline-content-plan.md`** (this repo) - which entries surface, how they're framed, format choices, per-job angles (e.g. `?target=gofundme`).
+2. **`notes/timeline-content-plan.md`** (this repo) - which entries surface, how they're framed, format choices, per-job angles (e.g. `?target=gofundme`).
 3. **The public site** - polished, dates may be adjusted for presentation, only what serves the visitor.
 
 Always update layer 1 first. Layers 2 and 3 pull from it.
 
 **Private `backstory` field (working layer).** Each milestone in `content/milestones.json` may carry a `backstory` key - loose, unpolished "what really happened" notes synthesized from the resume-exploration source docs, used for *our* thinking (especially the target-notes win-gate). It is **never client-facing**: the template ignores unknown keys, AND `content/*.json` is walled off from direct HTTP fetch in both `.htaccess` and `.claude/router.php` - **do not remove that block; it is the privacy guarantee.** The field is derived and lossy - resume-exploration stays canonical. Where the source is thin or conflicts with the public card, the backstory says so (the gap is the useful signal). Rolled out on a few milestones first (`list-at-ease`, `better-life`, `aicad-2024`) as a pilot.
 
-The per-company `?target=` notes (`content/targets/<company>/target.json`) have their own skill: `.claude/skills/target-notes/`. It auto-triggers when you're matching a posting to milestones; it's the source of truth for voice, the growth-mindset spine, and the coverage-grid process. (`target-notes-recipe.md` in the root is its historical origin, superseded by the skill.)
+The per-company `?target=` notes (`content/targets/<company>/target.json`) have their own skill: `.claude/skills/target-notes/`. It auto-triggers when you're matching a posting to milestones; it's the source of truth for voice, the growth-mindset spine, and the coverage-grid process. (`notes/target-notes-recipe.md` is its historical origin, superseded by the skill.)
 
 ## Current status
 
-Round 1 target: GoFundMe Senior Product Designer application. Five entries needed. See `timeline-content-plan.md` for the full plan and `SESSION-HANDOFF.md` for latest state.
+Round 1 target: GoFundMe Senior Product Designer application. Five entries needed. See `notes/timeline-content-plan.md` for the full plan.
 
 ## Resume pages (built 2026-09-06)
 
@@ -46,7 +50,7 @@ Round 1 target: GoFundMe Senior Product Designer application. Five entries neede
 - **Layout + print**: `styles/modules/resume.css` - the file's comments carry the load-bearing knowledge (left-column-first grid, absolute-grid-item centering and its auto-end-line gotcha, and the whole measured PDF pipeline: Type 3 variable-font fix, paint-order-equals-extraction-order, the verification loop).
 - **Template**: `templates/pages/resume-lane.php` - semantic groups, reader-only ATS headings ("Experience" wording is deliberate), source order = reading order = parse order. Open `$todo`: advocate lane's `speaking_first`.
 - **Export**: headless Chrome `--print-to-pdf` per route (command in resume.css's print comment); exports land in `~/Desktop/resume-exports/` by convention.
-- **Journal raw material**: `resume-system-notes.md` (repo root, private).
+- **Journal raw material**: `notes/resume-system-notes.md` (private).
 
 ## Motion policy (2026-07-14)
 
@@ -116,6 +120,12 @@ For CSS-specific conventions (no BEM, no underscores/double-dashes, nesting scop
 **Loose copy notes live in `copy-notes.md` (repo root)** - running notes from copy-review sessions (copywriter feedback, applied/pending status per item, open questions like the `list-at-ease` slug rename). Check it when picking copy work back up.
 
 **Goal.** A recruiter scrolling the timeline thinks "wow — breadth + depth + 15 years of doing this, let's talk." Each card is a recruiter scan; the "Read more" is the dig-deeper. **Role targeting lives in `job-search/read-this-first.md` - read it before writing anything role-facing; don't restate it here where it can go stale.** (As of 2026-09: senior/principal IC product design is the core, player-coach at a small startup is fine, explicitly NOT Head of Design at a mid/large company, and the design-engineer lane is open for special companies.)
+
+### No sentence ships without Derek's OK (2026-09-18)
+
+Visitor-facing copy is written by Derek or approved by him line by line. A request for an outline or a structure is not a request for copy: when a page needs words he hasn't written, the slot stays empty or the section stays out. Drafts live in chat or a private notes file, never in `content/` or `templates/`. Deleting is always allowed; composing is not. This includes anything printed publicly that isn't page copy (the `$brief` `goal` lines go to the browser console).
+
+**Why:** unapproved copy gets judged as his, and it turns into a mysterious todo list he never chose. It is better that he sits down and writes it right once. (Learned when the journal's past-writing shelf was asked for as an outline and came back with thirteen blurbs he never wrote, live on the site.)
 
 ### Voice
 - No em dashes. A single spaced hyphen (` - `) for pacing IS Derek's voice and is allowed. Otherwise use periods, commas, or restructure.
@@ -258,7 +268,7 @@ Locked-in markup pattern (same in the home page-header `templates/pages/home.php
 
 ## Theme system (locked-in rules)
 
-**Live working state: `walk-notes.md`** — the combo walk sheet with per-cell aims, verdicts, and the NEXT SESSION block at the top. "Let's work on the themes" = open that file and start at item 1.
+**Live working state: `notes/walk-notes.md`** — the combo walk sheet with per-cell aims, verdicts, and the NEXT SESSION block at the top. "Let's work on the themes" = open that file and start at item 1.
 
 
 The theming behavior is a load-bearing artifact of this site — it's part of the design-system-mastery demo, not just a nicety. Decisions below are pinned; don't re-litigate without a reason. **The live map is the header comment in `styles/settings.css`** — one file per axis under `styles/settings/`, and that header is kept current; this section carries the rules and reasons, the header carries the wiring.
@@ -294,8 +304,8 @@ The theming behavior is a load-bearing artifact of this site — it's part of th
 **FOUC pattern.** Inline `<script>` in `<head>` at [includes/header.php](includes/header.php) reads the localStorage keys (`character-preference`, `mood-preference`, `flavor-preference`, `scheme-preference`, `red-light-preference`, and `view-preference` on the timeline page when the grid flag is on) and sets `<html>` attrs BEFORE stylesheets load. Sound is deliberately NOT restored here - `data-sound` gates audio playback only, nothing rendered, so settings-panel.js restoring it at init is early enough. **The value lists live in three places that must agree**: the FOUC script's allowlists, the `CHARACTERS` / `MOODS` / `FLAVORS` arrays in [scripts/settings-panel.js](scripts/settings-panel.js), and the sliders' `max` in `includes/settings/{character,mood,flavor}-switcher.php`. Adding a persisted axis or value means touching all three - they can drift silently.
 
 **Queued structural improvements** (in priority order — none urgent):
-1. Pull the axis value lists into one PHP-side config that the FOUC script, the JS, and the slider partials all read (`THEME_AXES` — sketched in `url-state-plan.md`).
-2. URL-shareable settings state and per-target curated looks — full plan in `url-state-plan.md` (settled 2026-08-14: server-side visit dressing, targets may curate character/mood/flavor only); do item 1 first.
+1. Pull the axis value lists into one PHP-side config that the FOUC script, the JS, and the slider partials all read (`THEME_AXES` — sketched in `notes/url-state-plan.md`).
+2. URL-shareable settings state and per-target curated looks — full plan in `notes/url-state-plan.md` (settled 2026-08-14: server-side visit dressing, targets may curate character/mood/flavor only); do item 1 first.
 
 ## Timeline weights (locked-in rules)
 
@@ -352,13 +362,13 @@ List view is the argument (a readable spine); grid view is the evidence (the wal
 - **Per-view interaction decisions key off `data-view`** — the one switch. First case: `syncScroll` (the keep-your-place anchor correction) stands down entirely in grid view, because the lanes re-pack wholesale and there's no stable card to hold. New "should this behave differently in the grid?" questions get answered the same way: check the attribute, don't invent a second flag.
 - **Scroll-motion stands down in the grid; gestures still play** (refined 2026-07-11 after first QA pass - the original all-of-autoplay gate meant swiping to a loop slide did nothing, which read as broken). The scroll trigger checks `gridView()` in `includes/footer.php` and never starts a loop on the wall. But swiping a carousel to a loop (settle) and hovering one are direct gestures at that card - they play, same as a pressed `play`.
 - **The panel stays a floating panel in both views** (lab port, 2026-07-19 — replaced the old popover-attribute swapping, which strand-prone machinery the mirror model made unnecessary. De-popovered entirely 2026-08-11 — see The shell below — but the one-panel-in-both-views rule is unchanged). The persistent settings surface in grid view is the **settings band**: a SECOND rendered instance of the settings rows (`includes/settings-rows.php`, mounted by templates/pages/home.php with `-band` id suffixes) that appears at ≥1450 in main's top composition — intro takes presence on the left, the apparatus decorates the top-right, the wall spans below. Neither instance owns state; settings-panel.js reflects every control from `data-*` on `<html>` (reflect-all), so they can't disagree. Between 1200 and 1450 there is no band — the tray's settings trigger and its popover are the whole apparatus.
-- **Only two things ever decide the view: the viewport and the visitor's explicit choice** (locked 2026-07-12). The breakpoint gates where the grid can exist; the toggle (or Layout row) is the visitor choosing. NOTHING else changes the layout - not hash links, not navigation, not any future clever affordance. (This reverses the brief list-detour where a grid title click landed in list view: a click that swaps the whole layout confuses more than any scroll, and the cells carry the full card so reading in place works.) Milestone title clicks are plain hash links in both views - in the grid they scroll the wall to that card, in place. A future `&view=` URL param counts as the visitor's choice being carried in a link, and still obeys the viewport gate (see `url-state-plan.md`).
+- **Only two things ever decide the view: the viewport and the visitor's explicit choice** (locked 2026-07-12). The breakpoint gates where the grid can exist; the toggle (or Layout row) is the visitor choosing. NOTHING else changes the layout - not hash links, not navigation, not any future clever affordance. (This reverses the brief list-detour where a grid title click landed in list view: a click that swaps the whole layout confuses more than any scroll, and the cells carry the full card so reading in place works.) Milestone title clicks are plain hash links in both views - in the grid they scroll the wall to that card, in place. A future `&view=` URL param counts as the visitor's choice being carried in a link, and still obeys the viewport gate (see `notes/url-state-plan.md`).
 
 **Wiring:** toggle partial `includes/settings/view-switcher.php` (flag-gated in settings-panel.php) · view section + `applyView` in `scripts/settings-panel.js` · layout in `styles/layouts/grid-view.css` (flag-gated `<link>` in header.php) · the band mount in `templates/pages/home.php` (shared rows: `includes/settings-rows.php`) · storage key `view-preference`.
 
 ## The shell (lab port, 2026-07-19)
 
-The persistent chrome was rebuilt to the lab spec - **`layout-lab-notes.md`'s "✅ CANONICAL SPEC" section is the reference** (vocabulary, axes, locked rules); `experiments/shell.html` is the proven standalone it was ported from. The house deviation: the persistent-chrome prefix is **`site-`** (Derek's call, matching `.site-footer`/`.site-name`), not the lab's `shell-`. The short map:
+The persistent chrome was rebuilt to the lab spec - **`notes/layout-lab-notes.md`'s "✅ CANONICAL SPEC" section is the reference** (vocabulary, axes, locked rules); `experiments/shell.html` is the proven standalone it was ported from. The house deviation: the persistent-chrome prefix is **`site-`** (Derek's call, matching `.site-footer`/`.site-name`), not the lab's `shell-`. The short map:
 
 - **Names**: `.site-tray` (the one control strip: sticky top bar on phones, sticky side column from 1024) · `.toolbar` (the trigger group inside it) · `.trigger`/`.glyph`/`.panel` (the primitive) · `.site-shade` (the dim) · `#settings-panel`/`#pages-menu` (panel roles by id). "rail"/"toolbox"/"cluster" are retired words.
 - **Panels are absolute children of the tray, placed by CSS per posture** (2026-08-11, the "two boxes, one parent" simplification - it replaced placePanel, the scroll/visualViewport re-glue listeners, AND the replica-clone perch in one stroke). The panels sit in `includes/settings-panel.php` right after the toolbar; `position: sticky` makes the tray their containing block, so the browser keeps panel and toolbar glued natively. Each posture is a short rule in `styles/modules/settings-panel.css`: phone = the card hanging from the circles (top at their bottoms, right on the toolbar's line); ≥1024 list = in-column below the toolbar; ≥1200 grid = beside the thin tray, over the wall. Inside the tray's stacking context the toolbar (z 2) rides above the panel (z 1) - real, tappable circles clear of the card's corners, no clones. `--layout-panel-gap`/`--layout-panel-max` in default-layout.css carry the rhythm unit and the designed measure. The `.panel-scroll` layer inside each panel owns max-height + scroll + padding (posture-specific caps, restated beside each placement rule).
@@ -402,7 +412,7 @@ Three toys worth planning someday. Written down for the *shape*, not because any
 
 **Toy 2 - paste the posting, get the coverage grid (private, Derek-facing).** Feed a job posting in, get back every place he's proven each requirement. **This is the `target-notes` skill automated** - the coverage grid is a process he's already run by hand, so the output shape is known, which is a rare place to be building an AI feature from. Safer than Toy 1 in both directions: `backstory` *belongs* here (it's his own working layer), and he reviews every line before it becomes a `target.json`. Its byproduct is claims + evidence + gaps - i.e. the answer bank, accumulating as a side effect of applying to jobs. Probably the one to build first.
 
-**Toy 3 - theme chat (public, recruiter-facing; planned 2026-08-11).** A visitor describes their visual design and the site re-paints itself into their brand live, narrating every move in design-system terms - the theme system performing itself with the visitor's own brand as input. Full plan in `theme-chat-plan.md` (pen scope, the mood contract as output schema, validation, open decisions). Needs no answer bank; shares only the server-endpoint groundwork and the `backstory` wall with the other two.
+**Toy 3 - theme chat (public, recruiter-facing; planned 2026-08-11).** A visitor describes their visual design and the site re-paints itself into their brand live, narrating every move in design-system terms - the theme system performing itself with the visitor's own brand as input. Full plan in `notes/theme-chat-plan.md` (pen scope, the mood contract as output schema, validation, open decisions). Needs no answer bank; shares only the server-endpoint groundwork and the `backstory` wall with the other two.
 
 **No RAG.** 36 milestones plus details fits in a context window whole - hand the model the entire corpus every time. Retrieval would only add a failure mode (fetch the wrong milestones, answer confidently from the wrong career) to solve a scale problem this site does not have. Easy to add later if it ever outgrows that.
 

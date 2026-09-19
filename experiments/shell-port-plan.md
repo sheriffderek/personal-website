@@ -19,7 +19,7 @@ what'll bite you.
 
 **The lab (how we decided it should work):**
 - `experiments/shell.html` — a proven standalone shell, QA'd in Chrome and Safari
-- `layout-lab-notes.md` — the **"✅ CANONICAL SPEC"** section at the top. This is the
+- `notes/layout-lab-notes.md` — the **"✅ CANONICAL SPEC"** section at the top. This is the
   real reference: the vocabulary, the axes, and the locked rules (what decides where a
   panel opens, which side, what dims, what closes). Read it before the HTML.
 

@@ -409,7 +409,7 @@
 		));
 
 		/* The ground paints as a CSS background so it can be a GRADIENT
-		   (poster-system.md's designed-then-dormant mechanism, built
+		   (notes/poster-system.md's designed-then-dormant mechanism, built
 		   2026-07-28). A flavor/mood opts in just by stating the two stops -
 		   unset, both fall back to the flat --poster-fill and two identical
 		   stops render flat, so there's no on/off flag. The background covers

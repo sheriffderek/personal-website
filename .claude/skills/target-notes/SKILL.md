@@ -212,5 +212,5 @@ scannable.
 The approved GoFundMe set (once locked) lives in
 `content/targets/gofundme/target.json` and is the reference for tone. Read it before
 writing notes for a new company - it's the clearest picture of "right" for this
-site. The recipe this skill grew from is `target-notes-recipe.md` in the repo
-root (kept as historical origin; this SKILL.md is now canonical).
+site. The recipe this skill grew from is `notes/target-notes-recipe.md`
+(kept as historical origin; this SKILL.md is now canonical).

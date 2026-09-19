@@ -48,7 +48,7 @@
 		   includes/posters/art/<slug>.php, falling back to the original
 		   poster-shapes.php collage. Authoring rules (tokens, stroke widths,
 		   THE SCALE) live in the lab header (experiments/posters.html) and
-		   poster-system.md. */
+		   notes/poster-system.md. */
 		$media_items = real_media_items($milestone);
 		$poster_only = empty($media_items) && !empty($milestone['poster']);
 	?>

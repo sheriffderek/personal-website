@@ -1,6 +1,6 @@
 # derekthomaswood.com — next up
 
-Started 2026-09-15 from Derek's braindump. The site is going pretty good; this is the list of what still needs to happen for it to be A+ as a candidate-review surface. Existing planning files (`journal-plan.md`, `journal-ideas.md`, `poster-plans.md`, `theme-chat-plan.md`, `timeline-content-plan.md`) stay as their topic-specific homes; this file is the current work list.
+Started 2026-09-15 from Derek's braindump. The site is going pretty good; this is the list of what still needs to happen for it to be A+ as a candidate-review surface. Existing planning files (`notes/journal-plan.md`, `notes/journal-ideas.md`, `notes/theme-chat-plan.md`, `notes/timeline-content-plan.md`) stay as their topic-specific homes; this file is the current work list.
 
 ## First impression
 
@@ -33,6 +33,26 @@ Most reviewers will look at this on a phone; mobile is important.
 - [ ] **Read the rest of the journal entries.** First ~16-20 were checked; the rest probably have some filler. Needs a nice relaxing sit to go through them.
 - [ ] **Journal skeletons.** All visible journal posts should be at least semi-complete — a good skeleton. Some right now are just filler, which is embarrassing. Derek can make videos, take screenshots, do the writing; it doesn't take that long.
 - [ ] **AI-filler audit — Derek reads through the copy himself.** The 2026-09-15 find: the "three lenses / pick the one that matches your role" paragraph on the opener milestone was AI-inserted, sounded off, and linked to a resume page that isn't ready. That pattern is likely elsewhere in `content/milestones.json`, journal entries, and other copy. Not a grep-and-scrub task — a read-through-and-catch-the-voice task.
+
+## Homepage direction (2026-09-17, per Derek — after Wesley meeting + Frame 280/281 review)
+
+The grid is already opt-in — Frame 281's settings/grid view lives behind a toggle in the header, and Frame 280 (the plain list home) is the default entrance. That architecture is right. What's missing is **what the plain home actually shows**.
+
+**Direction:** the default home shows a set of **4-5 case-study-like conversations** — simple, sweet, "not much to snag on." A visitor who wants more can opt in to the full history and play with the settings.
+
+**Case-study visual style: black and white, process-forward, not visual flourish.** Graphics are about process and core design, not high-fidelity UI screens. This is deliberate — the point is to work out **thought process over visual style**, which is:
+- Consistent with the "invisible design" positioning (behind-the-scenes product design surfacing in screens).
+- Consistent with Derek's own stance ("most of my work is thinking and planning, not finalized pristine Figma; anyone can copy UI details from Mobbin").
+- Consistent with Wesley's bridge-story feedback (iterative friction, not finalized-looking prototypes).
+- Defensible: a reviewer looking for "exceptional visual craft" sees restraint used on purpose, not absent. The visual system's craft carries through the frame, the type, the pace — not through polished mockups of other people's products.
+
+Implications for the plan:
+- **Case-study page design** (already on the fortify list) becomes concretely: black-and-white, process-diagram-forward, not project-brand-colored screens. This resolves the earlier "white pages, not theme-following" question — it's stronger than that: **process-graphic-first, chrome-restrained**.
+- **Case-study build order** starts weighting *which cases have the clearest process story*, not which have the prettiest artifacts.
+- **The milestone grid is not demoted.** It stays as the opt-in playground / design-system + cross-platform-theming showcase it already is. It's just no longer the front door.
+- **Resume-page redo** still owes the story-of-three-lanes; that's independent of this.
+
+Not yet committed to structurally; case studies need to exist before restructuring can be tested. But the design direction is now specific enough to design case-study pages against.
 
 ## Navigation / structure
 

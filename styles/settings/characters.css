@@ -22,7 +22,7 @@
                    scale) - hierarchy comes from weight only. The posters swap
                    to ascii art under this character (milestone.css toggles,
                    includes/posters/poster-ascii.php is the art).
-   (Personal folded into Product; Documentation dropped. Matrix in theme-model.md.)
+   (Personal folded into Product; Documentation dropped. Matrix in notes/theme-model.md.)
 
    A character overrides only the type/shape DELTAS it needs - the rest falls
    through from base.css (safe: type/shape has no inheritance pathology). So

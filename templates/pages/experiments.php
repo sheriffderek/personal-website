@@ -19,7 +19,7 @@ $brief = [
 		<li>
 			<a class='strong-voice link' href='/experiments/shell.html'>Shell</a>
 
-			<p>The proven standalone the site's persistent chrome was ported from. Spec lives in layout-lab-notes.md at the repo root; port plan in shell-port-plan.md.</p>
+			<p>The proven standalone the site's persistent chrome was ported from. Spec lives in notes/layout-lab-notes.md at the repo root; port plan in shell-port-plan.md.</p>
 		</li>
 
 		<li>

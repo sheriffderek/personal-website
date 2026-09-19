@@ -10,7 +10,7 @@
      - the inverted activations (candidates going dark per cell)
      - named flavor ranges, as they arrive: a [data-flavor="x"] scope on
        html restates only the takes it cares about, everything else falls
-       through (theme-model.md carries the plan; a range is a dozen-ish
+       through (notes/theme-model.md carries the plan; a range is a dozen-ish
        declarations, tier-2 only - poster takes, year tag, heading color).
 
    FLAVOR NAMING (Derek, 2026-08-11): a flavor names a broad FEELING people
@@ -50,7 +50,7 @@
    as the name, brand association as a comment beside it. This is also why
    no mood x character cell may name a hue: the cell says how color is
    SPENT, the flavor says which family it comes from (the register sheet
-   in theme-model.md is the per-cell measuring stick).
+   in notes/theme-model.md is the per-cell measuring stick).
 
    Ordering truth: authority is the LAYER order in settings.css (variants
    below this file, red-light above everything). Selector law (2026-07-28):
@@ -141,7 +141,7 @@ html:where(:not([data-brand-mood])) [data-variant] {
    first named flavor range (2026-07-28), proving the axis: the marketing
    cell re-dressed from green-yellow into rose/pink/plum - "same company,
    different brand colors," the per-target-company mechanism in miniature.
-   Tier-2 restatement only (theme-model.md): the year tag, the heading
+   Tier-2 restatement only (notes/theme-model.md): the year tag, the heading
    color, and the slot accents/items it cares about; everything unstated
    falls through to the cell's default take. The extra [data-flavor]
    attribute outranks the cell blocks, so the flavor wins where it speaks. --- */
@@ -626,7 +626,7 @@ html[data-brand-mood][data-brand-character="terminal"] .milestone .poster-ascii 
    much color, which roles, candidacy (the inverted section below) - but
    never which pigments. Pigment variety per cell returns, if ever, on the
    FLAVOR axis where it legally lives. (The register sheet's cell vibes in
-   theme-model.md remain as spending briefs, read hue-free.) */
+   notes/theme-model.md remain as spending briefs, read hue-free.) */
 
 /* ----------------------------------------------------------------------------
    INVERTED - the two-layer model (Derek, 2026-07-28). A poster AUTHORS its
@@ -636,7 +636,7 @@ html[data-brand-mood][data-brand-character="terminal"] .milestone .poster-ascii 
    takes the page's fill - so one definition reads as white-on-black in a
    light scheme and flips honestly under dark, under any mood, with the
    poster's secondaries deriving automatically (milestone.css color-mixes
-   them from this pair). Never filter: invert() (poster-system.md).
+   them from this pair). Never filter: invert() (notes/poster-system.md).
 
    Beats the flavor blocks by specificity (html[...] + attribute vs one
    attribute), which is the point: an activated candidate wears inverted

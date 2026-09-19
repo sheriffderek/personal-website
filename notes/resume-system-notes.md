@@ -111,7 +111,7 @@ Measured facts (all verified empirically, recorded in resume.css):
 
 ## Companion evidence
 
-`pdf-text-layer-forensics.md` (repo root) holds the before/after receipts
+`pdf-text-layer-forensics.md` holds the before/after receipts
 for the article: the four real extraction specimens (Figma interleaved,
 Figma fused-words, variable-font shattered, fixed pipeline), the six
 transferable rules, the full verification loop, and the ATS research
