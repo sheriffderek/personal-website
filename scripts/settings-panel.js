@@ -419,10 +419,14 @@
 	   don't strictly need it, but the shared path keeps the story simple). */
 	function sliderSwitcher(cfg) {
 		/* Two different "defaults", kept apart on purpose:
-		   values[0] is the CSS default - it means "no attribute on <html>".
+		   bareValue is the CSS default - the value that means "no attribute
+		   on <html>" (the :root block IS that look). Usually values[0].
 		   defaultIdx is the STARTING POSITION - where a visitor with no saved
-		   choice lands, and the one value that needs no storage key. They're
-		   the same index unless a cfg says otherwise (mood, for now). */
+		   choice lands, and the one value that needs no storage key.
+		   Every slider starts at the LEFT, so the starting value is listed
+		   first - which is why mood's bare value (expressive) is not its
+		   first stop for now. */
+		var bareValue = cfg.bareValue || cfg.values[0];
 		var defaultIdx = cfg.defaultIdx || 0;
 
 		/* All instances, on every surface (mirror model: panel + band render
@@ -447,7 +451,7 @@
 			if (opts.fromInput && clamped === apply.lastIdx) return clamped;
 			apply.lastIdx = clamped;
 			var value = cfg.values[clamped];
-			if (value === cfg.values[0]) {
+			if (value === bareValue) {
 				html.removeAttribute(cfg.attr);
 			} else {
 				html.setAttribute(cfg.attr, value);
@@ -529,11 +533,13 @@
 	   Index 0 is the default (Product = :root, no attribute written). */
 	var CHARACTERS      = ['product', 'marketing', 'interface', 'editorial', 'terminal'];
 	var CHARACTER_NAMES = ['Product', 'Marketing', 'Interface', 'Editorial', 'Terminal'];
-	var MOODS           = ['expressive', 'technical', 'quiet'];
-	var MOOD_NAMES      = ['Expressive', 'Technical', 'Quiet'];
+	var MOODS           = ['quiet', 'expressive', 'technical'];
+	var MOOD_NAMES      = ['Quiet', 'Expressive', 'Technical'];
 
 	/* The starting mood - keep matched with DEFAULT_MOOD in includes/config.php
-	   (the why lives there). Expressive is still index 0 / no attribute. */
+	   (the why lives there). It is listed FIRST in MOODS so the thumb starts
+	   at the left like every other slider. Expressive is still the bare /
+	   no-attribute value (bareValue below). */
 	var DEFAULT_MOOD     = 'quiet';
 	var DEFAULT_MOOD_IDX = MOODS.indexOf(DEFAULT_MOOD);
 
@@ -551,6 +557,7 @@
 		storageKey: 'mood-preference',
 		values: MOODS,
 		names: MOOD_NAMES,
+		bareValue: 'expressive',
 		defaultIdx: DEFAULT_MOOD_IDX
 	});
 

@@ -72,7 +72,10 @@ define('TOUR_ENABLED', false);
    Expressive is still :root / no attribute; header.php server-renders
    data-brand-mood for any other default, and a visitor's saved choice
    (now including 'expressive') overrides it in the FOUC script.
-   Keep matched with DEFAULT_MOOD in scripts/settings-panel.js. */
+   Keep matched with DEFAULT_MOOD in scripts/settings-panel.js. The starting
+   mood is also listed FIRST in the slider order (MOODS there, $mood_names in
+   settings/mood-switcher.php) so the thumb starts at the left - when this
+   changes, move the new starting mood to the front in both. */
 define('DEFAULT_MOOD', 'quiet');
 
 /* GRID_VIEW_ENABLED - the List/Grid view axis: on big screens (>= 1200px) a

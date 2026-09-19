@@ -1,7 +1,7 @@
 /* ============================================================================
    MOOD  [data-brand-mood]  - the color axis. A mood repaints the semantic slots
    ONLY - never type or shape, so any character works under any mood. Three
-   moods, in slider order: Expressive (default) · Technical · Quiet.
+   moods: Expressive (CSS default) · Technical · Quiet. (Slider order lives in settings-panel.js.)
 
    THE AXIS IN ONE BREATH (Derek, 2026-08-11): Expressive is colorful and
    wide-ranged - a whole rainbow of dimension. Technical can be colorful but

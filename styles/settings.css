@@ -12,7 +12,7 @@
 
      MOOD       [data-brand-mood]       ->  settings/moods.css
         Color: a full palette on the semantic slots. WHAT color it is.
-        Expressive (default) · Technical · Quiet. Never touches type/shape.
+        Expressive (CSS default) · Technical · Quiet (slider order differs - settings-panel.js). Never touches type/shape.
 
      SCHEME     [data-scheme]           ->  settings/scheme.css
         system | light | dark, via native color-scheme + light-dark().
