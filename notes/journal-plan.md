@@ -9,7 +9,7 @@ read as a seasoned writer consolidating, never a newcomer starting out.
 
 Dates are full ISO days in content/journal.json, list sorts newest-first:
 
-1. **A new direction for this website** (Sep 2) - what the site is now.
+1. **A new direction for this website** (Sep 8) - what the site is now.
 2. **A first look at my new portfolio structure** (Sep 9) - the video tour.
 3. **Officially looking for a new long-term role** (Sep 10, top) - the
    announcement lands AFTER the work is shown, on purpose.
