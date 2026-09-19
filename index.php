@@ -159,6 +159,16 @@ if (strpos($slug, 'journal/') === 0) {
 			'file' => 'journal-entry.php',
 			'title' => $entry['title'] . ' - ' . SITE_TITLE,
 			'description' => $entry['description'],
+			/* Marks this page as an article for the head (header.php): share
+			   cards say "article" and lead with the entry's own title, and
+			   search engines get a BlogPosting block. 'updated' is optional
+			   in journal.json - set it only when the entry's substance
+			   changed, never for a typo fix. */
+			'article' => [
+				'headline' => $entry['title'],
+				'published' => $entry['date'],
+				'updated' => $entry['updated'] ?? null,
+			],
 		];
 
 		/* Share image, three floors down: a hand-made meta.jpg in the entry's
@@ -274,6 +284,7 @@ $current = $pages[$slug];
 $page_title = $current['title'];
 $page_description = $current['description'];
 $page_image = $current['image'] ?? null;
+$page_article = $current['article'] ?? null;
 $page_controls = $current['controls'] ?? null;
 
 // The settings panel is back on site-wide with the lab-port shell (JS panel

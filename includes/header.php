@@ -23,6 +23,11 @@
 		   the image with $page_image (web-absolute path) before including this header. */
 		$meta_title = $page_title ?? SITE_TITLE;
 		$share_title = SITE_META_TITLE;
+		/* A journal entry is shared as ITSELF: its own title is the headline
+		   on the card, not the site's. ($page_article comes from index.php.) */
+		if (!empty($page_article)) {
+			$share_title = $page_article['headline'];
+		}
 		$meta_description = $page_description ?? SITE_DESCRIPTION;
 		$meta_image = SITE_URL . ($page_image ?? SITE_SHARE_IMAGE);
 		$meta_url = SITE_URL . strtok($_SERVER['REQUEST_URI'], '?');
@@ -30,8 +35,13 @@
 	<title><?= $meta_title ?></title>
 	<meta name='description' content='<?= quote_safe($meta_description) ?>'>
 
+	<?php /* One address per page: ?target= and the other query-string views are
+		the same page dressed differently, so they all point search engines
+		at the plain URL. */ ?>
+	<link rel='canonical' href='<?= $meta_url ?>'>
+
 	<?php /* Share cards: Open Graph (Facebook/LinkedIn/iMessage) + Twitter. */ ?>
-	<meta property='og:type' content='website'>
+	<meta property='og:type' content='<?= empty($page_article) ? 'website' : 'article' ?>'>
 	<meta property='og:site_name' content='<?= SITE_TITLE ?>'>
 	<meta property='og:title' content='<?= quote_safe($share_title) ?>'>
 	<meta property='og:description' content='<?= quote_safe($meta_description) ?>'>
@@ -42,6 +52,38 @@
 	<meta name='twitter:title' content='<?= quote_safe($share_title) ?>'>
 	<meta name='twitter:description' content='<?= quote_safe($meta_description) ?>'>
 	<meta name='twitter:image' content='<?= $meta_image ?>'>
+
+	<?php if (!empty($page_article)) { ?>
+		<?php
+			/* Article dates, said twice on purpose: Open Graph tags are what
+			   LinkedIn and friends read; the JSON-LD block is what search
+			   engines read. Both come from the entry's row in journal.json,
+			   so the date lives in one place. No 'updated' = the modified
+			   date is the published date. */
+			$article_modified = $page_article['updated'] ?: $page_article['published'];
+			$article_data = [
+				'@context' => 'https://schema.org',
+				'@type' => 'BlogPosting',
+				'headline' => $page_article['headline'],
+				'description' => $meta_description,
+				'datePublished' => $page_article['published'],
+				'dateModified' => $article_modified,
+				'url' => $meta_url,
+				'mainEntityOfPage' => $meta_url,
+				'image' => $meta_image,
+				'author' => [
+					'@type' => 'Person',
+					'name' => SITE_TITLE,
+					'url' => SITE_URL,
+				],
+			];
+		?>
+		<meta property='article:published_time' content='<?= $page_article['published'] ?>'>
+		<meta property='article:modified_time' content='<?= $article_modified ?>'>
+		<meta property='article:author' content='<?= SITE_URL ?>'>
+
+		<script type='application/ld+json'><?= json_encode($article_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?></script>
+	<?php } ?>
 	<script>
 		(function () {
 			var html = document.documentElement;

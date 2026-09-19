@@ -6,7 +6,9 @@
 ?>
 <article class='entry-preview'>
 
-	<p class='date stamp-voice'><?= journal_date($entry['date']) ?></p>
+	<p class='date stamp-voice'>
+		<time datetime='<?= $entry['date'] ?>'><?= journal_date($entry['date']) ?></time>
+	</p>
 
 	<h2 class='attention-voice'>
 		<a href='/journal/<?= $slug ?><?= $target_query ?>'><?= $entry['title'] ?></a>
