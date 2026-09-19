@@ -47,7 +47,7 @@ define('IS_PRODUCTION', strpos($_SERVER['HTTP_HOST'] ?? '', 'derekthomaswood.com
    $pages declaration in index.php, which still carries the labels. */
 define('MENU_PAGES', [
 	'home' => 'live',
-	'how-i-work' => 'local',
+	'how-i-work' => 'live',
 	'resume' => 'live',
 	'now' => 'live',
 	'journal' => 'live',
