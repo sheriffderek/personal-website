@@ -20,6 +20,11 @@ define('SITE_TITLE', 'Derek Wood');
 define('SITE_META_TITLE', 'Derek Wood: Designer at large');
 define('SITE_DESCRIPTION', 'I help teams do their best work, whether that\'s big-picture vision and strategy, research and user testing, interfaces and code, design systems and cross-team collaboration, or auditing and maintaining what\'s already shipped.');
 
+/* CALL_URL - the one book-a-call link. Every "let's talk" door on the site
+   (home intro, Contact, How I work) points here, so changing the scheduler
+   is a one-line edit. */
+define('CALL_URL', 'https://calendly.com/perpetual-education/priority-meeting');
+
 /* Canonical production origin. Share-card (Open Graph / Twitter) images and
    URLs must be absolute, so they point here regardless of how the page was
    fetched (local dev, staging). Update if the domain ever moves. */
@@ -58,6 +63,17 @@ define('MENU_PAGES', [
    choreography that drives the page from it (scripts/welcome-video.js +
    choreo.js + tour.js). Work in progress - off for now, flip to true to resume. */
 define('TOUR_ENABLED', false);
+
+/* DEFAULT_MOOD - the mood a visitor with no saved preference lands in.
+   'quiet' for now (2026-09-18): the Expressive colors aren't all in place
+   yet, so the first impression rides the calmest palette. $todo - set back
+   to 'expressive' once the colors land.
+   This changes only the STARTING POSITION. The CSS law is untouched:
+   Expressive is still :root / no attribute; header.php server-renders
+   data-brand-mood for any other default, and a visitor's saved choice
+   (now including 'expressive') overrides it in the FOUC script.
+   Keep matched with DEFAULT_MOOD in scripts/settings-panel.js. */
+define('DEFAULT_MOOD', 'quiet');
 
 /* GRID_VIEW_ENABLED - the List/Grid view axis: on big screens (>= 1200px) a
    Grid option turns the timeline into a multi-column wall of work, with the

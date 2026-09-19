@@ -408,8 +408,8 @@
 	/* Character + mood — two of the design-system axes, each a slider (not
 	   buttons). Index maps to a slug. The first slug is the default: it means
 	   "no attribute on <html>" (the :root block in settings.css IS the
-	   default), and no storage key is written for it so first-load defaults
-	   stay clean. Both sliders share one wiring, so they can't drift apart.
+	   default). The STARTING position (see defaultIdx below) is the one value
+	   no storage key is written for, so first-load defaults stay clean. Both sliders share one wiring, so they can't drift apart.
 
 	     Character (data-brand-character) - type pair, corners, scale rhythm.
 	     Mood      (data-brand-mood)      - color palette only.
@@ -418,6 +418,13 @@
 	   hold the reader's place through the reflow (color-only mood swaps
 	   don't strictly need it, but the shared path keeps the story simple). */
 	function sliderSwitcher(cfg) {
+		/* Two different "defaults", kept apart on purpose:
+		   values[0] is the CSS default - it means "no attribute on <html>".
+		   defaultIdx is the STARTING POSITION - where a visitor with no saved
+		   choice lands, and the one value that needs no storage key. They're
+		   the same index unless a cfg says otherwise (mood, for now). */
+		var defaultIdx = cfg.defaultIdx || 0;
+
 		/* All instances, on every surface (mirror model: panel + band render
 		   the same slider; apply() reflects them all, none owns the state). */
 		var sliders = document.querySelectorAll('[data-set-' + cfg.kind + '-slider]');
@@ -447,7 +454,7 @@
 			}
 			if (shouldPersist(opts)) {
 				try {
-					if (value === cfg.values[0]) {
+					if (clamped === defaultIdx) {
 						localStorage.removeItem(cfg.storageKey);
 					} else {
 						localStorage.setItem(cfg.storageKey, value);
@@ -488,8 +495,8 @@
 		if (sliders.length) {
 			var saved = null;
 			try { saved = localStorage.getItem(cfg.storageKey); } catch (error) {}
-			var initialIdx = saved ? cfg.values.indexOf(saved) : 0;
-			if (initialIdx < 0) initialIdx = 0;
+			var initialIdx = saved ? cfg.values.indexOf(saved) : defaultIdx;
+			if (initialIdx < 0) initialIdx = defaultIdx;
 			apply(initialIdx, { persist: false });
 			var lastTickIdx = initialIdx;
 			sliders.forEach(function (slider) {
@@ -525,6 +532,11 @@
 	var MOODS           = ['expressive', 'technical', 'quiet'];
 	var MOOD_NAMES      = ['Expressive', 'Technical', 'Quiet'];
 
+	/* The starting mood - keep matched with DEFAULT_MOOD in includes/config.php
+	   (the why lives there). Expressive is still index 0 / no attribute. */
+	var DEFAULT_MOOD     = 'quiet';
+	var DEFAULT_MOOD_IDX = MOODS.indexOf(DEFAULT_MOOD);
+
 	var applyCharacter = sliderSwitcher({
 		kind: 'character',
 		attr: 'data-brand-character',
@@ -538,7 +550,8 @@
 		attr: 'data-brand-mood',
 		storageKey: 'mood-preference',
 		values: MOODS,
-		names: MOOD_NAMES
+		names: MOOD_NAMES,
+		defaultIdx: DEFAULT_MOOD_IDX
 	});
 
 	/* Flavor - the color-range axis on top of mood x character (flavors.css):
@@ -1473,8 +1486,8 @@
 		if (characterIdx < 0) characterIdx = 0;
 		applyCharacter(characterIdx, { persist: false });
 
-		var moodIdx = savedMood ? MOODS.indexOf(savedMood) : 0;
-		if (moodIdx < 0) moodIdx = 0;
+		var moodIdx = savedMood ? MOODS.indexOf(savedMood) : DEFAULT_MOOD_IDX;
+		if (moodIdx < 0) moodIdx = DEFAULT_MOOD_IDX;
 		applyMood(moodIdx, { persist: false });
 
 		var savedFlavor = null;

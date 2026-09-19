@@ -1,6 +1,9 @@
 <!doctype html>
 
-<html lang='en'>
+<?php /* The starting mood (DEFAULT_MOOD, config.php) is dressed server-side so it
+	holds with no JS and with storage blocked. Expressive is :root, so it
+	gets no attribute. */ ?>
+<html lang='en'<?php if (DEFAULT_MOOD !== 'expressive'): ?> data-brand-mood='<?= DEFAULT_MOOD ?>'<?php endif; ?>>
 
 <head>
 	<meta charset='utf-8'>
@@ -54,8 +57,17 @@
 				var character = localStorage.getItem('character-preference');
 				if (['marketing', 'interface', 'editorial', 'terminal'].indexOf(character) !== -1) html.setAttribute('data-brand-character', character);
 
+				/* Mood is the one axis whose starting position isn't index 0
+				   (DEFAULT_MOOD, config.php): the <html> tag arrives already
+				   wearing it, so a saved choice OVERRIDES here - and a saved
+				   'expressive' means taking the attribute off. No saved
+				   choice = leave the server's default alone. */
 				var mood = localStorage.getItem('mood-preference');
-				if (['technical', 'quiet'].indexOf(mood) !== -1) html.setAttribute('data-brand-mood', mood);
+				if (mood === 'expressive') {
+					html.removeAttribute('data-brand-mood');
+				} else if (['technical', 'quiet'].indexOf(mood) !== -1) {
+					html.setAttribute('data-brand-mood', mood);
+				}
 
 				var flavor = localStorage.getItem('flavor-preference');
 				if (['earth', 'cool', 'sweet'].indexOf(flavor) !== -1) html.setAttribute('data-flavor', flavor);
