@@ -2,6 +2,18 @@
 
 Started 2026-09-15 from Derek's braindump. The site is going pretty good; this is the list of what still needs to happen for it to be A+ as a candidate-review surface. Existing planning files (`notes/journal-plan.md`, `notes/journal-ideas.md`, `notes/theme-chat-plan.md`, `notes/timeline-content-plan.md`) stay as their topic-specific homes; this file is the current work list.
 
+## Tomorrow (2026-09-19) - picked up from the 2026-09-18 session
+
+One at a time, commit after each. The sentence pass works like this: name the thing, the file, and its goal - Derek types in his editor - spelling gets fixed, punctuation is his.
+
+- [ ] **Record the "Officially looking for a new long-term role" video** (Derek). Send the Vimeo id; it embeds in `templates/journal/officially-looking.php` the same way as the other two entries. The entry is title + summary until then.
+- [ ] **Sentence pass, in order:** Now page (`templates/pages/now.php` - is it current? does the last line box the search into education?) -> Contact (`templates/pages/contact.php`, likely a quick OK) -> home intro (`templates/pages/home.php`) -> the "Now interviewing" card -> the 16 weight-1 timeline cards in `content/milestones.json`, a few at a time.
+- [ ] **Resume index** (`content/resume.json`): Derek writes the `index.intro` and the three `when_to_pick` lines. The page's goal: choose a path and feel good about it.
+- [ ] **Past-writing shelf** (`templates/pages/journal.php`): titles and links only right now. Derek writes the blurbs in one sitting, or it stays bare.
+- [ ] **PE umbrella case study** (`case-studies-plan.md` #1): Derek works out the grew-over-time story live on camera and sends notes; they get kept in order, in his words, in `pe-case-study-notes.md`. The How I work page gets built from these walkthroughs.
+
+Open calls, no rush: ChromaDex vs the real-estate mastermind as case study #3 (`case-studies-plan.md`); the home page's `goal` brief line gets rewritten by Derek when the home page changes.
+
 ## First impression
 
 - [ ] **Hello video on the site** — Derek saying hello, on camera. The tradeoff Derek named (2026-09-15): in some ways it's giving them too much information — but if they don't like him right away, that's a pretty big hurdle to get over, and he wants people who want somebody who's enthusiastic and outgoing. So the video *is* the filter, and better upfront than after three interview rounds.
