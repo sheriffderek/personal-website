@@ -4,6 +4,10 @@ Holding spot. Copied here 2026-09-20 because the originals lived in /tmp and wou
 
 **Every caption in `index.html` is a placeholder.** Derek writes the real two lines per layer himself (see "No sentence ships without Derek's OK" in CLAUDE.md).
 
+## How we work on this one (Derek, 2026-09-20)
+
+Derek tests on his phone, from the live site: https://derekthomaswood.com/experiments/practice-layers/ - so **every change he needs to look at gets committed and pushed right away** (this folder only, never his other in-progress files), with the stylesheet's `?v=` stamp bumped if the CSS changed. Then confirm the deploy landed before telling him to look. A change that only exists locally is a change he can't check.
+
 ## The idea, in Derek's words
 
 "I don't just 'switch roles' I add new layers."
