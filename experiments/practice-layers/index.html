@@ -18,7 +18,7 @@
 
 	<!-- Static page, no asset() helper: bump this stamp by hand whenever the CSS changes,
 	     or phones keep the old stylesheet. -->
-	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-o'>
+	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-p'>
 
 	<style>
 		/* Test-page chrome only. Nothing in here belongs to the component. */
@@ -164,9 +164,10 @@
 			{ tag: 'Product design', weight: 3 },
 			{ tag: 'Founding a school', weight: 3 },
 			{ tag: 'AI', weight: 2 },
-			// The last layer is a layer like any other. `dark` flips its words
-			// to light ink; `why` carries Derek's closing line.
-			{ tag: 'What\'s next?', weight: 2, dark: true, why_is_closing: true },
+			// The last layer is a layer like any other; its `why` carries Derek's
+			// closing line. (Whether a layer's words are dark or light is the
+			// PALETTE's call, not the layer's - see --layer-N-ink in the CSS.)
+			{ tag: 'What\'s next?', weight: 2, why_is_closing: true },
 		];
 
 		const closing = 'This experience - across every part of the thinking and planning -- Half my waking life -- devoted to getting you to your goal.';
@@ -180,9 +181,9 @@
 			section.style.setProperty('--tone', 'var(--layer-' + (index + 1) + ')');
 
 			section.style.setProperty('--index', index);
-			if (layer.dark) {
-				section.dataset.tone = 'dark';
-			}
+			// This layer's ink: the palette's slot for it, else the page's ink.
+			section.style.setProperty('--tone-ink', 'var(--layer-' + (index + 1) + '-ink, var(--ink))');
+			section.style.setProperty('--tone-ink-quiet', 'var(--layer-' + (index + 1) + '-ink-quiet, var(--ink-quiet))');
 
 			const story = document.createElement('div');
 			story.className = 'story';

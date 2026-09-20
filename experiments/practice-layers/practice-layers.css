@@ -21,8 +21,11 @@
 	--layer-7: #dadada;
 	--layer-8: #c2c2c2;
 	--layer-9: #111;
-	--ink-on-dark: #fff;
-	--ink-quiet-on-dark: #c9c9c9;
+	/* A layer may state its own ink (--layer-N-ink / -ink-quiet). Unstated =
+	   the page's ink. The PALETTE decides this, not the layer: the same
+	   layer is pale in one palette and deep in another. */
+	--layer-9-ink: #fff;
+	--layer-9-ink-quiet: #c9c9c9;
 
 	--space: 1rem;
 }
@@ -38,45 +41,65 @@
 :root[data-palette='warming'] {
 	--fill-page: var(--fill-primary);
 	--ink: var(--ink-primary);
-	--ink-quiet: var(--ink-secondary);
+	/* Contrast (Ivy, 2026-09-20): on tinted layers the softer secondary ink
+	   got too faint. Size and weight carry the hierarchy here; ink stays full. */
+	--ink-quiet: var(--ink-primary);
 	--layer-9: var(--ink-primary);
-	--ink-on-dark: var(--fill-primary);
-	--ink-quiet-on-dark: var(--fill-auxiliary);
+	--layer-9-ink: var(--fill-primary);
+	--layer-9-ink-quiet: var(--fill-primary);
 }
 
-/* DEEPENING: one step further from paper toward ink with every layer.
-   Stacking shown as density - the career gets deeper, not more colorful. */
+/*
+	DEEPENING: further from paper toward ink with every layer. Stacking shown
+	as density - the career gets deeper, not more colorful.
+	CONTRAST (Ivy, 2026-09-20 - the first ramp climbed 6% a layer and
+	neighbors were hard to tell apart): the steps are wider now, and the ramp
+	SKIPS the middle grays on purpose. Between roughly 38% and 58% of the way
+	to ink, neither dark words nor light words read well. So six layers stay
+	on the light side with dark words, then the last three land on the dark
+	side with paper-colored words.
+*/
 :root[data-palette='deepening'] {
-	--toward: var(--ink-primary);
+	--layer-1: var(--fill-secondary);
+	--layer-2: color-mix(in oklab, var(--fill-secondary), var(--ink-primary) 7%);
+	--layer-3: color-mix(in oklab, var(--fill-secondary), var(--ink-primary) 14%);
+	--layer-4: color-mix(in oklab, var(--fill-secondary), var(--ink-primary) 21%);
+	--layer-5: color-mix(in oklab, var(--fill-secondary), var(--ink-primary) 28%);
+	--layer-6: color-mix(in oklab, var(--fill-secondary), var(--ink-primary) 35%);
+	--layer-7: color-mix(in oklab, var(--fill-secondary), var(--ink-primary) 64%);
+	--layer-8: color-mix(in oklab, var(--fill-secondary), var(--ink-primary) 82%);
+	--layer-7-ink: var(--fill-primary);
+	--layer-7-ink-quiet: var(--fill-primary);
+	--layer-8-ink: var(--fill-primary);
+	--layer-8-ink-quiet: var(--fill-primary);
 }
 
-/* WARMING: the same climb, toward the theme's accent instead of its ink. */
-:root[data-palette='warming'] {
-	--toward: var(--accent);
-}
-
-:root[data-palette='deepening'],
+/* WARMING: the climb goes toward the theme's accent instead of its ink. The
+   accent is a mid tone, so even the far end stays light enough for dark words. */
 :root[data-palette='warming'] {
 	--layer-1: var(--fill-secondary);
-	--layer-2: color-mix(in oklab, var(--fill-secondary), var(--toward) 6%);
-	--layer-3: color-mix(in oklab, var(--fill-secondary), var(--toward) 12%);
-	--layer-4: color-mix(in oklab, var(--fill-secondary), var(--toward) 18%);
-	--layer-5: color-mix(in oklab, var(--fill-secondary), var(--toward) 24%);
-	--layer-6: color-mix(in oklab, var(--fill-secondary), var(--toward) 30%);
-	--layer-7: color-mix(in oklab, var(--fill-secondary), var(--toward) 36%);
-	--layer-8: color-mix(in oklab, var(--fill-secondary), var(--toward) 42%);
+	--layer-2: color-mix(in oklab, var(--fill-secondary), var(--accent) 8%);
+	--layer-3: color-mix(in oklab, var(--fill-secondary), var(--accent) 16%);
+	--layer-4: color-mix(in oklab, var(--fill-secondary), var(--accent) 24%);
+	--layer-5: color-mix(in oklab, var(--fill-secondary), var(--accent) 32%);
+	--layer-6: color-mix(in oklab, var(--fill-secondary), var(--accent) 40%);
+	--layer-7: color-mix(in oklab, var(--fill-secondary), var(--accent) 48%);
+	--layer-8: color-mix(in oklab, var(--fill-secondary), var(--accent) 56%);
 }
 
-/* EVERY OTHER: two fills taking turns. The calmest one - a ledger. */
+/* EVERY OTHER: two tones taking turns. The calmest one - a ledger. The
+   second tone is mixed a fifth of the way to ink: the theme's own two fills
+   sit too close together to read as "every other". */
 :root[data-palette='every-other'] {
+	--zebra: color-mix(in oklab, var(--fill-secondary), var(--ink-primary) 20%);
 	--layer-1: var(--fill-secondary);
-	--layer-2: var(--fill-auxiliary);
+	--layer-2: var(--zebra);
 	--layer-3: var(--fill-secondary);
-	--layer-4: var(--fill-auxiliary);
+	--layer-4: var(--zebra);
 	--layer-5: var(--fill-secondary);
-	--layer-6: var(--fill-auxiliary);
+	--layer-6: var(--zebra);
 	--layer-7: var(--fill-secondary);
-	--layer-8: var(--fill-auxiliary);
+	--layer-8: var(--zebra);
 }
 
 /* Voices (stand-ins for the site's real ones) */
@@ -225,14 +248,16 @@ practice-layers {
 		block-size: var(--hold);
 	}
 
-	/* A dark layer needs light words. Scoped to the layer's OWN name and
-	   story, never the layers nested inside it. Must come before the
-	   hidden-until-stuck rule below so that one still wins. */
-	.layer[data-tone='dark'] > .tag,
-	.layer[data-tone='dark'] > .story {
-		--ink: var(--ink-on-dark);
-		--ink-quiet: var(--ink-quiet-on-dark);
-		color: var(--ink-on-dark);
+	/* Every layer's name and story read THAT layer's ink (the script hands
+	   each layer --tone-ink / --tone-ink-quiet from the palette's
+	   --layer-N-ink slots; unstated falls back to the page's ink). Scoped to
+	   the layer's OWN name and story, never the layers nested inside it.
+	   Must come before the hidden-until-stuck rule below so that one wins. */
+	.layer > .tag,
+	.layer > .story {
+		--ink: var(--tone-ink);
+		--ink-quiet: var(--tone-ink-quiet);
+		color: var(--tone-ink);
 	}
 
 	/*
