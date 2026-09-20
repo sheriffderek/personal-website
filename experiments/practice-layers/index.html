@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang='en'>
+
+<head>
+
+	<meta charset='utf-8'>
+
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+
+	<title>practice-layers: test page</title>
+
+	<link rel='stylesheet' href='practice-layers.css'>
+
+	<style>
+		/* Test-page chrome only. Nothing in here belongs to the component. */
+		body {
+			margin: 0;
+			font-family: system-ui, sans-serif;
+			background: var(--fill-page);
+			color: var(--ink);
+		}
+
+		.test-note {
+			max-width: 40rem;
+			margin: 0 auto;
+			padding: 2rem 1rem;
+		}
+
+		.wide-box {
+			max-width: 72rem;
+			margin: 0 auto;
+			padding: 0 1rem;
+		}
+
+		.phone-box {
+			max-width: 24rem;
+			margin: 0 auto;
+		}
+	</style>
+
+</head>
+
+<body>
+
+	<div class='test-note'>
+
+		<p class='strong-voice'>practice-layers: test page</p>
+
+		<p>Every caption and panel height below is a PLACEHOLDER. The layer order is the one agreed 2026-09-19; the labels are working labels. There are no years on purpose: the order is the point. The real order and the text per layer come from Derek.</p>
+
+		<p>One component, two tellings. It reads the width of whatever it is dropped into (a container query, not the screen): with room it is the staircase chart, base layer at the bottom; without room it is the scroll story, base layer at the top.</p>
+
+		<p class='strong-voice'>With room: the staircase (click a bar for its two lines)</p>
+
+	</div>
+
+	<div class='wide-box'>
+
+		<practice-layers></practice-layers>
+
+	</div>
+
+	<div class='test-note'>
+
+		<p class='strong-voice'>Phone width: the scroll story, then the finale (scroll it all the way)</p>
+
+	</div>
+
+	<div class='phone-box'>
+
+		<practice-layers></practice-layers>
+
+	</div>
+
+	<div class='test-note'>
+
+		<p>End of test page.</p>
+
+	</div>
+
+	<script>
+		// This script only stands in for the template. In the real component the
+		// nested sections come from a recursive Vue component fed one list through
+		// props. The component itself needs no JavaScript: nesting + sticky is all CSS.
+
+		// PLACEHOLDER DATA. `weight` = how much scroll a layer gets (narrative weight).
+		// Deliberately NOT weight: no dates, no countable scale.
+		const layers = [
+			{ label: 'Art and technical education', weight: 3 },
+			{ label: 'Freelance web design and development', weight: 2 },
+			{ label: 'Agency front-end development', weight: 2 },
+			{ label: 'Startup: the bridge between design and engineering', weight: 2 },
+			{ label: 'Consulting', weight: 2 },
+			{ label: 'Product design', weight: 3 },
+			{ label: 'Education: founding and running a school', weight: 3 },
+			{ label: 'AI: agent workflows, product integration, what it does to teams', weight: 2 },
+		];
+
+		const closing = 'This experience - across every part of the thinking and planning -- Half my waking life -- devoted to getting you to your goal.';
+
+		function buildLayer(list, index, host_id) {
+			const layer = list[index];
+			const section = document.createElement('section');
+			section.className = 'layer';
+			section.id = host_id + '-layer-' + (index + 1);
+			section.style.setProperty('--weight', layer.weight);
+			section.style.setProperty('--tone', 'var(--layer-' + (index + 1) + ')');
+
+			section.style.setProperty('--index', index);
+
+			// Direct child of the layer ON PURPOSE: a sticky element stays stuck
+			// until its PARENT ends, and this parent runs to the end of the story.
+			const band = document.createElement('div');
+			band.className = 'band';
+			section.append(band);
+
+			const label = document.createElement('p');
+			label.className = 'label strong-voice';
+			label.textContent = layer.label;
+			section.append(label);
+
+			const story = document.createElement('div');
+			story.className = 'story';
+			story.innerHTML =
+				'<div class="telling">' +
+				'<p class="quiet-voice">(what it is: a thing they can recognize and place)</p>' +
+				'<p class="quiet-voice">(what that gives you: why it matters to the business)</p>' +
+				'</div>';
+			section.append(story);
+
+			if (index + 1 < list.length) {
+				section.append(buildLayer(list, index + 1, host_id));
+			} else {
+				const now = document.createElement('div');
+				now.className = 'now';
+				now.innerHTML = '<p class="strong-voice">What\'s next?</p><p>' + closing + '</p>';
+				section.append(now);
+			}
+
+			return section;
+		}
+
+		// The finale: one column per layer, plus one for what's next.
+		function buildFinale(list) {
+			const finale = document.createElement('div');
+			finale.className = 'finale';
+
+			const figure = document.createElement('div');
+			figure.className = 'figure';
+
+			const columns = document.createElement('div');
+			columns.className = 'columns';
+			for (let index = 0; index <= list.length; index++) {
+				const column = document.createElement('div');
+				column.className = 'column';
+				column.style.setProperty('--index', index);
+				column.style.setProperty('--tone', 'var(--layer-' + (index + 1) + ')');
+				columns.append(column);
+			}
+
+			const frame = document.createElement('div');
+			frame.className = 'frame';
+
+			const closing_line = document.createElement('p');
+			closing_line.className = 'closing';
+			closing_line.textContent = closing;
+
+			figure.append(columns, frame, closing_line);
+			finale.append(figure);
+			return finale;
+		}
+
+		document.querySelectorAll('practice-layers').forEach(function (host, host_index) {
+			const list = layers;
+			host.style.setProperty('--count', list.length + 1);
+			host.append(buildLayer(list, 0, 'pl' + host_index));
+			host.append(buildFinale(list));
+
+			// Click a bar to open its two lines; opening one closes the rest.
+			// (In the scroll story every line is already showing, so the click
+			// changes nothing you can see there.) $todo for the real build: the
+			// label becomes a <button aria-expanded> so keyboards get it too.
+			host.dataset.enhanced = '';
+			host.addEventListener('click', function (event) {
+				const label = event.target.closest('.label');
+				if (!label) {
+					return;
+				}
+				const layer = label.parentElement;
+				const was_open = layer.classList.contains('is-open');
+				host.querySelectorAll('.layer.is-open').forEach(function (open_layer) {
+					open_layer.classList.remove('is-open');
+				});
+				if (!was_open) {
+					layer.classList.add('is-open');
+				}
+			});
+		});
+	</script>
+
+</body>
+
+</html>

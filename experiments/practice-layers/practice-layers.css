@@ -1,0 +1,334 @@
+/* Tokens. In a real project these live in the theme, not with the component. */
+:root {
+	--fill-page: #f5f5f5;
+	--ink: #111;
+	--ink-quiet: #444;
+
+	--layer-1: #c2ddf0;
+	--layer-2: #f2cccc;
+	--layer-3: #f7d09c;
+	--layer-4: #f8f6bd;
+	--layer-5: #c0ea85;
+	--layer-6: #c9c9c9;
+	--layer-7: #dadada;
+	--layer-8: #c2c2c2;
+	--layer-9: #d8d8d8;
+	--layer-now: #111;
+	--ink-on-now: #fff;
+
+	--space: 1rem;
+}
+
+/* Voices (stand-ins for the site's real ones) */
+.strong-voice {
+	font-size: 1.125rem;
+	font-weight: 600;
+	line-height: 1.3;
+}
+
+.quiet-voice {
+	font-size: 0.875rem;
+	color: var(--ink-quiet);
+}
+
+/*
+	practice-layers
+
+	Each layer is a section nested INSIDE the layer before it, so a layer's box
+	runs from where it starts to the very end of the story. Three things fall
+	out of that for free, with no JavaScript:
+
+	- THE STRIPE is the layer's own left border. It runs the full height of
+	  the layer, so earlier layers stay visible at the left for as long as the
+	  page runs. (A border, not a background: a background would also paint
+	  UNDER the nested layer and turn the stripes into L-shapes. The mockups
+	  are straight columns that end in steps.)
+	- THE STACK (Derek's sketch, 2026-09-20): each layer also leaves a thin
+	  BAND across the top, the same thickness as its stripe. The band is
+	  sticky, and because it is a direct child of its layer it stays stuck
+	  until that layer ends - which is the end of the story. Each band sticks
+	  one stripe lower than the one before, so a frame grows out of the
+	  top-left corner, one layer at a time: you watch it stacking.
+	- THE STEPPED BOTTOM: every layer ends a little after the layer inside it.
+
+	WHY this comment: position: sticky silently dies if any ancestor has
+	overflow hidden/auto/scroll. If the bands stop sticking after dropping
+	this somewhere new, look for an overflow on a wrapper.
+*/
+practice-layers {
+	display: block;
+	container-type: inline-size;
+
+	--stripe: 0.5rem;
+	--gap: 0.5rem;
+	--frame-line: 0.3rem;
+	/* How far each stripe runs past the one inside it, at the bottom. */
+	--tail: 1.5rem;
+	/* WHY no time scale: heights are narrative weight, never countable years. */
+	--step: 9rem;
+
+	.layer {
+		border-inline-start: var(--stripe) solid var(--tone);
+		padding-block-end: var(--tail);
+	}
+
+	.band {
+		position: sticky;
+		inset-block-start: calc(var(--index) * var(--stripe));
+		z-index: 1;
+		block-size: var(--stripe);
+		background: var(--tone);
+	}
+
+	.label {
+		margin: 0;
+		padding: var(--space) var(--space) 0;
+		background: var(--tone);
+	}
+
+	.story {
+		min-block-size: calc(var(--weight) * var(--step));
+		padding: var(--space);
+		background: var(--tone);
+
+		p {
+			margin: 0;
+		}
+
+		p + p {
+			margin-block-start: 0.5rem;
+		}
+	}
+
+	/* The two lines ride along just under the stack while their layer passes. */
+	.telling {
+		position: sticky;
+		inset-block-start: calc((var(--index) + 1) * var(--stripe) + var(--space));
+	}
+
+	.now {
+		background: var(--layer-now);
+		color: var(--ink-on-now);
+		padding: var(--space);
+
+		p {
+			margin: 0;
+		}
+
+		p + p {
+			margin-block-start: 0.5rem;
+		}
+	}
+
+	/*
+		THE FINALE (Derek's sketch, 2026-09-20). After the last layer the
+		stripes get their own moment, in four beats as you scroll:
+		  1. the stripes as they were - thin, at the left edge
+		  2. they widen to fill the screen
+		  3. a frame lands across all of them - one slice of "now" cuts
+		     through every layer at once. That is how dense the stack is.
+		  4. the frame thickens and the closing line arrives.
+		Tops line up and bottoms step: the first layer runs longest.
+
+		Written END STATE FIRST: the plain rules below are beat 4, so a
+		browser with no scroll-driven animation (Firefox today) simply shows
+		the finished figure. The @supports block only adds the journey there
+		- every keyframe is a `from`, never a `to`.
+	*/
+	.finale {
+		padding-block: calc(var(--space) * 2);
+	}
+
+	.figure {
+		position: relative;
+		block-size: 30rem;
+	}
+
+	.columns {
+		display: flex;
+		align-items: flex-start;
+		block-size: 100%;
+	}
+
+	.column {
+		flex: 1 0 var(--stripe);
+		block-size: calc(100% - var(--index) * 7%);
+		background: var(--tone);
+	}
+
+	.frame {
+		position: absolute;
+		inset-inline: calc(var(--space) * -0.5);
+		inset-block-start: 2rem;
+		block-size: 10rem;
+		border: var(--frame-line) solid var(--ink);
+
+		/* the line from the frame down to the closing words */
+		&::after {
+			content: '';
+			position: absolute;
+			inset-inline-start: 70%;
+			inset-block-start: 100%;
+			inline-size: var(--frame-line);
+			block-size: 9.5rem;
+			background: var(--ink);
+		}
+	}
+
+	.closing {
+		position: absolute;
+		inset-inline-end: 0;
+		inset-block-end: 0;
+		inline-size: 55%;
+		margin: 0;
+	}
+
+	/* In the scroll story the closing words belong to the finale, so the
+	   black "What's next?" block keeps only its first line. */
+	.now p + p {
+		display: none;
+	}
+
+	@supports (animation-timeline: view()) {
+		/* A tall runway with the figure pinned inside it: the scroll through
+		   the runway IS the clock the four beats run on. */
+		.finale {
+			view-timeline-name: --finale;
+			block-size: 260vh;
+		}
+
+		.figure {
+			position: sticky;
+			inset-block-start: var(--space);
+		}
+
+		.column,
+		.frame,
+		.frame::after,
+		.closing {
+			animation-timing-function: linear;
+			animation-fill-mode: both;
+			animation-timeline: --finale;
+		}
+
+		.column {
+			animation-name: finale-widen;
+			animation-range: contain 10% contain 45%;
+		}
+
+		.frame {
+			animation-name: finale-frame;
+			animation-range: contain 50% contain 75%;
+		}
+
+		.frame::after,
+		.closing {
+			animation-name: finale-arrive;
+			animation-range: contain 78% contain 95%;
+		}
+	}
+
+	/*
+		Roomier stripes once the container (not the screen) has the width for it.
+		Set on the first layer, not the host: a container query cannot style its
+		own container, only what is inside it. The values inherit down the nest.
+	*/
+	@container (min-width: 36rem) {
+		> .layer {
+			--stripe: 1rem;
+			--space: 1.5rem;
+		}
+	}
+
+	/*
+		WIDE: the staircase chart (Derek's first sketches). Same markup, the
+		story told the other way around: the base layer is the BOTTOM bar and
+		each new layer stacks on top of it, starting further right. Every bar
+		runs to the right edge - a layer starts and never ends.
+
+		How the nest becomes a chart: a layer stops painting itself and paints
+		only its own bar (.story). column-reverse puts that bar at the bottom
+		and the rest of the nest above it; the nested layer steps in from the
+		left by one --rise. DOM order never changes, so a screen reader still
+		gets the layers oldest-first in both layouts.
+	*/
+	@container (min-width: 48rem) {
+		/* A layer stops drawing its stripe and becomes a column: whatever is
+		   nested inside goes on TOP (order: -1), its own bar sits below. */
+		.layer {
+			display: flex;
+			flex-direction: column;
+			border: 0;
+			padding: 0;
+		}
+
+		/* cqi measures the HOST, so every step is the same size at any depth. */
+		.layer > .layer,
+		.now {
+			order: -1;
+			margin-inline-start: calc(100cqi / (var(--count) + 3));
+			margin-block-end: var(--gap);
+		}
+
+		/* The bar = the label, plus its two lines when opened. Nothing sticks,
+		   and there is no top stack: the chart shows every layer at once. */
+		.band {
+			display: none;
+		}
+
+		.label {
+			padding-block: calc(var(--space) / 3);
+			cursor: pointer;
+		}
+
+		.story {
+			min-block-size: 0;
+			padding-block-start: 0;
+		}
+
+		.telling {
+			position: static;
+		}
+
+		/* One line per bar until someone CLICKS for more (Derek, 2026-09-20:
+		   hover was janky - the chart jumped around under the pointer). The
+		   click is an enhancement: [data-enhanced] is only set once the
+		   script is running, so with no JS every bar simply shows its lines. */
+		&[data-enhanced] .layer:not(.is-open) > .story {
+			display: none;
+		}
+
+		.now {
+			padding: calc(var(--space) / 2) var(--space);
+
+			p + p {
+				display: block;
+			}
+		}
+
+		/* The staircase already shows every layer at once - it IS the
+		   finale's shape, turned on its side - so the finale stands down. */
+		.finale {
+			display: none;
+		}
+	}
+}
+
+@keyframes finale-widen {
+	from {
+		flex-grow: 0;
+	}
+}
+
+@keyframes finale-frame {
+	from {
+		opacity: 0;
+		border-width: 1px;
+	}
+}
+
+@keyframes finale-arrive {
+	from {
+		opacity: 0;
+	}
+}
