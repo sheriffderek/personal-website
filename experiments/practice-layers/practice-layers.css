@@ -189,10 +189,12 @@ practice-layers {
 		padding-inline: var(--space);
 		background: var(--layer-now);
 		color: var(--ink-on-now);
-		line-height: var(--now-row);
 
+		/* The voice class brings its own line-height, so the centering has to
+		   be said on the line itself, not just on the bar. */
 		p {
 			margin: 0;
+			line-height: var(--now-row);
 		}
 	}
 
@@ -448,7 +450,10 @@ practice-layers {
 			position: static;
 			block-size: auto;
 			padding: calc(var(--space) / 2) var(--space);
-			line-height: inherit;
+
+			p {
+				line-height: 1.3;
+			}
 
 			p + p {
 				display: block;
