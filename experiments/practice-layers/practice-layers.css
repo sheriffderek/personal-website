@@ -80,7 +80,14 @@ practice-layers {
 	.tag {
 		position: sticky;
 		inset-block-start: calc(var(--index) * var(--row));
-		z-index: 1;
+		/* EARLIER layers paint on top. At the end of the story the inner
+		   layers finish first (that is the stepped bottom), so their names
+		   get pushed up first. Painted on top, they crashed over the names
+		   still stuck above them; painted underneath, each name slides up
+		   UNDER the one before it and the stack folds away from the bottom.
+		   (An earlier row always covers a later one: it starts further left
+		   and both run to the right edge.) */
+		z-index: calc(100 - var(--index));
 		block-size: var(--row);
 		margin: 0;
 		padding-inline: var(--space);
@@ -164,7 +171,9 @@ practice-layers {
 
 	.frame {
 		position: absolute;
-		inset-inline: calc(var(--space) * -0.5);
+		/* Inside the figure's own edges: on a phone there is no margin to
+		   hang out into, and the frame's sides got cut off by the screen. */
+		inset-inline: 0;
 		inset-block-start: 2rem;
 		block-size: 10rem;
 		border: var(--frame-line) solid var(--ink);
