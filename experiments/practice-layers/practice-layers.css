@@ -43,16 +43,17 @@
 	  page runs. (A border, not a background: a background would also paint
 	  UNDER the nested layer and turn the stripes into L-shapes. The mockups
 	  are straight columns that end in steps.)
-	- THE STACK (Derek's sketch, 2026-09-20): each layer also leaves a thin
-	  BAND across the top, the same thickness as its stripe. The band is
-	  sticky, and because it is a direct child of its layer it stays stuck
-	  until that layer ends - which is the end of the story. Each band sticks
-	  one stripe lower than the one before, so a frame grows out of the
-	  top-left corner, one layer at a time: you watch it stacking.
+	- THE STACK (Derek's sketches, 2026-09-20): each layer opens with a short
+	  TAG - its name, held to one row. The tag is sticky, and because it is a
+	  direct child of its layer it stays stuck until that layer ends - which
+	  is the end of the story. Each tag sticks one row lower than the one
+	  before, so the names pile up at the top as you scroll, each stepped in
+	  by one stripe: "woah / look at that journey." (Thin unlabeled bands
+	  were tried first - they stacked, but never said what each layer WAS.)
 	- THE STEPPED BOTTOM: every layer ends a little after the layer inside it.
 
 	WHY this comment: position: sticky silently dies if any ancestor has
-	overflow hidden/auto/scroll. If the bands stop sticking after dropping
+	overflow hidden/auto/scroll. If the tags stop sticking after dropping
 	this somewhere new, look for an overflow on a wrapper.
 */
 practice-layers {
@@ -62,6 +63,9 @@ practice-layers {
 	--stripe: 0.5rem;
 	--gap: 0.5rem;
 	--frame-line: 0.3rem;
+	/* One row of the stack at the top. Tags are held to one line so the
+	   stack's height is predictable: rows x layers. */
+	--row: 1.75rem;
 	/* How far each stripe runs past the one inside it, at the bottom. */
 	--tail: 1.5rem;
 	/* WHY no time scale: heights are narrative weight, never countable years. */
@@ -72,18 +76,18 @@ practice-layers {
 		padding-block-end: var(--tail);
 	}
 
-	.band {
+	.tag {
 		position: sticky;
-		inset-block-start: calc(var(--index) * var(--stripe));
+		inset-block-start: calc(var(--index) * var(--row));
 		z-index: 1;
-		block-size: var(--stripe);
-		background: var(--tone);
-	}
-
-	.label {
+		block-size: var(--row);
 		margin: 0;
-		padding: var(--space) var(--space) 0;
+		padding-inline: var(--space);
 		background: var(--tone);
+		line-height: var(--row);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	.story {
@@ -103,7 +107,7 @@ practice-layers {
 	/* The two lines ride along just under the stack while their layer passes. */
 	.telling {
 		position: sticky;
-		inset-block-start: calc((var(--index) + 1) * var(--stripe) + var(--space));
+		inset-block-start: calc((var(--index) + 1) * var(--row) + var(--space));
 	}
 
 	.now {
@@ -270,14 +274,14 @@ practice-layers {
 			margin-block-end: var(--gap);
 		}
 
-		/* The bar = the label, plus its two lines when opened. Nothing sticks,
-		   and there is no top stack: the chart shows every layer at once. */
-		.band {
-			display: none;
-		}
-
-		.label {
+		/* The bar = the tag, plus its lines when opened. Nothing sticks: the
+		   chart already shows every layer at once. */
+		.tag {
+			position: static;
+			block-size: auto;
 			padding-block: calc(var(--space) / 3);
+			line-height: inherit;
+			white-space: normal;
 			cursor: pointer;
 		}
 
