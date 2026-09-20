@@ -11,7 +11,7 @@
 
 	<!-- Static page, no asset() helper: bump this stamp by hand whenever the CSS changes,
 	     or phones keep the old stylesheet. -->
-	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-g'>
+	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-h'>
 
 	<style>
 		/* Test-page chrome only. Nothing in here belongs to the component. */
@@ -175,6 +175,33 @@
 			return finale;
 		}
 
+		// A name is "stuck" once it has reached its place in the stack (its own
+		// CSS `top`). From then on its words show. Checked once per frame while
+		// scrolling; harmless in the staircase, where nothing is sticky and the
+		// hiding rule doesn't apply.
+		function markStuckNames() {
+			document.querySelectorAll('practice-layers .tag').forEach(function (tag) {
+				const resting_top = parseFloat(getComputedStyle(tag).top);
+				if (isNaN(resting_top)) {
+					return;
+				}
+				const is_stuck = tag.getBoundingClientRect().top <= resting_top + 1;
+				tag.classList.toggle('is-stuck', is_stuck);
+			});
+		}
+
+		let stuck_check_queued = false;
+		window.addEventListener('scroll', function () {
+			if (stuck_check_queued) {
+				return;
+			}
+			stuck_check_queued = true;
+			requestAnimationFrame(function () {
+				stuck_check_queued = false;
+				markStuckNames();
+			});
+		}, { passive: true });
+
 		document.querySelectorAll('practice-layers').forEach(function (host, host_index) {
 			const list = layers;
 			host.style.setProperty('--count', list.length + 1);
@@ -199,6 +226,8 @@
 				}
 			});
 		});
+
+		markStuckNames();
 	</script>
 
 </body>

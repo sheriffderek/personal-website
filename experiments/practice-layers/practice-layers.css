@@ -109,8 +109,7 @@ practice-layers {
 	.tag {
 		position: sticky;
 		inset-block-start: calc(var(--index) * var(--row));
-		/* See HIDDEN UNTIL IT STICKS, below. */
-		z-index: calc(2 * (var(--count) - var(--index)));
+		z-index: 1;
 		block-size: var(--row);
 		margin: 0;
 		padding-inline: var(--space);
@@ -119,25 +118,29 @@ practice-layers {
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
+		transition: color 0.25s;
 	}
 
 	/*
-		HIDDEN UNTIL IT STICKS (Derek, 2026-09-20): a name sitting in plain
-		view at the end of its section reads like the heading of the NEXT
-		section. So the name waits out of sight, tucked under the bottom edge
-		of its own story (the negative margin pulls it up underneath; the
-		story paints over it). When the name reaches its place in the stack
-		it stops - the story keeps scrolling, its bottom edge passes, and the
-		name is uncovered exactly as it sticks. No JavaScript.
-		The paint order that makes it work, for layer i:
-		    every EARLIER name  >  story i  >  name i  >  story i+1
-		so a story always slides under the stack above it, but over its own
-		name. Counting down from the first layer gives exactly that.
+		HIDDEN UNTIL IT STICKS (Derek, 2026-09-20): a name in plain view at
+		the end of its section reads like the heading of the NEXT section. So
+		its row is always there, in the layer's own color (it just looks like
+		the last of the section), but the WORDS stay invisible until the row
+		is actually stuck - then the whole name fades in at once.
+		The script marks a stuck name with .is-stuck. No script = the names
+		simply show the whole time. Scroll story only: in the staircase the
+		name IS the bar.
+		(First try was pure CSS - the name tucked under its story and got
+		uncovered by the story's bottom edge. It worked, but for a moment you
+		saw half-covered, sliced letters. Rejected.)
 	*/
+	@container (max-width: 47.99rem) {
+		&[data-enhanced] .tag:not(.is-stuck) {
+			color: transparent;
+		}
+	}
+
 	.story {
-		position: relative;
-		z-index: calc(2 * (var(--count) - var(--index)) + 1);
-		margin-block-end: calc(-1 * var(--row));
 		min-block-size: calc(var(--weight) * var(--step));
 		padding: var(--space);
 		background: var(--tone);
@@ -346,8 +349,6 @@ practice-layers {
 
 		.story {
 			order: 1;
-			position: static;
-			margin-block-end: 0;
 			min-block-size: 0;
 			padding-block-start: 0;
 		}
