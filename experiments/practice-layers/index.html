@@ -11,7 +11,7 @@
 
 	<!-- Static page, no asset() helper: bump this stamp by hand whenever the CSS changes,
 	     or phones keep the old stylesheet. -->
-	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-k'>
+	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-l'>
 
 	<style>
 		/* Test-page chrome only. Nothing in here belongs to the component. */
@@ -100,6 +100,9 @@
 			{ tag: 'Product design', weight: 3 },
 			{ tag: 'Founding a school', weight: 3 },
 			{ tag: 'AI', weight: 2 },
+			// The last layer is a layer like any other. `dark` flips its words
+			// to light ink; `why` carries Derek's closing line.
+			{ tag: 'What\'s next?', weight: 2, dark: true, why_is_closing: true },
 		];
 
 		const closing = 'This experience - across every part of the thinking and planning -- Half my waking life -- devoted to getting you to your goal.';
@@ -113,13 +116,16 @@
 			section.style.setProperty('--tone', 'var(--layer-' + (index + 1) + ')');
 
 			section.style.setProperty('--index', index);
+			if (layer.dark) {
+				section.dataset.tone = 'dark';
+			}
 
 			const story = document.createElement('div');
 			story.className = 'story';
 			story.innerHTML =
 				'<div class="telling">' +
 				'<p class="strong-voice">(what: the recognizable job / role / focus)</p>' +
-				'<p class="quiet-voice">(why: what that gives you - why it matters to the business)</p>' +
+				'<p class="quiet-voice">' + (layer.why_is_closing ? closing : '(why: what that gives you - why it matters to the business)') + '</p>' +
 				'</div>';
 			section.append(story);
 
@@ -136,24 +142,17 @@
 			if (index + 1 < list.length) {
 				section.append(buildLayer(list, index + 1, host_id));
 			} else {
-				const now = document.createElement('div');
-				now.className = 'now';
-				now.innerHTML = '<p class="strong-voice">What\'s next?</p><p>' + closing + '</p>';
-
-				// The ending: the black bar, then empty scroll for the finished
-				// stack to HOLD through before it all leaves together.
-				const ending = document.createElement('div');
-				ending.className = 'ending';
+				// After the LAST layer, whichever it is: empty scroll for the
+				// finished stack to hold through before it all leaves together.
 				const hold = document.createElement('div');
 				hold.className = 'hold';
-				ending.append(now, hold);
-				section.append(ending);
+				section.append(hold);
 			}
 
 			return section;
 		}
 
-		// The finale: one column per layer, plus one for what's next.
+		// The finale: one column per layer.
 		function buildFinale(list) {
 			const finale = document.createElement('div');
 			finale.className = 'finale';
@@ -163,7 +162,7 @@
 
 			const columns = document.createElement('div');
 			columns.className = 'columns';
-			for (let index = 0; index <= list.length; index++) {
+			for (let index = 0; index < list.length; index++) {
 				const column = document.createElement('div');
 				column.className = 'column';
 				column.style.setProperty('--index', index);
@@ -183,15 +182,15 @@
 			return finale;
 		}
 
-		// The retelling: the same layers as horizontal bars (plus one for what's
-		// next), with a tall frame cutting down through all of them.
+		// The retelling: the same layers as horizontal bars, with a tall frame
+		// cutting down through all of them.
 		function buildRetelling(list) {
 			const retelling = document.createElement('div');
 			retelling.className = 'retelling';
 
 			const bars = document.createElement('div');
 			bars.className = 'bars';
-			for (let index = 0; index <= list.length; index++) {
+			for (let index = 0; index < list.length; index++) {
 				const bar = document.createElement('div');
 				bar.className = 'bar';
 				bar.style.setProperty('--tone', 'var(--layer-' + (index + 1) + ')');
@@ -283,7 +282,7 @@
 
 		document.querySelectorAll('practice-layers').forEach(function (host, host_index) {
 			const list = layers;
-			host.style.setProperty('--count', list.length + 1);
+			host.style.setProperty('--count', list.length);
 			host.append(buildLayer(list, 0, 'pl' + host_index));
 			host.append(buildFinale(list));
 			host.append(buildRetelling(list));
@@ -298,11 +297,6 @@
 				const tag = event.target.closest('.tag');
 				if (tag) {
 					tag.parentElement.classList.toggle('is-open');
-					return;
-				}
-				const now = event.target.closest('.now');
-				if (now) {
-					now.classList.toggle('is-open');
 				}
 			});
 		});

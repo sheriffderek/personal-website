@@ -12,9 +12,9 @@
 	--layer-6: #c9c9c9;
 	--layer-7: #dadada;
 	--layer-8: #c2c2c2;
-	--layer-9: #d8d8d8;
-	--layer-now: #111;
-	--ink-on-now: #fff;
+	--layer-9: #111;
+	--ink-on-dark: #fff;
+	--ink-quiet-on-dark: #c9c9c9;
 
 	--space: 1rem;
 }
@@ -82,8 +82,6 @@ practice-layers {
 	/* How long the finished stack HOLDS before it leaves (Derek: "we need to
 	   let that sink in a little"). Scroll distance, not time. */
 	--hold: 85vh;
-	/* The black "What's next?" bar, once it has joined the stack. */
-	--now-row: calc(var(--row) * 2);
 	/* WHY no time scale: heights are narrative weight, never countable years. */
 	--step: 9rem;
 
@@ -126,25 +124,6 @@ practice-layers {
 		transition: color 0.25s;
 	}
 
-	/*
-		HIDDEN UNTIL IT STICKS (Derek, 2026-09-20): a name in plain view at
-		the end of its section reads like the heading of the NEXT section. So
-		its row is always there, in the layer's own color (it just looks like
-		the last of the section), but the WORDS stay invisible until the row
-		is actually stuck - then the whole name fades in at once.
-		The script marks a stuck name with .is-stuck. No script = the names
-		simply show the whole time. Scroll story only: in the staircase the
-		name IS the bar.
-		(First try was pure CSS - the name tucked under its story and got
-		uncovered by the story's bottom edge. It worked, but for a moment you
-		saw half-covered, sliced letters. Rejected.)
-	*/
-	@container (max-width: 47.99rem) {
-		&[data-enhanced] .tag:not(.is-stuck) {
-			color: transparent;
-		}
-	}
-
 	.story {
 		min-block-size: calc(var(--weight) * var(--step));
 		padding: var(--space);
@@ -167,39 +146,47 @@ practice-layers {
 	}
 
 	/*
-		THE HOLD. The story's last beat: "What's next?" scrolls up and sticks
-		under the names as the final row of the stack - and then nothing else
-		happens for a while. The stack just sits there, complete, while the
-		reader keeps scrolling through empty space (.hold). Then it all leaves.
-		.ending wraps the two so the black bar can leave WITH the names: a
-		sticky thing leaves when its parent's bottom edge reaches it, and the
-		bar is --now-row taller than "one more row" - so its parent runs that
-		much past the innermost layer (the negative margin, held in by the
-		layer's flow-root) and every row still starts moving on the same pixel.
+		THE HOLD (Derek: "we need to let that sink in a little"). After the
+		LAST layer's name sticks, the stack is complete - and then nothing
+		else happens for a while. It just sits there while the reader scrolls
+		through empty space, and then it all leaves together.
+		The last layer is a layer like any other ("What's next?" was briefly
+		its own special block, with its own rules and its own bugs - Derek:
+		"the last one should behave like all the others"). The hold is the
+		one thing it has that the others don't, and it isn't about that
+		layer: it is simply what comes after the last one, whichever it is.
 	*/
-	.ending {
-		margin-block-end: calc(-1 * var(--now-row));
-	}
-
-	.now {
-		position: sticky;
-		inset-block-start: calc((var(--count) - 1) * var(--row));
-		z-index: 1;
-		block-size: var(--now-row);
-		padding-inline: var(--space);
-		background: var(--layer-now);
-		color: var(--ink-on-now);
-
-		/* The voice class brings its own line-height, so the centering has to
-		   be said on the line itself, not just on the bar. */
-		p {
-			margin: 0;
-			line-height: var(--now-row);
-		}
-	}
-
 	.hold {
 		block-size: var(--hold);
+	}
+
+	/* A dark layer needs light words. Scoped to the layer's OWN name and
+	   story, never the layers nested inside it. Must come before the
+	   hidden-until-stuck rule below so that one still wins. */
+	.layer[data-tone='dark'] > .tag,
+	.layer[data-tone='dark'] > .story {
+		--ink: var(--ink-on-dark);
+		--ink-quiet: var(--ink-quiet-on-dark);
+		color: var(--ink-on-dark);
+	}
+
+	/*
+		HIDDEN UNTIL IT STICKS (Derek, 2026-09-20): a name in plain view at
+		the end of its section reads like the heading of the NEXT section. So
+		its row is always there, in the layer's own color (it just looks like
+		the last of the section), but the WORDS stay invisible until the row
+		is actually stuck - then the whole name fades in at once.
+		The script marks a stuck name with .is-stuck. No script = the names
+		simply show the whole time. Scroll story only: in the staircase the
+		name IS the bar.
+		(First try was pure CSS - the name tucked under its story and got
+		uncovered by the story's bottom edge. It worked, but for a moment you
+		saw half-covered, sliced letters. Rejected.)
+	*/
+	@container (max-width: 47.99rem) {
+		&[data-enhanced] .tag:not(.is-stuck) {
+			color: transparent;
+		}
 	}
 
 	/*
@@ -340,12 +327,6 @@ practice-layers {
 		opacity: var(--tall-in, 1);
 	}
 
-	/* In the scroll story the closing words belong to the finale, so the
-	   black "What's next?" block keeps only its first line. */
-	.now p + p {
-		display: none;
-	}
-
 	/*
 		Roomier stripes once the container (not the screen) has the width for it.
 		Set on the first layer, not the host: a container query cannot style its
@@ -387,8 +368,7 @@ practice-layers {
 		}
 
 		/* cqi measures the HOST, so every step is the same size at any depth. */
-		.layer > .layer,
-		.ending {
+		.layer > .layer {
 			order: -1;
 			margin-inline-start: calc(100cqi / (var(--count) + 3));
 			margin-block-end: var(--gap);
@@ -419,18 +399,15 @@ practice-layers {
 		/* One line per bar until someone CLICKS for more (Derek, 2026-09-20:
 		   hover was janky - the chart jumped around under the pointer). Each
 		   bar opens and closes on its own - NOT an accordion, open as many as
-		   you like - and the black "What's next?" bar starts closed like the
-		   rest. The click is an enhancement: [data-enhanced] is only set once
+		   you like. The click is an enhancement: [data-enhanced] is only set once
 		   the script is running, so with no JS every bar simply shows its
 		   lines and there is no + to promise anything. */
-		&[data-enhanced] .layer:not(.is-open) > .story,
-		&[data-enhanced] .now:not(.is-open) p + p {
+		&[data-enhanced] .layer:not(.is-open) > .story {
 			display: none;
 		}
 
 		/* The + at the right edge of every bar: "there is more in here." */
-		&[data-enhanced] .tag,
-		&[data-enhanced] .now p:first-child {
+		&[data-enhanced] .tag {
 			display: flex;
 			justify-content: space-between;
 			gap: var(--space);
@@ -441,24 +418,8 @@ practice-layers {
 			}
 		}
 
-		&[data-enhanced] .layer.is-open > .tag::after,
-		&[data-enhanced] .now.is-open p:first-child::after {
+		&[data-enhanced] .layer.is-open > .tag::after {
 			content: '\2212';
-		}
-
-		.now {
-			position: static;
-			block-size: auto;
-			padding: calc(var(--space) / 2) var(--space);
-
-			p {
-				line-height: 1.3;
-			}
-
-			p + p {
-				display: block;
-				margin-block-start: 0.5rem;
-			}
 		}
 
 		.hold {
