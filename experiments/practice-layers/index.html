@@ -18,7 +18,7 @@
 
 	<!-- Static page, no asset() helper: bump this stamp by hand whenever the CSS changes,
 	     or phones keep the old stylesheet. -->
-	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-n'>
+	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-o'>
 
 	<style>
 		/* Test-page chrome only. Nothing in here belongs to the component. */
@@ -44,6 +44,16 @@
 		.phone-box {
 			max-width: 24rem;
 			margin: 0 auto;
+		}
+
+		/* On a phone the wide box has no room for the staircase and falls back
+		   to the scroll story - the same thing as the phone box, twice. So the
+		   desktop-only parts of this page stand down on narrow screens.
+		   (48rem: the same width at which the component itself switches.) */
+		@media (max-width: 47.99rem) {
+			.desktop-only {
+				display: none;
+			}
 		}
 
 		.test-switches {
@@ -106,11 +116,11 @@
 
 		</div>
 
-		<p class='strong-voice'>With room: the staircase (click any bar to open it - open as many as you like)</p>
+		<p class='strong-voice desktop-only'>With room: the staircase (click any bar to open it - open as many as you like)</p>
 
 	</div>
 
-	<div class='wide-box'>
+	<div class='wide-box desktop-only'>
 
 		<practice-layers></practice-layers>
 
@@ -118,7 +128,7 @@
 
 	<div class='test-note'>
 
-		<p class='strong-voice'>Phone width: the scroll story, the finale, then the retelling (scroll it all the way)</p>
+		<p class='strong-voice desktop-only'>Phone width: the scroll story, the finale, then the retelling (scroll it all the way)</p>
 
 	</div>
 
