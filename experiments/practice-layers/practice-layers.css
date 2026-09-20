@@ -1,4 +1,12 @@
-/* Tokens. In a real project these live in the theme, not with the component. */
+/*
+	PALETTES. The component only ever reads --layer-1..9 (plus the page and ink
+	slots below), so a palette is nothing but a different filling of those
+	slots. The test page flips between them with data-palette on <html>.
+
+	SAVED: Derek's original rainbow from the Figma sketches, kept exactly
+	(2026-09-20: "let's save the colors"). It is also the fallback when no
+	palette is named.
+*/
 :root {
 	--fill-page: #f5f5f5;
 	--ink: #111;
@@ -17,6 +25,58 @@
 	--ink-quiet-on-dark: #c9c9c9;
 
 	--space: 1rem;
+}
+
+/*
+	THE THEME PALETTES read the site's own semantic slots (the mood contract
+	in styles/settings/moods.css), so they repaint with every mood and both
+	schemes for free - no color is named here, only positions.
+	The last layer is always full ink, with the paper color for its words.
+*/
+:root[data-palette='deepening'],
+:root[data-palette='every-other'],
+:root[data-palette='warming'] {
+	--fill-page: var(--fill-primary);
+	--ink: var(--ink-primary);
+	--ink-quiet: var(--ink-secondary);
+	--layer-9: var(--ink-primary);
+	--ink-on-dark: var(--fill-primary);
+	--ink-quiet-on-dark: var(--fill-auxiliary);
+}
+
+/* DEEPENING: one step further from paper toward ink with every layer.
+   Stacking shown as density - the career gets deeper, not more colorful. */
+:root[data-palette='deepening'] {
+	--toward: var(--ink-primary);
+}
+
+/* WARMING: the same climb, toward the theme's accent instead of its ink. */
+:root[data-palette='warming'] {
+	--toward: var(--accent);
+}
+
+:root[data-palette='deepening'],
+:root[data-palette='warming'] {
+	--layer-1: var(--fill-secondary);
+	--layer-2: color-mix(in oklab, var(--fill-secondary), var(--toward) 6%);
+	--layer-3: color-mix(in oklab, var(--fill-secondary), var(--toward) 12%);
+	--layer-4: color-mix(in oklab, var(--fill-secondary), var(--toward) 18%);
+	--layer-5: color-mix(in oklab, var(--fill-secondary), var(--toward) 24%);
+	--layer-6: color-mix(in oklab, var(--fill-secondary), var(--toward) 30%);
+	--layer-7: color-mix(in oklab, var(--fill-secondary), var(--toward) 36%);
+	--layer-8: color-mix(in oklab, var(--fill-secondary), var(--toward) 42%);
+}
+
+/* EVERY OTHER: two fills taking turns. The calmest one - a ledger. */
+:root[data-palette='every-other'] {
+	--layer-1: var(--fill-secondary);
+	--layer-2: var(--fill-auxiliary);
+	--layer-3: var(--fill-secondary);
+	--layer-4: var(--fill-auxiliary);
+	--layer-5: var(--fill-secondary);
+	--layer-6: var(--fill-auxiliary);
+	--layer-7: var(--fill-secondary);
+	--layer-8: var(--fill-auxiliary);
 }
 
 /* Voices (stand-ins for the site's real ones) */
@@ -87,7 +147,7 @@ practice-layers {
 	--step: 14rem;
 	/* Breathing room: how far down its section the text starts (Derek,
 	   2026-09-20). The section opens as plain color first, then the words. */
-	--breath: 5rem;
+	--breath: 7rem;
 
 	.layer {
 		/* flow-root: keeps the nested layer's negative margin INSIDE this

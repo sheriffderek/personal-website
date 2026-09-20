@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang='en'>
+<html lang='en' data-brand-mood='quiet' data-palette='deepening'>
 
 <head>
 
@@ -9,9 +9,16 @@
 
 	<title>practice-layers: test page</title>
 
+	<!-- The site's real color tokens, and nothing else of the site: the raw
+	     palette, then the theme axes (moods, schemes, flavors). No global
+	     element styles come with these two files, so the test page stays a
+	     clean room. -->
+	<link rel='stylesheet' href='/styles/color-scales.css'>
+	<link rel='stylesheet' href='/styles/settings.css'>
+
 	<!-- Static page, no asset() helper: bump this stamp by hand whenever the CSS changes,
 	     or phones keep the old stylesheet. -->
-	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-m'>
+	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-n'>
 
 	<style>
 		/* Test-page chrome only. Nothing in here belongs to the component. */
@@ -38,6 +45,27 @@
 			max-width: 24rem;
 			margin: 0 auto;
 		}
+
+		.test-switches {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.5rem;
+			margin-block: 1rem;
+		}
+
+		.test-switches button {
+			font: inherit;
+			padding: 0.4rem 0.7rem;
+			border: 1px solid var(--ink);
+			background: none;
+			color: var(--ink);
+			cursor: pointer;
+		}
+
+		.test-switches button[aria-pressed='true'] {
+			background: var(--ink);
+			color: var(--fill-page);
+		}
 	</style>
 
 </head>
@@ -51,6 +79,32 @@
 		<p>Every caption and panel height below is a PLACEHOLDER. The layer order is the one agreed 2026-09-19; the labels are working labels. There are no years on purpose: the order is the point. The real order and the text per layer come from Derek.</p>
 
 		<p>One component, two tellings. It reads the width of whatever it is dropped into (a container query, not the screen): with room it is the staircase chart, base layer at the bottom; without room it is the scroll story, base layer at the top.</p>
+
+		<p class='strong-voice'>Palette</p>
+
+		<div class='test-switches' data-switch='palette'>
+
+			<button type='button' data-value='deepening'>Deepening</button>
+
+			<button type='button' data-value='every-other'>Every other</button>
+
+			<button type='button' data-value='warming'>Warming</button>
+
+			<button type='button' data-value='saved'>Saved rainbow</button>
+
+		</div>
+
+		<p class='strong-voice'>Mood (the site's theme - the three theme palettes repaint with it)</p>
+
+		<div class='test-switches' data-switch='mood'>
+
+			<button type='button' data-value='quiet'>Quiet</button>
+
+			<button type='button' data-value='expressive'>Expressive</button>
+
+			<button type='button' data-value='technical'>Technical</button>
+
+		</div>
 
 		<p class='strong-voice'>With room: the staircase (click any bar to open it - open as many as you like)</p>
 
@@ -151,6 +205,52 @@
 
 			return section;
 		}
+
+		// TEST-PAGE SWITCHES (not part of the component). Palette is remembered
+		// for this page only; mood uses the site's own key, so the test page
+		// opens in whatever mood you last chose on the real site.
+		const html = document.documentElement;
+
+		function applyPalette(value) {
+			html.dataset.palette = value;
+		}
+
+		function applyMood(value) {
+			// Expressive is the site's CSS default: it means "no attribute".
+			if (value === 'expressive') {
+				html.removeAttribute('data-brand-mood');
+			} else {
+				html.setAttribute('data-brand-mood', value);
+			}
+		}
+
+		function wireSwitch(name, storage_key, fallback, apply) {
+			const group = document.querySelector("[data-switch='" + name + "']");
+			const buttons = group.querySelectorAll('button');
+			function choose(value, remember) {
+				apply(value);
+				buttons.forEach(function (button) {
+					button.setAttribute('aria-pressed', button.dataset.value === value ? 'true' : 'false');
+				});
+				if (remember) {
+					try { localStorage.setItem(storage_key, value); } catch (error) {}
+				}
+			}
+			let saved = null;
+			try { saved = localStorage.getItem(storage_key); } catch (error) {}
+			const known = Array.from(buttons).some(function (button) {
+				return button.dataset.value === saved;
+			});
+			choose(known ? saved : fallback, false);
+			buttons.forEach(function (button) {
+				button.addEventListener('click', function () {
+					choose(button.dataset.value, true);
+				});
+			});
+		}
+
+		wireSwitch('palette', 'practice-layers-palette', 'deepening', applyPalette);
+		wireSwitch('mood', 'mood-preference', 'quiet', applyMood);
 
 		// The finale: one column per layer.
 		function buildFinale(list) {
