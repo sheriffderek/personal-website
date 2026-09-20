@@ -11,7 +11,7 @@
 
 	<!-- Static page, no asset() helper: bump this stamp by hand whenever the CSS changes,
 	     or phones keep the old stylesheet. -->
-	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-i'>
+	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-j'>
 
 	<style>
 		/* Test-page chrome only. Nothing in here belongs to the component. */
@@ -139,7 +139,15 @@
 				const now = document.createElement('div');
 				now.className = 'now';
 				now.innerHTML = '<p class="strong-voice">What\'s next?</p><p>' + closing + '</p>';
-				section.append(now);
+
+				// The ending: the black bar, then empty scroll for the finished
+				// stack to HOLD through before it all leaves together.
+				const ending = document.createElement('div');
+				ending.className = 'ending';
+				const hold = document.createElement('div');
+				hold.className = 'hold';
+				ending.append(now, hold);
+				section.append(ending);
 			}
 
 			return section;

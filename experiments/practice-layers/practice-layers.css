@@ -79,6 +79,11 @@ practice-layers {
 	--row: 1.75rem;
 	/* How long the stripes run on alone, after the story, before the finale. */
 	--reveal: 10rem;
+	/* How long the finished stack HOLDS before it leaves (Derek: "we need to
+	   let that sink in a little"). Scroll distance, not time. */
+	--hold: 85vh;
+	/* The black "What's next?" bar, once it has joined the stack. */
+	--now-row: calc(var(--row) * 2);
 	/* WHY no time scale: heights are narrative weight, never countable years. */
 	--step: 9rem;
 
@@ -161,18 +166,38 @@ practice-layers {
 		inset-block-start: calc(var(--index) * var(--row) + var(--space));
 	}
 
+	/*
+		THE HOLD. The story's last beat: "What's next?" scrolls up and sticks
+		under the names as the final row of the stack - and then nothing else
+		happens for a while. The stack just sits there, complete, while the
+		reader keeps scrolling through empty space (.hold). Then it all leaves.
+		.ending wraps the two so the black bar can leave WITH the names: a
+		sticky thing leaves when its parent's bottom edge reaches it, and the
+		bar is --now-row taller than "one more row" - so its parent runs that
+		much past the innermost layer (the negative margin, held in by the
+		layer's flow-root) and every row still starts moving on the same pixel.
+	*/
+	.ending {
+		margin-block-end: calc(-1 * var(--now-row));
+	}
+
 	.now {
+		position: sticky;
+		inset-block-start: calc((var(--count) - 1) * var(--row));
+		z-index: 1;
+		block-size: var(--now-row);
+		padding-inline: var(--space);
 		background: var(--layer-now);
 		color: var(--ink-on-now);
-		padding: var(--space);
+		line-height: var(--now-row);
 
 		p {
 			margin: 0;
 		}
+	}
 
-		p + p {
-			margin-block-start: 0.5rem;
-		}
+	.hold {
+		block-size: var(--hold);
 	}
 
 	/*
@@ -361,7 +386,7 @@ practice-layers {
 
 		/* cqi measures the HOST, so every step is the same size at any depth. */
 		.layer > .layer,
-		.now {
+		.ending {
 			order: -1;
 			margin-inline-start: calc(100cqi / (var(--count) + 3));
 			margin-block-end: var(--gap);
@@ -420,11 +445,19 @@ practice-layers {
 		}
 
 		.now {
+			position: static;
+			block-size: auto;
 			padding: calc(var(--space) / 2) var(--space);
+			line-height: inherit;
 
 			p + p {
 				display: block;
+				margin-block-start: 0.5rem;
 			}
+		}
+
+		.hold {
+			display: none;
 		}
 
 		/* The staircase already shows every layer at once - it IS the
