@@ -43,8 +43,9 @@
 	  page runs. (A border, not a background: a background would also paint
 	  UNDER the nested layer and turn the stripes into L-shapes. The mockups
 	  are straight columns that end in steps.)
-	- THE STACK (Derek's sketches, 2026-09-20): each layer opens with a short
-	  TAG - its name, held to one row. The tag is sticky, and because it is a
+	- THE STACK (Derek's sketches, 2026-09-20): each layer's section reads
+	  role, then why, and ENDS on a short TAG - its name, held to one row.
+	  You arrive at the name, scroll past it, and it sticks. The tag is sticky, and because it is a
 	  direct child of its layer it stays stuck until that layer ends - which
 	  is the end of the story. Each tag sticks one row lower than the one
 	  before, so the names pile up at the top as you scroll, each stepped in
@@ -107,7 +108,8 @@ practice-layers {
 	/* The two lines ride along just under the stack while their layer passes. */
 	.telling {
 		position: sticky;
-		inset-block-start: calc((var(--index) + 1) * var(--row) + var(--space));
+		/* Under the stack so far: this layer's own name hasn't stuck yet. */
+		inset-block-start: calc(var(--index) * var(--row) + var(--space));
 	}
 
 	.now {
@@ -277,6 +279,7 @@ practice-layers {
 		/* The bar = the tag, plus its lines when opened. Nothing sticks: the
 		   chart already shows every layer at once. */
 		.tag {
+			order: 0;
 			position: static;
 			block-size: auto;
 			padding-block: calc(var(--space) / 3);
@@ -286,6 +289,7 @@ practice-layers {
 		}
 
 		.story {
+			order: 1;
 			min-block-size: 0;
 			padding-block-start: 0;
 		}

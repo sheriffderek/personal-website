@@ -9,7 +9,9 @@
 
 	<title>practice-layers: test page</title>
 
-	<link rel='stylesheet' href='practice-layers.css'>
+	<!-- Static page, no asset() helper: bump this stamp by hand whenever the CSS changes,
+	     or phones keep the old stylesheet. -->
+	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-c'>
 
 	<style>
 		/* Test-page chrome only. Nothing in here belongs to the component. */
@@ -112,13 +114,6 @@
 
 			section.style.setProperty('--index', index);
 
-			// Direct child of the layer ON PURPOSE: a sticky element stays stuck
-			// until its PARENT ends, and this parent runs to the end of the story.
-			const tag = document.createElement('p');
-			tag.className = 'tag quiet-voice';
-			tag.textContent = layer.tag;
-			section.append(tag);
-
 			const story = document.createElement('div');
 			story.className = 'story';
 			story.innerHTML =
@@ -127,6 +122,16 @@
 				'<p class="quiet-voice">(why: what that gives you - why it matters to the business)</p>' +
 				'</div>';
 			section.append(story);
+
+			// The name comes at the END of its section (Derek's sketch): you read the
+			// role and the why, arrive at the name, and as you scroll past it, it
+			// sticks and joins the stack. Direct child of the layer ON PURPOSE: a
+			// sticky element stays stuck until its PARENT ends, and this parent
+			// runs to the end of the story.
+			const tag = document.createElement('p');
+			tag.className = 'tag quiet-voice';
+			tag.textContent = layer.tag;
+			section.append(tag);
 
 			if (index + 1 < list.length) {
 				section.append(buildLayer(list, index + 1, host_id));
