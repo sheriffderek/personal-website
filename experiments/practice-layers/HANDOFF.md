@@ -53,7 +53,7 @@ His bar for the whole thing: **"it has to feel like these experiences are stacki
 
 ## The words (Derek, 2026-09-20 - his grade: "B- but good enough to work with for now")
 
-Layers 01-08 now carry Derek's own text, typed by him and wired in as typed (the source is the `layers` list in `index.html`). Each layer has four parts: a **number** (01-08), a **headline** that says what he LEARNED ("I learned design and development together."), a **paragraph**, and the **name** that sticks. His names replace the working labels below:
+Layers 01-08 now carry Derek's own text, typed by him and wired in as typed (the source is the `layers` list in `index.html`). Each layer has three parts (he typed a number on each, 01-08, then cut them - the stacking already says the order, and numbers invite counting, the same reason there are no years): a **headline** that says what he LEARNED ("I learned design and development together."), a **paragraph**, and the **name** that sticks. His names replace the working labels below:
 
 01 Art + technical education / 02 Web design + development / 03 Front-end engineering / 04 Early-stage product development / 05 Product + technical consulting / 06 Product design / 07 Education systems + teaching / 08 AI + agentic workflows
 

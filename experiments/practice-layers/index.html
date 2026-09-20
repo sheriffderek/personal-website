@@ -18,7 +18,7 @@
 
 	<!-- Static page, no asset() helper: bump this stamp by hand whenever the CSS changes,
 	     or phones keep the old stylesheet. -->
-	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-r'>
+	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-s'>
 
 	<style>
 		/* Test-page chrome only. Nothing in here belongs to the component. */
@@ -152,8 +152,10 @@
 		// PLACEHOLDER DATA. `weight` = how much scroll a layer gets (narrative weight).
 		// Deliberately NOT weight: no dates, no countable scale.
 		// DEREK'S WORDS (2026-09-20, his grade: "B- but good enough to work with
-		// for now"). Typed by him, wired in as typed - do not reword. Per layer:
-		//   num  - its place in the order
+		// for now"). Typed by him, wired in as typed - do not reword. He typed a
+		// number on each (01-08) and then cut them: the stacking already says the
+		// order, and numbers invite counting - same reason there are no years.
+		// Per layer:
 		//   what - the headline: what he learned
 		//   why  - the paragraph under it
 		//   tag  - the short name that sticks and stacks at the top. He typed
@@ -163,56 +165,48 @@
 		// never years).
 		const layers = [
 			{
-				num: '01',
 				what: 'I learned how to make things — and defend the decisions behind them.',
 				why: 'Art school was tools, materials, critique, history, theory, and a lot of talking about why something works or doesn\'t. You learn to take feedback, question your assumptions, and explain your choices.',
 				tag: 'Art + technical education',
 				weight: 3,
 			},
 			{
-				num: '02',
 				what: 'I learned design and development together.',
 				why: 'I was designing websites and writing the code to build them. Every design decision had a technical consequence, and every technical constraint changed the design.',
 				tag: 'Web design + development',
 				weight: 2,
 			},
 			{
-				num: '03',
 				what: 'I learned how to build with other people.',
 				why: 'Agency work meant designers, developers, producers, deadlines, brand standards, QA, and code someone else had to work with. Your part has to fit into a much bigger system.',
 				tag: 'Front-end engineering',
 				weight: 2,
 			},
 			{
-				num: '04',
 				what: 'I learned how to work when the answer wasn\'t obvious.',
 				why: 'Early product work meant changing requirements, small teams, limited resources, and a lot of unknowns. You figure out what matters now, what can wait, and what you need to make to learn what\'s next.',
 				tag: 'Early-stage product development',
 				weight: 2,
 			},
 			{
-				num: '05',
 				what: 'I learned that the thing you\'re asked to fix isn\'t always the problem.',
 				why: 'Consulting gave me a close look at a lot of different teams. Sometimes a design problem is really a product problem. Sometimes an engineering problem is communication. Sometimes the brief itself is wrong.',
 				tag: 'Product + technical consulting',
 				weight: 2,
 			},
 			{
-				num: '06',
 				what: 'I learned to think about the whole product.',
 				why: 'The user, the business, the system, the interface, the technology — and the tradeoffs between them. Not just can we build it? but what are we trying to accomplish?',
 				tag: 'Product design',
 				weight: 3,
 			},
 			{
-				num: '07',
 				what: 'Then I had to teach it.',
 				why: 'Running a school meant taking things I\'d learned over years and making them clear enough for someone else to use. Curriculum, sequencing, feedback, assessment — and constantly changing the system based on where people actually got stuck.',
 				tag: 'Education systems + teaching',
 				weight: 3,
 			},
 			{
-				num: '08',
 				what: 'Now I can move through all of it much faster.',
 				why: 'AI and agentic tools shorten the distance between an idea and something I can test. But the useful part is everything underneath: knowing what to ask, what to make, what to question, and when the output isn\'t good enough.',
 				tag: 'AI + agentic workflows',
@@ -221,7 +215,6 @@
 			// Derek has not written this one yet. Its `why` is his closing line
 			// (also shown under the finale's frame); its `what` is still a hole.
 			{
-				num: '09',
 				what: '(what: not written yet)',
 				why_is_closing: true,
 				tag: 'What\'s next?',
@@ -251,10 +244,6 @@
 			const telling = document.createElement('div');
 			telling.className = 'telling';
 
-			const num = document.createElement('p');
-			num.className = 'num quiet-voice';
-			num.textContent = layer.num;
-
 			const what = document.createElement('p');
 			what.className = 'strong-voice';
 			what.textContent = layer.what;
@@ -263,7 +252,7 @@
 			why.className = 'quiet-voice';
 			why.textContent = layer.why_is_closing ? closing : layer.why;
 
-			telling.append(num, what, why);
+			telling.append(what, why);
 			story.append(telling);
 			section.append(story);
 
