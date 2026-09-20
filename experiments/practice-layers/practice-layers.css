@@ -338,11 +338,33 @@ practice-layers {
 		}
 
 		/* One line per bar until someone CLICKS for more (Derek, 2026-09-20:
-		   hover was janky - the chart jumped around under the pointer). The
-		   click is an enhancement: [data-enhanced] is only set once the
-		   script is running, so with no JS every bar simply shows its lines. */
-		&[data-enhanced] .layer:not(.is-open) > .story {
+		   hover was janky - the chart jumped around under the pointer). Each
+		   bar opens and closes on its own - NOT an accordion, open as many as
+		   you like - and the black "What's next?" bar starts closed like the
+		   rest. The click is an enhancement: [data-enhanced] is only set once
+		   the script is running, so with no JS every bar simply shows its
+		   lines and there is no + to promise anything. */
+		&[data-enhanced] .layer:not(.is-open) > .story,
+		&[data-enhanced] .now:not(.is-open) p + p {
 			display: none;
+		}
+
+		/* The + at the right edge of every bar: "there is more in here." */
+		&[data-enhanced] .tag,
+		&[data-enhanced] .now p:first-child {
+			display: flex;
+			justify-content: space-between;
+			gap: var(--space);
+			cursor: pointer;
+
+			&::after {
+				content: '+';
+			}
+		}
+
+		&[data-enhanced] .layer.is-open > .tag::after,
+		&[data-enhanced] .now.is-open p:first-child::after {
+			content: '\2212';
 		}
 
 		.now {

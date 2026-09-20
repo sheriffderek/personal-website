@@ -11,7 +11,7 @@
 
 	<!-- Static page, no asset() helper: bump this stamp by hand whenever the CSS changes,
 	     or phones keep the old stylesheet. -->
-	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-e'>
+	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-f'>
 
 	<style>
 		/* Test-page chrome only. Nothing in here belongs to the component. */
@@ -52,7 +52,7 @@
 
 		<p>One component, two tellings. It reads the width of whatever it is dropped into (a container query, not the screen): with room it is the staircase chart, base layer at the bottom; without room it is the scroll story, base layer at the top.</p>
 
-		<p class='strong-voice'>With room: the staircase (click a bar for its lines)</p>
+		<p class='strong-voice'>With room: the staircase (click any bar to open it - open as many as you like)</p>
 
 	</div>
 
@@ -181,23 +181,21 @@
 			host.append(buildLayer(list, 0, 'pl' + host_index));
 			host.append(buildFinale(list));
 
-			// Click a bar to open its two lines; opening one closes the rest.
-			// (In the scroll story every line is already showing, so the click
-			// changes nothing you can see there.) $todo for the real build: the
-			// label becomes a <button aria-expanded> so keyboards get it too.
+			// Click a bar to open or close it. Each bar is on its own - open as
+			// many as you like. (In the scroll story every line is already
+			// showing, so the click changes nothing you can see there.)
+			// $todo for the real build: each bar's name becomes a
+			// <button aria-expanded> so keyboards get it too.
 			host.dataset.enhanced = '';
 			host.addEventListener('click', function (event) {
 				const tag = event.target.closest('.tag');
-				if (!tag) {
+				if (tag) {
+					tag.parentElement.classList.toggle('is-open');
 					return;
 				}
-				const layer = tag.parentElement;
-				const was_open = layer.classList.contains('is-open');
-				host.querySelectorAll('.layer.is-open').forEach(function (open_layer) {
-					open_layer.classList.remove('is-open');
-				});
-				if (!was_open) {
-					layer.classList.add('is-open');
+				const now = event.target.closest('.now');
+				if (now) {
+					now.classList.toggle('is-open');
 				}
 			});
 		});
