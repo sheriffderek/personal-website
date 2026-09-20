@@ -82,8 +82,12 @@ practice-layers {
 	/* How long the finished stack HOLDS before it leaves (Derek: "we need to
 	   let that sink in a little"). Scroll distance, not time. */
 	--hold: 85vh;
-	/* WHY no time scale: heights are narrative weight, never countable years. */
-	--step: 9rem;
+	/* WHY no time scale: heights are narrative weight, never countable years.
+	   One step of section length; a layer's `weight` multiplies it. */
+	--step: 14rem;
+	/* Breathing room: how far down its section the text starts (Derek,
+	   2026-09-20). The section opens as plain color first, then the words. */
+	--breath: 5rem;
 
 	.layer {
 		/* flow-root: keeps the nested layer's negative margin INSIDE this
@@ -127,6 +131,7 @@ practice-layers {
 	.story {
 		min-block-size: calc(var(--weight) * var(--step));
 		padding: var(--space);
+		padding-block-start: calc(var(--space) + var(--breath));
 		background: var(--tone);
 
 		p {
