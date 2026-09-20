@@ -2,7 +2,7 @@
 
 Holding spot. Copied here 2026-09-20 because the originals lived in /tmp and would have been cleaned. **Derek has not yet said where this belongs** - `experiments/` was picked only because the site's other standalone prototypes live here. Nothing in this folder is committed until he says.
 
-**Every caption in `index.html` is a placeholder.** Derek writes the real two lines per layer himself (see "No sentence ships without Derek's OK" in CLAUDE.md).
+**The words in layers 01-08 are Derek's** (see "The words" below). Anything else that reads like copy is a hole, not a draft - he writes it himself (see "No sentence ships without Derek's OK" in CLAUDE.md).
 
 ## How we work on this one (Derek, 2026-09-20)
 
@@ -50,6 +50,14 @@ His bar for the whole thing: **"it has to feel like these experiences are stacki
 - This settles the old "open design question" about the compact view's orientation: tops aligned, bottoms stepped.
 
 **Checked in a browser 2026-09-20:** staircase renders and click-to-open works; at phone width the names stick at 0 / 28 / ... one row apart, each only after its own section has scrolled past; the nest ends in stepped columns; the finale reaches its end state. **Not checked:** a real phone, Safari, Firefox's fallback, and how the scroll FEELS - which is the whole question.
+
+## The words (Derek, 2026-09-20 - his grade: "B- but good enough to work with for now")
+
+Layers 01-08 now carry Derek's own text, typed by him and wired in as typed (the source is the `layers` list in `index.html`). Each layer has four parts: a **number** (01-08), a **headline** that says what he LEARNED ("I learned design and development together."), a **paragraph**, and the **name** that sticks, in capitals. His names replace the working labels below:
+
+01 ART + TECHNICAL EDUCATION / 02 WEB DESIGN + DEVELOPMENT / 03 FRONT-END ENGINEERING / 04 EARLY-STAGE PRODUCT DEVELOPMENT / 05 PRODUCT + TECHNICAL CONSULTING / 06 PRODUCT DESIGN / 07 EDUCATION SYSTEMS + TEACHING / 08 AI + AGENTIC WORKFLOWS
+
+Still open in the words: layer 09 ("What's next?") has no headline yet - its paragraph is his closing line, which the finale also shows. And three of his lines carry an em dash (01, 06, 07), which this site's own voice rule says not to use; punctuation is his call, so they were left exactly as typed and flagged to him.
 
 ## Working layer order (working labels, not his final words)
 

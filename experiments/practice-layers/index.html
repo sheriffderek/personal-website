@@ -18,7 +18,7 @@
 
 	<!-- Static page, no asset() helper: bump this stamp by hand whenever the CSS changes,
 	     or phones keep the old stylesheet. -->
-	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-p'>
+	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-q'>
 
 	<style>
 		/* Test-page chrome only. Nothing in here belongs to the component. */
@@ -86,7 +86,7 @@
 
 		<p class='strong-voice'>practice-layers: test page</p>
 
-		<p>Every caption and panel height below is a PLACEHOLDER. The layer order is the one agreed 2026-09-19; the labels are working labels. There are no years on purpose: the order is the point. The real order and the text per layer come from Derek.</p>
+		<p>The words in layers 01-08 are Derek's (2026-09-20, his grade: B-, good enough to work with). Layer 09's headline is not written yet. Section heights are narrative weight, and there are no years on purpose: the order is the point.</p>
 
 		<p>One component, two tellings. It reads the width of whatever it is dropped into (a container query, not the screen): with room it is the staircase chart, base layer at the bottom; without room it is the scroll story, base layer at the top.</p>
 
@@ -151,23 +151,80 @@
 
 		// PLACEHOLDER DATA. `weight` = how much scroll a layer gets (narrative weight).
 		// Deliberately NOT weight: no dates, no countable scale.
-		// Three things per layer (Derek, 2026-09-20):
-		//   tag  - the short name that holds the layer's place and stacks at the top
-		//   what - the recognizable job / role / focus
-		//   why  - why that matters to the business
+		// DEREK'S WORDS (2026-09-20, his grade: "B- but good enough to work with
+		// for now"). Typed by him, wired in as typed - do not reword. Per layer:
+		//   num  - its place in the order
+		//   what - the headline: what he learned
+		//   why  - the paragraph under it
+		//   tag  - the short name that sticks and stacks at the top
+		// `weight` is ours: how much scroll the section gets (narrative weight,
+		// never years).
 		const layers = [
-			{ tag: 'Art + technical education', weight: 3 },
-			{ tag: 'Freelance web', weight: 2 },
-			{ tag: 'Agency front-end', weight: 2 },
-			{ tag: 'Startup', weight: 2 },
-			{ tag: 'Consulting', weight: 2 },
-			{ tag: 'Product design', weight: 3 },
-			{ tag: 'Founding a school', weight: 3 },
-			{ tag: 'AI', weight: 2 },
-			// The last layer is a layer like any other; its `why` carries Derek's
-			// closing line. (Whether a layer's words are dark or light is the
-			// PALETTE's call, not the layer's - see --layer-N-ink in the CSS.)
-			{ tag: 'What\'s next?', weight: 2, why_is_closing: true },
+			{
+				num: '01',
+				what: 'I learned how to make things — and defend the decisions behind them.',
+				why: 'Art school was tools, materials, critique, history, theory, and a lot of talking about why something works or doesn\'t. You learn to take feedback, question your assumptions, and explain your choices.',
+				tag: 'ART + TECHNICAL EDUCATION',
+				weight: 3,
+			},
+			{
+				num: '02',
+				what: 'I learned design and development together.',
+				why: 'I was designing websites and writing the code to build them. Every design decision had a technical consequence, and every technical constraint changed the design.',
+				tag: 'WEB DESIGN + DEVELOPMENT',
+				weight: 2,
+			},
+			{
+				num: '03',
+				what: 'I learned how to build with other people.',
+				why: 'Agency work meant designers, developers, producers, deadlines, brand standards, QA, and code someone else had to work with. Your part has to fit into a much bigger system.',
+				tag: 'FRONT-END ENGINEERING',
+				weight: 2,
+			},
+			{
+				num: '04',
+				what: 'I learned how to work when the answer wasn\'t obvious.',
+				why: 'Early product work meant changing requirements, small teams, limited resources, and a lot of unknowns. You figure out what matters now, what can wait, and what you need to make to learn what\'s next.',
+				tag: 'EARLY-STAGE PRODUCT DEVELOPMENT',
+				weight: 2,
+			},
+			{
+				num: '05',
+				what: 'I learned that the thing you\'re asked to fix isn\'t always the problem.',
+				why: 'Consulting gave me a close look at a lot of different teams. Sometimes a design problem is really a product problem. Sometimes an engineering problem is communication. Sometimes the brief itself is wrong.',
+				tag: 'PRODUCT + TECHNICAL CONSULTING',
+				weight: 2,
+			},
+			{
+				num: '06',
+				what: 'I learned to think about the whole product.',
+				why: 'The user, the business, the system, the interface, the technology — and the tradeoffs between them. Not just can we build it? but what are we trying to accomplish?',
+				tag: 'PRODUCT DESIGN',
+				weight: 3,
+			},
+			{
+				num: '07',
+				what: 'Then I had to teach it.',
+				why: 'Running a school meant taking things I\'d learned over years and making them clear enough for someone else to use. Curriculum, sequencing, feedback, assessment — and constantly changing the system based on where people actually got stuck.',
+				tag: 'EDUCATION SYSTEMS + TEACHING',
+				weight: 3,
+			},
+			{
+				num: '08',
+				what: 'Now I can move through all of it much faster.',
+				why: 'AI and agentic tools shorten the distance between an idea and something I can test. But the useful part is everything underneath: knowing what to ask, what to make, what to question, and when the output isn\'t good enough.',
+				tag: 'AI + AGENTIC WORKFLOWS',
+				weight: 2,
+			},
+			// Derek has not written this one yet. Its `why` is his closing line
+			// (also shown under the finale's frame); its `what` is still a hole.
+			{
+				num: '09',
+				what: '(what: not written yet)',
+				why_is_closing: true,
+				tag: 'WHAT\'S NEXT?',
+				weight: 2,
+			},
 		];
 
 		const closing = 'This experience - across every part of the thinking and planning -- Half my waking life -- devoted to getting you to your goal.';
@@ -185,13 +242,27 @@
 			section.style.setProperty('--tone-ink', 'var(--layer-' + (index + 1) + '-ink, var(--ink))');
 			section.style.setProperty('--tone-ink-quiet', 'var(--layer-' + (index + 1) + '-ink-quiet, var(--ink-quiet))');
 
+			// Built with textContent, not innerHTML: these are sentences with
+			// apostrophes and dashes in them, not markup.
 			const story = document.createElement('div');
 			story.className = 'story';
-			story.innerHTML =
-				'<div class="telling">' +
-				'<p class="strong-voice">(what: the recognizable job / role / focus)</p>' +
-				'<p class="quiet-voice">' + (layer.why_is_closing ? closing : '(why: what that gives you - why it matters to the business)') + '</p>' +
-				'</div>';
+			const telling = document.createElement('div');
+			telling.className = 'telling';
+
+			const num = document.createElement('p');
+			num.className = 'num quiet-voice';
+			num.textContent = layer.num;
+
+			const what = document.createElement('p');
+			what.className = 'strong-voice';
+			what.textContent = layer.what;
+
+			const why = document.createElement('p');
+			why.className = 'quiet-voice';
+			why.textContent = layer.why_is_closing ? closing : layer.why;
+
+			telling.append(num, what, why);
+			story.append(telling);
 			section.append(story);
 
 			// The name comes at the END of its section (Derek's sketch): you read the
