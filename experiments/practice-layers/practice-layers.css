@@ -185,16 +185,22 @@ practice-layers {
 		  4. the frame thickens and the closing line arrives.
 		Tops line up and bottoms step: the first layer runs longest.
 
-		Written END STATE FIRST: the plain rules below are beat 4, so a
-		browser with no scroll-driven animation (Firefox today) simply shows
-		the finished figure. The @supports block only adds the journey there
-		- every keyframe is a `from`, never a `to`.
+		Written END STATE FIRST: every dial below defaults to 1, which is
+		beat 4 - so with no script you simply get the finished figure.
+		The journey is driven by the script, which turns the scroll through
+		the finale's runway into three dials from 0 to 1 and writes them on
+		.finale: --widen, --frame-in, --arrive. (First built with CSS
+		scroll-driven animations - iOS Safari doesn't have them yet, so on
+		Derek's phone nothing moved. One mechanism that works everywhere
+		beats two.)
+		PACING (Derek): the widening is the slow part - about three screens
+		of scrolling. The runway's length below and the beat fractions in the
+		script (FINALE_BEATS) are one decision; change them together.
 	*/
 	.finale {
 		/* Starts exactly where the stripes' tails end, so each thin column
 		   carries on from its stripe: same color, same place. */
 		margin-block-start: calc(var(--count) * var(--row) + var(--reveal));
-		padding-block-end: calc(var(--space) * 2);
 	}
 
 	.figure {
@@ -209,7 +215,7 @@ practice-layers {
 	}
 
 	.column {
-		flex: 1 0 var(--stripe);
+		flex: var(--widen, 1) 0 var(--stripe);
 		block-size: calc(100% - var(--index) * 7%);
 		background: var(--tone);
 	}
@@ -221,7 +227,9 @@ practice-layers {
 		inset-inline: 0;
 		inset-block-start: 2rem;
 		block-size: 10rem;
-		border: var(--frame-line) solid var(--ink);
+		border: solid var(--ink);
+		border-width: calc(1px + (var(--frame-line) - 1px) * var(--frame-in, 1));
+		opacity: var(--frame-in, 1);
 
 		/* the line from the frame down to the closing words */
 		&::after {
@@ -232,6 +240,7 @@ practice-layers {
 			inline-size: var(--frame-line);
 			block-size: 9.5rem;
 			background: var(--ink);
+			opacity: var(--arrive, 1);
 		}
 	}
 
@@ -241,51 +250,73 @@ practice-layers {
 		inset-block-end: 0;
 		inline-size: 55%;
 		margin: 0;
+		opacity: var(--arrive, 1);
+	}
+
+	/* [data-driven] is set by the script: only then is there a runway to
+	   scroll through, with the figure pinned inside it. */
+	.finale[data-driven] {
+		block-size: calc(30rem + 455vh);
+
+		.figure {
+			position: sticky;
+			inset-block-start: var(--space);
+		}
+	}
+
+	/*
+		THE RETELLING (Derek's storyboard, panel 5): "then as we scroll - we
+		can use those to show it a few ways." The same layers again, turned on
+		their side: one bar each, first layer at the BOTTOM, every bar the full
+		width. A tall frame cuts DOWN through all of them - the columns said
+		"every layer is present right now", this says it the other way round.
+		A line drops from the closing words to the frame, so the eye is handed
+		from one figure to the next.
+		Plain and static on purpose. The only movement is the frame fading in
+		as the figure arrives (--tall-in, written by the same script).
+	*/
+	.retelling {
+		--lead: 7rem;
+		--overhang: 1.5rem;
+		position: relative;
+		padding-block: var(--lead) calc(var(--overhang) + var(--space) * 2);
+
+		/* the line down from the closing words to the top of the tall frame */
+		&::before {
+			content: '';
+			position: absolute;
+			inset-inline-start: 70%;
+			inset-block-start: var(--space);
+			inline-size: var(--frame-line);
+			block-size: calc(var(--lead) - var(--overhang) - var(--space));
+			background: var(--ink);
+		}
+	}
+
+	.bars {
+		position: relative;
+		display: flex;
+		/* DOM order stays oldest-first; the stack just BUILDS upward. */
+		flex-direction: column-reverse;
+	}
+
+	.bar {
+		block-size: 1.5rem;
+		background: var(--tone);
+	}
+
+	.frame-tall {
+		position: absolute;
+		inset-inline: 48% 4%;
+		inset-block: calc(-1 * var(--overhang));
+		border: var(--frame-line) solid var(--ink);
+		opacity: var(--tall-in, 1);
 	}
 
 	/* In the scroll story the closing words belong to the finale, so the
 	   black "What's next?" block keeps only its first line. */
 	.now p + p {
 		display: none;
-	}
-
-	@supports (animation-timeline: view()) {
-		/* A tall runway with the figure pinned inside it: the scroll through
-		   the runway IS the clock the four beats run on. */
-		.finale {
-			view-timeline-name: --finale;
-			block-size: 260vh;
-		}
-
-		.figure {
-			position: sticky;
-			inset-block-start: var(--space);
-		}
-
-		.column,
-		.frame,
-		.frame::after,
-		.closing {
-			animation-timing-function: linear;
-			animation-fill-mode: both;
-			animation-timeline: --finale;
-		}
-
-		.column {
-			animation-name: finale-widen;
-			animation-range: contain 10% contain 45%;
-		}
-
-		.frame {
-			animation-name: finale-frame;
-			animation-range: contain 50% contain 75%;
-		}
-
-		.frame::after,
-		.closing {
-			animation-name: finale-arrive;
-			animation-range: contain 78% contain 95%;
-		}
 	}
 
 	/*
@@ -295,7 +326,8 @@ practice-layers {
 	*/
 	@container (min-width: 36rem) {
 		> .layer,
-		> .finale {
+		> .finale,
+		> .retelling {
 			--stripe: 1rem;
 			--space: 1.5rem;
 		}
@@ -397,27 +429,9 @@ practice-layers {
 
 		/* The staircase already shows every layer at once - it IS the
 		   finale's shape, turned on its side - so the finale stands down. */
-		.finale {
+		.finale,
+		.retelling {
 			display: none;
 		}
-	}
-}
-
-@keyframes finale-widen {
-	from {
-		flex-grow: 0;
-	}
-}
-
-@keyframes finale-frame {
-	from {
-		opacity: 0;
-		border-width: 1px;
-	}
-}
-
-@keyframes finale-arrive {
-	from {
-		opacity: 0;
 	}
 }

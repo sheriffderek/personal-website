@@ -11,7 +11,7 @@
 
 	<!-- Static page, no asset() helper: bump this stamp by hand whenever the CSS changes,
 	     or phones keep the old stylesheet. -->
-	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-h'>
+	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-i'>
 
 	<style>
 		/* Test-page chrome only. Nothing in here belongs to the component. */
@@ -64,7 +64,7 @@
 
 	<div class='test-note'>
 
-		<p class='strong-voice'>Phone width: the scroll story, then the finale (scroll it all the way)</p>
+		<p class='strong-voice'>Phone width: the scroll story, the finale, then the retelling (scroll it all the way)</p>
 
 	</div>
 
@@ -175,6 +175,29 @@
 			return finale;
 		}
 
+		// The retelling: the same layers as horizontal bars (plus one for what's
+		// next), with a tall frame cutting down through all of them.
+		function buildRetelling(list) {
+			const retelling = document.createElement('div');
+			retelling.className = 'retelling';
+
+			const bars = document.createElement('div');
+			bars.className = 'bars';
+			for (let index = 0; index <= list.length; index++) {
+				const bar = document.createElement('div');
+				bar.className = 'bar';
+				bar.style.setProperty('--tone', 'var(--layer-' + (index + 1) + ')');
+				bars.append(bar);
+			}
+
+			const frame_tall = document.createElement('div');
+			frame_tall.className = 'frame-tall';
+			bars.append(frame_tall);
+
+			retelling.append(bars);
+			return retelling;
+		}
+
 		// A name is "stuck" once it has reached its place in the stack (its own
 		// CSS `top`). From then on its words show. Checked once per frame while
 		// scrolling; harmless in the staircase, where nothing is sticky and the
@@ -190,6 +213,51 @@
 			});
 		}
 
+		// THE FINALE'S CLOCK. The scroll through the finale's runway is turned
+		// into three dials from 0 to 1, written on .finale for the CSS to read.
+		// The beats are fractions of the runway; the runway's length lives in
+		// the CSS (.finale[data-driven]) - one decision, change them together.
+		// Derek's pacing: the widening is the slow part, ~3 screens of scroll.
+		const FINALE_BEATS = {
+			widen: [0.055, 0.67],
+			frame_in: [0.70, 0.82],
+			arrive: [0.84, 0.94],
+		};
+
+		function dial(progress, beat) {
+			const amount = (progress - beat[0]) / (beat[1] - beat[0]);
+			return Math.max(0, Math.min(1, amount));
+		}
+
+		function driveFinales() {
+			document.querySelectorAll('practice-layers .finale').forEach(function (finale) {
+				const figure = finale.querySelector('.figure');
+				// Hidden in the staircase layout: nothing to drive.
+				if (!finale.offsetHeight) {
+					return;
+				}
+				finale.dataset.driven = '';
+				const pinned_at = parseFloat(getComputedStyle(figure).top) || 0;
+				const travel = finale.offsetHeight - figure.offsetHeight;
+				const scrolled = pinned_at - finale.getBoundingClientRect().top;
+				const progress = Math.max(0, Math.min(1, scrolled / travel));
+				finale.style.setProperty('--widen', dial(progress, FINALE_BEATS.widen));
+				finale.style.setProperty('--frame-in', dial(progress, FINALE_BEATS.frame_in));
+				finale.style.setProperty('--arrive', dial(progress, FINALE_BEATS.arrive));
+			});
+
+			// The retelling's tall frame fades in as its bars come up the screen.
+			document.querySelectorAll('practice-layers .bars').forEach(function (bars) {
+				if (!bars.offsetHeight) {
+					return;
+				}
+				const from = window.innerHeight * 0.85;
+				const to = window.innerHeight * 0.45;
+				const amount = (from - bars.getBoundingClientRect().top) / (from - to);
+				bars.style.setProperty('--tall-in', Math.max(0, Math.min(1, amount)));
+			});
+		}
+
 		let stuck_check_queued = false;
 		window.addEventListener('scroll', function () {
 			if (stuck_check_queued) {
@@ -199,14 +267,18 @@
 			requestAnimationFrame(function () {
 				stuck_check_queued = false;
 				markStuckNames();
+				driveFinales();
 			});
 		}, { passive: true });
+
+		window.addEventListener('resize', driveFinales);
 
 		document.querySelectorAll('practice-layers').forEach(function (host, host_index) {
 			const list = layers;
 			host.style.setProperty('--count', list.length + 1);
 			host.append(buildLayer(list, 0, 'pl' + host_index));
 			host.append(buildFinale(list));
+			host.append(buildRetelling(list));
 
 			// Click a bar to open or close it. Each bar is on its own - open as
 			// many as you like. (In the scroll story every line is already
@@ -228,6 +300,7 @@
 		});
 
 		markStuckNames();
+		driveFinales();
 	</script>
 
 </body>
