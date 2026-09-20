@@ -51,7 +51,17 @@
 	  before, so the names pile up at the top as you scroll, each stepped in
 	  by one stripe: "woah / look at that journey." (Thin unlabeled bands
 	  were tried first - they stacked, but never said what each layer WAS.)
-	- THE STEPPED BOTTOM: every layer ends a little after the layer inside it.
+	- THE EXIT (Derek's storyboard, 2026-09-20): when the story ends, the
+	  stack of names scrolls away as ONE piece, and the stripes keep running
+	  down the left on their own, straight into the finale's columns.
+	  How: a sticky name is held inside its own layer, and leaves when that
+	  layer's bottom edge reaches it. For every name to leave at the same
+	  moment, each layer has to end exactly one row LATER than the layer
+	  around it (its name sits one row lower, after all). A nested box can't
+	  normally outlast its parent - so each nested layer takes a negative
+	  bottom margin of one row, which makes its parent end one row sooner.
+	  The stripes then get their length back as drawn tails (.layer::after)
+	  that all run down to the same line: the top of the finale.
 
 	WHY this comment: position: sticky silently dies if any ancestor has
 	overflow hidden/auto/scroll. If the tags stop sticking after dropping
@@ -67,27 +77,39 @@ practice-layers {
 	/* One row of the stack at the top. Tags are held to one line so the
 	   stack's height is predictable: rows x layers. */
 	--row: 1.75rem;
-	/* How far each stripe runs past the one inside it, at the bottom. */
-	--tail: 1.5rem;
+	/* How long the stripes run on alone, after the story, before the finale. */
+	--reveal: 10rem;
 	/* WHY no time scale: heights are narrative weight, never countable years. */
 	--step: 9rem;
 
 	.layer {
+		/* flow-root: keeps the nested layer's negative margin INSIDE this
+		   box. Without it the margin collapses through every parent and the
+		   layers all end on the same line again. */
+		display: flow-root;
+		position: relative;
 		border-inline-start: var(--stripe) solid var(--tone);
-		padding-block-end: var(--tail);
+	}
+
+	.layer > .layer {
+		margin-block-end: calc(-1 * var(--row));
+	}
+
+	/* The stripe's tail: from where this layer ends, down to the finale. */
+	.layer::after {
+		content: '';
+		position: absolute;
+		inset-inline-start: calc(-1 * var(--stripe));
+		inset-block-start: 100%;
+		inline-size: var(--stripe);
+		block-size: calc((var(--count) - var(--index)) * var(--row) + var(--reveal));
+		background: var(--tone);
 	}
 
 	.tag {
 		position: sticky;
 		inset-block-start: calc(var(--index) * var(--row));
-		/* EARLIER layers paint on top. At the end of the story the inner
-		   layers finish first (that is the stepped bottom), so their names
-		   get pushed up first. Painted on top, they crashed over the names
-		   still stuck above them; painted underneath, each name slides up
-		   UNDER the one before it and the stack folds away from the bottom.
-		   (An earlier row always covers a later one: it starts further left
-		   and both run to the right edge.) */
-		z-index: calc(100 - var(--index));
+		z-index: 1;
 		block-size: var(--row);
 		margin: 0;
 		padding-inline: var(--space);
@@ -149,7 +171,10 @@ practice-layers {
 		- every keyframe is a `from`, never a `to`.
 	*/
 	.finale {
-		padding-block: calc(var(--space) * 2);
+		/* Starts exactly where the stripes' tails end, so each thin column
+		   carries on from its stripe: same color, same place. */
+		margin-block-start: calc(var(--count) * var(--row) + var(--reveal));
+		padding-block-end: calc(var(--space) * 2);
 	}
 
 	.figure {
@@ -249,7 +274,8 @@ practice-layers {
 		own container, only what is inside it. The values inherit down the nest.
 	*/
 	@container (min-width: 36rem) {
-		> .layer {
+		> .layer,
+		> .finale {
 			--stripe: 1rem;
 			--space: 1.5rem;
 		}
@@ -275,6 +301,10 @@ practice-layers {
 			flex-direction: column;
 			border: 0;
 			padding: 0;
+		}
+
+		.layer::after {
+			display: none;
 		}
 
 		/* cqi measures the HOST, so every step is the same size at any depth. */
