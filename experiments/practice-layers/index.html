@@ -210,6 +210,18 @@
 			}
 		}
 
+		/* Stays on screen so a catch can be seen to have fired, from anywhere. */
+		.catch-report {
+			position: fixed;
+			inset: auto auto 0.5rem 0.5rem;
+			z-index: 10;
+			margin: 0;
+			padding: 0.25rem 0.5rem;
+			background: var(--ink);
+			--prose-ink: var(--fill-page);
+			color: var(--fill-page);
+		}
+
 		.landing-block {
 			box-sizing: border-box;
 			block-size: 40vh;
@@ -314,13 +326,15 @@
 
 		<p class='quiet-voice'>The ramp is being run by: <span data-ramp-engine>nothing yet</span></p>
 
+		<p class='quiet-voice catch-report'>Last catch: <span data-catch-report>none yet</span></p>
+
 		<div class='ramp-case' style='--ramp-screens: 0'>
 
 			<section class='pin-test'>
 
 				<div class='pin-box'>
 
-					<p class='strong-voice'>Test A: no ramp (the usual let-go)</p>
+					<p class='strong-voice'>Test A: no ramp, no catch (the usual let-go)</p>
 
 					<p>Pinned for three screens. Scroll the way you really scroll.</p>
 
@@ -372,13 +386,13 @@
 
 		</div>
 
-		<div class='ramp-case' data-ramp='1' style='--ramp-screens: 0.5'>
+		<div class='ramp-case' data-ramp='1' style='--ramp-screens: 1'>
 
 			<section class='pin-test'>
 
 				<div class='pin-box'>
 
-					<p class='strong-voice'>Test B: ramp over half a screen</p>
+					<p class='strong-voice'>Test B: ramp over one screen, no catch</p>
 
 					<p>Pinned for three screens. Scroll the way you really scroll.</p>
 
@@ -432,21 +446,19 @@
 
 		</div>
 
-		<div class='ramp-case' data-ramp='1' style='--ramp-screens: 1'>
+		<div class='ramp-case' data-catch style='--ramp-screens: 0'>
 
 			<section class='pin-test'>
 
 				<div class='pin-box'>
 
-					<p class='strong-voice'>Test C: ramp over one screen</p>
+					<p class='strong-voice'>Test C: no ramp, fling caught at the let-go</p>
 
 					<p>Pinned for three screens. Scroll the way you really scroll.</p>
 
 					<div class='pin-meter'></div>
 
 				</div>
-
-				<div class='ramp-zone'></div>
 
 			</section>
 
@@ -492,13 +504,13 @@
 
 		</div>
 
-		<div class='ramp-case' data-ramp='1' style='--ramp-screens: 2'>
+		<div class='ramp-case' data-ramp='1' data-catch style='--ramp-screens: 1'>
 
 			<section class='pin-test'>
 
 				<div class='pin-box'>
 
-					<p class='strong-voice'>Test D: ramp over two screens</p>
+					<p class='strong-voice'>Test D: ramp over one screen AND the fling caught</p>
 
 					<p>Pinned for three screens. Scroll the way you really scroll.</p>
 
@@ -545,126 +557,6 @@
 				<div class='landing-block'>
 
 					<p class='strong-voice'>D6</p>
-
-				</div>
-
-			</div>
-
-		</div>
-
-		<div class='ramp-case' data-ramp='2' style='--ramp-screens: 2'>
-
-			<section class='pin-test'>
-
-				<div class='pin-box'>
-
-					<p class='strong-voice'>Test E: two screens, slow for longer</p>
-
-					<p>Pinned for three screens. Scroll the way you really scroll.</p>
-
-					<div class='pin-meter'></div>
-
-				</div>
-
-				<div class='ramp-zone'></div>
-
-			</section>
-
-			<div class='landing'>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>E1</p>
-
-				</div>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>E2</p>
-
-				</div>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>E3</p>
-
-				</div>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>E4</p>
-
-				</div>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>E5</p>
-
-				</div>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>E6</p>
-
-				</div>
-
-			</div>
-
-		</div>
-
-		<div class='ramp-case' data-ramp='2' style='--ramp-screens: 3'>
-
-			<section class='pin-test'>
-
-				<div class='pin-box'>
-
-					<p class='strong-voice'>Test F: three screens, slow for longer</p>
-
-					<p>Pinned for three screens. Scroll the way you really scroll.</p>
-
-					<div class='pin-meter'></div>
-
-				</div>
-
-				<div class='ramp-zone'></div>
-
-			</section>
-
-			<div class='landing'>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>F1</p>
-
-				</div>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>F2</p>
-
-				</div>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>F3</p>
-
-				</div>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>F4</p>
-
-				</div>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>F5</p>
-
-				</div>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>F6</p>
 
 				</div>
 
@@ -1119,6 +1011,99 @@
 				landing.style.setProperty('--landing-shift', (-(room * (1 - release) - (seen_in_all - seen_so_far))) + 'px');
 			});
 		}
+
+		/*
+			THE CATCH (test page only). Every ramp failed the same way (Derek:
+			"they all zoom super far right after passing them"): a ramp lives at
+			a PLACE, a fling lives in TIME - throw the page from anywhere near the
+			let-go and the momentum sails over the line and is spent on whatever
+			comes next. So the momentum itself has to be dealt with.
+			The catch: the instant the let-go line is crossed going down FASTER
+			than a person reads, the page takes the scroll for a moment - setting
+			the scroll position by hand ends the phone's own momentum - and
+			replaces it with a short glide that starts no faster than GLIDE_TOP
+			and fades out. Slow scrolling never trips it. A finger back on the
+			screen ends it at once: the visitor always outranks the glide.
+			This DOES touch the visitor's scrolling, which the ramp never did. It
+			is allowed only here: one line, one direction, only when the scroll
+			is already out of their hands.
+		*/
+		const CATCH_ABOVE = 1.2;  // px per ms; slower than this is a person in control
+		const GLIDE_TOP = 0.9;    // px per ms; the fastest the glide may start
+		const GLIDE_FADE = 260;   // ms; how quickly the glide dies away
+		let last_y = window.scrollY;
+		let last_time = performance.now();
+		let speed = 0;
+		let gliding = false;
+
+		function reportCatch(words) {
+			document.querySelectorAll('[data-catch-report]').forEach(function (label) {
+				label.textContent = words;
+			});
+		}
+
+		function glideFrom(start_y, start_speed) {
+			gliding = true;
+			const began = performance.now();
+			const reach = start_speed * GLIDE_FADE;
+			function step() {
+				if (!gliding) {
+					return;
+				}
+				const elapsed = performance.now() - began;
+				const fade = Math.exp(-elapsed / GLIDE_FADE);
+				window.scrollTo(0, start_y + reach * (1 - fade));
+				if (fade < 0.02) {
+					gliding = false;
+					last_y = window.scrollY;
+					speed = 0;
+					return;
+				}
+				requestAnimationFrame(step);
+			}
+			step();
+		}
+
+		function watchForFlings() {
+			const now = performance.now();
+			const y = window.scrollY;
+			if (gliding) {
+				last_y = y;
+				last_time = now;
+				return;
+			}
+			const elapsed = now - last_time;
+			if (elapsed > 0) {
+				// smoothed a little: one odd frame shouldn't trip the catch
+				speed = speed * 0.5 + ((y - last_y) / elapsed) * 0.5;
+			}
+			document.querySelectorAll('.ramp-case[data-catch]').forEach(function (ramp_case) {
+				const test = ramp_case.querySelector('.pin-test');
+				const box = ramp_case.querySelector('.pin-box');
+				const let_go = test.getBoundingClientRect().top + y + test.offsetHeight - box.offsetHeight;
+				if (last_y < let_go && y >= let_go && speed > CATCH_ABOVE) {
+					reportCatch('caught at ' + speed.toFixed(1) + ' px/ms');
+					glideFrom(y, Math.min(speed, GLIDE_TOP));
+				}
+			});
+			last_y = y;
+			last_time = now;
+		}
+
+		window.addEventListener('scroll', watchForFlings, { passive: true });
+
+		// The visitor outranks the glide.
+		window.addEventListener('touchstart', function () {
+			gliding = false;
+		}, { passive: true });
+
+		// A trackpad keeps sending its own leftover momentum as wheel events;
+		// while the glide runs they are turned away, or the two would fight.
+		window.addEventListener('wheel', function (event) {
+			if (gliding) {
+				event.preventDefault();
+			}
+		}, { passive: false });
 
 		let stuck_check_queued = false;
 		window.addEventListener('scroll', function () {
