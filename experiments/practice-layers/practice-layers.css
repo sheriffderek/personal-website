@@ -187,6 +187,20 @@ practice-layers {
 	   2026-09-20). The section opens as plain color first, then the words. */
 	--breath: 7rem;
 
+	/* WRAPPING: every piece of text here is a <p>, and the site's own rule
+	   (typography.css) already gives every p `text-wrap: pretty`. But pretty
+	   only reached iOS Safari in version 26 - on an older phone it quietly
+	   does nothing. So the SHORT display lines say `balance` first (Safari has
+	   had that since 17.5) and `pretty` after it: a browser that knows pretty
+	   uses it, one that doesn't still gets evened-out lines. Paragraphs are
+	   left alone - balance is the wrong tool for a long paragraph. */
+	.opener-words,
+	.telling .strong-voice,
+	.closing p {
+		text-wrap: balance;
+		text-wrap: pretty;
+	}
+
 	/*
 		THE OPENER (Derek's mockup, 2026-09-20, sketches/9-...): before the
 		story starts, the whole shape in one small picture - every layer as a
