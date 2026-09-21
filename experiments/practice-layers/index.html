@@ -103,7 +103,7 @@
 			--ramp-power: 1;
 			--room: calc(var(--ramp-screens) * 100vh);
 			--seen-in-all: calc(var(--room) / (var(--ramp-power) + 1));
-			timeline-scope: --ramp;
+			timeline-scope: --ramp, --after;
 		}
 
 		.pin-test {
@@ -192,6 +192,69 @@
 			--ramp-power: 2;
 			--box-curve: cubic-bezier(0.3333, 0, 0.6667, 0);
 			--landing-curve: cubic-bezier(0.3333, 0.5, 0.6667, 1);
+		}
+
+		/*
+			THE SLOW ZONE AFTER (Derek's guess: "we just slow down the way the
+			scrolling works for a distance right after"). The ramps above put
+			the slow part BEFORE the let-go and were back to full speed at the
+			line, so a late fling was spent at full speed. This puts it AFTER:
+			for --zone of scroll past the let-go, the box and everything after
+			it move at only --slow of the scroll's speed (held for the first
+			three quarters of the zone, then eased up to full over the last
+			quarter). The fling's momentum is spent as scroll distance while
+			little moves; full speed only returns once the fling has had time
+			to die. The cost: a careful scroller drags through the same zone.
+			How: the scroll itself is never touched. The content is pushed DOWN
+			against the scroll by a growing translate, so it appears to move
+			slower. The zone's clock is an invisible marker beside (not inside)
+			the moving content. What is pushed down never comes back, so the
+			landing reserves that much room beneath itself.
+		*/
+		.ramp-case[data-slow-after] {
+			position: relative;
+			--zone: 400vh;
+			--slow: 0.25;
+			--held-back: calc(var(--zone) * (1 - var(--slow)) * 0.875);
+		}
+
+		.after-zone {
+			position: absolute;
+			inset-inline: 0;
+			/* the let-go line: three screens of pin, measured from the case's top */
+			inset-block-start: 300vh;
+			block-size: var(--zone);
+			view-timeline: --after block;
+			pointer-events: none;
+		}
+
+		@supports (animation-timeline: view()) {
+			.ramp-case[data-slow-after] .pin-box,
+			.ramp-case[data-slow-after] .landing {
+				animation: slow-after linear both;
+				animation-timeline: --after;
+				animation-range: exit-crossing 0% exit-crossing 100%;
+			}
+
+			.ramp-case[data-slow-after] .landing {
+				margin-block-end: var(--held-back);
+			}
+		}
+
+		@keyframes slow-after {
+			0% {
+				translate: 0 0;
+				animation-timing-function: linear;
+			}
+
+			75% {
+				translate: 0 calc(var(--zone) * 0.75 * (1 - var(--slow)));
+				animation-timing-function: cubic-bezier(0.3333, 0.6667, 0.6667, 1);
+			}
+
+			100% {
+				translate: 0 var(--held-back);
+			}
 		}
 
 		@keyframes pin-rise {
@@ -557,6 +620,148 @@
 				<div class='landing-block'>
 
 					<p class='strong-voice'>D6</p>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class='ramp-case' data-slow-after style='--ramp-screens: 0'>
+
+			<section class='pin-test'>
+
+				<div class='pin-box'>
+
+					<p class='strong-voice'>Test E: slow zone AFTER the let-go (quarter speed for four screens of scroll, then back to full)</p>
+
+					<p>Pinned for three screens. Scroll the way you really scroll. Needs "the browser" as the ramp engine.</p>
+
+					<div class='pin-meter'></div>
+
+				</div>
+
+			</section>
+
+			<div class='after-zone'></div>
+
+			<div class='landing'>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>E1</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>E2</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>E3</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>E4</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>E5</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>E6</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>E7</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>E8</p>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class='ramp-case' data-catch='soft' style='--ramp-screens: 0'>
+
+			<section class='pin-test'>
+
+				<div class='pin-box'>
+
+					<p class='strong-voice'>Test F: the soft catch (the fling is caught once, then let out gradually)</p>
+
+					<p>Pinned for three screens. Scroll the way you really scroll.</p>
+
+					<div class='pin-meter'></div>
+
+				</div>
+
+			</section>
+
+			<div class='landing'>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>F1</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>F2</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>F3</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>F4</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>F5</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>F6</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>F7</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>F8</p>
 
 				</div>
 
@@ -1052,7 +1257,7 @@
 				}
 				const elapsed = performance.now() - began;
 				const fade = Math.exp(-elapsed / GLIDE_FADE);
-				window.scrollTo(0, start_y + reach * (1 - fade));
+				window.scrollTo({ top: start_y + reach * (1 - fade), behavior: 'instant' });
 				if (fade < 0.02) {
 					gliding = false;
 					last_y = window.scrollY;
@@ -1062,6 +1267,41 @@
 				requestAnimationFrame(step);
 			}
 			step();
+		}
+
+		/*
+			THE SOFT CATCH (Derek on the first catch: "closest in feel... but it
+			still doesn't really gradually change / just a slower return to
+			normal"). Two things were wrong with the first one. It wrote the
+			scroll position every frame - on a phone each write crosses to the
+			part of the browser that owns the scroll and lands late, so the glide
+			can't be smooth. And it dropped the speed hard, then faded fast.
+			This one writes the scroll ONCE: straight to where the glide will
+			end, which also ends the phone's momentum. In the same breath the
+			content is pushed back down by that same distance, so nothing on
+			screen has moved - and then that push is let out over SOFT_TIME by
+			the browser's own animation. What the eye sees is the fling carrying
+			on at the speed it had and slowing to a stop: gradual, and none of it
+			is this script's frame-by-frame work.
+			The curve starts at twice its average speed, so to START at the
+			fling's own speed the glide must cover speed * time / 2.
+		*/
+		const SOFT_TOP = 2.2;    // px per ms; a faster fling is eased from here
+		const SOFT_TIME = 900;   // ms
+
+		function softCatch(ramp_case, y, fling_speed) {
+			const reach = Math.min(fling_speed, SOFT_TOP) * SOFT_TIME / 2;
+			ramp_case.style.transition = 'none';
+			ramp_case.style.translate = '0 ' + reach + 'px';
+			window.scrollTo({ top: y + reach, behavior: 'instant' });
+			last_y = y + reach;
+			speed = 0;
+			requestAnimationFrame(function () {
+				requestAnimationFrame(function () {
+					ramp_case.style.transition = 'translate ' + SOFT_TIME + 'ms cubic-bezier(0.3333, 0.6667, 0.6667, 1)';
+					ramp_case.style.translate = '0 0';
+				});
+			});
 		}
 
 		function watchForFlings() {
@@ -1082,8 +1322,12 @@
 				const box = ramp_case.querySelector('.pin-box');
 				const let_go = test.getBoundingClientRect().top + y + test.offsetHeight - box.offsetHeight;
 				if (last_y < let_go && y >= let_go && speed > CATCH_ABOVE) {
-					reportCatch('caught at ' + speed.toFixed(1) + ' px/ms');
-					glideFrom(y, Math.min(speed, GLIDE_TOP));
+					reportCatch('caught at ' + speed.toFixed(1) + ' px/ms (' + (ramp_case.dataset.catch || 'glide') + ')');
+					if (ramp_case.dataset.catch === 'soft') {
+						softCatch(ramp_case, y, speed);
+					} else {
+						glideFrom(y, Math.min(speed, GLIDE_TOP));
+					}
 				}
 			});
 			last_y = y;
