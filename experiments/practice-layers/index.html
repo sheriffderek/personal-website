@@ -29,7 +29,7 @@
 
 	<!-- Static page, no asset() helper: bump this stamp by hand whenever the CSS changes,
 	     or phones keep the old stylesheet. -->
-	<link rel='stylesheet' href='practice-layers.css?v=2026-09-21-u'>
+	<link rel='stylesheet' href='practice-layers.css?v=2026-09-21-v'>
 
 	<style>
 		/* Test-page chrome only. Nothing in here belongs to the component. */
@@ -85,6 +85,53 @@
 		.test-switches button[aria-pressed='true'] {
 			background: var(--ink);
 			color: var(--fill-page);
+		}
+		/*
+			THE RELEASE LAB (test page only). The question: when a pinned thing
+			lets go, does easing it up to full speed stop the next section from
+			flying past? Each test pins a plain box for three screens, then lets
+			go into numbered blocks - the number you land on IS the measurement.
+			Same math as the component's release ramp (see THE RELEASE RAMP in
+			practice-layers.css); the only thing that differs between tests is
+			--ramp-screens, how many screens of scroll the easing is spread over.
+		*/
+		.pin-test {
+			block-size: calc(100vh + (3 + var(--ramp-screens)) * 100vh);
+			block-size: calc(100svh + (3 + var(--ramp-screens)) * 100vh);
+		}
+
+		.pin-box {
+			position: sticky;
+			inset-block-start: 0;
+			box-sizing: border-box;
+			block-size: 100vh;
+			block-size: 100svh;
+			padding: 2rem 1rem;
+			border: 0.3rem solid var(--ink);
+			translate: 0 calc(-0.5 * var(--release-room, 0px) * var(--release, 0) * var(--release, 0));
+		}
+
+		.pin-meter {
+			block-size: 1rem;
+			margin-block-start: 1rem;
+			background: linear-gradient(to right, var(--ink) calc(var(--progress, 0) * 100%), transparent 0);
+			border: 1px solid var(--ink);
+		}
+
+		.landing {
+			margin-block-start: calc(-0.5 * var(--release-room, 0px));
+			translate: 0 calc(-0.5 * var(--release-room, 0px) * (1 - var(--release, 0)) * (1 - var(--release, 0)));
+		}
+
+		.landing-block {
+			box-sizing: border-box;
+			block-size: 40vh;
+			padding: 1rem;
+			border-block-end: 1px solid var(--ink);
+		}
+
+		.landing-block:nth-child(even) {
+			background: var(--fill-secondary, transparent);
 		}
 	</style>
 
@@ -145,6 +192,200 @@
 	<div class='phone-box'>
 
 		<practice-layers></practice-layers>
+
+	</div>
+
+	<div class='phone-box release-lab'>
+
+		<div class='landing'>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>after the stack 1</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>after the stack 2</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>after the stack 3</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>after the stack 4</p>
+
+			</div>
+
+		</div>
+
+		<section class='pin-test' style='--ramp-screens: 0'>
+
+			<div class='pin-box'>
+
+				<p class='strong-voice'>Test A: no ramp (the usual let-go)</p>
+
+				<p>Pinned for three screens. Scroll the way you really scroll.</p>
+
+				<div class='pin-meter'></div>
+
+			</div>
+
+		</section>
+
+		<div class='landing'>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>A1</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>A2</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>A3</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>A4</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>A5</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>A6</p>
+
+			</div>
+
+		</div>
+
+		<section class='pin-test' style='--ramp-screens: 0.5'>
+
+			<div class='pin-box'>
+
+				<p class='strong-voice'>Test B: ramp over half a screen</p>
+
+				<p>Pinned for three screens. Scroll the way you really scroll.</p>
+
+				<div class='pin-meter'></div>
+
+			</div>
+
+		</section>
+
+		<div class='landing'>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>B1</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>B2</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>B3</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>B4</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>B5</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>B6</p>
+
+			</div>
+
+		</div>
+
+		<section class='pin-test' style='--ramp-screens: 1'>
+
+			<div class='pin-box'>
+
+				<p class='strong-voice'>Test C: ramp over one screen</p>
+
+				<p>Pinned for three screens. Scroll the way you really scroll.</p>
+
+				<div class='pin-meter'></div>
+
+			</div>
+
+		</section>
+
+		<div class='landing'>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>C1</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>C2</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>C3</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>C4</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>C5</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>C6</p>
+
+			</div>
+
+		</div>
 
 	</div>
 
@@ -505,12 +746,18 @@
 		// as fast" (1.4). Then: "as soon as the page content is gone it should go
 		// right into the animation" (the opening wait is gone) and "it should
 		// stick longer on the next part" (the rest grew from 0.4 to 1.2).
+		// THE RELEASE (the last beat, one more screen: the runway is now 4.85):
+		// the figure eases from pinned up to full scroll speed instead of being
+		// let go in one frame - see THE RELEASE RAMP in the CSS. Adding it
+		// rescaled every earlier beat by 3.85 / 4.85 so their pace in screens
+		// of scroll is exactly what it was.
 		const FINALE_BEATS = {
-			widen: [0.01, 0.375],
-			simplify: [0.29, 0.375],
-			frame_in: [0.40, 0.545],
-			arrive: [0.57, 0.69],
-			rest: [0.69, 1],
+			widen: [0.008, 0.298],
+			simplify: [0.23, 0.298],
+			frame_in: [0.318, 0.433],
+			arrive: [0.452, 0.548],
+			rest: [0.548, 0.794],
+			release: [0.794, 1],
 		};
 
 		function dial(progress, beat) {
@@ -522,7 +769,9 @@
 			document.querySelectorAll('practice-layers .finale').forEach(function (finale) {
 				const figure = finale.querySelector('.figure');
 				// Hidden in the staircase layout: nothing to drive.
+				const host = finale.parentElement;
 				if (!finale.offsetHeight) {
+					host.style.setProperty('--release-room', '0px');
 					return;
 				}
 				finale.dataset.driven = '';
@@ -535,6 +784,10 @@
 				finale.style.setProperty('--frame-in', dial(progress, FINALE_BEATS.frame_in));
 				finale.style.setProperty('--arrive', dial(progress, FINALE_BEATS.arrive));
 				finale.style.setProperty('--rest', dial(progress, FINALE_BEATS.rest));
+				// On the host, not the finale: the retelling (a sibling) reads them too.
+				const release_share = FINALE_BEATS.release[1] - FINALE_BEATS.release[0];
+				host.style.setProperty('--release-room', (travel * release_share) + 'px');
+				host.style.setProperty('--release', dial(progress, FINALE_BEATS.release));
 			});
 
 			// The retelling's tall frame fades in as its bars come up the screen.
@@ -549,6 +802,28 @@
 			});
 		}
 
+		// THE RELEASE LAB's clock (test page only): the same ramp as the finale,
+		// for the plain pin tests under the component.
+		function drivePinTests() {
+			document.querySelectorAll('.pin-test').forEach(function (test) {
+				const box = test.querySelector('.pin-box');
+				const landing = test.nextElementSibling;
+				const ramp_screens = parseFloat(test.style.getPropertyValue('--ramp-screens'));
+				const travel = test.offsetHeight - box.offsetHeight;
+				const room = travel * ramp_screens / (3 + ramp_screens);
+				const scrolled = Math.max(0, Math.min(travel, -test.getBoundingClientRect().top));
+				let release = 0;
+				if (room > 0) {
+					release = Math.max(0, (scrolled - (travel - room)) / room);
+				}
+				test.style.setProperty('--progress', scrolled / travel);
+				[test, landing].forEach(function (element) {
+					element.style.setProperty('--release-room', room + 'px');
+					element.style.setProperty('--release', release);
+				});
+			});
+		}
+
 		let stuck_check_queued = false;
 		window.addEventListener('scroll', function () {
 			if (stuck_check_queued) {
@@ -559,10 +834,12 @@
 				stuck_check_queued = false;
 				markStuckNames();
 				driveFinales();
+				drivePinTests();
 			});
 		}, { passive: true });
 
 		window.addEventListener('resize', driveFinales);
+		window.addEventListener('resize', drivePinTests);
 
 		document.querySelectorAll('practice-layers').forEach(function (host, host_index) {
 			const list = layers;
@@ -588,6 +865,7 @@
 
 		markStuckNames();
 		driveFinales();
+		drivePinTests();
 	</script>
 
 </body>
