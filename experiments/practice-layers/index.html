@@ -18,7 +18,7 @@
 
 	<!-- Static page, no asset() helper: bump this stamp by hand whenever the CSS changes,
 	     or phones keep the old stylesheet. -->
-	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-z'>
+	<link rel='stylesheet' href='practice-layers.css?v=2026-09-21-a'>
 
 	<style>
 		/* Test-page chrome only. Nothing in here belongs to the component. */
@@ -257,6 +257,12 @@
 
 		const stack_joke = 'Sometimes people ask me what “stack” I use. This is it.';
 
+		// The opener's one line, from Derek's mockup (sketches/9-...). His mockup
+		// had a sentence before it - "Something to prep them for this." - which
+		// reads as a note to himself about what belongs here, not as copy, so it
+		// was left out (a placeholder never ships). If he meant it, it goes back.
+		const opener_words = 'To understand how I work, I think it\'s helpful to see it in layers instead of steps in a process.';
+
 		// The closing words, as Derek set them in his scroll-details mockup
 		// (2026-09-20, sketches/8-scroll-details-closing-sequence.webp): two short
 		// paragraphs, his spaced hyphens. This replaces his 2026-09-19 single
@@ -377,6 +383,32 @@
 
 		wireSwitch('palette', 'practice-layers-palette', 'deepening', applyPalette);
 		wireSwitch('mood', 'mood-preference', 'quiet', applyMood);
+
+		// The opener: the whole shape in one small picture, then one line.
+		function buildOpener(list) {
+			const opener = document.createElement('div');
+			opener.className = 'opener';
+
+			const chart = document.createElement('div');
+			chart.className = 'opener-chart';
+			list.forEach(function (layer, index) {
+				const bar = document.createElement('div');
+				bar.className = 'opener-bar';
+				bar.style.setProperty('--index', index);
+				bar.style.setProperty('--tone', 'var(--layer-' + (index + 1) + ')');
+				chart.append(bar);
+			});
+			const marker = document.createElement('div');
+			marker.className = 'opener-marker';
+			chart.append(marker);
+
+			const words = document.createElement('p');
+			words.className = 'opener-words attention-voice';
+			words.textContent = opener_words;
+
+			opener.append(chart, words);
+			return opener;
+		}
 
 		// The finale: one column per layer.
 		function buildFinale(list) {
@@ -520,6 +552,7 @@
 		document.querySelectorAll('practice-layers').forEach(function (host, host_index) {
 			const list = layers;
 			host.style.setProperty('--count', list.length);
+			host.append(buildOpener(list));
 			host.append(buildLayer(list, 0, 'pl' + host_index));
 			host.append(buildFinale(list));
 			host.append(buildRetelling());

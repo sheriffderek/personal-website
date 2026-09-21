@@ -109,6 +109,11 @@
 	line-height: 1.3;
 }
 
+.attention-voice {
+	font-size: 1.375rem;
+	line-height: 1.35;
+}
+
 .quiet-voice {
 	font-size: 0.875rem;
 	color: var(--ink-quiet);
@@ -178,6 +183,64 @@ practice-layers {
 	/* Breathing room: how far down its section the text starts (Derek,
 	   2026-09-20). The section opens as plain color first, then the words. */
 	--breath: 7rem;
+
+	/*
+		THE OPENER (Derek's mockup, 2026-09-20, sketches/9-...): before the
+		story starts, the whole shape in one small picture - every layer as a
+		bar, first layer at the bottom, each starting later and all of them
+		running off the right edge (a layer starts and never ends). A marker
+		with a dot cuts down through them just before the last bar begins:
+		"now" - every layer is present at once, and what's next hasn't
+		started. Then one line that tells the reader how to read what follows.
+		The bars wear the same tones as the stripes that are about to appear
+		at the left, so the picture doubles as the key.
+	*/
+	.opener {
+		--opener-last: 13%;
+		padding-block: 3rem calc(var(--space) * 1.5);
+	}
+
+	.opener-chart {
+		position: relative;
+		display: flex;
+		/* DOM order stays first-layer-first; the chart BUILDS upward. */
+		flex-direction: column-reverse;
+		margin-inline-start: var(--edge);
+		/* room above the top bar for the marker to stand up out of the chart */
+		padding-block-start: 4.5rem;
+	}
+
+	.opener-bar {
+		block-size: 1.1rem;
+		margin-inline-start: calc(var(--index) * (100% - var(--opener-last)) / (var(--count) - 1));
+		background: var(--tone);
+	}
+
+	.opener-marker {
+		position: absolute;
+		inset-block: 1.25rem 0;
+		/* just before the last bar begins */
+		inset-inline-start: calc(100% - var(--opener-last) - 2.5%);
+		inline-size: var(--frame-line);
+		background: var(--ink);
+
+		/* the dot on top */
+		&::before {
+			content: '';
+			position: absolute;
+			inset-block-start: -0.6rem;
+			inset-inline-start: 50%;
+			inline-size: 1.25rem;
+			block-size: 1.25rem;
+			border-radius: 50%;
+			background: var(--ink);
+			translate: -50% 0;
+		}
+	}
+
+	.opener-words {
+		margin: var(--space) var(--edge) 0;
+	}
 
 	.layer {
 		/* flow-root: keeps the nested layer's negative margin INSIDE this
@@ -578,8 +641,13 @@ practice-layers {
 		/* The staircase already shows every layer at once - it IS the
 		   finale's shape, turned on its side - so the finale stands down. */
 		.finale,
-		.retelling {
+		.retelling,
+		.opener-chart {
 			display: none;
+		}
+
+		.opener {
+			padding-block-start: 0;
 		}
 	}
 }
