@@ -175,8 +175,12 @@ practice-layers {
 	/* One row of the stack at the top. Tags are held to one line so the
 	   stack's height is predictable: rows x layers. */
 	--row: 1.75rem;
-	/* How long the stripes run on alone, after the story, before the finale. */
-	--reveal: 10rem;
+	/* How long the stripes run on alone, after the story, before the finale.
+	   Zero now (Derek: "as soon as the page content is gone - it should go
+	   right into the animation"). The tails still exist - the nested layers
+	   run a few rows past the outermost one, and the tails bridge that - but
+	   there is no extra stretch of bare stripes any more. */
+	--reveal: 0rem;
 	/* THE LAST LAYER (Derek's markup, 2026-09-20, sketches/15-...): "filled
 	   in" and "stick for a bit". It is the ask - the one line everything
 	   above was building to - so it behaves differently from the rest:
@@ -464,8 +468,10 @@ practice-layers {
 		scroll-driven animations - iOS Safari doesn't have them yet, so on
 		Derek's phone nothing moved. One mechanism that works everywhere
 		beats two.)
-		PACING (Derek): the widening is the slow part - about a screen and a
-		half of scrolling (it was three; he asked for twice as fast). The runway's length below and the beat fractions in the
+		PACING (Derek): it goes straight into the widening the moment it pins
+		(about a screen and a half of scrolling), and once everything has
+		arrived it RESTS pinned for more than a screen ("it should stick
+		longer on the next part"). The runway's length below and the beat fractions in the
 		script (FINALE_BEATS) are one decision; change them together.
 	*/
 	.finale,
@@ -493,8 +499,14 @@ practice-layers {
 		             left edge - so they never sit on top of a column.
 	*/
 	.figure {
-		/* how tall the first (longest) column is */
-		--columns-height: 30rem;
+		/* How tall the first (longest) column is. BASED ON THE SCREEN (Derek:
+		   "this should be based on viewport - and taper off once the last one
+		   is locked"): the figure is exactly one screen tall, so when the
+		   story's last section scrolls away the stripes are seen ending in
+		   steps right down the screen - inner first, the first layer last, in
+		   the bottom corner. That taper IS these columns. */
+		--columns-height: calc(100vh - 4rem);
+		--columns-height: calc(100svh - 4rem);
 		/* how much shorter each column is than the one before (of that height) */
 		--fall: 0.07;
 		--col-gap: 0.9rem;
@@ -507,8 +519,9 @@ practice-layers {
 		--words-col-end: calc(var(--columns-height) * (1 - var(--words-col) * var(--fall)));
 
 		position: relative;
-		/* the columns, plus room under them for the words */
-		block-size: calc(var(--columns-height) + 6rem);
+		/* exactly one screen: it pins at the top and fills it */
+		block-size: 100vh;
+		block-size: 100svh;
 	}
 
 	/*
@@ -537,7 +550,18 @@ practice-layers {
 	.column {
 		flex: var(--widen, 1) 0 var(--stripe);
 		block-size: calc(100% - var(--index) * var(--fall) * 100%);
-		background: color-mix(in oklab, var(--tone), var(--simple-tone) calc(var(--simplify, 1) * 100%));
+		/* WHILE IT RESTS (Derek: "maybe change the color of the bars a little as
+		   you scroll to show it's moving"): once everything has arrived the
+		   figure stays pinned for a good while, and nothing else moves - so a
+		   quiet wave of each layer's own color crosses the bars, first layer
+		   first, driven by the scroll (--rest, 0 to 1). Proof the page is still
+		   alive under your thumb. With no script --rest is 0: plain bars. */
+		--wake: clamp(0, var(--rest, 0) * (var(--count) + 1) - var(--index), 1);
+		background: color-mix(
+			in oklab,
+			color-mix(in oklab, var(--tone), var(--simple-tone) calc(var(--simplify, 1) * 100%)),
+			var(--tone) calc(var(--wake) * 45%)
+		);
 	}
 
 	.frame {
@@ -590,7 +614,8 @@ practice-layers {
 	   scroll through, with the figure pinned inside it. */
 	.finale[data-driven] {
 		/* the figure's own height, plus the scroll the four beats run on */
-		block-size: calc(36rem + 315vh);
+		block-size: calc(100vh + 385vh);
+		block-size: calc(100svh + 385vh);
 
 		/* Pinned at the very TOP, not a little below it. With any offset the
 		   columns stop short of the top edge while the stripes above them
