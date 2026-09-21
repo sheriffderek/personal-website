@@ -226,10 +226,12 @@ practice-layers {
 		weight, and once three generations of them declared together with the
 		oldest winning.
 	*/
-	--opening-share: 0.8;
+	/* 0.68: it was 0.8, and on his phone Derek asked for "like 15% less". */
+	--opening-share: 0.68;
 	/* The first layer follows the opener's line, with no name being dropped
 	   off to protect - it opens shorter. */
-	--first-opening: 40vh;
+	/* (25vh: it was 40, and he wanted the first one to need less than the rest.) */
+	--first-opening: 25vh;
 
 	/* WRAPPING: every piece of text here is a <p>, and the site's own rule
 	   (typography.css) already gives every p `text-wrap: pretty`. But pretty
