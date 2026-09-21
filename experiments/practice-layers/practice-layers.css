@@ -177,9 +177,16 @@ practice-layers {
 	--row: 1.75rem;
 	/* How long the stripes run on alone, after the story, before the finale. */
 	--reveal: 10rem;
-	/* How long the finished stack HOLDS before it leaves (Derek: "we need to
-	   let that sink in a little"). Scroll distance, not time. */
-	--hold: 85vh;
+	/* THE LAST LAYER LINGERS (Derek: "this last one needs to be longer too -
+	   and give them time to think about this before moving on"). It is the
+	   ask - the one line everything above was building to - so its color
+	   keeps running long after its words, and they travel up through it with
+	   the whole stack sitting complete above them. Scroll distance, not time. */
+	--last-dwell: 80vh;
+	/* Then the finished stack HOLDS a little over empty page before it all
+	   leaves (Derek: "we need to let that sink in a little"). Shorter than it
+	   was (85vh): the last layer's dwell now does most of the waiting. */
+	--hold: 35vh;
 	/*
 		THE RHYTHM OF A SECTION (Derek, 2026-09-20 - settled on his phone).
 		The moment that matters: a section's words are ALL in view, and right
@@ -362,6 +369,10 @@ practice-layers {
 		one thing it has that the others don't, and it isn't about that
 		layer: it is simply what comes after the last one, whichever it is.
 	*/
+	.layer[data-last] > .story {
+		padding-block-end: var(--last-dwell);
+	}
+
 	.hold {
 		block-size: var(--hold);
 	}
@@ -692,9 +703,12 @@ practice-layers {
 			cursor: pointer;
 		}
 
-		.story {
+		.story,
+		.layer[data-last] > .story {
 			order: 1;
 			min-block-size: 0;
+			/* (also resets the last layer's long dwell - [data-last] is here
+			   so this rule still wins over it) */
 			padding-block-end: var(--space);
 			padding-block-start: 0;
 		}
