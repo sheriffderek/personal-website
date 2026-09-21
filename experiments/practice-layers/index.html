@@ -9,22 +9,30 @@
 
 	<title>practice-layers: test page</title>
 
-	<!-- The site's real color tokens, and nothing else of the site: the raw
-	     palette, then the theme axes (moods, schemes, flavors). No global
-	     element styles come with these two files, so the test page stays a
-	     clean room. -->
+	<!-- The site's real foundations, in the site's own order (styles/index.css):
+	     reset, setup, the scales, the theme axes (color + the voice tokens),
+	     then the voice rules. Everything except the site's layouts, components
+	     and modules - so the component is judged in the real type and color,
+	     on an otherwise empty page. The font link is the site's primary pair. -->
+	<link rel='preconnect' href='https://api.fontshare.com'>
+	<link rel='preconnect' href='https://cdn.fontshare.com' crossorigin>
+	<link rel='stylesheet' href='https://api.fontshare.com/v2/css?f[]=quicksand@1&f[]=spline-sans@1&display=swap'>
+	<link rel='stylesheet' href='/styles/preset.css'>
+	<link rel='stylesheet' href='/styles/setup.css'>
+	<link rel='stylesheet' href='/styles/font-scales.css'>
 	<link rel='stylesheet' href='/styles/color-scales.css'>
+	<link rel='stylesheet' href='/styles/space-scales.css'>
 	<link rel='stylesheet' href='/styles/settings.css'>
+	<link rel='stylesheet' href='/styles/typography.css'>
 
 	<!-- Static page, no asset() helper: bump this stamp by hand whenever the CSS changes,
 	     or phones keep the old stylesheet. -->
-	<link rel='stylesheet' href='practice-layers.css?v=2026-09-21-b'>
+	<link rel='stylesheet' href='practice-layers.css?v=2026-09-21-c'>
 
 	<style>
 		/* Test-page chrome only. Nothing in here belongs to the component. */
 		body {
 			margin: 0;
-			font-family: system-ui, sans-serif;
 			background: var(--fill-page);
 			color: var(--ink);
 		}
@@ -300,7 +308,7 @@
 
 			if (layer.why) {
 				const why = document.createElement('p');
-				why.className = 'quiet-voice';
+				why.className = 'calm-voice';
 				why.textContent = layer.why;
 				telling.append(why);
 			}
@@ -435,6 +443,7 @@
 			closing_line.className = 'closing';
 			closing.forEach(function (words) {
 				const paragraph = document.createElement('p');
+				paragraph.className = 'calm-voice';
 				paragraph.textContent = words;
 				closing_line.append(paragraph);
 			});
