@@ -413,8 +413,8 @@ practice-layers {
 		scroll-driven animations - iOS Safari doesn't have them yet, so on
 		Derek's phone nothing moved. One mechanism that works everywhere
 		beats two.)
-		PACING (Derek): the widening is the slow part - about three screens
-		of scrolling. The runway's length below and the beat fractions in the
+		PACING (Derek): the widening is the slow part - about a screen and a
+		half of scrolling (it was three; he asked for twice as fast). The runway's length below and the beat fractions in the
 		script (FINALE_BEATS) are one decision; change them together.
 	*/
 	.finale,
@@ -539,7 +539,7 @@ practice-layers {
 	   scroll through, with the figure pinned inside it. */
 	.finale[data-driven] {
 		/* the figure's own height, plus the scroll the four beats run on */
-		block-size: calc(36rem + 455vh);
+		block-size: calc(36rem + 315vh);
 
 		/* Pinned at the very TOP, not a little below it. With any offset the
 		   columns stop short of the top edge while the stripes above them

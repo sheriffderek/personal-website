@@ -29,7 +29,7 @@
 
 	<!-- Static page, no asset() helper: bump this stamp by hand whenever the CSS changes,
 	     or phones keep the old stylesheet. -->
-	<link rel='stylesheet' href='practice-layers.css?v=2026-09-21-h'>
+	<link rel='stylesheet' href='practice-layers.css?v=2026-09-21-i'>
 
 	<style>
 		/* Test-page chrome only. Nothing in here belongs to the component. */
@@ -505,11 +505,17 @@
 		// The beats are fractions of the runway; the runway's length lives in
 		// the CSS (.finale[data-driven]) - one decision, change them together.
 		// Derek's pacing: the widening is the slow part, ~3 screens of scroll.
+		// In screens of scroll (the runway is 3.15 screens long): 0.25 as thin
+		// stripes, 1.4 widening, a breath, 0.55 for the frame, 0.45 for the line
+		// and words, then a short rest. Pacing history: the widening began at
+		// about half a screen; Derek asked for "5x slower" (2.8 screens), lived
+		// with it, then asked for "twice as fast" (1.4). The other beats kept
+		// their own pace each time - only the widening and the runway changed.
 		const FINALE_BEATS = {
-			widen: [0.055, 0.67],
-			simplify: [0.50, 0.67],
-			frame_in: [0.70, 0.82],
-			arrive: [0.84, 0.94],
+			widen: [0.08, 0.52],
+			simplify: [0.40, 0.52],
+			frame_in: [0.55, 0.72],
+			arrive: [0.74, 0.88],
 		};
 
 		function dial(progress, beat) {
