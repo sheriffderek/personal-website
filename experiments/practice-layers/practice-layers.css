@@ -393,9 +393,36 @@ practice-layers {
 		margin-block-start: calc(var(--count) * var(--row) + var(--reveal));
 	}
 
+	/*
+		OFFICIAL PLACEMENT (Derek's markup, 2026-09-20, sketches/11-...):
+		nothing in this figure is placed by eye. Every position is worked out
+		from the columns, so it stays right if a layer is added, the fall
+		changes, or the screen is a different width.
+		  THE FRAME  covers the SHORTEST column's span - the one band where
+		             every column is present, which is the whole point of the
+		             frame - with the same margin above and below.
+		  THE LINE   runs down the middle and ends level with the bottom of
+		             the column the words start under.
+		  THE WORDS  start a small gap below that, flush with that column's
+		             left edge - so they never sit on top of a column.
+	*/
 	.figure {
+		/* how tall the first (longest) column is */
+		--columns-height: 30rem;
+		/* how much shorter each column is than the one before (of that height) */
+		--fall: 0.07;
+		--col-gap: 0.9rem;
+		/* the frame's margin inside the shortest column's span */
+		--frame-margin: 1.5rem;
+		/* which column the words start under (0 = the first) */
+		--words-col: 3;
+
+		--shortest: calc(var(--columns-height) * (1 - (var(--count) - 1) * var(--fall)));
+		--words-col-end: calc(var(--columns-height) * (1 - var(--words-col) * var(--fall)));
+
 		position: relative;
-		block-size: 30rem;
+		/* the columns, plus room under them for the words */
+		block-size: calc(var(--columns-height) + 6rem);
 	}
 
 	/*
@@ -412,8 +439,8 @@ practice-layers {
 	.columns {
 		display: flex;
 		align-items: flex-start;
-		gap: calc(var(--widen, 1) * 0.9rem);
-		block-size: 100%;
+		gap: calc(var(--widen, 1) * var(--col-gap));
+		block-size: var(--columns-height);
 		margin-inline: calc(var(--widen, 1) * var(--edge) * 2.5);
 		/* They ease DOWN off the top edge as they arrive, so the finished
 		   figure has a little air above it. (translate, not margin: it must
@@ -423,7 +450,7 @@ practice-layers {
 
 	.column {
 		flex: var(--widen, 1) 0 var(--stripe);
-		block-size: calc(100% - var(--index) * 7%);
+		block-size: calc(100% - var(--index) * var(--fall) * 100%);
 		background: color-mix(in oklab, var(--tone), var(--simple-tone) calc(var(--simplify, 1) * 100%));
 	}
 
@@ -432,8 +459,8 @@ practice-layers {
 		/* Wider than the columns (it goes around their sides) but still
 		   clear of the screen's edges, where a phone would cut it off. */
 		inset-inline: var(--edge);
-		inset-block-start: 1.5rem;
-		block-size: 7.5rem;
+		inset-block-start: calc(var(--edge) + var(--frame-margin));
+		block-size: calc(var(--shortest) - var(--frame-margin) * 2);
 		border: solid var(--ink);
 		border-width: calc(1px + (var(--frame-line) - 1px) * var(--frame-in, 1));
 		opacity: var(--frame-in, 1);
@@ -446,7 +473,8 @@ practice-layers {
 			inset-inline-start: calc(50% - var(--frame-line) / 2);
 			inset-block-start: 100%;
 			inline-size: var(--frame-line);
-			block-size: 14rem;
+			/* from the frame's bottom edge to the bottom of the words' column */
+			block-size: calc(var(--words-col-end) - var(--shortest) + var(--frame-margin));
 			background: var(--ink);
 			opacity: var(--arrive, 1);
 		}
@@ -454,10 +482,13 @@ practice-layers {
 
 	.closing {
 		position: absolute;
-		/* Starts just past the third column, which still reaches down this
-		   far - any further left and the words sit on top of it. */
-		inset-inline: 34% var(--edge);
-		inset-block-end: 0;
+		/* Left: flush with the left edge of the words' column. (The columns sit
+		   2.5 edges in from each side; one column's width is what is left
+		   after the gaps, shared between them.) Top: a small gap under where
+		   that column ends. */
+		--col-width: calc((100% - var(--edge) * 5 - (var(--count) - 1) * var(--col-gap)) / var(--count));
+		inset-inline: calc(var(--edge) * 2.5 + var(--words-col) * (var(--col-width) + var(--col-gap))) var(--edge);
+		inset-block-start: calc(var(--edge) + var(--words-col-end) + 0.75rem);
 		opacity: var(--arrive, 1);
 
 		p {
@@ -472,7 +503,8 @@ practice-layers {
 	/* [data-driven] is set by the script: only then is there a runway to
 	   scroll through, with the figure pinned inside it. */
 	.finale[data-driven] {
-		block-size: calc(30rem + 455vh);
+		/* the figure's own height, plus the scroll the four beats run on */
+		block-size: calc(36rem + 455vh);
 
 		/* Pinned at the very TOP, not a little below it. With any offset the
 		   columns stop short of the top edge while the stripes above them
