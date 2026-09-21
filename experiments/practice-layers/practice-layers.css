@@ -233,6 +233,18 @@ practice-layers {
 	/* (25vh: it was 40, and he wanted the first one to need less than the rest.) */
 	--first-opening: 25vh;
 
+	/* THE MEASURE: the site gives every <p> a reading measure (max-width:
+	   72ch, styles/typography.css) - right for prose, and the headlines and
+	   paragraphs here keep it. But a layer's NAME and a capability BAR are
+	   rows that happen to be paragraphs: they have to run the full width of
+	   whatever they sit in. With the measure on, every bar in the timeline
+	   stopped at 72 characters wide instead of running to the right edge
+	   (it broke the day the site's real type was loaded; Derek spotted it). */
+	.tag,
+	.bar {
+		max-inline-size: none;
+	}
+
 	/* WRAPPING: every piece of text here is a <p>, and the site's own rule
 	   (typography.css) already gives every p `text-wrap: pretty`. But pretty
 	   only reached iOS Safari in version 26 - on an older phone it quietly
