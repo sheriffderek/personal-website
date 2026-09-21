@@ -108,8 +108,8 @@
 
 		.pin-test {
 			position: relative;
-			block-size: calc(100vh + (3 + var(--ramp-screens)) * 100vh);
-			block-size: calc(100svh + (3 + var(--ramp-screens)) * 100vh);
+			block-size: calc(100vh + (var(--pin-screens, 3) + var(--ramp-screens)) * 100vh);
+			block-size: calc(100svh + (var(--pin-screens, 3) + var(--ramp-screens)) * 100vh);
 		}
 
 		.pin-box {
@@ -344,6 +344,71 @@
 			}
 		}
 
+		/*
+			ROUND TWO: REMOVING THE CAUSE. Tests A-H all treat the fling once it
+			exists. These ask whether it has to exist at all - the catalog is
+			notes/scroll-release-patterns.md. --pin-screens is how long a pin
+			holds (three, unless a test says otherwise).
+		*/
+
+		/* HONEST REFERENCE: the pinned box is only the top half of the screen.
+		   Under it the page keeps going by at true speed (ruler marks painted
+		   on the pin's own runway), so the hand always has something real to
+		   steer by. */
+		.pin-test[data-reference] {
+			background: repeating-linear-gradient(to bottom, var(--ink) 0 0.3rem, transparent 0.3rem 4rem);
+		}
+
+		.pin-test[data-reference] .pin-box {
+			block-size: 50vh;
+			block-size: 50svh;
+			background: var(--fill-page);
+		}
+
+		/* RELEASE BY ARRIVAL: the box keeps its lower half empty - a seat.
+		   The arriving block is ordinary page, sitting at the very end of the
+		   runway, so it comes up at true speed and reaches the seat at exactly
+		   the moment the pin ends. Then they leave together. Nothing the eye is
+		   following ever changes speed. No script. */
+		.arriving {
+			position: absolute;
+			inset-inline: 0.3rem;
+			inset-block-end: 0.3rem;
+			box-sizing: border-box;
+			block-size: calc(50vh - 0.3rem);
+			block-size: calc(50svh - 0.3rem);
+			padding: 1rem;
+			background: var(--ink);
+			--prose-ink: var(--fill-page);
+			color: var(--fill-page);
+		}
+
+		/* TIME, NOT DISTANCE: the moment is given on a clock. The meter fills
+		   in three seconds from when the box pins, whatever the thumb does. */
+		.pin-clock {
+			block-size: 1rem;
+			margin-block-start: 1rem;
+			border: 1px solid var(--ink);
+			background: linear-gradient(var(--ink), var(--ink)) left / 0% 100% no-repeat;
+			transition: background-size 3s linear;
+		}
+
+		.is-pinned .pin-clock {
+			background-size: 100% 100%;
+		}
+
+		.lab-index {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.5rem;
+			padding: 1rem;
+		}
+
+		.lab-index a {
+			padding: 0.25rem 0.6rem;
+			border: 1px solid var(--ink);
+		}
+
 		.landing-block {
 			box-sizing: border-box;
 			block-size: 40vh;
@@ -446,11 +511,41 @@
 
 		</div>
 
+		<nav class='lab-index quiet-voice' aria-label='Jump to a test'>
+
+			<a href='#test-a'>A</a>
+
+			<a href='#test-b'>B</a>
+
+			<a href='#test-c'>C</a>
+
+			<a href='#test-d'>D</a>
+
+			<a href='#test-e'>E</a>
+
+			<a href='#test-f'>F</a>
+
+			<a href='#test-g'>G</a>
+
+			<a href='#test-h'>H</a>
+
+			<a href='#test-i'>I</a>
+
+			<a href='#test-j'>J</a>
+
+			<a href='#test-k'>K</a>
+
+			<a href='#test-l'>L</a>
+
+			<a href='#test-m'>M</a>
+
+		</nav>
+
 		<p class='quiet-voice'>The ramp is being run by: <span data-ramp-engine>nothing yet</span></p>
 
 		<p class='quiet-voice catch-report'>Last catch: <span data-catch-report>none yet</span></p>
 
-		<div class='ramp-case' style='--ramp-screens: 0'>
+		<div id='test-a' class='ramp-case' style='--ramp-screens: 0'>
 
 			<section class='pin-test'>
 
@@ -508,7 +603,7 @@
 
 		</div>
 
-		<div class='ramp-case' data-ramp='1' style='--ramp-screens: 1'>
+		<div id='test-b' class='ramp-case' data-ramp='1' style='--ramp-screens: 1'>
 
 			<section class='pin-test'>
 
@@ -568,7 +663,7 @@
 
 		</div>
 
-		<div class='ramp-case' data-catch style='--ramp-screens: 0'>
+		<div id='test-c' class='ramp-case' data-catch style='--ramp-screens: 0'>
 
 			<section class='pin-test'>
 
@@ -626,7 +721,7 @@
 
 		</div>
 
-		<div class='ramp-case' data-ramp='1' data-catch style='--ramp-screens: 1'>
+		<div id='test-d' class='ramp-case' data-ramp='1' data-catch style='--ramp-screens: 1'>
 
 			<section class='pin-test'>
 
@@ -686,7 +781,7 @@
 
 		</div>
 
-		<div class='ramp-case' data-slow-after style='--ramp-screens: 0'>
+		<div id='test-e' class='ramp-case' data-slow-after style='--ramp-screens: 0'>
 
 			<section class='pin-test'>
 
@@ -758,7 +853,7 @@
 
 		</div>
 
-		<div class='ramp-case' data-catch='soft' style='--ramp-screens: 0'>
+		<div id='test-f' class='ramp-case' data-catch='soft' style='--ramp-screens: 0'>
 
 			<section class='pin-test'>
 
@@ -828,7 +923,7 @@
 
 		</div>
 
-		<div class='ramp-case' style='--ramp-screens: 0'>
+		<div id='test-g' class='ramp-case' style='--ramp-screens: 0'>
 
 			<section class='pin-test'>
 
@@ -900,7 +995,7 @@
 
 		</div>
 
-		<div class='ramp-case' style='--ramp-screens: 0'>
+		<div id='test-h' class='ramp-case' style='--ramp-screens: 0'>
 
 			<section class='pin-test'>
 
@@ -965,6 +1060,302 @@
 				<div class='landing-block'>
 
 					<p class='strong-voice'>H6</p>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div id='test-i' class='ramp-case' style='--ramp-screens: 0; --pin-screens: 0.5'>
+
+			<section class='pin-test'>
+
+				<div class='pin-box'>
+
+					<p class='strong-voice'>Test I: short pin: half a screen, nothing else</p>
+
+					<p>Scroll the way you really scroll.</p>
+
+					<div class='pin-meter'></div>
+
+				</div>
+
+			</section>
+
+			<div class='landing'>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>I1</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>I2</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>I3</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>I4</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>I5</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>I6</p>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div id='test-j' class='ramp-case' style='--ramp-screens: 0; --pin-screens: 1'>
+
+			<section class='pin-test'>
+
+				<div class='pin-box'>
+
+					<p class='strong-voice'>Test J: short pin: one screen, nothing else</p>
+
+					<p>Scroll the way you really scroll.</p>
+
+					<div class='pin-meter'></div>
+
+				</div>
+
+			</section>
+
+			<div class='landing'>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>J1</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>J2</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>J3</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>J4</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>J5</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>J6</p>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div id='test-k' class='ramp-case' style='--ramp-screens: 0; --pin-screens: 2.5'>
+
+			<section class='pin-test' data-reference>
+
+				<div class='pin-box'>
+
+					<p class='strong-voice'>Test K: honest reference: pinned for three screens, but only the top half - the page keeps going by underneath</p>
+
+					<p>Scroll the way you really scroll.</p>
+
+					<div class='pin-meter'></div>
+
+				</div>
+
+			</section>
+
+			<div class='landing'>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>K1</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>K2</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>K3</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>K4</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>K5</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>K6</p>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div id='test-l' class='ramp-case' style='--ramp-screens: 0; --pin-screens: 1.5'>
+
+			<section class='pin-test'>
+
+				<div class='pin-box'>
+
+					<p class='strong-voice'>Test L: release by arrival: a block comes up at true speed and takes its seat - the pin ends as it lands</p>
+
+					<p>Scroll the way you really scroll.</p>
+
+					<div class='pin-meter'></div>
+
+				</div>
+
+				<div class='arriving'>
+
+					<p class='strong-voice'>arriving</p>
+
+				</div>
+
+			</section>
+
+			<div class='landing'>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>L1</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>L2</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>L3</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>L4</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>L5</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>L6</p>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div id='test-m' class='ramp-case' style='--ramp-screens: 0; --pin-screens: 1'>
+
+			<section class='pin-test'>
+
+				<div class='pin-box'>
+
+					<p class='strong-voice'>Test M: time, not distance: one screen of pin, and the meter fills on a clock (three seconds), not by scrolling</p>
+
+					<p>Wait for it, or do not. Scroll the way you really scroll.</p>
+
+					<div class='pin-clock'></div>
+
+				</div>
+
+			</section>
+
+			<div class='landing'>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>M1</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>M2</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>M3</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>M4</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>M5</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>M6</p>
 
 				</div>
 
@@ -1406,6 +1797,10 @@
 				const travel = test.offsetHeight - box.offsetHeight;
 				const scrolled = Math.max(0, Math.min(travel, -test.getBoundingClientRect().top));
 				test.style.setProperty('--progress', scrolled / travel);
+				// For the clock test: "pinned" from the moment the box sticks, for good.
+				if (scrolled > 0) {
+					ramp_case.classList.add('is-pinned');
+				}
 
 				if (timelines_run_the_ramp || !ramp_case.dataset.ramp) {
 					return;
@@ -1443,6 +1838,14 @@
 		let last_time = performance.now();
 		let speed = 0;
 		let gliding = false;
+		// A jump link travels faster than any fling; the catches stand down for it.
+		let jumping_until = 0;
+
+		document.querySelectorAll('.lab-index a').forEach(function (link) {
+			link.addEventListener('click', function () {
+				jumping_until = performance.now() + 2500;
+			});
+		});
 
 		function reportCatch(words) {
 			document.querySelectorAll('[data-catch-report]').forEach(function (label) {
@@ -1510,7 +1913,7 @@
 		function watchForFlings() {
 			const now = performance.now();
 			const y = window.scrollY;
-			if (gliding) {
+			if (gliding || jumping_until > now) {
 				last_y = y;
 				last_time = now;
 				return;

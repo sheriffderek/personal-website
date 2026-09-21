@@ -3,7 +3,7 @@
 Started 2026-09-20. The goal (Derek): "find all the patterns that work / and document them - so we can have the best of both worlds - by being sly." Both worlds = the held, staged moment a pin gives you AND scrolling that stays pleasant. Private working doc, and raw material for a journal piece (nobody has written about the release moment of a pin - see the research summary).
 
 **Where the truth lives.** Every pattern here points at something you can feel:
-- The lab: `experiments/practice-layers/index.html`, "THE RELEASE LAB" at the bottom of the phone column. Live at https://derekthomaswood.com/experiments/practice-layers/ - each test is a three-screen pin that lets go into numbered blocks; **the number you land on is the measurement.** The how and why of each test is in the comment beside its CSS or script.
+- The lab: `experiments/practice-layers/index.html`, "THE RELEASE LAB" at the bottom of the phone column. Live at https://derekthomaswood.com/experiments/practice-layers/ - each test is a pin (three screens unless it says otherwise) that lets go into numbered blocks, with a row of jump links A-M at the top; **the number you land on is the measurement.** The how and why of each test is in the comment beside its CSS or script.
 - The research and the verdict history: `experiments/practice-layers/HANDOFF.md` ("The sticky-release problem" and the lab verdicts above it).
 
 **A status means Derek's thumb on his phone, nothing less.** "Unjudged" = built and measured in a desktop browser only.
@@ -25,10 +25,10 @@ Started 2026-09-20. The goal (Derek): "find all the patterns that work / and doc
 
 | Pattern | The move | Cost | Status | Feel it |
 |---|---|---|---|---|
-| **Short pin** | Hold for about one thumb stroke (half a screen to a screen). The hand barely registers it, like a sticky header. | Little room for choreography. | Unbuilt | next lab round |
-| **Time, not distance** | "Let it sink in" is an ask about TIME. Once pinned, play the beats on a clock; don't make the reader pay for them in scroll. | A flinger can miss the show. | Unbuilt | next lab round |
-| **Honest reference** | Never freeze the whole screen: something always moves at true speed (text scrolling over a held graphic - the news-graphics pattern). The hand keeps steering by it. | A layout constraint. Derek rejected "2 things on screen" for the layer sections, not for endings. | Unbuilt | next lab round |
-| **Release by arrival** | The pin ends when something moving at true speed reaches its seat, and they leave together. Nothing the eye follows ever changes speed, so there is nothing to ramp. | Needs a piece of content to do the arriving. | Unbuilt | next lab round |
+| **Short pin** | Hold for about one thumb stroke (half a screen to a screen). The hand barely registers it, like a sticky header. | Little room for choreography. | Unjudged | lab I (half a screen), J (one screen) |
+| **Time, not distance** | "Let it sink in" is an ask about TIME. Once pinned, play the beats on a clock; don't make the reader pay for them in scroll. | A flinger can miss the show. | Unjudged | lab M |
+| **Honest reference** | Never freeze the whole screen: something always moves at true speed (text scrolling over a held graphic - the news-graphics pattern). The hand keeps steering by it. | A layout constraint. Derek rejected "2 things on screen" for the layer sections, not for endings. | Unjudged | lab K |
+| **Release by arrival** | The pin ends when something moving at true speed reaches its seat, and they leave together. Nothing the eye follows ever changes speed, so there is nothing to ramp. | Needs a piece of content to do the arriving. | Unjudged | lab L |
 | **Pass-through fun** | No pin at all. The effect is tied to the element's own trip through the screen (it widens, fills, fans as it goes by). A fling just plays it fast. | A sequence can't happen in one place over time; it has to be laid out down the page. | Unbuilt | - |
 
 ## Patterns that ABSORB a fling
