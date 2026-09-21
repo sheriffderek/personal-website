@@ -6,6 +6,7 @@
 	];
 
 	$journal = load_json('journal.json');
+	$case_studies = load_json('case-studies.json');
 
 	// A target preview exists when its folder does; the fixed-name PDFs are
 	// rendered only if present, so list which ones each target carries.
@@ -56,6 +57,24 @@
 						<a class='link' href='/journal/<?= $entry_slug ?>'>/journal/<?= $entry_slug ?></a>
 
 						<span class='quiet-voice'><?= $entry['title'] ?? '' ?><?= is_file(TEMPLATES_DIR . '/journal/' . $entry_slug . '.php') ? '' : ' &middot; NO BODY FILE (404s)' ?></span>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+		<?php else: ?>
+			<p class='quiet-voice'>None yet.</p>
+		<?php endif; ?>
+	</section>
+
+	<section class='ds-section'>
+		<h2 class='attention-voice'>Case studies</h2>
+
+		<?php if ($case_studies): ?>
+			<ul>
+				<?php foreach ($case_studies as $study_slug => $study): ?>
+					<li>
+						<a class='link' href='/case-studies/<?= $study_slug ?>'>/case-studies/<?= $study_slug ?></a>
+
+						<span class='quiet-voice'><?= $study['title'] ?? '' ?><?= is_file(TEMPLATES_DIR . '/case-studies/' . $study_slug . '.php') ? '' : ' &middot; NO BODY FILE (404s)' ?></span>
 					</li>
 				<?php endforeach; ?>
 			</ul>

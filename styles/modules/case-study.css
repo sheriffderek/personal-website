@@ -1,0 +1,51 @@
+/* The case studies (/case-studies/<slug>) - a title and facts strip, then a
+   stack of sections: heading, video, prose. The section is the unit here
+   (unlike the journal's one prose column), so section-level styling hangs
+   off `.case-study > section`. Geometry only - voices carry the type, the
+   semantic tokens carry the color, .styled carries the paragraph rhythm. */
+
+.case-study {
+	.tagline {
+		margin-top: 0.75em;
+		color: var(--ink-secondary);
+	}
+
+	.study-facts {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(9em, 1fr));
+		gap: 1em 1.5em;
+		margin-top: 1.5em;
+
+		dt {
+			color: var(--ink-secondary);
+		}
+
+		dd {
+			margin: 0;
+		}
+	}
+
+	section {
+		margin-top: 4em;
+	}
+
+	.study-figure {
+		margin-block: 1.5em;
+
+		iframe {
+			width: 100%;
+			aspect-ratio: 16 / 9;
+			border: 0;
+			border-radius: var(--corners, 0);
+			background: var(--fill-secondary);
+		}
+
+		/* Every study video is the wide size - the same right-side-only
+		   breakout as the journal's .figure-full (journal.css explains it;
+		   default-layout.css reserves its lane). Here it's the default, not
+		   an opt-in: the videos are screen recordings and need the room. */
+		@media (min-width: 1200px) {
+			width: calc(100% + var(--layout-figure-breakout));
+		}
+	}
+}
