@@ -51,7 +51,18 @@ His bar for the whole thing: **"it has to feel like these experiences are stacki
 
 **Checked in a browser 2026-09-20:** staircase renders and click-to-open works; at phone width the names stick at 0 / 28 / ... one row apart, each only after its own section has scrolled past; the nest ends in stepped columns; the finale reaches its end state. **Not checked:** a real phone, Safari, Firefox's fallback, and how the scroll FEELS - which is the whole question.
 
-## The words (Derek, 2026-09-20 - his grade: "B- but good enough to work with for now")
+## Where the words really stand (read from the job-search session's transcript, 2026-09-20)
+
+Derek worked the panel text through six versions in the job-search session ("Career path: design systems and teaching") while this session was building the component - he was, in his words, "accidentally continuing our conversation over there." What matters from it:
+
+- **The voice rule is settled and he is tired of repeating it: no "I learned X."** He told that session "I keep pasting in updated text for you - but you keep typing 'I learned' - which I've explained over and over - is not how I want to go." The "I learned..." set that sat on this test page for an hour was one of those older versions. Never bring it back.
+- **v3 and v5 were his own passes** (v5 turned the paragraphs into transferable capabilities: "Critical thinking. Judgment about what's worth making. Comfort with ambiguity."). **v6's headlines were written by that session's assistant** in one go, to get rid of "I learned"; his reply was "going well." So v6 is the accepted WORKING copy, not a final: most paragraphs are close to his, the headlines and panel 02's paragraph are the least his. It carries em dashes and a few "isn't X - it's Y" turns he has called AI tells elsewhere on this site. His pass, his call.
+- **The closing**, as he mocked it in Figma: the compressed spectrum (our finale columns), his closing line ("your line, unchanged"), a connector line down, then the rotated capability stack with **"your team" and "Critical thinking" both highlighted in red** as bookends - the eye lands on them first. Open there: whether "your team" sits inside the top bar or above the block, and whether "Critical thinking" is both the bottom bar and an emphasized bookend. Then the quiet line "People ask me what stack I use." and "What's next? / I'm looking for a team that can use all of this."
+- **The scroll FEEL, in his words - the thing he has "always wanted to solve":** "with sticky scrolling. As soon as it hits the top - it shoots away. It's almost like a friction ramp could be there so it's not so shocking... that's the major thing people hate about scroll jacking. It's not that it's taken away - it's that it's not pleasurable." He also asked that pinned parts be sized "based on the viewport dvh or something clear." Not built yet. (Note for whoever builds it: the runway and the hold are in `vh`, which on iOS is already the stable large viewport; `dvh` changes WHILE you scroll as the address bar collapses, which would resize the runway mid-scroll - use `lvh`/`svh` if a change is wanted, not `dvh`.)
+
+The full v6 text and the closing concept, exactly as sent, are in `copy-v6-from-job-search-session.md` beside this file.
+
+## The earlier "I learned" set (superseded the same day - kept only as history)
 
 Layers 01-08 now carry Derek's own text, typed by him and wired in as typed (the source is the `layers` list in `index.html`). Each layer has three parts (he typed a number on each, 01-08, then cut them - the stacking already says the order, and numbers invite counting, the same reason there are no years): a **headline** that says what he LEARNED ("I learned design and development together."), a **paragraph**, and the **name** that sticks. His names replace the working labels below:
 

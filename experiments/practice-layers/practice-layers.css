@@ -407,8 +407,31 @@ practice-layers {
 	}
 
 	.bar {
-		block-size: 1.5rem;
+		block-size: var(--row);
+		margin: 0;
+		padding-inline: var(--space);
 		background: var(--tone);
+		--ink-quiet: var(--tone-ink);
+		color: var(--tone-ink);
+		line-height: var(--row);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	/* The floor and the crown are the two ends the eye should land on. */
+	.bar[data-place] {
+		font-weight: 600;
+	}
+
+	/* The quiet line under the stack. */
+	.stack-joke {
+		margin: calc(var(--overhang) + var(--space)) 0 0;
+	}
+
+	/* The row of skill words under a layer's paragraph. */
+	.skills {
+		opacity: 0.75;
 	}
 
 	.frame-tall {

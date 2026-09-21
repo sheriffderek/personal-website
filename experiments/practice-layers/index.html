@@ -18,7 +18,7 @@
 
 	<!-- Static page, no asset() helper: bump this stamp by hand whenever the CSS changes,
 	     or phones keep the old stylesheet. -->
-	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-t'>
+	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-u'>
 
 	<style>
 		/* Test-page chrome only. Nothing in here belongs to the component. */
@@ -86,7 +86,7 @@
 
 		<p class='strong-voice'>practice-layers: test page</p>
 
-		<p>The words in layers 01-08 are Derek's (2026-09-20, his grade: B-, good enough to work with). Layer 09's headline is not written yet. Section heights are narrative weight, and there are no years on purpose: the order is the point.</p>
+		<p>The words are "v6", worked out by Derek on 2026-09-20. Section heights are narrative weight, and there are no years on purpose: the order is the point.</p>
 
 		<p>One component, two tellings. It reads the width of whatever it is dropped into (a container query, not the screen): with room it is the staircase chart, base layer at the bottom; without room it is the scroll story, base layer at the top.</p>
 
@@ -151,76 +151,110 @@
 
 		// PLACEHOLDER DATA. `weight` = how much scroll a layer gets (narrative weight).
 		// Deliberately NOT weight: no dates, no countable scale.
-		// DEREK'S WORDS (2026-09-20, his grade: "B- but good enough to work with
-		// for now"). Typed by him, wired in as typed - do not reword. He typed a
-		// number on each (01-08) and then cut them: the stacking already says the
-		// order, and numbers invite counting - same reason there are no years.
+		// THE WORDS: "v6", worked out by Derek in the job-search session on
+		// 2026-09-20 and handed over whole (kept unedited beside this file in
+		// copy-v6-from-job-search-session.md). Wired in as sent - do not reword.
+		// Voice rule: no "I learned X" - present-tense capability statements;
+		// the paragraph describes the work, not the autobiography. (An earlier
+		// "I learned..." set was on this page for an hour and he threw it out:
+		// it made every layer about his growth instead of what the reader gets.)
+		// Two earlier calls of his still stand on top of v6: names in sentence
+		// case (nine rows of capitals all carried the same weight), and no numbers
+		// (the stacking says the order; numbers invite counting).
 		// Per layer:
-		//   what - the headline: what he learned
-		//   why  - the paragraph under it
-		//   tag  - the short name that sticks and stacks at the top. He typed
-		//          these in capitals; on the phone nine rows of capitals all
-		//          shouted at once (his call, same day), so: sentence case.
+		//   what   - the headline: the capability
+		//   why    - the paragraph: the work
+		//   skills - the row of skill words
+		//   tag    - the short name that sticks and stacks at the top
 		// `weight` is ours: how much scroll the section gets (narrative weight,
 		// never years).
 		const layers = [
 			{
-				what: 'I learned how to make things — and defend the decisions behind them.',
-				why: 'Art school was tools, materials, critique, history, theory, and a lot of talking about why something works or doesn\'t. You learn to take feedback, question your assumptions, and explain your choices.',
+				what: 'Visual thinking, critical thinking, and the tools to make things.',
+				why: 'Critical thinking. Judgment about what\'s worth making. Comfort with ambiguity. Storytelling. Enough technical foundation to build the thing, not just picture it.',
+				skills: 'visual thinking · critique · theory · technical craft',
 				tag: 'Art + technical education',
 				weight: 3,
 			},
 			{
-				what: 'I learned design and development together.',
-				why: 'I was designing websites and writing the code to build them. Every design decision had a technical consequence, and every technical constraint changed the design.',
+				what: 'Design and code as one job.',
+				why: 'Design decisions get argued out in the browser as much as in the sketch. The build teaches the design what\'s possible; the design teaches the build what matters. Implementation isn\'t the thing that happens after design — it\'s part of the thing.',
+				skills: 'HTML · CSS · JavaScript · SVG · animation · accessibility',
 				tag: 'Web design + development',
-				weight: 2,
+				weight: 3,
 			},
 			{
-				what: 'I learned how to build with other people.',
-				why: 'Agency work meant designers, developers, producers, deadlines, brand standards, QA, and code someone else had to work with. Your part has to fit into a much bigger system.',
+				what: 'Good work has to survive contact with a team.',
+				why: 'Building code other people can live with. Meeting real production constraints. Working across teams without the work getting lost in handoff.',
+				skills: 'production · performance · QA · systems · cross-functional teams',
 				tag: 'Front-end engineering',
 				weight: 2,
 			},
 			{
-				what: 'I learned how to work when the answer wasn\'t obvious.',
-				why: 'Early product work meant changing requirements, small teams, limited resources, and a lot of unknowns. You figure out what matters now, what can wait, and what you need to make to learn what\'s next.',
+				what: 'Building when the answer isn\'t known yet.',
+				why: 'Moving from unclear problem to something concrete enough to test. Comfort with everything moving at once. Deciding what to build, and what not to.',
+				skills: 'UX · UI · prototyping · research · testing · shipping',
 				tag: 'Early-stage product development',
 				weight: 2,
 			},
 			{
-				what: 'I learned that the thing you\'re asked to fix isn\'t always the problem.',
-				why: 'Consulting gave me a close look at a lot of different teams. Sometimes a design problem is really a product problem. Sometimes an engineering problem is communication. Sometimes the brief itself is wrong.',
+				what: 'The thing you\'re asked to fix isn\'t always the problem.',
+				why: 'Diagnosing the actual problem underneath the stated one. Reading team dynamics. Working across design, engineering, and product without allegiance to any of them.',
+				skills: 'discovery · facilitation · strategy · systems thinking · alignment',
 				tag: 'Product + technical consulting',
 				weight: 2,
 			},
 			{
-				what: 'I learned to think about the whole product.',
+				what: 'Holding the whole product in view.',
 				why: 'The user, the business, the system, the interface, the technology — and the tradeoffs between them. Not just can we build it? but what are we trying to accomplish?',
+				skills: 'research · interaction · UI · design systems · product strategy',
 				tag: 'Product design',
 				weight: 3,
 			},
 			{
-				what: 'Then I had to teach it.',
-				why: 'Running a school meant taking things I\'d learned over years and making them clear enough for someone else to use. Curriculum, sequencing, feedback, assessment — and constantly changing the system based on where people actually got stuck.',
-				tag: 'Education systems + teaching',
+				what: 'Making practice into a system other people can use.',
+				why: 'Turning years of instinct into something another person can pick up. Precision about what I actually know and don\'t. Building feedback loops that produce outcomes, not just information.',
+				skills: 'curriculum · teaching · feedback · assessment · mentorship',
+				tag: 'Design education + systems',
 				weight: 3,
 			},
 			{
-				what: 'Now I can move through all of it much faster.',
-				why: 'AI and agentic tools shorten the distance between an idea and something I can test. But the useful part is everything underneath: knowing what to ask, what to make, what to question, and when the output isn\'t good enough.',
+				what: 'AI on top of the layers, not instead of them.',
+				why: 'Shortens the loop between thinking and making. The value isn\'t doing more — it\'s knowing what to accelerate, what to question, and what shouldn\'t be handed over.',
+				skills: 'agents · LLMs · rapid prototyping · workflow design · experimentation',
 				tag: 'AI + agentic workflows',
 				weight: 2,
 			},
-			// Derek has not written this one yet. Its `why` is his closing line
-			// (also shown under the finale's frame); its `what` is still a hole.
+			// v6 is "8 panels + closing" and puts "What's next?" at the very end,
+			// after the capability stack. The component already has it as the
+			// last LAYER (Derek's sketches; "the last one should behave like all
+			// the others"), so its one line lives here and is not repeated below.
 			{
-				what: '(what: not written yet)',
-				why_is_closing: true,
+				what: 'I\'m looking for a team that can use all of this.',
 				tag: 'What\'s next?',
 				weight: 2,
 			},
 		];
+
+		// THE CAPABILITY STACK (v6): the rotated bars at the end stop being a
+		// repeat of the layers and become what the layers ADD UP TO. Listed
+		// floor first, because the stack builds upward. The crown is not one of
+		// Derek's capabilities - it is what the reader gets.
+		const capabilities = [
+			{ label: 'Critical thinking', floor: true },
+			{ label: 'Communication' },
+			{ label: 'Web technologies' },
+			{ label: 'Interaction + prototyping' },
+			{ label: 'Systems thinking' },
+			{ label: 'Research + synthesis' },
+			{ label: 'Product thinking' },
+			{ label: 'Facilitation + teaching' },
+			{ label: 'Player-coach' },
+			{ label: 'Leveraging new technology (AI · agents · emerging tools)' },
+			{ label: 'your team', crown: true },
+		];
+
+		const stack_joke = 'People ask me what stack I use.';
 
 		const closing = 'This experience - across every part of the thinking and planning -- Half my waking life -- devoted to getting you to your goal.';
 
@@ -248,11 +282,22 @@
 			what.className = 'strong-voice';
 			what.textContent = layer.what;
 
-			const why = document.createElement('p');
-			why.className = 'quiet-voice';
-			why.textContent = layer.why_is_closing ? closing : layer.why;
+			telling.append(what);
 
-			telling.append(what, why);
+			if (layer.why) {
+				const why = document.createElement('p');
+				why.className = 'quiet-voice';
+				why.textContent = layer.why;
+				telling.append(why);
+			}
+
+			if (layer.skills) {
+				const skills = document.createElement('p');
+				skills.className = 'skills quiet-voice';
+				skills.textContent = layer.skills;
+				telling.append(skills);
+			}
+
 			story.append(telling);
 			section.append(story);
 
@@ -355,26 +400,44 @@
 			return finale;
 		}
 
-		// The retelling: the same layers as horizontal bars, with a tall frame
-		// cutting down through all of them.
-		function buildRetelling(list) {
+		// The retelling: the capability stack as horizontal bars, floor at the
+		// bottom, crown on top, with a tall frame cutting down through all of
+		// them - then the quiet line underneath.
+		function buildRetelling() {
 			const retelling = document.createElement('div');
 			retelling.className = 'retelling';
 
 			const bars = document.createElement('div');
 			bars.className = 'bars';
-			for (let index = 0; index < list.length; index++) {
-				const bar = document.createElement('div');
-				bar.className = 'bar';
-				bar.style.setProperty('--tone', 'var(--layer-' + (index + 1) + ')');
+			capabilities.forEach(function (capability, index) {
+				const bar = document.createElement('p');
+				bar.className = 'bar quiet-voice';
+				bar.textContent = capability.label;
+				// Spread the nine tones over however many bars there are; the
+				// crown always takes the last, deepest one.
+				const last_tone = layers.length;
+				const step = (last_tone - 2) / (capabilities.length - 2);
+				const tone = capability.crown ? last_tone : Math.round(1 + index * step);
+				bar.style.setProperty('--tone', 'var(--layer-' + tone + ')');
+				bar.style.setProperty('--tone-ink', 'var(--layer-' + tone + '-ink, var(--ink))');
+				if (capability.crown) {
+					bar.dataset.place = 'crown';
+				}
+				if (capability.floor) {
+					bar.dataset.place = 'floor';
+				}
 				bars.append(bar);
-			}
+			});
 
 			const frame_tall = document.createElement('div');
 			frame_tall.className = 'frame-tall';
 			bars.append(frame_tall);
 
-			retelling.append(bars);
+			const joke = document.createElement('p');
+			joke.className = 'stack-joke quiet-voice';
+			joke.textContent = stack_joke;
+
+			retelling.append(bars, joke);
 			return retelling;
 		}
 
@@ -458,7 +521,7 @@
 			host.style.setProperty('--count', list.length);
 			host.append(buildLayer(list, 0, 'pl' + host_index));
 			host.append(buildFinale(list));
-			host.append(buildRetelling(list));
+			host.append(buildRetelling());
 
 			// Click a bar to open or close it. Each bar is on its own - open as
 			// many as you like. (In the scroll story every line is already
