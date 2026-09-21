@@ -130,9 +130,9 @@
 	  page runs. (A border, not a background: a background would also paint
 	  UNDER the nested layer and turn the stripes into L-shapes. The mockups
 	  are straight columns that end in steps.)
-	- THE STACK (Derek's sketches, 2026-09-20): each layer's section opens
-	  with a short TAG - its name, held to one row, its words hidden until
-	  it sticks (see THE RHYTHM OF A SECTION). The tag is sticky, and because it is a
+	- THE STACK (Derek's sketches, 2026-09-20): each layer's section ENDS on
+	  a short TAG - its name, held to one row, its words hidden until it
+	  sticks (see THE RHYTHM OF A SECTION). The tag is sticky, and because it is a
 	  direct child of its layer it stays stuck until that layer ends - which
 	  is the end of the story. Each tag sticks one row lower than the one
 	  before, so the names pile up at the top as you scroll, each stepped in
@@ -188,36 +188,42 @@ practice-layers {
 	   was (85vh): the last layer's dwell now does most of the waiting. */
 	--hold: 35vh;
 	/*
-		THE RHYTHM OF A SECTION (Derek, 2026-09-20 - settled on his phone).
-		The moment that matters: a section's words are ALL in view, and right
-		then its name stamps onto the stack - "when it's all in view - that's
-		the time." You are reading it, and it gets its name.
-		That moment is built into the shape of a section, not timed:
-		  - the name is the FIRST thing in its section (words hidden until it
-		    sticks), so it sticks the instant the section's top edge reaches
-		    the stack;
-		  - the section's body is exactly ONE READING ROOM tall - the screen,
-		    minus the stack that is above it by then (a row per layer, this
-		    one's included) - and its words sit at the BOTTOM of that room.
-		So when the top edge meets the stack, the bottom edge is at the bottom
-		of the screen, with the words fully in view just above it. It holds on
-		any screen and at any depth, because deeper layers get a shorter room.
-		Then the words travel up the room as you scroll and go under the
-		stack, with the next section's plain color rising behind them - its
-		words a full room away, so there is one thing to read at a time.
+		THE RHYTHM OF A SECTION (Derek, 2026-09-20, worked out on his phone).
+		In order, as you scroll:
+		  1. plain color - the section OPENS empty. Nothing to read; the last
+		     section is behind you.
+		  2. its words. They scroll like any page; they do NOT pin.
+		  3. its name, right under the words. As the words go up under the
+		     stack the name follows and is DROPPED OFF onto it - after
+		     reading, while you are still thinking about that section.
+		HOW LONG THE OPENING IS is worked out, per layer, from the room there
+		really is to read in: the screen's height minus the stack above (a row
+		per layer before this one). The opening is a SHARE of that room
+		(--opening-share). At 1 the next words would sit exactly at the bottom
+		edge of the screen at the moment a name is dropped off; a bit under 1
+		lets the next headline just begin to show, so there is somewhere to be
+		going. Deeper layers have less room, so their opening is shorter - the
+		same FEEL all the way down, not the same number.
 		svh is the screen with the phone's toolbars showing - the room you
 		really have; vh is the fallback for browsers without it.
 
-		(The road here, all his calls: words that pinned and waited - "2
-		things on screen at the same time." Space below the words with the
-		name at the section's end - "the tag appears right when you want to
-		read the NEXT section." Space above with the name still at the end -
-		"feels close! how are you deciding the distance though... might be
-		different based on how much stacking." Along the way: fixed lengths
-		of 9rem, 14rem, 7rem, 50vh, 75vh, some times a per-layer weight, and
-		at one point three generations of them declared at once with the
-		oldest winning.)
+		The road here, all his calls, so it isn't walked again:
+		  - words that pinned and waited: "2 things on screen at the same time"
+		  - space BELOW the words: "the tag appears right when you want to
+		    read the NEXT section"
+		  - space ABOVE, fixed lengths: "feels close! how are you deciding the
+		    distance though... might be different based on how much stacking"
+		  - name moved to the TOP of its section, stamping when the words were
+		    all in view: "not sure if it's having the right effect. I think it
+		    was better dropping it off after reading." (tried for an hour)
+		Along the way: 9rem, 14rem, 7rem, 50vh, 75vh, some times a per-layer
+		weight, and once three generations of them declared together with the
+		oldest winning.
 	*/
+	--opening-share: 0.8;
+	/* The first layer follows the opener's line, with no name being dropped
+	   off to protect - it opens shorter. */
+	--first-opening: 40vh;
 
 	/* WRAPPING: every piece of text here is a <p>, and the site's own rule
 	   (typography.css) already gives every p `text-wrap: pretty`. But pretty
@@ -334,13 +340,9 @@ practice-layers {
 	}
 
 	.story {
-		/* one reading room tall, words at the bottom of it */
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-end;
-		min-block-size: calc(100vh - (var(--index) + 1) * var(--row));
-		min-block-size: calc(100svh - (var(--index) + 1) * var(--row));
 		padding: var(--space);
+		padding-block-start: calc((100vh - var(--index) * var(--row)) * var(--opening-share));
+		padding-block-start: calc((100svh - var(--index) * var(--row)) * var(--opening-share));
 		padding-block-end: calc(var(--space) * 2);
 		background: var(--tone);
 
@@ -369,16 +371,15 @@ practice-layers {
 		one thing it has that the others don't, and it isn't about that
 		layer: it is simply what comes after the last one, whichever it is.
 	*/
-	/* The dwell is ADDED to the room, not taken out of it: the section is one
-	   reading room PLUS the dwell tall, and the dwell is all padding under the
-	   words. So the words still arrive at the bottom of the room exactly as
-	   every other layer's do (name stamps, words all in view) - and then the
-	   color just keeps going. (First try put the dwell inside the room, which
-	   shoved the words up to the top of the black with no opening at all.) */
-	.layer[data-last] > .story {
-		min-block-size: calc(100vh - (var(--index) + 1) * var(--row) + var(--last-dwell));
-		min-block-size: calc(100svh - (var(--index) + 1) * var(--row) + var(--last-dwell));
-		padding-block-end: calc(var(--last-dwell) + var(--space) * 2);
+	& > .layer > .story {
+		padding-block-start: var(--first-opening);
+	}
+
+	/* The last layer's color runs on AFTER its name has been dropped off -
+	   the stack is complete, and it just sits there over the dark. */
+	.dwell {
+		block-size: var(--last-dwell);
+		background: var(--tone);
 	}
 
 	.hold {
@@ -712,11 +713,8 @@ practice-layers {
 		}
 
 		.story,
-		.layer[data-last] > .story {
+		& > .layer > .story {
 			order: 1;
-			min-block-size: 0;
-			/* (also resets the last layer's long dwell - [data-last] is here
-			   so this rule still wins over it) */
 			padding-block-end: var(--space);
 			padding-block-start: 0;
 		}
@@ -751,7 +749,8 @@ practice-layers {
 			content: '\2212';
 		}
 
-		.hold {
+		.hold,
+		.dwell {
 			display: none;
 		}
 
