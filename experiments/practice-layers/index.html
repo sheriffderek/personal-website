@@ -18,7 +18,7 @@
 
 	<!-- Static page, no asset() helper: bump this stamp by hand whenever the CSS changes,
 	     or phones keep the old stylesheet. -->
-	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-y'>
+	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-z'>
 
 	<style>
 		/* Test-page chrome only. Nothing in here belongs to the component. */
@@ -462,6 +462,7 @@
 		// Derek's pacing: the widening is the slow part, ~3 screens of scroll.
 		const FINALE_BEATS = {
 			widen: [0.055, 0.67],
+			simplify: [0.50, 0.67],
 			frame_in: [0.70, 0.82],
 			arrive: [0.84, 0.94],
 		};
@@ -484,6 +485,7 @@
 				const scrolled = pinned_at - finale.getBoundingClientRect().top;
 				const progress = Math.max(0, Math.min(1, scrolled / travel));
 				finale.style.setProperty('--widen', dial(progress, FINALE_BEATS.widen));
+				finale.style.setProperty('--simplify', dial(progress, FINALE_BEATS.simplify));
 				finale.style.setProperty('--frame-in', dial(progress, FINALE_BEATS.frame_in));
 				finale.style.setProperty('--arrive', dial(progress, FINALE_BEATS.arrive));
 			});
