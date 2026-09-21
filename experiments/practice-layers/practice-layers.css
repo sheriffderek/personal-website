@@ -202,7 +202,10 @@ practice-layers {
 		`weight` is narrative weight - never countable years, which is why
 		there is no time scale anywhere. It adds to the opening.
 	*/
-	--breath: 50vh;
+	/* 75vh, not 50: at 50 the NEXT section's headline was already peeking in
+	   at the bottom of the screen at the moment a name stamped onto the stack
+	   (measured). The stamp should have the screen to itself. */
+	--breath: 75vh;
 	--step: 3rem;
 	/* How long the stripes run on alone, after the story, before the finale. */
 	--reveal: 10rem;
