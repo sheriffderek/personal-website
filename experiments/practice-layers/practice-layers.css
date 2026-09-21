@@ -377,8 +377,14 @@ practice-layers {
 		padding-block-start: var(--first-opening);
 	}
 
-	.layer[data-last] > .story {
-		padding-block-end: var(--last-dwell);
+	/* The dwell is a real block INSIDE the story, not padding under it. A
+	   sticky element is held inside its container's CONTENT box - it cannot
+	   travel into the padding - so with the dwell as padding the words had
+	   nowhere to stay pinned and simply scrolled away (caught by measuring). */
+	.layer[data-last] > .story::after {
+		content: '';
+		display: block;
+		block-size: var(--last-dwell);
 	}
 
 	.layer[data-last] .telling {
@@ -731,6 +737,10 @@ practice-layers {
 		.telling,
 		.layer[data-last] .telling {
 			position: static;
+		}
+
+		.layer[data-last] > .story::after {
+			display: none;
 		}
 
 		/* One line per bar until someone CLICKS for more (Derek, 2026-09-20:
