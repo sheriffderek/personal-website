@@ -29,7 +29,7 @@
 
 	<!-- Static page, no asset() helper: bump this stamp by hand whenever the CSS changes,
 	     or phones keep the old stylesheet. -->
-	<link rel='stylesheet' href='practice-layers.css?v=2026-09-21-e'>
+	<link rel='stylesheet' href='practice-layers.css?v=2026-09-21-f'>
 
 	<style>
 		/* Test-page chrome only. Nothing in here belongs to the component. */
@@ -413,7 +413,9 @@
 			chart.append(marker);
 
 			const words = document.createElement('p');
-			words.className = 'opener-words attention-voice';
+			// strong-voice, not attention-voice (Derek: "too big for this use") -
+			// it sets the stage, it isn't the headline.
+			words.className = 'opener-words strong-voice';
 			words.textContent = opener_words;
 
 			opener.append(chart, words);

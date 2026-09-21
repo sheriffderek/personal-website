@@ -107,7 +107,7 @@
 	wears one of the site's voice classes (styles/typography.css reads the voice
 	tokens in styles/settings/base.css), so a character swap re-sets the type
 	here like everywhere else. Which voice goes where:
-	    the opener's line ........ attention-voice
+	    the opener's line ........ strong-voice (attention-voice was too big)
 	    a layer's headline ....... strong-voice
 	    a layer's paragraph ...... calm-voice
 	    skill words, names, bars . quiet-voice
