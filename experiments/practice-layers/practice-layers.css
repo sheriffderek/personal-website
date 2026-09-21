@@ -307,6 +307,15 @@ practice-layers {
 		display: flow-root;
 		position: relative;
 		border-inline-start: var(--stripe) solid var(--tone);
+		/* HAIRLINES (Derek: "there's a little line between the sections"):
+		   where two painted boxes meet on a fraction of a pixel, the browser
+		   leaves a faint line of whatever is BEHIND them. So the layer paints
+		   its own tone behind its parts - any seam now shows the right color.
+		   Safe because a layer's box is completely covered by its own story,
+		   name, and the layer nested inside it; nothing of this ever shows as
+		   an area. (It was removed once, back when layers had bottom padding
+		   and the color showed under the nested layer as an L-shape.) */
+		background: var(--tone);
 		/* this layer's words: the palette's ink for this layer */
 		--prose-ink: var(--tone-ink);
 	}
@@ -320,9 +329,11 @@ practice-layers {
 		content: '';
 		position: absolute;
 		inset-inline-start: calc(-1 * var(--stripe));
-		inset-block-start: 100%;
+		/* starts one pixel INSIDE the stripe it continues, so there is no
+		   seam where the stripe ends and its tail begins */
+		inset-block-start: calc(100% - 1px);
 		inline-size: var(--stripe);
-		block-size: calc((var(--count) - var(--index)) * var(--row) + var(--reveal));
+		block-size: calc((var(--count) - var(--index)) * var(--row) + var(--reveal) + 1px);
 		background: var(--tone);
 	}
 
@@ -345,6 +356,10 @@ practice-layers {
 		padding: var(--space);
 		padding-block-start: calc((100vh - var(--index) * var(--row)) * var(--opening-share));
 		padding-block-start: calc((100svh - var(--index) * var(--row)) * var(--opening-share));
+		/* ...and rounded to a whole pixel where the browser can: a share of the
+		   screen's height is almost never a whole number, and fractional
+		   heights are what put the boxes on fractional pixels to begin with. */
+		padding-block-start: round(down, calc((100svh - var(--index) * var(--row)) * var(--opening-share)), 1px);
 		padding-block-end: calc(var(--space) * 2);
 		background: var(--tone);
 
@@ -696,6 +711,7 @@ practice-layers {
 			flex-direction: column;
 			border: 0;
 			padding: 0;
+			background: none;
 		}
 
 		.layer::after {
