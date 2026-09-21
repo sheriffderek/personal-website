@@ -18,7 +18,7 @@
 
 	<!-- Static page, no asset() helper: bump this stamp by hand whenever the CSS changes,
 	     or phones keep the old stylesheet. -->
-	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-v'>
+	<link rel='stylesheet' href='practice-layers.css?v=2026-09-20-w'>
 
 	<style>
 		/* Test-page chrome only. Nothing in here belongs to the component. */
@@ -236,29 +236,35 @@
 			},
 		];
 
-		// THE CAPABILITY STACK (v6): the rotated bars at the end stop being a
-		// repeat of the layers and become what the layers ADD UP TO. Listed
-		// floor first, because the stack builds upward. The crown is not one of
-		// Derek's capabilities - it is what the reader gets.
-		// (v6 also had a "Player-coach" bar. Derek cut it: "not really sure what
-		// that means" - and if he isn't, a recruiter won't be. "Facilitation +
-		// teaching" carries the claim.)
+		// THE CAPABILITY STACK: the bars at the very end are what the layers ADD
+		// UP TO. Labels and order are from Derek's scroll-details mockup
+		// (2026-09-20) - listed floor first, because the stack builds upward.
+		// History: v6 had "your team" as a crown above the block, plus a
+		// "Player-coach" bar he cut ("not really sure what that means"). His
+		// mockup folds the crown into the top bar as "Leveraging your team".
 		const capabilities = [
-			{ label: 'Critical thinking', floor: true },
-			{ label: 'Communication' },
-			{ label: 'Web technologies' },
-			{ label: 'Interaction + prototyping' },
-			{ label: 'Systems thinking' },
-			{ label: 'Research + synthesis' },
-			{ label: 'Product thinking' },
-			{ label: 'Facilitation + teaching' },
-			{ label: 'Leveraging new technology (AI · agents · emerging tools)' },
-			{ label: 'your team', crown: true },
+			'Critical thinking',
+			'Communication',
+			'Web technologies',
+			'Interaction + prototyping',
+			'Systems thinking',
+			'Research + synthesis',
+			'Product thinking',
+			'Facilitation + education',
+			'Emerging tools (AI)',
+			'Leveraging your team',
 		];
 
-		const stack_joke = 'People ask me what stack I use.';
+		const stack_joke = 'Sometimes people ask me what “stack” I use. This is it.';
 
-		const closing = 'This experience - across every part of the thinking and planning -- Half my waking life -- devoted to getting you to your goal.';
+		// The closing words, as Derek set them in his scroll-details mockup
+		// (2026-09-20, sketches/8-scroll-details-closing-sequence.webp): two short
+		// paragraphs, his spaced hyphens. This replaces his 2026-09-19 single
+		// sentence ("...-- Half my waking life -- devoted to getting you to your goal.").
+		const closing = [
+			'This experience - across every part of the thinking and planning.',
+			'Half my waking life - devoted to your goal.',
+		];
 
 		function buildLayer(list, index, host_id) {
 			const layer = list[index];
@@ -393,9 +399,13 @@
 			const frame = document.createElement('div');
 			frame.className = 'frame';
 
-			const closing_line = document.createElement('p');
+			const closing_line = document.createElement('div');
 			closing_line.className = 'closing';
-			closing_line.textContent = closing;
+			closing.forEach(function (words) {
+				const paragraph = document.createElement('p');
+				paragraph.textContent = words;
+				closing_line.append(paragraph);
+			});
 
 			figure.append(columns, frame, closing_line);
 			finale.append(figure);
@@ -411,23 +421,10 @@
 
 			const bars = document.createElement('div');
 			bars.className = 'bars';
-			capabilities.forEach(function (capability, index) {
+			capabilities.forEach(function (label) {
 				const bar = document.createElement('p');
 				bar.className = 'bar quiet-voice';
-				bar.textContent = capability.label;
-				// Spread the nine tones over however many bars there are; the
-				// crown always takes the last, deepest one.
-				const last_tone = layers.length;
-				const step = (last_tone - 2) / (capabilities.length - 2);
-				const tone = capability.crown ? last_tone : Math.round(1 + index * step);
-				bar.style.setProperty('--tone', 'var(--layer-' + tone + ')');
-				bar.style.setProperty('--tone-ink', 'var(--layer-' + tone + '-ink, var(--ink))');
-				if (capability.crown) {
-					bar.dataset.place = 'crown';
-				}
-				if (capability.floor) {
-					bar.dataset.place = 'floor';
-				}
+				bar.textContent = label;
 				bars.append(bar);
 			});
 

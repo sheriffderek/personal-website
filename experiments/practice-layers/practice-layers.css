@@ -331,8 +331,8 @@ practice-layers {
 		/* Inside the figure's own edges: on a phone there is no margin to
 		   hang out into, and the frame's sides got cut off by the screen. */
 		inset-inline: 0;
-		inset-block-start: 2rem;
-		block-size: 10rem;
+		inset-block-start: 0.75rem;
+		block-size: 7.5rem;
 		border: solid var(--ink);
 		border-width: calc(1px + (var(--frame-line) - 1px) * var(--frame-in, 1));
 		opacity: var(--frame-in, 1);
@@ -341,10 +341,11 @@ practice-layers {
 		&::after {
 			content: '';
 			position: absolute;
-			inset-inline-start: 70%;
+			/* From the frame's center, down to the closing words (the mockup). */
+			inset-inline-start: calc(50% - var(--frame-line) / 2);
 			inset-block-start: 100%;
 			inline-size: var(--frame-line);
-			block-size: 9.5rem;
+			block-size: 14.5rem;
 			background: var(--ink);
 			opacity: var(--arrive, 1);
 		}
@@ -352,11 +353,17 @@ practice-layers {
 
 	.closing {
 		position: absolute;
-		inset-inline-end: 0;
+		inset-inline: 30% 0;
 		inset-block-end: 0;
-		inline-size: 55%;
-		margin: 0;
 		opacity: var(--arrive, 1);
+
+		p {
+			margin: 0;
+		}
+
+		p + p {
+			margin-block-start: 1rem;
+		}
 	}
 
 	/* [data-driven] is set by the script: only then is there a runway to
@@ -371,27 +378,30 @@ practice-layers {
 	}
 
 	/*
-		THE RETELLING (Derek's storyboard, panel 5): "then as we scroll - we
-		can use those to show it a few ways." The same layers again, turned on
-		their side: one bar each, first layer at the BOTTOM, every bar the full
-		width. A tall frame cuts DOWN through all of them - the columns said
-		"every layer is present right now", this says it the other way round.
-		A line drops from the closing words to the frame, so the eye is handed
-		from one figure to the next.
+		THE RETELLING (Derek's storyboard, panel 5: "then as we scroll - we
+		can use those to show it a few ways"; details from his scroll-details
+		mockup, sketches/8-...). What the layers ADD UP TO: ten capability
+		bars, floor at the bottom, each its own bar with a little air between
+		them. A tall frame goes AROUND all of them, a touch narrower than the
+		bars so they poke out either side. (An earlier sketch had the frame
+		cutting down through the right half only.) The line carries on from
+		under the closing words to the top of the frame, so the eye is handed
+		from one figure to the next. Then the quiet line.
 		Plain and static on purpose. The only movement is the frame fading in
 		as the figure arrives (--tall-in, written by the same script).
 	*/
 	.retelling {
-		--lead: 7rem;
-		--overhang: 1.5rem;
+		--lead: 6rem;
+		--overhang: 0.75rem;
+		--frame-inset: 5%;
 		position: relative;
-		padding-block: var(--lead) calc(var(--overhang) + var(--space) * 2);
+		padding-block: var(--lead) calc(var(--space) * 3);
 
-		/* the line down from the closing words to the top of the tall frame */
+		/* Same center line as the one above the closing words. */
 		&::before {
 			content: '';
 			position: absolute;
-			inset-inline-start: 70%;
+			inset-inline-start: calc(50% - var(--frame-line) / 2);
 			inset-block-start: var(--space);
 			inline-size: var(--frame-line);
 			block-size: calc(var(--lead) - var(--overhang) - var(--space));
@@ -402,31 +412,37 @@ practice-layers {
 	.bars {
 		position: relative;
 		display: flex;
-		/* DOM order stays oldest-first; the stack just BUILDS upward. */
+		/* DOM order stays floor-first; the stack just BUILDS upward. */
 		flex-direction: column-reverse;
+		gap: 0.4rem;
 	}
 
 	.bar {
 		block-size: var(--row);
 		margin: 0;
-		padding-inline: var(--space);
-		background: var(--tone);
-		--ink-quiet: var(--tone-ink);
-		color: var(--tone-ink);
+		/* Words start inside the frame, not under its edge. */
+		padding-inline: calc(var(--frame-inset) + var(--space)) var(--space);
+		background: var(--layer-1);
+		--ink-quiet: var(--ink);
+		color: var(--ink);
 		line-height: var(--row);
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
 
-	/* The floor and the crown are the two ends the eye should land on. */
-	.bar[data-place] {
-		font-weight: 600;
+	.frame-tall {
+		position: absolute;
+		inset-inline: var(--frame-inset);
+		inset-block: calc(-1 * var(--overhang));
+		border: var(--frame-line) solid var(--ink);
+		opacity: var(--tall-in, 1);
 	}
 
-	/* The quiet line under the stack. */
+	/* The quiet line under the stack, starting where the bars' words start. */
 	.stack-joke {
 		margin: calc(var(--overhang) + var(--space)) 0 0;
+		padding-inline: calc(var(--frame-inset) + var(--space)) var(--space);
 	}
 
 	/* The row of skill words under a layer's paragraph. */
