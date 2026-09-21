@@ -177,16 +177,18 @@ practice-layers {
 	--row: 1.75rem;
 	/* How long the stripes run on alone, after the story, before the finale. */
 	--reveal: 10rem;
-	/* THE LAST LAYER LINGERS (Derek: "this last one needs to be longer too -
-	   and give them time to think about this before moving on"). It is the
-	   ask - the one line everything above was building to - so its color
-	   keeps running long after its words, and they travel up through it with
-	   the whole stack sitting complete above them. Scroll distance, not time. */
-	--last-dwell: 80vh;
-	/* Then the finished stack HOLDS a little over empty page before it all
-	   leaves (Derek: "we need to let that sink in a little"). Shorter than it
-	   was (85vh): the last layer's dwell now does most of the waiting. */
-	--hold: 35vh;
+	/* THE LAST LAYER (Derek's markup, 2026-09-20, sketches/15-...): "filled
+	   in" and "stick for a bit". It is the ask - the one line everything
+	   above was building to - so it behaves differently from the rest:
+	     - its color fills the WHOLE screen and keeps going (no empty page
+	       under it);
+	     - its words PIN under the finished stack and sit there for this much
+	       scrolling before they let go;
+	     - it has no name in the stack (he crossed "What's next?" out): the
+	       line IS what's next. The timeline layout still names its bar.
+	   This is also the stack's hold - "we need to let that sink in a little"
+	   - so there is no separate empty hold any more. Scroll distance, not time. */
+	--last-dwell: 110vh;
 	/*
 		THE RHYTHM OF A SECTION (Derek, 2026-09-20, worked out on his phone).
 		In order, as you scroll:
@@ -375,15 +377,21 @@ practice-layers {
 		padding-block-start: var(--first-opening);
 	}
 
-	/* The last layer's color runs on AFTER its name has been dropped off -
-	   the stack is complete, and it just sits there over the dark. */
-	.dwell {
-		block-size: var(--last-dwell);
-		background: var(--tone);
+	.layer[data-last] > .story {
+		padding-block-end: var(--last-dwell);
 	}
 
-	.hold {
-		block-size: var(--hold);
+	.layer[data-last] .telling {
+		position: sticky;
+		/* under the finished stack (a row for every layer before this one) */
+		inset-block-start: calc(var(--index) * var(--row) + var(--space) * 3);
+	}
+
+	/* No name in the stack for the last layer - scroll story only. */
+	@container (max-width: 47.99rem) {
+		.layer[data-last] > .tag {
+			display: none;
+		}
 	}
 
 	/* Every layer's name and story read THAT layer's ink (the script hands
@@ -713,13 +721,15 @@ practice-layers {
 		}
 
 		.story,
-		& > .layer > .story {
+		& > .layer > .story,
+		.layer[data-last] > .story {
 			order: 1;
 			padding-block-end: var(--space);
 			padding-block-start: 0;
 		}
 
-		.telling {
+		.telling,
+		.layer[data-last] .telling {
 			position: static;
 		}
 
@@ -749,10 +759,7 @@ practice-layers {
 			content: '\2212';
 		}
 
-		.hold,
-		.dwell {
-			display: none;
-		}
+
 
 		/* The staircase already shows every layer at once - it IS the
 		   finale's shape, turned on its side - so the finale stands down. */

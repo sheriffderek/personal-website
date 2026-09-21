@@ -29,7 +29,7 @@
 
 	<!-- Static page, no asset() helper: bump this stamp by hand whenever the CSS changes,
 	     or phones keep the old stylesheet. -->
-	<link rel='stylesheet' href='practice-layers.css?v=2026-09-21-p'>
+	<link rel='stylesheet' href='practice-layers.css?v=2026-09-21-q'>
 
 	<style>
 		/* Test-page chrome only. Nothing in here belongs to the component. */
@@ -331,16 +331,10 @@
 			if (index + 1 < list.length) {
 				section.append(buildLayer(list, index + 1, host_id));
 			} else {
-				// The LAST layer, whichever it is, lingers (its color runs on long
-				// after its words - see --last-dwell), and then there is a little
-				// empty scroll for the finished stack to hold through before it
-				// all leaves together.
-				const dwell = document.createElement('div');
-				dwell.className = 'dwell';
-				section.append(dwell);
-				const hold = document.createElement('div');
-				hold.className = 'hold';
-				section.append(hold);
+				// The LAST layer, whichever it is, behaves differently (see THE
+				// LAST LAYER in the CSS): it fills the screen, its words pin for a
+				// while, and it has no name in the stack.
+				section.dataset.last = '';
 			}
 
 			return section;
