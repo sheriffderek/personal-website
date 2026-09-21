@@ -353,7 +353,9 @@ practice-layers {
 
 	.closing {
 		position: absolute;
-		inset-inline: 30% 0;
+		/* Starts just past the third column, which still reaches down this
+		   far - any further left and the words sit on top of it. */
+		inset-inline: 34% 0;
 		inset-block-end: 0;
 		opacity: var(--arrive, 1);
 
