@@ -13,10 +13,12 @@
 	     reset, setup, the scales, the theme axes (color + the voice tokens),
 	     then the voice rules. Everything except the site's layouts, components
 	     and modules - so the component is judged in the real type and color,
-	     on an otherwise empty page. The font link is the site's primary pair. -->
+	     on an otherwise empty page. The font link is the site's primary pair,
+	     plus General Sans, which the quiet voice asks for (the site loads it
+	     in its second, non-blocking font link). -->
 	<link rel='preconnect' href='https://api.fontshare.com'>
 	<link rel='preconnect' href='https://cdn.fontshare.com' crossorigin>
-	<link rel='stylesheet' href='https://api.fontshare.com/v2/css?f[]=quicksand@1&f[]=spline-sans@1&display=swap'>
+	<link rel='stylesheet' href='https://api.fontshare.com/v2/css?f[]=quicksand@1&f[]=spline-sans@1&f[]=general-sans@1&display=swap'>
 	<link rel='stylesheet' href='/styles/preset.css'>
 	<link rel='stylesheet' href='/styles/setup.css'>
 	<link rel='stylesheet' href='/styles/font-scales.css'>
@@ -27,7 +29,7 @@
 
 	<!-- Static page, no asset() helper: bump this stamp by hand whenever the CSS changes,
 	     or phones keep the old stylesheet. -->
-	<link rel='stylesheet' href='practice-layers.css?v=2026-09-21-c'>
+	<link rel='stylesheet' href='practice-layers.css?v=2026-09-21-d'>
 
 	<style>
 		/* Test-page chrome only. Nothing in here belongs to the component. */
