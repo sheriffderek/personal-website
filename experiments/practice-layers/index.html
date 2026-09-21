@@ -285,6 +285,26 @@
 			color: var(--fill-page);
 		}
 
+		/*
+			THE RUN-OUT (Derek: "an animated 'thing' after areas like that that
+			kinda let you run it out a bit"). Not a brake: a place for the fling
+			to be spent. Nothing here needs reading, so passing it at any speed
+			costs nothing. It scrolls at true speed and its marks are HORIZONTAL,
+			because those are what let the eye see speed again after a pin where
+			nothing moved - the hand slows down by itself once it can see. And
+			the marks sit further and further apart, so even at a steady speed
+			fewer go by each second: the page looks like it is slowing down.
+			No script, and scrolling is left completely alone.
+		*/
+		.run-out {
+			--mark: 0.3rem;
+		}
+
+		.run-out-stretch {
+			block-size: 50vh;
+			background: repeating-linear-gradient(to bottom, var(--ink) 0 var(--mark), transparent var(--mark) var(--apart));
+		}
+
 		.landing-block {
 			box-sizing: border-box;
 			block-size: 40vh;
@@ -762,6 +782,78 @@
 				<div class='landing-block'>
 
 					<p class='strong-voice'>F8</p>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class='ramp-case' style='--ramp-screens: 0'>
+
+			<section class='pin-test'>
+
+				<div class='pin-box'>
+
+					<p class='strong-voice'>Test G: the run-out (nothing is slowed - two and a half screens to spend the fling in, then the blocks)</p>
+
+					<p>Pinned for three screens. Scroll the way you really scroll.</p>
+
+					<div class='pin-meter'></div>
+
+				</div>
+
+			</section>
+
+			<div class='landing'>
+
+				<div class='run-out'>
+
+				<div class='run-out-stretch' style='--apart: 1.5rem'></div>
+
+				<div class='run-out-stretch' style='--apart: 2.5rem'></div>
+
+				<div class='run-out-stretch' style='--apart: 4rem'></div>
+
+				<div class='run-out-stretch' style='--apart: 6.5rem'></div>
+
+				<div class='run-out-stretch' style='--apart: 10.5rem'></div>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>G1</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>G2</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>G3</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>G4</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>G5</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>G6</p>
 
 				</div>
 
