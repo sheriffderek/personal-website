@@ -181,6 +181,35 @@ practice-layers {
 	   let that sink in a little"). Scroll distance, not time. */
 	--hold: 85vh;
 	/*
+		THE RHYTHM OF A SECTION (Derek, 2026-09-20). In order, as you scroll:
+		  1. plain color - the section OPENS empty (--breath, plus a little
+		     more for a heavier layer). Nothing to read; the last section is
+		     behind you.
+		  2. its words - headline, paragraph, skill words. They scroll like
+		     any page; they do NOT pin.
+		  3. its name, right under the words. As the words go up under the
+		     stack, the name follows them and stamps onto it - while you are
+		     still thinking about THAT section.
+		Two things this replaced, both his calls:
+		  - "2 things on screen at the same time": the words used to pin and
+		    wait, so the next words arrived while the last ones still sat
+		    there. All the empty space is ABOVE the words now, a share of the
+		    screen's height, so one block of words is on screen at a time.
+		  - "the tag appears right when you want to read the NEXT section":
+		    the space used to be BELOW the words, so the name reached the
+		    stack long after its own words had gone, with the next section
+		    already filling the screen. It read as the wrong section's name.
+		`weight` is narrative weight - never countable years, which is why
+		there is no time scale anywhere. It adds to the opening.
+	*/
+	--breath: 50vh;
+	--step: 3rem;
+	/* How long the stripes run on alone, after the story, before the finale. */
+	--reveal: 10rem;
+	/* How long the finished stack HOLDS before it leaves (Derek: "we need to
+	   let that sink in a little"). Scroll distance, not time. */
+	--hold: 85vh;
+	/*
 		ONE THING AT A TIME (Derek, 2026-09-20: "it feels like there's 2 things
 		on screen at the same time"). A section's words pin under the stack
 		and stay until their section ends - so if the next section's words
@@ -324,8 +353,8 @@ practice-layers {
 
 	.story {
 		padding: var(--space);
-		padding-block-start: var(--breath);
-		padding-block-end: calc(var(--weight) * var(--step));
+		padding-block-start: calc(var(--breath) + var(--weight) * var(--step));
+		padding-block-end: calc(var(--space) * 2);
 		background: var(--tone);
 
 		p {
@@ -340,13 +369,6 @@ practice-layers {
 		.skills {
 			margin-block-start: 1.25rem;
 		}
-	}
-
-	/* The two lines ride along just under the stack while their layer passes. */
-	.telling {
-		position: sticky;
-		/* Under the stack so far: this layer's own name hasn't stuck yet. */
-		inset-block-start: calc(var(--index) * var(--row) + var(--space));
 	}
 
 	/*
