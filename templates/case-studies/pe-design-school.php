@@ -33,3 +33,13 @@
 	</figure>
 
 </section>
+
+<section id='initial-content-types'>
+
+	<h2 class='attention-voice'>Exploring initial content types</h2>
+
+	<figure class='study-figure'>
+		<iframe src='https://player.vimeo.com/video/1228980047' title='Exploring initial content types' allow='fullscreen; picture-in-picture' loading='lazy'></iframe>
+	</figure>
+
+</section>
