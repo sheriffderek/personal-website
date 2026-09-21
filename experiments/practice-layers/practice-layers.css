@@ -369,8 +369,16 @@ practice-layers {
 		one thing it has that the others don't, and it isn't about that
 		layer: it is simply what comes after the last one, whichever it is.
 	*/
+	/* The dwell is ADDED to the room, not taken out of it: the section is one
+	   reading room PLUS the dwell tall, and the dwell is all padding under the
+	   words. So the words still arrive at the bottom of the room exactly as
+	   every other layer's do (name stamps, words all in view) - and then the
+	   color just keeps going. (First try put the dwell inside the room, which
+	   shoved the words up to the top of the black with no opening at all.) */
 	.layer[data-last] > .story {
-		padding-block-end: var(--last-dwell);
+		min-block-size: calc(100vh - (var(--index) + 1) * var(--row) + var(--last-dwell));
+		min-block-size: calc(100svh - (var(--index) + 1) * var(--row) + var(--last-dwell));
+		padding-block-end: calc(var(--last-dwell) + var(--space) * 2);
 	}
 
 	.hold {
