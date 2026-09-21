@@ -26,7 +26,7 @@
 
 	<h1 class='loud-voice'>Journal</h1>
 
-	<p>Videos and stories from the work.</p>
+	<p>So, here's what I'm thinking... </p>
 
 	<?php if (empty($listed)): ?>
 		<p>First entries are on the way.</p>
@@ -78,13 +78,13 @@
 
 			<li>
 
-				<a class='link' href='https://css-tricks.com/on-type-patterns-and-style-guides/' target='_blank'>On Type Patterns and Style Guides</a>
+				<a class='link' href='https://css-tricks.com/on-type-patterns-and-style-guides/' target='_blank'>CSS-Tricks: On Type Patterns and Style Guides</a>
 
 			</li>
 
 			<li>
 
-				<a class='link' href='https://sheriffderek.substack.com/' target='_blank'>The Substack</a>
+				<a class='link' href='https://sheriffderek.substack.com/' target='_blank'>Some thoughts on Substack (that I'll likely move over here)</a>
 
 			</li>
 
@@ -108,7 +108,7 @@
 
 			<li>
 
-				<a class='link' href='https://perpetual.education/resources/figma-variable-collection-composition/' target='_blank'>Figma variable collection composition</a>
+				<a class='link' href='https://perpetual.education/resources/figma-variable-collection-composition/' target='_blank'>Figma variable collection composition explorations</a>
 
 			</li>
 
@@ -120,7 +120,7 @@
 
 			<li>
 
-				<a class='link' href='https://perpetual.education/stories/snow-fall/' target='_blank'>Snow Fall</a>
+				<a class='link' href='https://perpetual.education/stories/snow-fall/' target='_blank'>Snow Fall and immersive/interactive editorial</a>
 
 			</li>
 
