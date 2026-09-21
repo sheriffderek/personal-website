@@ -108,7 +108,7 @@
 			block-size: 100svh;
 			padding: 2rem 1rem;
 			border: 0.3rem solid var(--ink);
-			translate: 0 calc(-0.5 * var(--release-room, 0px) * var(--release, 0) * var(--release, 0));
+			translate: 0 var(--pin-shift, 0px);
 		}
 
 		.pin-meter {
@@ -119,8 +119,21 @@
 		}
 
 		.landing {
-			margin-block-start: calc(-0.5 * var(--release-room, 0px));
-			translate: 0 calc(-0.5 * var(--release-room, 0px) * (1 - var(--release, 0)) * (1 - var(--release, 0)));
+			margin-block-start: var(--landing-margin, 0px);
+			translate: 0 var(--landing-shift, 0px);
+		}
+
+		/* TEST D: no easing at all - the browser's own brake. A fling is not
+		   allowed to pass a snap point marked "always", so the momentum is
+		   spent right where the pin lets go. (proximity, not mandatory: the
+		   rest of the page must stay a free scroll.) */
+		html {
+			scroll-snap-type: y proximity;
+		}
+
+		.landing[data-brake] {
+			scroll-snap-align: start;
+			scroll-snap-stop: always;
 		}
 
 		.landing-block {
@@ -382,6 +395,169 @@
 			<div class='landing-block'>
 
 				<p class='strong-voice'>C6</p>
+
+			</div>
+
+		</div>
+
+
+		<section class='pin-test' style='--ramp-screens: 0'>
+
+			<div class='pin-box'>
+
+				<p class='strong-voice'>Test D: no ramp, but the browser brakes the fling at the let-go</p>
+
+				<p>Pinned for three screens. Scroll the way you really scroll.</p>
+
+				<div class='pin-meter'></div>
+
+			</div>
+
+		</section>
+
+		<div class='landing' data-brake>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>D1</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>D2</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>D3</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>D4</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>D5</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>D6</p>
+
+			</div>
+
+		</div>
+
+		<section class='pin-test' style='--ramp-screens: 3; --ramp-power: 3'>
+
+			<div class='pin-box'>
+
+				<p class='strong-voice'>Test E: long friction zone: three screens, slow for most of it</p>
+
+				<p>Pinned for three screens. Scroll the way you really scroll.</p>
+
+				<div class='pin-meter'></div>
+
+			</div>
+
+		</section>
+
+		<div class='landing'>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>E1</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>E2</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>E3</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>E4</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>E5</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>E6</p>
+
+			</div>
+
+		</div>
+
+		<section class='pin-test' style='--ramp-screens: 2; --ramp-power: 2'>
+
+			<div class='pin-box'>
+
+				<p class='strong-voice'>Test F: friction zone: two screens, medium</p>
+
+				<p>Pinned for three screens. Scroll the way you really scroll.</p>
+
+				<div class='pin-meter'></div>
+
+			</div>
+
+		</section>
+
+		<div class='landing'>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>F1</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>F2</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>F3</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>F4</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>F5</p>
+
+			</div>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>F6</p>
 
 			</div>
 
@@ -804,11 +980,22 @@
 
 		// THE RELEASE LAB's clock (test page only): the same ramp as the finale,
 		// for the plain pin tests under the component.
+		// The ramp: over the last `room` px of the pin the box's speed climbs
+		// from 0 to full as release^power (release runs 0 to 1). power 1 is a
+		// straight climb; power 3 stays slow for most of the zone and only
+		// catches up at the very end. What the eye sees move is the area under
+		// that curve: room * release^(power + 1) / (power + 1).
+		// WHY the zone has to be LONG: one fling on a phone is thousands of
+		// pixels. A one-screen ramp is over before the fling has even started
+		// to fade (tests B and C proved it). A three-screen zone at power 3
+		// turns three screens of fling into three quarters of a screen of
+		// movement - the friction is real because the distance is.
 		function drivePinTests() {
 			document.querySelectorAll('.pin-test').forEach(function (test) {
 				const box = test.querySelector('.pin-box');
 				const landing = test.nextElementSibling;
 				const ramp_screens = parseFloat(test.style.getPropertyValue('--ramp-screens'));
+				const power = parseFloat(test.style.getPropertyValue('--ramp-power')) || 1;
 				const travel = test.offsetHeight - box.offsetHeight;
 				const room = travel * ramp_screens / (3 + ramp_screens);
 				const scrolled = Math.max(0, Math.min(travel, -test.getBoundingClientRect().top));
@@ -816,11 +1003,14 @@
 				if (room > 0) {
 					release = Math.max(0, (scrolled - (travel - room)) / room);
 				}
+				const seen_so_far = room * Math.pow(release, power + 1) / (power + 1);
+				const seen_in_all = room / (power + 1);
 				test.style.setProperty('--progress', scrolled / travel);
-				[test, landing].forEach(function (element) {
-					element.style.setProperty('--release-room', room + 'px');
-					element.style.setProperty('--release', release);
-				});
+				test.style.setProperty('--pin-shift', (-seen_so_far) + 'px');
+				// The landing starts early by exactly what the box will have risen,
+				// held back by a shift that runs out to 0 as the ramp ends.
+				landing.style.setProperty('--landing-margin', (-seen_in_all) + 'px');
+				landing.style.setProperty('--landing-shift', (-(room * (1 - release) - (seen_in_all - seen_so_far))) + 'px');
 			});
 		}
 
