@@ -85,6 +85,8 @@ Derek: "don't just bandaid this up - really think through it." Three agents (iOS
 
 **The run-out (Derek, after the research: "there's no way to say 'this is almost done - get ready'... so maybe the way is to have an animated 'thing' after areas like that that kinda let you run it out a bit").** Lab test G: nothing is slowed and scrolling is untouched - after the let-go come two and a half screens with nothing to read, moving at true speed, with HORIZONTAL marks (the eye needs them to see speed again after a pin) spaced further and further apart (so the page looks like it is slowing). Why a cue can't replace it: a fling is already spent motor output, and during a pin nobody is looking at a progress bar. For this component the run-out should be made of its own material (the stripes / columns running on), not the lab's ruler marks.
 
+**`<run-out>` as a reusable block (Derek: "a reusable block that's just almost like a loading animation").** Lab test H, first go: one custom element, one knob (`--run-out-length`), CSS only. Why a loader is the right costume: it already means "something is happening, nothing to read yet." The rules it is built to are in its CSS comment on the test page (true speed, never pinned; horizontal marks spreading apart; the pulse runs on time and stands down for reduced motion; reads only the ink slot). It lives in the test page's own styles until it has been felt on a phone - where it graduates to (pssst, a site partial) is Derek's call.
+
 The full v6 text and the closing concept, exactly as sent, are in `copy-v6-from-job-search-session.md` beside this file.
 
 ## The earlier "I learned" set (superseded the same day - kept only as history)

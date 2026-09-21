@@ -305,6 +305,45 @@
 			background: repeating-linear-gradient(to bottom, var(--ink) 0 var(--mark), transparent var(--mark) var(--apart));
 		}
 
+		/*
+			<run-out> - a first go at the run-out as ONE reusable block (Derek:
+			"a reusable block that's just almost like a loading animation").
+			A loading animation already means "something is happening, nothing to
+			read yet" - which is exactly what a place to spend a fling should
+			say. Rules it is built to: it scrolls at true speed, never pinned;
+			its marks are dots in rows (horizontal, so speed can be seen), spaced
+			further apart on the way down; the loader part is a pulse that
+			travels down the stretches on TIME. That pulse is ambient motion, so
+			it stands down for prefers-reduced-motion - the dots stay. It only
+			reads the ink slot, so it repaints with wherever it is dropped.
+			--run-out-length is the one knob. No script.
+		*/
+		run-out {
+			display: flex;
+			flex-direction: column;
+			block-size: var(--run-out-length, 250vh);
+			--dot: 0.3rem;
+		}
+
+		run-out span {
+			flex: 1;
+			background: radial-gradient(circle, var(--ink) 0 var(--dot), transparent calc(var(--dot) + 1px)) center top / 100% var(--apart) repeat-y;
+			opacity: 0.35;
+		}
+
+		@media (prefers-reduced-motion: no-preference) {
+			run-out span {
+				animation: run-out-pulse 1.6s ease-in-out infinite;
+				animation-delay: calc(var(--step) * 0.2s);
+			}
+		}
+
+		@keyframes run-out-pulse {
+			40% {
+				opacity: 1;
+			}
+		}
+
 		.landing-block {
 			box-sizing: border-box;
 			block-size: 40vh;
@@ -854,6 +893,78 @@
 				<div class='landing-block'>
 
 					<p class='strong-voice'>G6</p>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class='ramp-case' style='--ramp-screens: 0'>
+
+			<section class='pin-test'>
+
+				<div class='pin-box'>
+
+					<p class='strong-voice'>Test H: the run-out as a reusable block (dots, with a loading-style pulse travelling down)</p>
+
+					<p>Pinned for three screens. Scroll the way you really scroll.</p>
+
+					<div class='pin-meter'></div>
+
+				</div>
+
+			</section>
+
+			<div class='landing'>
+
+				<run-out>
+
+					<span style='--step: 0; --apart: 1.5rem'></span>
+
+					<span style='--step: 1; --apart: 2.5rem'></span>
+
+					<span style='--step: 2; --apart: 4rem'></span>
+
+					<span style='--step: 3; --apart: 6.5rem'></span>
+
+					<span style='--step: 4; --apart: 10.5rem'></span>
+
+				</run-out>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>H1</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>H2</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>H3</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>H4</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>H5</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>H6</p>
 
 				</div>
 
