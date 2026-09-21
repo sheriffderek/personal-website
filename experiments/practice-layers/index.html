@@ -95,7 +95,19 @@
 			practice-layers.css); the only thing that differs between tests is
 			--ramp-screens, how many screens of scroll the easing is spread over.
 		*/
+		/* One case = a pin and what it lets go into. The case owns the ramp's
+		   numbers so both halves read the same ones, and it is the scope the
+		   ramp's scroll timeline is shared through. */
+		.ramp-case {
+			--ramp-screens: 0;
+			--ramp-power: 1;
+			--room: calc(var(--ramp-screens) * 100vh);
+			--seen-in-all: calc(var(--room) / (var(--ramp-power) + 1));
+			timeline-scope: --ramp;
+		}
+
 		.pin-test {
+			position: relative;
 			block-size: calc(100vh + (3 + var(--ramp-screens)) * 100vh);
 			block-size: calc(100svh + (3 + var(--ramp-screens)) * 100vh);
 		}
@@ -111,6 +123,20 @@
 			translate: 0 var(--pin-shift, 0px);
 		}
 
+		/* THE RAMP ZONE, as a real (invisible) thing in the page: it spans the
+		   last `room` of the pin's scroll. Its trip past the top of the screen
+		   IS the ramp's clock: top edge at the top = ramp starts, bottom edge at
+		   the top = the pin lets go. */
+		.ramp-zone {
+			position: absolute;
+			inset-inline: 0;
+			inset-block-end: 100vh;
+			inset-block-end: 100svh;
+			block-size: var(--room);
+			view-timeline: --ramp block;
+			pointer-events: none;
+		}
+
 		.pin-meter {
 			block-size: 1rem;
 			margin-block-start: 1rem;
@@ -118,22 +144,70 @@
 			border: 1px solid var(--ink);
 		}
 
+		/* The landing starts early by exactly what the box will have risen,
+		   held back by a shift that runs out to 0 as the ramp ends. */
 		.landing {
-			margin-block-start: var(--landing-margin, 0px);
+			margin-block-start: calc(-1 * var(--seen-in-all, 0px));
 			translate: 0 var(--landing-shift, 0px);
 		}
 
-		/* TEST D: no easing at all - the browser's own brake. A fling is not
-		   allowed to pass a snap point marked "always", so the momentum is
-		   spent right where the pin lets go. (proximity, not mandatory: the
-		   rest of the page must stay a free scroll.) */
-		html {
-			scroll-snap-type: y proximity;
+		/*
+			WHO MOVES THE RAMP. First build: a script read the scroll and wrote
+			the shifts. On a phone that is always a frame or two behind the
+			real scroll - and the lag is worst exactly at the let-go, where the
+			box is moving fastest, so the moment it ends everything pops into
+			place (Derek: "janky stuff happening right after / feels like things
+			are moving around"). A scroll timeline runs the same ramp inside the
+			browser's own scrolling, in step with it. The script stays as the
+			fallback where timelines don't exist (the page says which is running).
+			The curves are exact, not eased-by-eye: speed climbing as
+			release^power means distance is a plain polynomial, and a cubic-bezier
+			with its x handles at 1/3 and 2/3 draws a polynomial exactly.
+		*/
+		@supports (animation-timeline: view()) {
+			.ramp-case[data-ramp] .pin-box {
+				animation: pin-rise linear both;
+				animation-timing-function: var(--box-curve);
+				animation-timeline: --ramp;
+				animation-range: exit-crossing 0% exit-crossing 100%;
+			}
+
+			.ramp-case[data-ramp] .landing {
+				animation: landing-catch linear both;
+				animation-timing-function: var(--landing-curve);
+				animation-timeline: --ramp;
+				animation-range: exit-crossing 0% exit-crossing 100%;
+			}
 		}
 
-		.landing[data-brake] {
-			scroll-snap-align: start;
-			scroll-snap-stop: always;
+		/* power 1: speed climbs in a straight line */
+		.ramp-case[data-ramp='1'] {
+			--ramp-power: 1;
+			--box-curve: cubic-bezier(0.3333, 0, 0.6667, 0.3333);
+			--landing-curve: cubic-bezier(0.3333, 0.6667, 0.6667, 1);
+		}
+
+		/* power 2: stays slow longer, catches up late */
+		.ramp-case[data-ramp='2'] {
+			--ramp-power: 2;
+			--box-curve: cubic-bezier(0.3333, 0, 0.6667, 0);
+			--landing-curve: cubic-bezier(0.3333, 0.5, 0.6667, 1);
+		}
+
+		@keyframes pin-rise {
+			to {
+				translate: 0 calc(-1 * var(--seen-in-all));
+			}
+		}
+
+		@keyframes landing-catch {
+			from {
+				translate: 0 calc(var(--seen-in-all) - var(--room));
+			}
+
+			to {
+				translate: 0 0;
+			}
 		}
 
 		.landing-block {
@@ -238,326 +312,361 @@
 
 		</div>
 
-		<section class='pin-test' style='--ramp-screens: 0'>
+		<p class='quiet-voice'>The ramp is being run by: <span data-ramp-engine>nothing yet</span></p>
 
-			<div class='pin-box'>
+		<div class='ramp-case' style='--ramp-screens: 0'>
 
-				<p class='strong-voice'>Test A: no ramp (the usual let-go)</p>
+			<section class='pin-test'>
 
-				<p>Pinned for three screens. Scroll the way you really scroll.</p>
+				<div class='pin-box'>
 
-				<div class='pin-meter'></div>
+					<p class='strong-voice'>Test A: no ramp (the usual let-go)</p>
 
-			</div>
+					<p>Pinned for three screens. Scroll the way you really scroll.</p>
 
-		</section>
+					<div class='pin-meter'></div>
 
-		<div class='landing'>
+				</div>
 
-			<div class='landing-block'>
+			</section>
 
-				<p class='strong-voice'>A1</p>
+			<div class='landing'>
 
-			</div>
+				<div class='landing-block'>
 
-			<div class='landing-block'>
+					<p class='strong-voice'>A1</p>
 
-				<p class='strong-voice'>A2</p>
+				</div>
 
-			</div>
+				<div class='landing-block'>
 
-			<div class='landing-block'>
+					<p class='strong-voice'>A2</p>
 
-				<p class='strong-voice'>A3</p>
+				</div>
 
-			</div>
+				<div class='landing-block'>
 
-			<div class='landing-block'>
+					<p class='strong-voice'>A3</p>
 
-				<p class='strong-voice'>A4</p>
+				</div>
 
-			</div>
+				<div class='landing-block'>
 
-			<div class='landing-block'>
+					<p class='strong-voice'>A4</p>
 
-				<p class='strong-voice'>A5</p>
+				</div>
 
-			</div>
+				<div class='landing-block'>
 
-			<div class='landing-block'>
+					<p class='strong-voice'>A5</p>
 
-				<p class='strong-voice'>A6</p>
+				</div>
 
-			</div>
+				<div class='landing-block'>
 
-		</div>
+					<p class='strong-voice'>A6</p>
 
-		<section class='pin-test' style='--ramp-screens: 0.5'>
-
-			<div class='pin-box'>
-
-				<p class='strong-voice'>Test B: ramp over half a screen</p>
-
-				<p>Pinned for three screens. Scroll the way you really scroll.</p>
-
-				<div class='pin-meter'></div>
-
-			</div>
-
-		</section>
-
-		<div class='landing'>
-
-			<div class='landing-block'>
-
-				<p class='strong-voice'>B1</p>
-
-			</div>
-
-			<div class='landing-block'>
-
-				<p class='strong-voice'>B2</p>
-
-			</div>
-
-			<div class='landing-block'>
-
-				<p class='strong-voice'>B3</p>
-
-			</div>
-
-			<div class='landing-block'>
-
-				<p class='strong-voice'>B4</p>
-
-			</div>
-
-			<div class='landing-block'>
-
-				<p class='strong-voice'>B5</p>
-
-			</div>
-
-			<div class='landing-block'>
-
-				<p class='strong-voice'>B6</p>
+				</div>
 
 			</div>
 
 		</div>
 
-		<section class='pin-test' style='--ramp-screens: 1'>
+		<div class='ramp-case' data-ramp='1' style='--ramp-screens: 0.5'>
 
-			<div class='pin-box'>
+			<section class='pin-test'>
 
-				<p class='strong-voice'>Test C: ramp over one screen</p>
+				<div class='pin-box'>
 
-				<p>Pinned for three screens. Scroll the way you really scroll.</p>
+					<p class='strong-voice'>Test B: ramp over half a screen</p>
 
-				<div class='pin-meter'></div>
+					<p>Pinned for three screens. Scroll the way you really scroll.</p>
 
-			</div>
+					<div class='pin-meter'></div>
 
-		</section>
+				</div>
 
-		<div class='landing'>
+				<div class='ramp-zone'></div>
 
-			<div class='landing-block'>
+			</section>
 
-				<p class='strong-voice'>C1</p>
+			<div class='landing'>
 
-			</div>
+				<div class='landing-block'>
 
-			<div class='landing-block'>
+					<p class='strong-voice'>B1</p>
 
-				<p class='strong-voice'>C2</p>
+				</div>
 
-			</div>
+				<div class='landing-block'>
 
-			<div class='landing-block'>
+					<p class='strong-voice'>B2</p>
 
-				<p class='strong-voice'>C3</p>
+				</div>
 
-			</div>
+				<div class='landing-block'>
 
-			<div class='landing-block'>
+					<p class='strong-voice'>B3</p>
 
-				<p class='strong-voice'>C4</p>
+				</div>
 
-			</div>
+				<div class='landing-block'>
 
-			<div class='landing-block'>
+					<p class='strong-voice'>B4</p>
 
-				<p class='strong-voice'>C5</p>
+				</div>
 
-			</div>
+				<div class='landing-block'>
 
-			<div class='landing-block'>
+					<p class='strong-voice'>B5</p>
 
-				<p class='strong-voice'>C6</p>
+				</div>
 
-			</div>
+				<div class='landing-block'>
 
-		</div>
+					<p class='strong-voice'>B6</p>
 
-
-		<section class='pin-test' style='--ramp-screens: 0'>
-
-			<div class='pin-box'>
-
-				<p class='strong-voice'>Test D: no ramp, but the browser brakes the fling at the let-go</p>
-
-				<p>Pinned for three screens. Scroll the way you really scroll.</p>
-
-				<div class='pin-meter'></div>
-
-			</div>
-
-		</section>
-
-		<div class='landing' data-brake>
-
-			<div class='landing-block'>
-
-				<p class='strong-voice'>D1</p>
-
-			</div>
-
-			<div class='landing-block'>
-
-				<p class='strong-voice'>D2</p>
-
-			</div>
-
-			<div class='landing-block'>
-
-				<p class='strong-voice'>D3</p>
-
-			</div>
-
-			<div class='landing-block'>
-
-				<p class='strong-voice'>D4</p>
-
-			</div>
-
-			<div class='landing-block'>
-
-				<p class='strong-voice'>D5</p>
-
-			</div>
-
-			<div class='landing-block'>
-
-				<p class='strong-voice'>D6</p>
+				</div>
 
 			</div>
 
 		</div>
 
-		<section class='pin-test' style='--ramp-screens: 3; --ramp-power: 3'>
+		<div class='ramp-case' data-ramp='1' style='--ramp-screens: 1'>
 
-			<div class='pin-box'>
+			<section class='pin-test'>
 
-				<p class='strong-voice'>Test E: long friction zone: three screens, slow for most of it</p>
+				<div class='pin-box'>
 
-				<p>Pinned for three screens. Scroll the way you really scroll.</p>
+					<p class='strong-voice'>Test C: ramp over one screen</p>
 
-				<div class='pin-meter'></div>
+					<p>Pinned for three screens. Scroll the way you really scroll.</p>
 
-			</div>
+					<div class='pin-meter'></div>
 
-		</section>
+				</div>
 
-		<div class='landing'>
+				<div class='ramp-zone'></div>
 
-			<div class='landing-block'>
+			</section>
 
-				<p class='strong-voice'>E1</p>
+			<div class='landing'>
 
-			</div>
+				<div class='landing-block'>
 
-			<div class='landing-block'>
+					<p class='strong-voice'>C1</p>
 
-				<p class='strong-voice'>E2</p>
+				</div>
 
-			</div>
+				<div class='landing-block'>
 
-			<div class='landing-block'>
+					<p class='strong-voice'>C2</p>
 
-				<p class='strong-voice'>E3</p>
+				</div>
 
-			</div>
+				<div class='landing-block'>
 
-			<div class='landing-block'>
+					<p class='strong-voice'>C3</p>
 
-				<p class='strong-voice'>E4</p>
+				</div>
 
-			</div>
+				<div class='landing-block'>
 
-			<div class='landing-block'>
+					<p class='strong-voice'>C4</p>
 
-				<p class='strong-voice'>E5</p>
+				</div>
 
-			</div>
+				<div class='landing-block'>
 
-			<div class='landing-block'>
+					<p class='strong-voice'>C5</p>
 
-				<p class='strong-voice'>E6</p>
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>C6</p>
+
+				</div>
 
 			</div>
 
 		</div>
 
-		<section class='pin-test' style='--ramp-screens: 2; --ramp-power: 2'>
+		<div class='ramp-case' data-ramp='1' style='--ramp-screens: 2'>
 
-			<div class='pin-box'>
+			<section class='pin-test'>
 
-				<p class='strong-voice'>Test F: friction zone: two screens, medium</p>
+				<div class='pin-box'>
 
-				<p>Pinned for three screens. Scroll the way you really scroll.</p>
+					<p class='strong-voice'>Test D: ramp over two screens</p>
 
-				<div class='pin-meter'></div>
+					<p>Pinned for three screens. Scroll the way you really scroll.</p>
+
+					<div class='pin-meter'></div>
+
+				</div>
+
+				<div class='ramp-zone'></div>
+
+			</section>
+
+			<div class='landing'>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>D1</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>D2</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>D3</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>D4</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>D5</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>D6</p>
+
+				</div>
 
 			</div>
 
-		</section>
+		</div>
 
-		<div class='landing'>
+		<div class='ramp-case' data-ramp='2' style='--ramp-screens: 2'>
 
-			<div class='landing-block'>
+			<section class='pin-test'>
 
-				<p class='strong-voice'>F1</p>
+				<div class='pin-box'>
+
+					<p class='strong-voice'>Test E: two screens, slow for longer</p>
+
+					<p>Pinned for three screens. Scroll the way you really scroll.</p>
+
+					<div class='pin-meter'></div>
+
+				</div>
+
+				<div class='ramp-zone'></div>
+
+			</section>
+
+			<div class='landing'>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>E1</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>E2</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>E3</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>E4</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>E5</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>E6</p>
+
+				</div>
 
 			</div>
 
-			<div class='landing-block'>
+		</div>
 
-				<p class='strong-voice'>F2</p>
+		<div class='ramp-case' data-ramp='2' style='--ramp-screens: 3'>
 
-			</div>
+			<section class='pin-test'>
 
-			<div class='landing-block'>
+				<div class='pin-box'>
 
-				<p class='strong-voice'>F3</p>
+					<p class='strong-voice'>Test F: three screens, slow for longer</p>
 
-			</div>
+					<p>Pinned for three screens. Scroll the way you really scroll.</p>
 
-			<div class='landing-block'>
+					<div class='pin-meter'></div>
 
-				<p class='strong-voice'>F4</p>
+				</div>
 
-			</div>
+				<div class='ramp-zone'></div>
 
-			<div class='landing-block'>
+			</section>
 
-				<p class='strong-voice'>F5</p>
+			<div class='landing'>
 
-			</div>
+				<div class='landing-block'>
 
-			<div class='landing-block'>
+					<p class='strong-voice'>F1</p>
 
-				<p class='strong-voice'>F6</p>
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>F2</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>F3</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>F4</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>F5</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>F6</p>
+
+				</div>
 
 			</div>
 
@@ -978,38 +1087,35 @@
 			});
 		}
 
-		// THE RELEASE LAB's clock (test page only): the same ramp as the finale,
-		// for the plain pin tests under the component.
-		// The ramp: over the last `room` px of the pin the box's speed climbs
-		// from 0 to full as release^power (release runs 0 to 1). power 1 is a
-		// straight climb; power 3 stays slow for most of the zone and only
-		// catches up at the very end. What the eye sees move is the area under
-		// that curve: room * release^(power + 1) / (power + 1).
-		// WHY the zone has to be LONG: one fling on a phone is thousands of
-		// pixels. A one-screen ramp is over before the fling has even started
-		// to fade (tests B and C proved it). A three-screen zone at power 3
-		// turns three screens of fling into three quarters of a screen of
-		// movement - the friction is real because the distance is.
+		// THE RELEASE LAB's clock (test page only). Where the browser has scroll
+		// timelines the CSS runs the ramp by itself, in step with the scroll -
+		// this script then only fills the meters. Everywhere else it is the
+		// fallback: the same ramp, written from the scroll position, a frame or
+		// two late. (WHY the ramp is shaped the way it is: see the CSS comments.)
+		const timelines_run_the_ramp = CSS.supports('animation-timeline: view()');
+
+		document.querySelectorAll('[data-ramp-engine]').forEach(function (label) {
+			label.textContent = timelines_run_the_ramp ? 'the browser (scroll timeline)' : 'the script (fallback)';
+		});
+
 		function drivePinTests() {
-			document.querySelectorAll('.pin-test').forEach(function (test) {
-				const box = test.querySelector('.pin-box');
-				const landing = test.nextElementSibling;
-				const ramp_screens = parseFloat(test.style.getPropertyValue('--ramp-screens'));
-				const power = parseFloat(test.style.getPropertyValue('--ramp-power')) || 1;
+			document.querySelectorAll('.ramp-case').forEach(function (ramp_case) {
+				const test = ramp_case.querySelector('.pin-test');
+				const box = ramp_case.querySelector('.pin-box');
+				const landing = ramp_case.querySelector('.landing');
 				const travel = test.offsetHeight - box.offsetHeight;
-				const room = travel * ramp_screens / (3 + ramp_screens);
 				const scrolled = Math.max(0, Math.min(travel, -test.getBoundingClientRect().top));
-				let release = 0;
-				if (room > 0) {
-					release = Math.max(0, (scrolled - (travel - room)) / room);
+				test.style.setProperty('--progress', scrolled / travel);
+
+				if (timelines_run_the_ramp || !ramp_case.dataset.ramp) {
+					return;
 				}
+				const power = parseFloat(ramp_case.dataset.ramp);
+				const room = ramp_case.querySelector('.ramp-zone').offsetHeight;
+				const release = Math.max(0, (scrolled - (travel - room)) / room);
 				const seen_so_far = room * Math.pow(release, power + 1) / (power + 1);
 				const seen_in_all = room / (power + 1);
-				test.style.setProperty('--progress', scrolled / travel);
-				test.style.setProperty('--pin-shift', (-seen_so_far) + 'px');
-				// The landing starts early by exactly what the box will have risen,
-				// held back by a shift that runs out to 0 as the ramp ends.
-				landing.style.setProperty('--landing-margin', (-seen_in_all) + 'px');
+				box.style.setProperty('--pin-shift', (-seen_so_far) + 'px');
 				landing.style.setProperty('--landing-shift', (-(room * (1 - release) - (seen_in_all - seen_so_far))) + 'px');
 			});
 		}
