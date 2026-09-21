@@ -92,8 +92,8 @@
 				if (scheme && scheme !== 'system') html.setAttribute('data-scheme', scheme);
 
 				/* Character (type + shape) and mood (color) are separate axes.
-				   Absent attribute = the default (Product character, Expressive mood),
-				   so only a non-default saved choice gets written. Unknown values
+				   Absent attribute = the CSS default (Product character, Expressive
+				   mood), so only a non-default saved choice gets written. Unknown values
 				   (e.g. a stale 'brand-preference'-era slug) are ignored. Keep
 				   these lists matched to CHARACTERS / MOODS in settings-panel.js. */
 				var character = localStorage.getItem('character-preference');
