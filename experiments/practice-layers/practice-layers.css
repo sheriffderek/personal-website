@@ -182,9 +182,8 @@ practice-layers {
 	--hold: 85vh;
 	/*
 		THE RHYTHM OF A SECTION (Derek, 2026-09-20). In order, as you scroll:
-		  1. plain color - the section OPENS empty (--breath, plus a little
-		     more for a heavier layer). Nothing to read; the last section is
-		     behind you.
+		  1. plain color - the section OPENS empty. Nothing to read; the last
+		     section is behind you.
 		  2. its words - headline, paragraph, skill words. They scroll like
 		     any page; they do NOT pin.
 		  3. its name, right under the words. As the words go up under the
@@ -193,52 +192,31 @@ practice-layers {
 		Two things this replaced, both his calls:
 		  - "2 things on screen at the same time": the words used to pin and
 		    wait, so the next words arrived while the last ones still sat
-		    there. All the empty space is ABOVE the words now, a share of the
-		    screen's height, so one block of words is on screen at a time.
+		    there. All the empty space is ABOVE the words now.
 		  - "the tag appears right when you want to read the NEXT section":
 		    the space used to be BELOW the words, so the name reached the
 		    stack long after its own words had gone, with the next section
 		    already filling the screen. It read as the wrong section's name.
-		`weight` is narrative weight - never countable years, which is why
-		there is no time scale anywhere. It adds to the opening.
+
+		HOW LONG THE OPENING IS (his question: "how are you deciding the
+		distance... it might be different based on how much stacking"). It
+		is worked out, per layer, from the room there actually is to read in:
+		    the screen's height, minus the stack that will be sitting on top
+		    of it by then (one row for every layer before this one)
+		and the opening is a SHARE of that room (--opening-share). At 1 the
+		next words would sit exactly at the bottom edge of the screen at the
+		moment a name stamps; a little under 1 lets them just start to show,
+		so there is always somewhere to be going. Deeper layers have a taller
+		stack above them, so their opening is shorter - the same FEEL, not
+		the same number.
+		svh is the screen with the phone's toolbars showing - the room you
+		really have; vh is the fallback for browsers without it.
+		(History: fixed lengths - 9rem, 14rem, 7rem of "breath", 50vh, 75vh,
+		some multiplied by a per-layer `weight` - were all tried. They were
+		uneven from layer to layer, and at one point three generations of
+		them were declared at once and the oldest was winning.)
 	*/
-	/* 75vh, not 50: at 50 the NEXT section's headline was already peeking in
-	   at the bottom of the screen at the moment a name stamped onto the stack
-	   (measured). The stamp should have the screen to itself. */
-	--breath: 75vh;
-	--step: 3rem;
-	/* How long the stripes run on alone, after the story, before the finale. */
-	--reveal: 10rem;
-	/* How long the finished stack HOLDS before it leaves (Derek: "we need to
-	   let that sink in a little"). Scroll distance, not time. */
-	--hold: 85vh;
-	/*
-		ONE THING AT A TIME (Derek, 2026-09-20: "it feels like there's 2 things
-		on screen at the same time"). A section's words pin under the stack
-		and stay until their section ends - so if the next section's words
-		start close behind, both are on screen together. Two lengths fix it:
-		  --breath  the plain color a section OPENS with, before its words.
-		            A share of the screen's height, because that is what it
-		            has to cover: by the time the next words rise into view,
-		            the last ones are already on their way out.
-		  --step    how long the words then SIT pinned before their section
-		            ends, times the layer's `weight`. This is the narrative
-		            weight - never countable years, which is why there is no
-		            time scale anywhere.
-	*/
-	--breath: 50vh;
-	--step: 6rem;
-	/* How long the stripes run on alone, after the story, before the finale. */
-	--reveal: 10rem;
-	/* How long the finished stack HOLDS before it leaves (Derek: "we need to
-	   let that sink in a little"). Scroll distance, not time. */
-	--hold: 85vh;
-	/* WHY no time scale: heights are narrative weight, never countable years.
-	   One step of section length; a layer's `weight` multiplies it. */
-	--step: 14rem;
-	/* Breathing room: how far down its section the text starts (Derek,
-	   2026-09-20). The section opens as plain color first, then the words. */
-	--breath: 7rem;
+	--opening-share: 0.85;
 
 	/* WRAPPING: every piece of text here is a <p>, and the site's own rule
 	   (typography.css) already gives every p `text-wrap: pretty`. But pretty
@@ -356,7 +334,8 @@ practice-layers {
 
 	.story {
 		padding: var(--space);
-		padding-block-start: calc(var(--breath) + var(--weight) * var(--step));
+		padding-block-start: calc((100vh - var(--index) * var(--row)) * var(--opening-share));
+		padding-block-start: calc((100svh - var(--index) * var(--row)) * var(--opening-share));
 		padding-block-end: calc(var(--space) * 2);
 		background: var(--tone);
 
