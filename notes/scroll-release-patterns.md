@@ -3,7 +3,7 @@
 Started 2026-09-20. The goal (Derek): "find all the patterns that work / and document them - so we can have the best of both worlds - by being sly." Both worlds = the held, staged moment a pin gives you AND scrolling that stays pleasant. Private working doc, and raw material for a journal piece (nobody has written about the release moment of a pin - see the research summary).
 
 **Where the truth lives.** Every pattern here points at something you can feel:
-- The lab: `experiments/practice-layers/index.html`, "THE RELEASE LAB" at the bottom of the phone column. Live at https://derekthomaswood.com/experiments/practice-layers/ - each test is a pin (three screens unless it says otherwise) that lets go into numbered blocks, with a row of jump links A-M at the top; **the number you land on is the measurement.** The how and why of each test is in the comment beside its CSS or script.
+- The lab: `experiments/practice-layers/index.html`, "THE RELEASE LAB" at the bottom of the phone column. Live at https://derekthomaswood.com/experiments/practice-layers/ - each test is a pin (three screens unless it says otherwise) that lets go into numbered blocks, with a row of jump links at the top (letters are never reused - B and D were ramps, and were cleared out with the rest of the failures on 2026-09-20); **the number you land on is the measurement.** The how and why of each test is in the comment beside its CSS or script.
 - The research and the verdict history: `experiments/practice-layers/HANDOFF.md` ("The sticky-release problem" and the lab verdicts above it).
 
 **A status means Derek's thumb on his phone, nothing less.** "Unjudged" = built and measured in a desktop browser only.
@@ -29,7 +29,7 @@ Started 2026-09-20. The goal (Derek): "find all the patterns that work / and doc
 | **Time, not distance** | "Let it sink in" is an ask about TIME. Once pinned, play the beats on a clock; don't make the reader pay for them in scroll. | A flinger can miss the show. | Unjudged | lab M |
 | **Honest reference** | Never freeze the whole screen: something always moves at true speed (text scrolling over a held graphic - the news-graphics pattern). The hand keeps steering by it. | A layout constraint. Derek rejected "2 things on screen" for the layer sections, not for endings. | Unjudged | lab K |
 | **Release by arrival** | The pin ends when something moving at true speed reaches its seat, and they leave together. Nothing the eye follows ever changes speed, so there is nothing to ramp. | Needs a piece of content to do the arriving. | Unjudged | lab L |
-| **Pass-through fun** | No pin at all. The effect is tied to the element's own trip through the screen (it widens, fills, fans as it goes by). A fling just plays it fast. | A sequence can't happen in one place over time; it has to be laid out down the page. | Unbuilt | - |
+| **Pass-through fun** | No pin at all. The effect is tied to the element's own trip through the screen (it widens, fills, fans as it goes by). A fling just plays it fast. | A sequence can't happen in one place over time; it has to be laid out down the page. | Unjudged | lab N |
 
 ## Patterns that ABSORB a fling
 
@@ -38,6 +38,7 @@ Started 2026-09-20. The goal (Derek): "find all the patterns that work / and doc
 | **Pin after pin** | The next scrubbed animation eats the fling as fast playback. | Forwards the debt: it throws its own fling out the far end. | Works (Derek, on the black layer into the finale: "it can run it out in the next animation... but getting out of THAT animation is then its own issue") | the component, last layer into the finale |
 | **Run-out** | True speed, nothing to read, horizontal marks (so speed can be SEEN again) spreading apart (so it looks like slowing). No script, scrolling untouched. | Page length. Must be made to look meant. | Unjudged | lab G |
 | **`<run-out>` block** | The run-out as one reusable element dressed as a loader ("something is happening, nothing to read yet"). One length knob. | Same. Generic look; a component with its own material should use that instead. | Unjudged | lab H |
+| **Run-out in the piece's own material** | The same job, made of what was just on screen: columns that run on at true speed and end one by one, further and further apart. | Has to be designed per piece. | Unjudged | lab P |
 | **The end of the page** | Put the pin last. A fling into the bottom just rubber-bands. | Only one per page, and only if the content order allows it. | Unbuilt | - |
 | **Deep landing** | Whatever follows a pin is taller than the overshoot, with nothing vital in its first screen. | Page design. | Unbuilt | - |
 
@@ -52,7 +53,7 @@ Started 2026-09-20. The goal (Derek): "find all the patterns that work / and doc
 
 | Pattern | Why it's out | Evidence |
 |---|---|---|
-| **Ramp before the let-go** (ease the pinned thing up to full speed) | Fixes the visual step, not the overshoot. Back at full speed by the line, so a late fling is spent at full speed. | "B does feel way better than A" then "none of the tests feel right. They all zoom super far right after passing them." Lab B. |
+| **Ramp before the let-go** (ease the pinned thing up to full speed) | Fixes the visual step, not the overshoot. Back at full speed by the line, so a late fling is spent at full speed. | "B does feel way better than A" then "none of the tests feel right. They all zoom super far right after passing them." (Lab B and D, removed; the component's own release ramp removed with them.) |
 | **Scroll-snap brake on the page** | On iOS, one snap point on the page scroller switches EVERY fling on the page to fast deceleration (WebKit bug 243582). | "it's not free scrolling like iOS normally does" |
 | **Announcing the end** (progress bars, "almost done" cues) | Too late for a thrown fling, and nobody is looking. | Derek's Apple-page argument |
 | **Taking over touch scrolling** (Lenis syncTouch, GSAP normalizeScroll, a custom scroller) | Rebuilds the thing people hate; loses address-bar, zoom and accessibility hand-offs. | Research only - rejected untested |
@@ -66,6 +67,8 @@ Still open, leaning out: **slow zone after the let-go** (lab E - quarter speed f
 - **Make the run-out out of the piece's own material** so it reads as part of the show (for practice-layers: the columns running on, their stepped ends going by further and further apart).
 - **Spend time, not distance,** for anything that is about letting a moment land.
 - **The soft catch is the backstop,** not the plan: only for a pin that can't be designed around, and only if F survives a phone.
+
+**The predicted winner, built to be felt:** lab O - a one-screen pin, released by arrival, into a run-out of a screen and a half.
 
 ## Open questions
 

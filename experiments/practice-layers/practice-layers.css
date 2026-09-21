@@ -628,8 +628,8 @@ practice-layers {
 	   scroll through, with the figure pinned inside it. */
 	.finale[data-driven] {
 		/* the figure's own height, plus the scroll the four beats run on */
-		block-size: calc(100vh + 485vh);
-		block-size: calc(100svh + 485vh);
+		block-size: calc(100vh + 385vh);
+		block-size: calc(100svh + 385vh);
 
 		/* Pinned at the very TOP, not a little below it. With any offset the
 		   columns stop short of the top edge while the stripes above them
@@ -639,36 +639,7 @@ practice-layers {
 		.figure {
 			position: sticky;
 			inset-block-start: 0;
-			/* THE RELEASE RAMP, the figure's half - see the comment below. */
-			translate: 0 calc(-0.5 * var(--release-room, 0px) * var(--release, 0) * var(--release, 0));
 		}
-	}
-
-	/*
-		THE RELEASE RAMP (Derek: "as soon as it hits the top - it shoots away.
-		It's almost like a friction ramp could be there so it's not so
-		shocking"). A pinned figure moves at speed 0, then un-pins and moves at
-		full scroll speed - all in one frame. But the hand has spent four
-		screens learning to push hard at something that barely moves, so at
-		that instant the next section flies past before anyone can stop.
-		The fix never touches the visitor's scrolling (that would BE the
-		scrolljack). It only shapes how the page answers: over the last stretch
-		of the runway (--release-room, in px) the figure starts to rise -
-		slowly, then faster - and reaches exactly full speed at the moment it
-		un-pins. Speed climbs in a straight line from 0 to 1, so the distance
-		is room * release * release / 2: half the room by the end.
-		The retelling comes up underneath at the same eased speed, so the two
-		stay edge to edge. It starts half a room early (the negative margin),
-		held back by a translate that runs out to 0 right as the ramp ends -
-		after that nothing is shifted and the page is a plain page again.
-		The script writes both values on the host (--release 0 to 1, from
-		FINALE_BEATS.release). No script: room is 0px and none of this exists.
-		Scrolling back UP gets the same ramp in reverse: full speed eases to a
-		stop as the figure pins.
-	*/
-	> .retelling {
-		margin-block-start: calc(-0.5 * var(--release-room, 0px));
-		translate: 0 calc(-0.5 * var(--release-room, 0px) * (1 - var(--release, 0)) * (1 - var(--release, 0)));
 	}
 
 	/*

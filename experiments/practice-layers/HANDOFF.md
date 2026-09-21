@@ -87,6 +87,8 @@ Derek: "don't just bandaid this up - really think through it." Three agents (iOS
 
 **`<run-out>` as a reusable block (Derek: "a reusable block that's just almost like a loading animation").** Lab test H, first go: one custom element, one knob (`--run-out-length`), CSS only. Why a loader is the right costume: it already means "something is happening, nothing to read yet." The rules it is built to are in its CSS comment on the test page (true speed, never pinned; horizontal marks spreading apart; the pulse runs on time and stands down for reduced motion; reads only the ink slot). It lives in the test page's own styles until it has been felt on a phone - where it graduates to (pssst, a site partial) is Derek's call.
 
+**Cleared out, 2026-09-20 (Derek: "lets get the tests that we know don't work all cleared out - and some examples of things that might work").** Gone: lab tests B and D (the ramps) with all their machinery, and **the component's own release ramp** - the finale's runway is back to 3.85 screens with its original beats, and the retelling is no longer shifted. Letters are never reused. Added: N pass-through fun (no pin; each bar grows on its own trip through the screen), O the predicted winner (one-screen pin, released by arrival, run-out of a screen and a half), P the run-out in the piece's own material (columns running on and ending one by one, further and further apart). The living catalog, with every test's job and status, is `notes/scroll-release-patterns.md` - this file keeps the history.
+
 The full v6 text and the closing concept, exactly as sent, are in `copy-v6-from-job-search-session.md` beside this file.
 
 ## The earlier "I learned" set (superseded the same day - kept only as history)

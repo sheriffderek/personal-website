@@ -87,29 +87,22 @@
 			color: var(--fill-page);
 		}
 		/*
-			THE RELEASE LAB (test page only). The question: when a pinned thing
-			lets go, does easing it up to full speed stop the next section from
-			flying past? Each test pins a plain box for three screens, then lets
-			go into numbered blocks - the number you land on IS the measurement.
-			Same math as the component's release ramp (see THE RELEASE RAMP in
-			practice-layers.css); the only thing that differs between tests is
-			--ramp-screens, how many screens of scroll the easing is spread over.
+			THE RELEASE LAB (test page only). A pinned thing lets go, and the
+			next section flies past. Each test pins a plain box (three screens
+			unless it says otherwise), then lets go into numbered blocks - the
+			number you land on IS the measurement. The catalog of what each test
+			is for, and what has already been ruled out (the ramps, the snap
+			brake), is notes/scroll-release-patterns.md. Letters are never
+			reused: B and D were ramps, and are gone.
 		*/
-		/* One case = a pin and what it lets go into. The case owns the ramp's
-		   numbers so both halves read the same ones, and it is the scope the
-		   ramp's scroll timeline is shared through. */
-		.ramp-case {
-			--ramp-screens: 0;
-			--ramp-power: 1;
-			--room: calc(var(--ramp-screens) * 100vh);
-			--seen-in-all: calc(var(--room) / (var(--ramp-power) + 1));
-			timeline-scope: --ramp, --after;
+		.pin-case {
+			timeline-scope: --after;
 		}
 
 		.pin-test {
 			position: relative;
-			block-size: calc(100vh + (var(--pin-screens, 3) + var(--ramp-screens)) * 100vh);
-			block-size: calc(100svh + (var(--pin-screens, 3) + var(--ramp-screens)) * 100vh);
+			block-size: calc(100vh + var(--pin-screens, 3) * 100vh);
+			block-size: calc(100svh + var(--pin-screens, 3) * 100vh);
 		}
 
 		.pin-box {
@@ -120,21 +113,6 @@
 			block-size: 100svh;
 			padding: 2rem 1rem;
 			border: 0.3rem solid var(--ink);
-			translate: 0 var(--pin-shift, 0px);
-		}
-
-		/* THE RAMP ZONE, as a real (invisible) thing in the page: it spans the
-		   last `room` of the pin's scroll. Its trip past the top of the screen
-		   IS the ramp's clock: top edge at the top = ramp starts, bottom edge at
-		   the top = the pin lets go. */
-		.ramp-zone {
-			position: absolute;
-			inset-inline: 0;
-			inset-block-end: 100vh;
-			inset-block-end: 100svh;
-			block-size: var(--room);
-			view-timeline: --ramp block;
-			pointer-events: none;
 		}
 
 		.pin-meter {
@@ -144,74 +122,25 @@
 			border: 1px solid var(--ink);
 		}
 
-		/* The landing starts early by exactly what the box will have risen,
-		   held back by a shift that runs out to 0 as the ramp ends. */
-		.landing {
-			margin-block-start: calc(-1 * var(--seen-in-all, 0px));
-			translate: 0 var(--landing-shift, 0px);
-		}
-
-		/*
-			WHO MOVES THE RAMP. First build: a script read the scroll and wrote
-			the shifts. On a phone that is always a frame or two behind the
-			real scroll - and the lag is worst exactly at the let-go, where the
-			box is moving fastest, so the moment it ends everything pops into
-			place (Derek: "janky stuff happening right after / feels like things
-			are moving around"). A scroll timeline runs the same ramp inside the
-			browser's own scrolling, in step with it. The script stays as the
-			fallback where timelines don't exist (the page says which is running).
-			The curves are exact, not eased-by-eye: speed climbing as
-			release^power means distance is a plain polynomial, and a cubic-bezier
-			with its x handles at 1/3 and 2/3 draws a polynomial exactly.
-		*/
-		@supports (animation-timeline: view()) {
-			.ramp-case[data-ramp] .pin-box {
-				animation: pin-rise linear both;
-				animation-timing-function: var(--box-curve);
-				animation-timeline: --ramp;
-				animation-range: exit-crossing 0% exit-crossing 100%;
-			}
-
-			.ramp-case[data-ramp] .landing {
-				animation: landing-catch linear both;
-				animation-timing-function: var(--landing-curve);
-				animation-timeline: --ramp;
-				animation-range: exit-crossing 0% exit-crossing 100%;
-			}
-		}
-
-		/* power 1: speed climbs in a straight line */
-		.ramp-case[data-ramp='1'] {
-			--ramp-power: 1;
-			--box-curve: cubic-bezier(0.3333, 0, 0.6667, 0.3333);
-			--landing-curve: cubic-bezier(0.3333, 0.6667, 0.6667, 1);
-		}
-
-		/* power 2: stays slow longer, catches up late */
-		.ramp-case[data-ramp='2'] {
-			--ramp-power: 2;
-			--box-curve: cubic-bezier(0.3333, 0, 0.6667, 0);
-			--landing-curve: cubic-bezier(0.3333, 0.5, 0.6667, 1);
-		}
-
 		/*
 			THE SLOW ZONE AFTER (Derek's guess: "we just slow down the way the
-			scrolling works for a distance right after"). The ramps above put
-			the slow part BEFORE the let-go and were back to full speed at the
-			line, so a late fling was spent at full speed. This puts it AFTER:
-			for --zone of scroll past the let-go, the box and everything after
-			it move at only --slow of the scroll's speed (held for the first
-			three quarters of the zone, then eased up to full over the last
-			quarter). The fling's momentum is spent as scroll distance while
-			little moves; full speed only returns once the fling has had time
-			to die. The cost: a careful scroller drags through the same zone.
+			scrolling works for a distance right after"). For --zone of scroll
+			past the let-go, the box and everything after it move at only --slow
+			of the scroll's speed (held for the first three quarters of the zone,
+			then eased up to full over the last quarter). The fling's momentum is
+			spent as scroll distance while little moves; full speed only returns
+			once the fling has had time to die. The cost: a careful scroller
+			drags through the same zone.
 			How: the scroll itself is never touched. The content is pushed DOWN
 			against the scroll by a growing translate, so it appears to move
-			slower. The zone's clock is an invisible marker beside (not inside)
-			the moving content. What is pushed down never comes back, so the
-			landing reserves that much room beneath itself.
+			slower - run by the browser's scroll timeline, in step with the
+			scroll (a script doing this is always a frame or two late on a phone,
+			which showed up as things "moving around" right after the let-go).
+			The zone's clock is an invisible marker beside (not inside) the
+			moving content. What is pushed down never comes back, so the landing
+			reserves that much room beneath itself.
 		*/
-		.ramp-case[data-slow-after] {
+		.pin-case[data-slow-after] {
 			position: relative;
 			--zone: 400vh;
 			--slow: 0.25;
@@ -229,14 +158,14 @@
 		}
 
 		@supports (animation-timeline: view()) {
-			.ramp-case[data-slow-after] .pin-box,
-			.ramp-case[data-slow-after] .landing {
+			.pin-case[data-slow-after] .pin-box,
+			.pin-case[data-slow-after] .landing {
 				animation: slow-after linear both;
 				animation-timeline: --after;
 				animation-range: exit-crossing 0% exit-crossing 100%;
 			}
 
-			.ramp-case[data-slow-after] .landing {
+			.pin-case[data-slow-after] .landing {
 				margin-block-end: var(--held-back);
 			}
 		}
@@ -257,20 +186,63 @@
 			}
 		}
 
-		@keyframes pin-rise {
-			to {
-				translate: 0 calc(-1 * var(--seen-in-all));
+		/*
+			PASS-THROUGH FUN (Derek: "maybe it's not a scroll pin after that...
+			something that lets us visually have fun - and return to normal
+			scroll for a bit"). Nothing is held. Each bar grows as IT rises from
+			the bottom edge to the middle of the screen - the effect belongs to
+			the bar's own trip through the screen, so the page never stops
+			moving, no flick is ever trained, and a fling just plays it fast.
+			Without scroll timelines the bars are simply full width.
+		*/
+		.pass-through {
+			display: flex;
+			flex-direction: column;
+			gap: 12vh;
+			padding-block: 20vh;
+		}
+
+		.pass-through span {
+			block-size: 18vh;
+			background: var(--ink);
+			transform-origin: left;
+		}
+
+		@supports (animation-timeline: view()) {
+			.pass-through span {
+				animation: pass-through-grow linear both;
+				animation-timeline: view();
+				animation-range: entry 0% cover 50%;
 			}
 		}
 
-		@keyframes landing-catch {
+		@keyframes pass-through-grow {
 			from {
-				translate: 0 calc(var(--seen-in-all) - var(--room));
+				scale: 0.04 1;
 			}
+		}
 
-			to {
-				translate: 0 0;
-			}
+		/*
+			THE RUN-OUT IN THE PIECE'S OWN MATERIAL. Same job as the run-out
+			below, but made of what was just on screen: columns that carry on
+			down at true speed and end one after another. Their ends are the
+			horizontal marks, and they come further and further apart (each
+			column is longer than the last by a growing step), so the page looks
+			like it is settling.
+		*/
+		.taper {
+			display: flex;
+			align-items: flex-start;
+			gap: 0.5rem;
+			block-size: 200vh;
+			padding-inline: 1rem;
+		}
+
+		.taper span {
+			flex: 1;
+			block-size: calc(10% + (8 - var(--i)) * (8 - var(--i)) * 1.4%);
+			background: var(--ink);
+			opacity: calc(0.25 + var(--i) * 0.09);
 		}
 
 		/* Stays on screen so a catch can be seen to have fired, from anywhere. */
@@ -515,11 +487,7 @@
 
 			<a href='#test-a'>A</a>
 
-			<a href='#test-b'>B</a>
-
 			<a href='#test-c'>C</a>
-
-			<a href='#test-d'>D</a>
 
 			<a href='#test-e'>E</a>
 
@@ -539,19 +507,25 @@
 
 			<a href='#test-m'>M</a>
 
+			<a href='#test-n'>N</a>
+
+			<a href='#test-o'>O</a>
+
+			<a href='#test-p'>P</a>
+
 		</nav>
 
-		<p class='quiet-voice'>The ramp is being run by: <span data-ramp-engine>nothing yet</span></p>
+		<p class='quiet-voice'>Scroll timelines (tests E and N need them): <span data-ramp-engine>checking</span></p>
 
 		<p class='quiet-voice catch-report'>Last catch: <span data-catch-report>none yet</span></p>
 
-		<div id='test-a' class='ramp-case' style='--ramp-screens: 0'>
+		<div id='test-a' class='pin-case'>
 
 			<section class='pin-test'>
 
 				<div class='pin-box'>
 
-					<p class='strong-voice'>Test A: no ramp, no catch (the usual let-go)</p>
+					<p class='strong-voice'>Test A: the control (a three-screen pin and the usual let-go)</p>
 
 					<p>Pinned for three screens. Scroll the way you really scroll.</p>
 
@@ -603,73 +577,13 @@
 
 		</div>
 
-		<div id='test-b' class='ramp-case' data-ramp='1' style='--ramp-screens: 1'>
+		<div id='test-c' class='pin-case' data-catch>
 
 			<section class='pin-test'>
 
 				<div class='pin-box'>
 
-					<p class='strong-voice'>Test B: ramp over one screen, no catch</p>
-
-					<p>Pinned for three screens. Scroll the way you really scroll.</p>
-
-					<div class='pin-meter'></div>
-
-				</div>
-
-				<div class='ramp-zone'></div>
-
-			</section>
-
-			<div class='landing'>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>B1</p>
-
-				</div>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>B2</p>
-
-				</div>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>B3</p>
-
-				</div>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>B4</p>
-
-				</div>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>B5</p>
-
-				</div>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>B6</p>
-
-				</div>
-
-			</div>
-
-		</div>
-
-		<div id='test-c' class='ramp-case' data-catch style='--ramp-screens: 0'>
-
-			<section class='pin-test'>
-
-				<div class='pin-box'>
-
-					<p class='strong-voice'>Test C: no ramp, fling caught at the let-go</p>
+					<p class='strong-voice'>Test C: the first catch (script glide - kept as the reference for F)</p>
 
 					<p>Pinned for three screens. Scroll the way you really scroll.</p>
 
@@ -721,67 +635,7 @@
 
 		</div>
 
-		<div id='test-d' class='ramp-case' data-ramp='1' data-catch style='--ramp-screens: 1'>
-
-			<section class='pin-test'>
-
-				<div class='pin-box'>
-
-					<p class='strong-voice'>Test D: ramp over one screen AND the fling caught</p>
-
-					<p>Pinned for three screens. Scroll the way you really scroll.</p>
-
-					<div class='pin-meter'></div>
-
-				</div>
-
-				<div class='ramp-zone'></div>
-
-			</section>
-
-			<div class='landing'>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>D1</p>
-
-				</div>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>D2</p>
-
-				</div>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>D3</p>
-
-				</div>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>D4</p>
-
-				</div>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>D5</p>
-
-				</div>
-
-				<div class='landing-block'>
-
-					<p class='strong-voice'>D6</p>
-
-				</div>
-
-			</div>
-
-		</div>
-
-		<div id='test-e' class='ramp-case' data-slow-after style='--ramp-screens: 0'>
+		<div id='test-e' class='pin-case' data-slow-after>
 
 			<section class='pin-test'>
 
@@ -789,7 +643,7 @@
 
 					<p class='strong-voice'>Test E: slow zone AFTER the let-go (quarter speed for four screens of scroll, then back to full)</p>
 
-					<p>Pinned for three screens. Scroll the way you really scroll. Needs "the browser" as the ramp engine.</p>
+					<p>Pinned for three screens. Scroll the way you really scroll. Needs scroll timelines (see the line at the top of the lab).</p>
 
 					<div class='pin-meter'></div>
 
@@ -853,7 +707,7 @@
 
 		</div>
 
-		<div id='test-f' class='ramp-case' data-catch='soft' style='--ramp-screens: 0'>
+		<div id='test-f' class='pin-case' data-catch='soft'>
 
 			<section class='pin-test'>
 
@@ -923,7 +777,7 @@
 
 		</div>
 
-		<div id='test-g' class='ramp-case' style='--ramp-screens: 0'>
+		<div id='test-g' class='pin-case'>
 
 			<section class='pin-test'>
 
@@ -995,7 +849,7 @@
 
 		</div>
 
-		<div id='test-h' class='ramp-case' style='--ramp-screens: 0'>
+		<div id='test-h' class='pin-case'>
 
 			<section class='pin-test'>
 
@@ -1067,7 +921,7 @@
 
 		</div>
 
-		<div id='test-i' class='ramp-case' style='--ramp-screens: 0; --pin-screens: 0.5'>
+		<div id='test-i' class='pin-case' style='--pin-screens: 0.5'>
 
 			<section class='pin-test'>
 
@@ -1125,7 +979,7 @@
 
 		</div>
 
-		<div id='test-j' class='ramp-case' style='--ramp-screens: 0; --pin-screens: 1'>
+		<div id='test-j' class='pin-case' style='--pin-screens: 1'>
 
 			<section class='pin-test'>
 
@@ -1183,7 +1037,7 @@
 
 		</div>
 
-		<div id='test-k' class='ramp-case' style='--ramp-screens: 0; --pin-screens: 2.5'>
+		<div id='test-k' class='pin-case' style='--pin-screens: 2.5'>
 
 			<section class='pin-test' data-reference>
 
@@ -1241,7 +1095,7 @@
 
 		</div>
 
-		<div id='test-l' class='ramp-case' style='--ramp-screens: 0; --pin-screens: 1.5'>
+		<div id='test-l' class='pin-case' style='--pin-screens: 1.5'>
 
 			<section class='pin-test'>
 
@@ -1305,7 +1159,7 @@
 
 		</div>
 
-		<div id='test-m' class='ramp-case' style='--ramp-screens: 0; --pin-screens: 1'>
+		<div id='test-m' class='pin-case' style='--pin-screens: 1'>
 
 			<section class='pin-test'>
 
@@ -1356,6 +1210,230 @@
 				<div class='landing-block'>
 
 					<p class='strong-voice'>M6</p>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div id='test-n'>
+
+			<div class='landing-block'>
+
+				<p class='strong-voice'>Test N: pass-through fun (no pin at all - each bar grows as it goes by)</p>
+
+			</div>
+
+			<div class='pass-through'>
+
+				<span></span>
+
+				<span></span>
+
+				<span></span>
+
+				<span></span>
+
+				<span></span>
+
+				<span></span>
+
+			</div>
+
+			<div class='landing'>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>N1</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>N2</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>N3</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>N4</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>N5</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>N6</p>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div id='test-o' class='pin-case' style='--pin-screens: 1'>
+
+			<section class='pin-test'>
+
+				<div class='pin-box'>
+
+					<p class='strong-voice'>Test O: the combination (one-screen pin, released by arrival, then a run-out of one and a half screens)</p>
+
+					<p>Scroll the way you really scroll.</p>
+
+					<div class='pin-meter'></div>
+
+				</div>
+
+				<div class='arriving'>
+
+					<p class='strong-voice'>arriving</p>
+
+				</div>
+
+			</section>
+
+			<div class='landing'>
+
+				<run-out style='--run-out-length: 150vh'>
+
+					<span style='--step: 0; --apart: 1.5rem'></span>
+
+					<span style='--step: 1; --apart: 2.5rem'></span>
+
+					<span style='--step: 2; --apart: 4rem'></span>
+
+					<span style='--step: 3; --apart: 6.5rem'></span>
+
+					<span style='--step: 4; --apart: 10.5rem'></span>
+
+				</run-out>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>O1</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>O2</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>O3</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>O4</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>O5</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>O6</p>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div id='test-p' class='pin-case'>
+
+			<section class='pin-test'>
+
+				<div class='pin-box'>
+
+					<p class='strong-voice'>Test P: the run-out in the piece's own material (a full three-screen pin, then columns that run on and end one by one)</p>
+
+					<p>Scroll the way you really scroll.</p>
+
+					<div class='pin-meter'></div>
+
+				</div>
+
+			</section>
+
+			<div class='landing'>
+
+				<div class='taper'>
+
+					<span style='--i: 0'></span>
+
+					<span style='--i: 1'></span>
+
+					<span style='--i: 2'></span>
+
+					<span style='--i: 3'></span>
+
+					<span style='--i: 4'></span>
+
+					<span style='--i: 5'></span>
+
+					<span style='--i: 6'></span>
+
+					<span style='--i: 7'></span>
+
+					<span style='--i: 8'></span>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>P1</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>P2</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>P3</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>P4</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>P5</p>
+
+				</div>
+
+				<div class='landing-block'>
+
+					<p class='strong-voice'>P6</p>
 
 				</div>
 
@@ -1722,18 +1800,12 @@
 		// as fast" (1.4). Then: "as soon as the page content is gone it should go
 		// right into the animation" (the opening wait is gone) and "it should
 		// stick longer on the next part" (the rest grew from 0.4 to 1.2).
-		// THE RELEASE (the last beat, one more screen: the runway is now 4.85):
-		// the figure eases from pinned up to full scroll speed instead of being
-		// let go in one frame - see THE RELEASE RAMP in the CSS. Adding it
-		// rescaled every earlier beat by 3.85 / 4.85 so their pace in screens
-		// of scroll is exactly what it was.
 		const FINALE_BEATS = {
-			widen: [0.008, 0.298],
-			simplify: [0.23, 0.298],
-			frame_in: [0.318, 0.433],
-			arrive: [0.452, 0.548],
-			rest: [0.548, 0.794],
-			release: [0.794, 1],
+			widen: [0.01, 0.375],
+			simplify: [0.29, 0.375],
+			frame_in: [0.40, 0.545],
+			arrive: [0.57, 0.69],
+			rest: [0.69, 1],
 		};
 
 		function dial(progress, beat) {
@@ -1745,9 +1817,7 @@
 			document.querySelectorAll('practice-layers .finale').forEach(function (finale) {
 				const figure = finale.querySelector('.figure');
 				// Hidden in the staircase layout: nothing to drive.
-				const host = finale.parentElement;
 				if (!finale.offsetHeight) {
-					host.style.setProperty('--release-room', '0px');
 					return;
 				}
 				finale.dataset.driven = '';
@@ -1760,10 +1830,6 @@
 				finale.style.setProperty('--frame-in', dial(progress, FINALE_BEATS.frame_in));
 				finale.style.setProperty('--arrive', dial(progress, FINALE_BEATS.arrive));
 				finale.style.setProperty('--rest', dial(progress, FINALE_BEATS.rest));
-				// On the host, not the finale: the retelling (a sibling) reads them too.
-				const release_share = FINALE_BEATS.release[1] - FINALE_BEATS.release[0];
-				host.style.setProperty('--release-room', (travel * release_share) + 'px');
-				host.style.setProperty('--release', dial(progress, FINALE_BEATS.release));
 			});
 
 			// The retelling's tall frame fades in as its bars come up the screen.
@@ -1778,40 +1844,23 @@
 			});
 		}
 
-		// THE RELEASE LAB's clock (test page only). Where the browser has scroll
-		// timelines the CSS runs the ramp by itself, in step with the scroll -
-		// this script then only fills the meters. Everywhere else it is the
-		// fallback: the same ramp, written from the scroll position, a frame or
-		// two late. (WHY the ramp is shaped the way it is: see the CSS comments.)
-		const timelines_run_the_ramp = CSS.supports('animation-timeline: view()');
-
+		// THE RELEASE LAB's clock (test page only): fills each pin's meter, and
+		// marks a case as pinned (for the test that runs on time).
 		document.querySelectorAll('[data-ramp-engine]').forEach(function (label) {
-			label.textContent = timelines_run_the_ramp ? 'the browser (scroll timeline)' : 'the script (fallback)';
+			label.textContent = CSS.supports('animation-timeline: view()') ? 'this browser has them' : 'NOT in this browser - E and N will do nothing';
 		});
 
 		function drivePinTests() {
-			document.querySelectorAll('.ramp-case').forEach(function (ramp_case) {
-				const test = ramp_case.querySelector('.pin-test');
-				const box = ramp_case.querySelector('.pin-box');
-				const landing = ramp_case.querySelector('.landing');
+			document.querySelectorAll('.pin-case').forEach(function (pin_case) {
+				const test = pin_case.querySelector('.pin-test');
+				const box = pin_case.querySelector('.pin-box');
 				const travel = test.offsetHeight - box.offsetHeight;
 				const scrolled = Math.max(0, Math.min(travel, -test.getBoundingClientRect().top));
 				test.style.setProperty('--progress', scrolled / travel);
 				// For the clock test: "pinned" from the moment the box sticks, for good.
 				if (scrolled > 0) {
-					ramp_case.classList.add('is-pinned');
+					pin_case.classList.add('is-pinned');
 				}
-
-				if (timelines_run_the_ramp || !ramp_case.dataset.ramp) {
-					return;
-				}
-				const power = parseFloat(ramp_case.dataset.ramp);
-				const room = ramp_case.querySelector('.ramp-zone').offsetHeight;
-				const release = Math.max(0, (scrolled - (travel - room)) / room);
-				const seen_so_far = room * Math.pow(release, power + 1) / (power + 1);
-				const seen_in_all = room / (power + 1);
-				box.style.setProperty('--pin-shift', (-seen_so_far) + 'px');
-				landing.style.setProperty('--landing-shift', (-(room * (1 - release) - (seen_in_all - seen_so_far))) + 'px');
 			});
 		}
 
@@ -1895,17 +1944,17 @@
 		const SOFT_TOP = 2.2;    // px per ms; a faster fling is eased from here
 		const SOFT_TIME = 900;   // ms
 
-		function softCatch(ramp_case, y, fling_speed) {
+		function softCatch(pin_case, y, fling_speed) {
 			const reach = Math.min(fling_speed, SOFT_TOP) * SOFT_TIME / 2;
-			ramp_case.style.transition = 'none';
-			ramp_case.style.translate = '0 ' + reach + 'px';
+			pin_case.style.transition = 'none';
+			pin_case.style.translate = '0 ' + reach + 'px';
 			window.scrollTo({ top: y + reach, behavior: 'instant' });
 			last_y = y + reach;
 			speed = 0;
 			requestAnimationFrame(function () {
 				requestAnimationFrame(function () {
-					ramp_case.style.transition = 'translate ' + SOFT_TIME + 'ms cubic-bezier(0.3333, 0.6667, 0.6667, 1)';
-					ramp_case.style.translate = '0 0';
+					pin_case.style.transition = 'translate ' + SOFT_TIME + 'ms cubic-bezier(0.3333, 0.6667, 0.6667, 1)';
+					pin_case.style.translate = '0 0';
 				});
 			});
 		}
@@ -1923,14 +1972,14 @@
 				// smoothed a little: one odd frame shouldn't trip the catch
 				speed = speed * 0.5 + ((y - last_y) / elapsed) * 0.5;
 			}
-			document.querySelectorAll('.ramp-case[data-catch]').forEach(function (ramp_case) {
-				const test = ramp_case.querySelector('.pin-test');
-				const box = ramp_case.querySelector('.pin-box');
+			document.querySelectorAll('.pin-case[data-catch]').forEach(function (pin_case) {
+				const test = pin_case.querySelector('.pin-test');
+				const box = pin_case.querySelector('.pin-box');
 				const let_go = test.getBoundingClientRect().top + y + test.offsetHeight - box.offsetHeight;
 				if (last_y < let_go && y >= let_go && speed > CATCH_ABOVE) {
-					reportCatch('caught at ' + speed.toFixed(1) + ' px/ms (' + (ramp_case.dataset.catch || 'glide') + ')');
-					if (ramp_case.dataset.catch === 'soft') {
-						softCatch(ramp_case, y, speed);
+					reportCatch('caught at ' + speed.toFixed(1) + ' px/ms (' + (pin_case.dataset.catch || 'glide') + ')');
+					if (pin_case.dataset.catch === 'soft') {
+						softCatch(pin_case, y, speed);
 					} else {
 						glideFrom(y, Math.min(speed, GLIDE_TOP));
 					}
