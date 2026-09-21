@@ -450,14 +450,6 @@ practice-layers {
 		opacity: 0.75;
 	}
 
-	.frame-tall {
-		position: absolute;
-		inset-inline: 48% 4%;
-		inset-block: calc(-1 * var(--overhang));
-		border: var(--frame-line) solid var(--ink);
-		opacity: var(--tall-in, 1);
-	}
-
 	/*
 		Roomier stripes once the container (not the screen) has the width for it.
 		Set on the first layer, not the host: a container query cannot style its
