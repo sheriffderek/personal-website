@@ -180,6 +180,27 @@ practice-layers {
 	/* How long the finished stack HOLDS before it leaves (Derek: "we need to
 	   let that sink in a little"). Scroll distance, not time. */
 	--hold: 85vh;
+	/*
+		ONE THING AT A TIME (Derek, 2026-09-20: "it feels like there's 2 things
+		on screen at the same time"). A section's words pin under the stack
+		and stay until their section ends - so if the next section's words
+		start close behind, both are on screen together. Two lengths fix it:
+		  --breath  the plain color a section OPENS with, before its words.
+		            A share of the screen's height, because that is what it
+		            has to cover: by the time the next words rise into view,
+		            the last ones are already on their way out.
+		  --step    how long the words then SIT pinned before their section
+		            ends, times the layer's `weight`. This is the narrative
+		            weight - never countable years, which is why there is no
+		            time scale anywhere.
+	*/
+	--breath: 50vh;
+	--step: 6rem;
+	/* How long the stripes run on alone, after the story, before the finale. */
+	--reveal: 10rem;
+	/* How long the finished stack HOLDS before it leaves (Derek: "we need to
+	   let that sink in a little"). Scroll distance, not time. */
+	--hold: 85vh;
 	/* WHY no time scale: heights are narrative weight, never countable years.
 	   One step of section length; a layer's `weight` multiplies it. */
 	--step: 14rem;
@@ -302,9 +323,9 @@ practice-layers {
 	}
 
 	.story {
-		min-block-size: calc(var(--weight) * var(--step));
 		padding: var(--space);
-		padding-block-start: calc(var(--space) + var(--breath));
+		padding-block-start: var(--breath);
+		padding-block-end: calc(var(--weight) * var(--step));
 		background: var(--tone);
 
 		p {
@@ -671,7 +692,7 @@ practice-layers {
 
 		.story {
 			order: 1;
-			min-block-size: 0;
+			padding-block-end: var(--space);
 			padding-block-start: 0;
 		}
 
