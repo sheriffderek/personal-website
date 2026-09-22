@@ -3,9 +3,9 @@
 Started 2026-09-20. The goal (Derek): "find all the patterns that work / and document them - so we can have the best of both worlds - by being sly." Both worlds = the held, staged moment a pin gives you AND scrolling that stays pleasant. Private working doc, and raw material for a journal piece (nobody has written about the release moment of a pin - see the research summary).
 
 **Where the truth lives.** Every pattern here points at something you can feel:
-- The lab: `experiments/practice-layers/index.html`, "THE RELEASE LAB" at the bottom of the phone column. Live at https://derekthomaswood.com/experiments/practice-layers/ - each test is a pin (three screens unless it says otherwise) that lets go into numbered blocks, with a row of jump links at the top (letters are never reused - B and D were ramps, and were cleared out with the rest of the failures on 2026-09-20); **the number you land on is the measurement.** The how and why of each test is in the comment beside its CSS or script.
-- The research in full (Derek's own thread, the three passes, every source): `notes/scroll-release-research.md`.
-- The verdict history: `experiments/practice-layers/HANDOFF.md` ("The sticky-release problem" and the lab verdicts above it).
+- The lab: `index.html` (beside this file), "THE RELEASE LAB" at the bottom of the phone column. Live at https://derekthomaswood.com/experiments/practice-layers/ - each test is a pin (three screens unless it says otherwise) that lets go into numbered blocks, with a row of jump links at the top (letters are never reused - B and D were ramps, and were cleared out with the rest of the failures on 2026-09-20); **the number you land on is the measurement.** The how and why of each test is in the comment beside its CSS or script.
+- The research in full (Derek's own thread, the three passes, every source): `scroll-release-research.md` (beside this file).
+- The verdict history: `HANDOFF.md` (beside this file) ("The sticky-release problem" and the lab verdicts above it).
 
 **A status means Derek's thumb on his phone, nothing less.** "Unjudged" = built and measured in a desktop browser only.
 

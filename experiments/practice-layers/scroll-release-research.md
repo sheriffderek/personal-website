@@ -1,6 +1,6 @@
 # Scroll release - the research, in full
 
-Companion to `scroll-release-patterns.md` (the catalog: what was tried, what Derek's thumb said, why). This file keeps the source material so the article can cite it: Derek's own research thread (2026-09-20), and the three research passes run the same day. Reports are kept as delivered. "Verified" in them means a source says it; "Inference" means the agent's reasoning, not tested on a device.
+Companion to `scroll-release-patterns.md` (beside this file) (the catalog: what was tried, what Derek's thumb said, why). This file keeps the source material so the article can cite it: Derek's own research thread (2026-09-20), and the three research passes run the same day. Reports are kept as delivered. "Verified" in them means a source says it; "Inference" means the agent's reasoning, not tested on a device.
 
 ---
 
