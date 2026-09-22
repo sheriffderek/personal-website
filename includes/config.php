@@ -17,7 +17,7 @@ define('INCLUDES_DIR', SITE_ROOT . '/includes');
    SITE_META_TITLE - the share-card headline (og:title / twitter:title). Free
                      to be punchier than the tab title. */
 define('SITE_TITLE', 'Derek Wood');
-define('SITE_META_TITLE', 'Derek Wood: Technical Product Designer');
+define('SITE_META_TITLE', 'Derek Wood: Technical Product Designer at Large');
 define('SITE_DESCRIPTION', 'I help teams do their best work, whether that\'s big-picture vision and strategy, research and user testing, interfaces and code, design systems and cross-team collaboration, or auditing and maintaining what\'s already shipped.');
 
 /* CALL_URL - the one book-a-call link. Every "let's talk" door on the site
@@ -29,7 +29,7 @@ define('CALL_URL', 'https://calendly.com/perpetual-education/priority-meeting');
    URLs must be absolute, so they point here regardless of how the page was
    fetched (local dev, staging). Update if the domain ever moves. */
 define('SITE_URL', 'https://derekthomaswood.com');
-define('SITE_SHARE_IMAGE', '/default-meta.jpg');
+define('SITE_SHARE_IMAGE', '/meta-image/default-meta.jpg');
 
 /* Production = any serve on the real domain (same host test the dev stamp
    uses in header.php). Everything else - MAMP, staging - counts as local. */

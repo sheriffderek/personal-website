@@ -29,7 +29,9 @@
 			$share_title = $page_article['headline'];
 		}
 		$meta_description = $page_description ?? SITE_DESCRIPTION;
-		$meta_image = SITE_URL . ($page_image ?? SITE_SHARE_IMAGE);
+		/* Versioned by mtime like the CSS: images serve with a year-long cache,
+		   and share scrapers cache by URL, so a replaced image needs a new URL. */
+		$meta_image = SITE_URL . asset($page_image ?? SITE_SHARE_IMAGE);
 		$meta_url = SITE_URL . strtok($_SERVER['REQUEST_URI'], '?');
 	?>
 	<title><?= $meta_title ?></title>
