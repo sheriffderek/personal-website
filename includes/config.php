@@ -17,7 +17,7 @@ define('INCLUDES_DIR', SITE_ROOT . '/includes');
    SITE_META_TITLE - the share-card headline (og:title / twitter:title). Free
                      to be punchier than the tab title. */
 define('SITE_TITLE', 'Derek Wood');
-define('SITE_META_TITLE', 'Derek Wood: Designer at large');
+define('SITE_META_TITLE', 'Derek Wood: Technical Product Designer');
 define('SITE_DESCRIPTION', 'I help teams do their best work, whether that\'s big-picture vision and strategy, research and user testing, interfaces and code, design systems and cross-team collaboration, or auditing and maintaining what\'s already shipped.');
 
 /* CALL_URL - the one book-a-call link. Every "let's talk" door on the site
