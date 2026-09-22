@@ -757,6 +757,10 @@ practice-layers {
 			display: none;
 		}
 
+		/* $todo (Derek, 2026-09-22, sketches/17-timeline-needs-a-time-arrow.webp):
+		   the timeline may need an ARROW under it, left to right, to say that
+		   the axis is time - the bars alone don't say which way it runs.
+		   Not built; noted here so it lives with the layout it belongs to. */
 		/* SPREAD OUT LIKE A TIMELINE (Derek, 2026-09-20), not bunched like a
 		   staircase: the LAST bar is only as wide as it has to be for its
 		   name and its +, and the steps share out everything that is left.
