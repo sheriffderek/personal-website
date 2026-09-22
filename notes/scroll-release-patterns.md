@@ -56,6 +56,11 @@ Started 2026-09-20. The goal (Derek): "find all the patterns that work / and doc
 | **Ramp before the let-go** (ease the pinned thing up to full speed) | Fixes the visual step, not the overshoot. Back at full speed by the line, so a late fling is spent at full speed. | "B does feel way better than A" then "none of the tests feel right. They all zoom super far right after passing them." (Lab B and D, removed; the component's own release ramp removed with them.) |
 | **Scroll-snap brake on the page** | On iOS, one snap point on the page scroller switches EVERY fling on the page to fast deceleration (WebKit bug 243582). | "it's not free scrolling like iOS normally does" |
 | **Announcing the end** (progress bars, "almost done" cues) | Too late for a thrown fling, and nobody is looking. | Derek's Apple-page argument |
+| **Short pin alone** (I, J) | Still a pin: even half a screen of frozen screen is a screen the finger slides over with nothing moving, and the fling that follows lands at full speed. Length is not the lever - visible motion is. | Derek, 2026-09-22: "the rest all seem to fail" |
+| **Time, not distance** (M) | Playing the beats on a clock changes what the reader gets, not what the hand is doing - the screen is still frozen while it plays. | same |
+| **Run-outs** (G, H, P, O's) | Nothing to read is still nothing to steer by until it goes past, and a fling at full speed goes past it in a blink. A run-out made of a scrubbed animation (P) does land you softly - but it is a pin, and forwards the fling to its own end. | same; on P: "puts you back into the same position" |
+| **The catches** (C, F) | Ending iOS momentum by script lands a few frames late, and however the let-out is shaped it reads as the page taking over. | C: "just a slower return to normal"; F out with the rest |
+| **Slow zone after the let-go** (E) | Same family as the ramps: a place-based speed change, and the fling is spent in it as scroll distance the reader then has to travel back. | out with the rest |
 | **Taking over touch scrolling** (Lenis syncTouch, GSAP normalizeScroll, a custom scroller) | Rebuilds the thing people hate; loses address-bar, zoom and accessibility hand-offs. | Research only - rejected untested |
 
 **Slow zone after the let-go** (lab E) - out with the rest (Derek, 2026-09-22).
