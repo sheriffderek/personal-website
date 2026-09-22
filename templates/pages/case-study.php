@@ -9,10 +9,10 @@
 	<header class='study-header'>
 		<h1 class='loud-voice'><?= $study['title'] ?></h1>
 
-		<?php /* One line under the title ('tagline' in case-studies.json).
+		<?php /* One line under the title ('teaser' in case-studies.json).
 			Derek writes it; until he does, nothing renders. */ ?>
-		<?php if (!empty($study['tagline'])): ?>
-			<p class='tagline'><?= $study['tagline'] ?></p>
+		<?php if (!empty($study['teaser'])): ?>
+			<p class='teaser'><?= $study['teaser'] ?></p>
 		<?php endif; ?>
 
 		<?php /* The facts strip - role, timeline, platform, team. Facts, not

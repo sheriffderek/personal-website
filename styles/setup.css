@@ -25,6 +25,21 @@ label {
 	color: var(--selection-ink, var(--fill-primary));
 }
 
+/* A highlighted run of prose (<mark>) wears the same pair as a text
+   selection - it IS a highlighter stroke, so the mood that picked the
+   highlighter color has already picked this one. Ends bleed a hair past
+   the glyphs so the stroke reads as drawn over the words, not set as a box. */
+mark {
+	background-color: var(
+		--selection-fill,
+		color-mix(in oklab, var(--ink-primary) 75%, transparent)
+	);
+	color: var(--selection-ink, var(--fill-primary));
+	padding-inline: 0.15em;
+	margin-inline: -0.15em;
+	border-radius: var(--corners, 0);
+}
+
 /* Ink hierarchy - the DEFAULT for every theme (Derek, 2026-08-23):
    headings in primary ink, prose in secondary, meta in auxiliary (.year
    already reads auxiliary in milestone.css). The defaults live in these

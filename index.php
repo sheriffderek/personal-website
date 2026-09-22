@@ -70,6 +70,14 @@ $pages = [
 		'description' => 'Videos and stories from Derek Wood - takes on design and development, situations from real work, tips and tricks.',
 	],
 
+	// The index of case studies. No 'menu' door yet (not in MENU_PAGES) -
+	// reachable by URL and from wherever Derek links it.
+	'case-studies' => [
+		'file' => 'case-studies.php',
+		'title' => 'Case studies - ' . SITE_TITLE,
+		'description' => SITE_DESCRIPTION,
+	],
+
 	'contact' => [
 		'file' => 'contact.php',
 		'menu' => 'Contact',

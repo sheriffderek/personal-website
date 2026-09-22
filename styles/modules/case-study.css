@@ -5,7 +5,7 @@
    semantic tokens carry the color, .styled carries the paragraph rhythm. */
 
 .case-study {
-	.tagline {
+	.teaser {
 		margin-top: 0.75em;
 		color: var(--ink-secondary);
 	}
@@ -29,6 +29,21 @@
 		margin-top: 4em;
 	}
 
+	/* Local-only scaffolding (see the body file's header comment): key points
+	   under each video, waiting to be replaced by real paragraphs. The dashed
+	   edge says "not copy" at a glance. */
+	.working-notes {
+		margin-top: 1em;
+		padding-block: 0.75em;
+		padding-inline-start: 1.4em;
+		border-inline-start: 1px dashed var(--stroke-primary);
+		color: var(--ink-secondary);
+
+		li + li {
+			margin-top: 0.4em;
+		}
+	}
+
 	.study-figure {
 		margin-block: 1.5em;
 		/* The media wash - same wiring as .entry-figure in journal.css. */
@@ -50,6 +65,23 @@
 		   an opt-in: the videos are screen recordings and need the room. */
 		@media (min-width: 1200px) {
 			width: calc(100% + var(--layout-figure-breakout));
+		}
+	}
+}
+
+.case-study-index {
+	.study-list {
+		list-style: none;
+		padding: 0;
+		margin-top: 2em;
+
+		li + li {
+			margin-top: 2em;
+		}
+
+		li p {
+			margin-top: 0.35em;
+			color: var(--ink-secondary);
 		}
 	}
 }
