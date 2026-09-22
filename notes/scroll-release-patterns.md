@@ -4,9 +4,24 @@ Started 2026-09-20. The goal (Derek): "find all the patterns that work / and doc
 
 **Where the truth lives.** Every pattern here points at something you can feel:
 - The lab: `experiments/practice-layers/index.html`, "THE RELEASE LAB" at the bottom of the phone column. Live at https://derekthomaswood.com/experiments/practice-layers/ - each test is a pin (three screens unless it says otherwise) that lets go into numbered blocks, with a row of jump links at the top (letters are never reused - B and D were ramps, and were cleared out with the rest of the failures on 2026-09-20); **the number you land on is the measurement.** The how and why of each test is in the comment beside its CSS or script.
-- The research and the verdict history: `experiments/practice-layers/HANDOFF.md` ("The sticky-release problem" and the lab verdicts above it).
+- The research in full (Derek's own thread, the three passes, every source): `notes/scroll-release-research.md`.
+- The verdict history: `experiments/practice-layers/HANDOFF.md` ("The sticky-release problem" and the lab verdicts above it).
 
 **A status means Derek's thumb on his phone, nothing less.** "Unjudged" = built and measured in a desktop browser only.
+
+## The vocabulary (names to reference)
+
+- **Release overshoot** - the problem: the next section flies past when a pin lets go. (Coined here; nobody has named it.)
+- **The let-go** - the line where a pin ends and the page is 1:1 again.
+- **Flick mode** - what a pin trains on a phone: the thumb stops dragging and starts throwing.
+- **Honest reference** (lab K) - something real always scrolling at true speed, so the hand keeps its pace.
+- **Release by arrival** (lab L) - the pin ends when the next thing, moving at true speed, reaches its seat; they leave together.
+- **Pin after pin** (lab P, the finale) - the next scrubbed animation eats the incoming fling as fast playback, then throws its own.
+- **Pass-through fun** (lab N) - animation tied to an element's own trip through the screen; no pin.
+- **Run-out** (lab G/H/P) - a stretch with nothing to read, for a fling to be spent in. Ruled out on its own.
+- **The catch / the soft catch** (lab C/F) - script ends the momentum at the let-go. Ruled out.
+- **Release ramp** (was lab B/D) - easing the pinned thing up to full speed before the let-go. Ruled out.
+- **The three laws** - below. The first is the one-liner for the article: *a ramp lives at a place, a fling lives in time.*
 
 ## The problem, in four lines
 
