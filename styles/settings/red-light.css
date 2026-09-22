@@ -31,12 +31,17 @@
 	--accent: light-dark(var(--color-red-950), var(--color-red-500));
 	--scrim: rgb(0 0 0 / 0.6);
 
-	/* The media wash (mechanism in milestone.css): real photos/videos render as
-	   luminosity over full red - brightness maps to red, the same math the iPhone
-	   filter does to a photo. Carousel dots' difference ink goes red so the
-	   inversion stays in-theme. */
-	--media-blend: luminosity;
-	--media-blend-fill: #ff0004;
+	/* The media wash (mechanism in milestone.css; the journal, case-study
+	   and how-i-work embeds share it): real photos/videos/embeds multiply
+	   over a red gel - light areas take the gel's red, dark areas stay dark.
+	   (Was luminosity over #ff0004 until 2026-09-21: that forced every
+	   pixel to full-saturation red and read as a hot mess on a Vimeo
+	   player's UI. Multiply keeps the image's own contrast.) The gel is
+	   the room's red in light; a coral in dark so the image glows out of
+	   the near-black room instead of sinking into it. Carousel dots'
+	   difference ink goes red so the inversion stays in-theme. */
+	--media-blend: multiply;
+	--media-blend-fill: light-dark(var(--fill-primary), var(--color-red-400));
 	--dot-ink: #ff0004;
 
 	/* Selection restates the inversion recipe (else the default highlighter

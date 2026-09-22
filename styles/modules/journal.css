@@ -75,6 +75,14 @@
 	   of the same width at full size. */
 	.entry-figure {
 		margin-block: 1.5em;
+		/* The media wash (mechanism and the why in milestone.css): an iframe
+		   blends like an img - mode on the embed, backdrop on the figure,
+		   isolation fences it. Off by default (normal over transparent);
+		   red-light sets the pair. $todo - a figcaption on a washed figure
+		   sits on the backdrop fill too (no caption-carrying embed is live
+		   yet; the kitchen-sink has one). */
+		isolation: isolate;
+		background-color: var(--media-blend-fill, transparent);
 
 		img {
 			border-radius: var(--corners, 0);
@@ -86,6 +94,7 @@
 			border: 0;
 			border-radius: var(--corners, 0);
 			background: var(--fill-secondary);
+			mix-blend-mode: var(--media-blend, normal);
 		}
 
 		figcaption {

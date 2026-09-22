@@ -31,6 +31,9 @@
 
 	.study-figure {
 		margin-block: 1.5em;
+		/* The media wash - same wiring as .entry-figure in journal.css. */
+		isolation: isolate;
+		background-color: var(--media-blend-fill, transparent);
 
 		iframe {
 			width: 100%;
@@ -38,6 +41,7 @@
 			border: 0;
 			border-radius: var(--corners, 0);
 			background: var(--fill-secondary);
+			mix-blend-mode: var(--media-blend, normal);
 		}
 
 		/* Every study video is the wide size - the same right-side-only

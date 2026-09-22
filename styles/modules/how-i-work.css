@@ -4,6 +4,9 @@
 
 .page-video {
 	margin: 2em 0 0;
+	/* The media wash - same wiring as .entry-figure in journal.css. */
+	isolation: isolate;
+	background-color: var(--media-blend-fill, transparent);
 
 	iframe {
 		width: 100%;
@@ -14,5 +17,6 @@
 		   paints in, and ink-primary is the darkest slot every mood
 		   already tunes per scheme. */
 		background: var(--ink-primary);
+		mix-blend-mode: var(--media-blend, normal);
 	}
 }
