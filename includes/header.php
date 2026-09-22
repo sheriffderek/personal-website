@@ -86,54 +86,59 @@
 
 		<script type='application/ld+json'><?= json_encode($article_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?></script>
 	<?php } ?>
-	<script>
-		(function () {
-			var html = document.documentElement;
-			try {
-				var scheme = localStorage.getItem('scheme-preference');
-				if (scheme && scheme !== 'system') html.setAttribute('data-scheme', scheme);
+	<?php /* Restores the visitor's saved settings before paint. Only while the
+		settings panel exists (SETTINGS_ENABLED, config.php) - with no panel,
+		a saved choice would be a look the visitor can't undo. */ ?>
+	<?php if (SETTINGS_ENABLED): ?>
+		<script>
+			(function () {
+				var html = document.documentElement;
+				try {
+					var scheme = localStorage.getItem('scheme-preference');
+					if (scheme && scheme !== 'system') html.setAttribute('data-scheme', scheme);
 
-				/* Character (type + shape) and mood (color) are separate axes.
-				   Absent attribute = the CSS default (Product character, Expressive
-				   mood), so only a non-default saved choice gets written. Unknown values
-				   (e.g. a stale 'brand-preference'-era slug) are ignored. Keep
-				   these lists matched to CHARACTERS / MOODS in settings-panel.js. */
-				var character = localStorage.getItem('character-preference');
-				if (['marketing', 'interface', 'editorial', 'terminal'].indexOf(character) !== -1) html.setAttribute('data-brand-character', character);
+					/* Character (type + shape) and mood (color) are separate axes.
+					   Absent attribute = the CSS default (Product character, Expressive
+					   mood), so only a non-default saved choice gets written. Unknown values
+					   (e.g. a stale 'brand-preference'-era slug) are ignored. Keep
+					   these lists matched to CHARACTERS / MOODS in settings-panel.js. */
+					var character = localStorage.getItem('character-preference');
+					if (['marketing', 'interface', 'editorial', 'terminal'].indexOf(character) !== -1) html.setAttribute('data-brand-character', character);
 
-				/* Mood is the one axis whose starting position isn't index 0
-				   (DEFAULT_MOOD, config.php): the <html> tag arrives already
-				   wearing it, so a saved choice OVERRIDES here - and a saved
-				   'expressive' means taking the attribute off. No saved
-				   choice = leave the server's default alone. */
-				var mood = localStorage.getItem('mood-preference');
-				if (mood === 'expressive') {
-					html.removeAttribute('data-brand-mood');
-				} else if (['technical', 'quiet'].indexOf(mood) !== -1) {
-					html.setAttribute('data-brand-mood', mood);
+					/* Mood is the one axis whose starting position isn't index 0
+					   (DEFAULT_MOOD, config.php): the <html> tag arrives already
+					   wearing it, so a saved choice OVERRIDES here - and a saved
+					   'expressive' means taking the attribute off. No saved
+					   choice = leave the server's default alone. */
+					var mood = localStorage.getItem('mood-preference');
+					if (mood === 'expressive') {
+						html.removeAttribute('data-brand-mood');
+					} else if (['technical', 'quiet'].indexOf(mood) !== -1) {
+						html.setAttribute('data-brand-mood', mood);
+					}
+
+					var flavor = localStorage.getItem('flavor-preference');
+					if (['earth', 'cool', 'sweet'].indexOf(flavor) !== -1) html.setAttribute('data-flavor', flavor);
+
+					/* Red light is a boolean override, its own key - 'on' = a bare
+					   data-red-light attribute (no value). */
+					if (localStorage.getItem('red-light-preference') === 'on') html.setAttribute('data-red-light', '');
+
+					<?php if (GRID_VIEW_ENABLED && ($page_controls ?? null) === 'filter-control'): ?>
+						/* Grid only exists from 1200px (the breakpoint in
+						   styles/layouts/grid-view.css - keep the two matched); below
+						   it the preference waits, unapplied, and settings-panel.js
+						   re-checks on resize. Gated to the timeline page - a saved
+						   grid preference means nothing anywhere else. */
+						var view = localStorage.getItem('view-preference');
+						if (view === 'grid' && window.matchMedia('(min-width: 1200px)').matches) html.setAttribute('data-view', 'grid');
+					<?php endif; ?>
+				} catch (error) {
+					/* private-mode storage throw — the defaults need no attributes. */
 				}
-
-				var flavor = localStorage.getItem('flavor-preference');
-				if (['earth', 'cool', 'sweet'].indexOf(flavor) !== -1) html.setAttribute('data-flavor', flavor);
-
-				/* Red light is a boolean override, its own key - 'on' = a bare
-				   data-red-light attribute (no value). */
-				if (localStorage.getItem('red-light-preference') === 'on') html.setAttribute('data-red-light', '');
-
-				<?php if (GRID_VIEW_ENABLED && ($page_controls ?? null) === 'filter-control'): ?>
-					/* Grid only exists from 1200px (the breakpoint in
-					   styles/layouts/grid-view.css - keep the two matched); below
-					   it the preference waits, unapplied, and settings-panel.js
-					   re-checks on resize. Gated to the timeline page - a saved
-					   grid preference means nothing anywhere else. */
-					var view = localStorage.getItem('view-preference');
-					if (view === 'grid' && window.matchMedia('(min-width: 1200px)').matches) html.setAttribute('data-view', 'grid');
-				<?php endif; ?>
-			} catch (error) {
-				/* private-mode storage throw — the defaults need no attributes. */
-			}
-		})();
-	</script>
+			})();
+		</script>
+	<?php endif; ?>
 	<?php /* Feed discovery: readers and browser extensions find the journal's
 		RSS at this address from any page on the site. The feed itself is
 		templates/journal-feed.php, routed in index.php. */ ?>

@@ -78,12 +78,25 @@ define('TOUR_ENABLED', false);
    changes, move the new starting mood to the front in both. */
 define('DEFAULT_MOOD', 'quiet');
 
+/* SETTINGS_ENABLED - the visitor-facing settings panel (theme, scheme, sound,
+   layout, the timeline filter). OFF 2026-09-22: Derek's call, dark until he
+   has time to really nail the settings. Off = the settings trigger and panel
+   never render (the Pages menu stays), and the FOUC script in header.php
+   stops re-applying saved preferences - a visitor who once chose dark mode or
+   a character would otherwise be stuck in it with no control to undo it.
+   Everyone sees the default look. The grid view and the filter slider ride
+   with this flag (below), because their controls live inside the panel. */
+define('SETTINGS_ENABLED', false);
+
 /* GRID_VIEW_ENABLED - the List/Grid view axis: on big screens (>= 1200px) a
    Grid option turns the timeline into a multi-column wall of work, with the
    settings BAND on the top composition from 1450 up. Off = the toggle never
    renders, the grid stylesheet never loads, and the FOUC script never sets
-   data-view - the site is exactly the single-column list. */
-define('GRID_VIEW_ENABLED', true);
+   data-view - the site is exactly the single-column list.
+   Follows SETTINGS_ENABLED: the way back out of grid is the panel's Layout
+   row, so grid without the panel would strand the visitor. Write false here
+   to pull grid on its own. */
+define('GRID_VIEW_ENABLED', SETTINGS_ENABLED);
 
 /* CAROUSEL_ENABLED - the per-card media carousel (Flickity). OFF 2026-08-12:
    prime suspect in the iOS horizontal-scroll bug (composited translated
@@ -109,8 +122,11 @@ define('SLIDER_HINT_ENABLED', true);
    home.php serves ONLY weight-1 entries, so the curated default view holds
    with no JS trimming. All the slider code (filter-control partial, the
    filter section of settings-panel.js, the minimap CSS) stays in place,
-   untouched - flip to true and the full timeline + slider come back. */
-define('FILTER_ENABLED', true);
+   untouched - flip to true and the full timeline + slider come back.
+   Follows SETTINGS_ENABLED: the slider lives in the panel, so with no panel
+   the weight-1 spine is the whole timeline. Write false here to pull the
+   filter on its own. */
+define('FILTER_ENABLED', SETTINGS_ENABLED);
 
 /* (CAROUSEL_ENABLED lives above, by GRID_VIEW_ENABLED - a duplicate define
    briefly lived here, 2026-08-13.) */
