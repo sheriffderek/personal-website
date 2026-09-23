@@ -90,10 +90,82 @@ What each piece proves, what already exists, how deep, what gap it fills.
   "Figma Variables and Modes" as a skill bullet today). No draft state exists
   for cards, so the card waits for its words.
 
+### Derek's pass over every card (2026-09-22, dictated - sorted, not yet prioritized)
+
+**Main case studies - the serious ones**
+- *Now interviewing* - treat it as a case study of the whole job-hunt
+  workflow; show cool things about him (the layered storyline); he has Figma
+  files and could make a video of how this site works, how it shows exactly
+  what they need to know, and why it's designed this way. (The layered
+  experience chart's natural home.)
+- *List at Ease* - "a little bit scared to make, but I have a lot of data
+  there." One of the main key case studies.
+- *BetterLife* - "should be a pretty serious case study. I'm just avoiding it
+  because it's kind of a mess" - but so much to talk about; no reason it can't
+  be very impressive.
+- *Designing a digital product design school* - could be a story/overview of
+  why he wanted to design the school, with the case study being built broken
+  into the smaller PE parts. Thoughts still forming.
+
+**Already exists - just link out**
+- *PE code editor* - a mostly finished, "pretty official" case study on the PE
+  site; link to it.
+- *Turing Outside Insights*, *skill-gap podcast*, *bootcamp podcast* - link
+  to the video.
+- *PSSST* - stands alone, leads to the GitHub.
+- *CSS-Tricks* - leads to the article; fine as is.
+
+**Low-hanging fruit**
+- *Themeable frame system* - done recently, pretty simple: in any system you
+  might need to style and theme your images; practical choices that are also
+  visually fun.
+
+**Figma-rich explorations**
+- *MIDI / DAW* - lots of Figma of the initial design, plus a Figma Make thing
+  made at the Figma event; the storyline could land with the physical-hardware
+  companies he's interested in.
+- *Figma collection research for multiplatform brands* - the new milestone
+  (above).
+
+**Could do - for fun, practice, or the record; not top priority**
+- *PE self-paced* - quick overview of how it used to work vs going forward,
+  some sketches; not much exciting UI yet, but he wants to build nice UI for it
+  while waiting for a job.
+- *Text-editor R&D* - not actively working on it; more of an exploration he
+  could map out and explain.
+- *PE syntax highlighting* - a good chance for a UI-centered, theming,
+  design-system thought process; unsure how important.
+- *Accessibility + SVG consulting* - lots in CodePens etc. to show; probably
+  not top five.
+- *Exploring the edges of ecommerce* - could be a case study (CodePens,
+  Shopify's problems and limits); not a big priority.
+- *LA agencies* - a video, journal-style, showing the wide variety of work.
+
+**Smaller PE features - same boat, keep on the record**
+- *PE calendar*, *early study hall*, *initial page modules* - smaller parts of
+  a bigger storyline.
+
+**Numbers only**
+- *Open office hours* - no case study; maybe numbers (how many people have
+  come, the range of who they are).
+
+**Leave as they are**
+- *AICAD talk* - never formalized into a video; it's there to show legitimate
+  education people want him.
+- *PXL* - could talk about building DreamWorks, but "I don't really know what
+  the point is" - long ago.
+- *Niagen* - hard to gather material; some interesting stories, but maybe
+  better kept a little vague and important-sounding.
+- *School Loop* - interesting stories behind it, unsure of its value.
+- *ShoutQ* - nothing to show; no access to any of it anymore.
+- *CCA* - one day, find some of the art and show it.
+- *Fresh thoughts on the portfolio* - maybe doesn't need to be here; could
+  stay as a milestone in thinking that just links to his journal entries about
+  portfolios.
+
 ### Next
 
-Derek lists the rest of the proof he can make and at what depth; then we
-prioritize - biggest gap filled for the least new work first.
+Prioritize - biggest gap filled for the least new work first.
 
 ## Parked elsewhere this session
 
