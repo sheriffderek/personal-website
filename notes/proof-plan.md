@@ -109,7 +109,8 @@ What each piece proves, what already exists, how deep, what gap it fills.
 
 **Already exists - just link out**
 - *PE code editor* - a mostly finished, "pretty official" case study on the PE
-  site; link to it.
+  site; link to it - after "some more work before it can be read - but not
+  too much." Covers the plan's #5 (case-studies-plan.md) once linked.
 - *Turing Outside Insights*, *skill-gap podcast*, *bootcamp podcast* - link
   to the video.
 - *PSSST* - stands alone, leads to the GitHub.
