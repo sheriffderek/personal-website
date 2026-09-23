@@ -30,6 +30,10 @@ Already the site's rule: the "Link marks" comment in styles/setup.css defines
 the selectors apply `→` and `↗` so content never types them. Today's
 realization was that this grammar is also the answer to "buttons vs links".
 
+Not every card needs a door (Derek). Each card just needs its door STATUS
+known: **none** (fine as it is), **now** (the destination exists - link it),
+or **later** (say what it will be).
+
 Kinds of doors: an **outside article** (published once elsewhere), a
 **long-lived collection** ("View the collection ↗"), and a **stand-in** - the
 best thing that exists until the real destination ships.
@@ -113,7 +117,10 @@ What each piece proves, what already exists, how deep, what gap it fills.
   too much." Covers the plan's #5 (case-studies-plan.md) once linked.
 - *Turing Outside Insights*, *skill-gap podcast*, *bootcamp podcast* - link
   to the video.
-- *PSSST* - stands alone, leads to the GitHub.
+- *PSSST* - door: none (a later door to the design-systems study is possible,
+  not planned). NOT the
+  GitHub repo (Derek: making it presentable is a lot of work) - the repo is
+  where the thinking happens; PE and this site are the fleshed-out proof.
 - *CSS-Tricks* - leads to the article; fine as is.
 
 **Low-hanging fruit**
