@@ -25,6 +25,11 @@ define('SITE_DESCRIPTION', 'I help teams do their best work, whether that\'s big
    is a one-line edit. */
 define('CALL_URL', 'https://calendly.com/perpetual-education/priority-meeting');
 
+/* CONTACT_EMAIL - the one address this site gives out. It has to match the
+   email on every job application, so it's the personal address, not the
+   consulting one. The Contact page prints it and its structured data reads it. */
+define('CONTACT_EMAIL', 'derekthomaswood@gmail.com');
+
 /* Canonical production origin. Share-card (Open Graph / Twitter) images and
    URLs must be absolute, so they point here regardless of how the page was
    fetched (local dev, staging). Update if the domain ever moves. */
@@ -79,14 +84,15 @@ define('TOUR_ENABLED', false);
 define('DEFAULT_MOOD', 'quiet');
 
 /* SETTINGS_ENABLED - the visitor-facing settings panel (theme, scheme, sound,
-   layout, the timeline filter). OFF 2026-09-22: Derek's call, dark until he
-   has time to really nail the settings. Off = the settings trigger and panel
+   layout, the timeline filter). ON - it went dark for an afternoon
+   (2026-09-22) and came back the same day: Ivy came around to the grid as
+   the landing page, and it needs the panel. Off = the settings trigger and panel
    never render (the Pages menu stays), and the FOUC script in header.php
    stops re-applying saved preferences - a visitor who once chose dark mode or
    a character would otherwise be stuck in it with no control to undo it.
    Everyone sees the default look. The grid view and the filter slider ride
    with this flag (below), because their controls live inside the panel. */
-define('SETTINGS_ENABLED', false);
+define('SETTINGS_ENABLED', true);
 
 /* GRID_VIEW_ENABLED - the List/Grid view axis: on big screens (>= 1200px) a
    Grid option turns the timeline into a multi-column wall of work, with the

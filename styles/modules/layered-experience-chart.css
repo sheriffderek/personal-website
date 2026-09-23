@@ -8,8 +8,8 @@
    from the left. A screen reader still gets the layers oldest-first.
 
    The chart draws itself at whatever width it's given. WHERE it shows, and
-   how wide, is the page's call - home's composition lives with the other
-   page-scoped layout rules in styles/layouts/default-layout.css. */
+   how wide, is the page's call. Not mounted anywhere right now (2026-09-22):
+   it was on home for an afternoon and is headed for a case-study page. */
 
 .layered-experience-chart {
 	/* The chart's rhythm: a bar's inner padding, and the air between bars. */
@@ -21,7 +21,7 @@
 	   their own if a layer is added or removed. */
 	--last-bar: 11rem;
 	/* Every bar is one row this tall, so a page can place the chart by whole
-	   bars (home lifts it one bar up beside the intro). */
+	   bars (e.g. lift it one bar up beside an intro). */
 	--bar-height: 2.5rem;
 
 	display: flex;

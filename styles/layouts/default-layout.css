@@ -34,8 +34,8 @@ body {
 	--layout-list-column: 720px;
 	--layout-tray-sidebar: 300px;
 	/* The gap between the grid's columns from 1024 up. A token because a
-	   shape that reaches across into the tray's lane (home's layered
-	   experience chart) has to cross exactly this much. */
+	   shape that reaches across into the tray's lane has to cross exactly
+	   this much. */
 	--layout-column-gap: 1.5rem;
 
 	/* How far a wide shape (the journal's .figure-full) reaches past the
@@ -196,38 +196,6 @@ main {
 	.page-wrapper[data-page^='journal/'] > .site-tray,
 	.page-wrapper[data-page^='case-studies/'] > .site-tray {
 		grid-column: 4;
-	}
-}
-
-/* Home's layered experience chart (Derek's markup, 2026-09-22): large
-   screens only - smaller screens get a simpler telling, not placed yet. */
-.page-wrapper[data-page='home'] .layered-experience-chart {
-	display: none;
-
-	@media (width >= 1024px) {
-		display: flex;
-		/* Reach right to the toolbar's edge: across the column gap and the
-		   tray's lane. main and the tray both pad with --gutter, so those
-		   two cancel out. */
-		margin-inline-end: calc(-1 * (var(--layout-column-gap) + var(--layout-tray-sidebar)));
-		/* Rise one bar beside the intro (Derek: two was a little high). The
-		   top bars start past the text column's edge (checked at 1024 and
-		   at full width), so it sits next to the intro without touching it. */
-		margin-block-start: calc(-1 * (var(--bar-height) + var(--gap)));
-		/* The chart's box now reaches up over "Read more", in the empty
-		   corner left of the steps. Let clicks pass through that corner;
-		   the bars themselves stay clickable. */
-		pointer-events: none;
-
-		li {
-			pointer-events: auto;
-		}
-	}
-
-	/* Where there is room, the base bar breaks out past the text column on
-	   the left too - the same reach journal figures use. */
-	@media (width >= 1450px) {
-		margin-inline-start: calc(-1 * var(--layout-figure-breakout));
 	}
 }
 
