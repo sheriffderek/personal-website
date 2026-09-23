@@ -1,0 +1,145 @@
+/* The layered experience chart - the staircase (includes/layered-experience-
+   chart.php). Ported from the practice-layers lab (experiments/practice-
+   layers/, where the scroll-story telling still lives); the reasons behind
+   each choice are Derek's calls from that lab, kept beside the rules here.
+
+   Source order is oldest layer first. column-reverse draws it bottom-up: the
+   base layer is the bottom bar and each later layer sits on top, stepped in
+   from the left. A screen reader still gets the layers oldest-first.
+
+   The chart draws itself at whatever width it's given. WHERE it shows, and
+   how wide, is the page's call - home's composition lives with the other
+   page-scoped layout rules in styles/layouts/default-layout.css. */
+
+.layered-experience-chart {
+	/* The chart's rhythm: a bar's inner padding, and the air between bars. */
+	--space: 1rem;
+	--gap: 0.5rem;
+	/* SPREAD OUT LIKE A TIMELINE (Derek, 2026-09-20), not bunched like a
+	   staircase: the LAST bar is only as wide as its name and its + need,
+	   and the steps share out everything that is left - so they re-share on
+	   their own if a layer is added or removed. */
+	--last-bar: 11rem;
+	/* Every bar is one row this tall, so a page can place the chart by whole
+	   bars (home lifts it one bar up beside the intro). */
+	--bar-height: 2.5rem;
+
+	display: flex;
+	flex-direction: column-reverse;
+	gap: var(--gap);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	li {
+		/* % of the chart's width, so every step is the same size. */
+		margin-inline-start: calc((100% - var(--last-bar)) / (var(--count) - 1) * var(--index));
+		background: var(--tone);
+		color: var(--tone-ink, var(--ink-primary));
+		/* the site's <p> rule colors prose from this slot */
+		--prose-ink: var(--tone-ink, var(--ink-primary));
+		/* Forced colors (Windows High Contrast) throw every background away,
+		   and the bars ARE backgrounds - they'd vanish, leaving loose words.
+		   A transparent outline is invisible everywhere else, and forced
+		   colors paints it in the system's text color, so each bar keeps
+		   its edge. */
+		outline: 1px solid transparent;
+		outline-offset: -1px;
+	}
+
+	/*
+		THE PALETTE - "Deepening", the lab's working favorite: one step from
+		paper toward ink per layer, so the stacking reads as density - the
+		career gets deeper, not more colorful. It names no color, only the
+		mood contract's slots, so it repaints with every mood and scheme.
+		CONTRAST (Ivy, 2026-09-20): the steps are wide, and the ramp SKIPS the
+		middle grays on purpose - between roughly 38% and 58% of the way to
+		ink neither dark nor light words read well. So six light layers carry
+		dark words, then the last three turn dark with paper-colored words.
+	*/
+	li:nth-child(1) { --tone: var(--fill-secondary); }
+	li:nth-child(2) { --tone: color-mix(in oklab, var(--fill-secondary), var(--ink-primary) 7%); }
+	li:nth-child(3) { --tone: color-mix(in oklab, var(--fill-secondary), var(--ink-primary) 14%); }
+	li:nth-child(4) { --tone: color-mix(in oklab, var(--fill-secondary), var(--ink-primary) 21%); }
+	li:nth-child(5) { --tone: color-mix(in oklab, var(--fill-secondary), var(--ink-primary) 28%); }
+	li:nth-child(6) { --tone: color-mix(in oklab, var(--fill-secondary), var(--ink-primary) 35%); }
+
+	li:nth-child(7) {
+		--tone: color-mix(in oklab, var(--fill-secondary), var(--ink-primary) 64%);
+		--tone-ink: var(--fill-primary);
+	}
+
+	li:nth-child(8) {
+		--tone: color-mix(in oklab, var(--fill-secondary), var(--ink-primary) 82%);
+		--tone-ink: var(--fill-primary);
+	}
+
+	li:nth-child(9) {
+		--tone: var(--ink-primary);
+		--tone-ink: var(--fill-primary);
+	}
+
+	/* The palette clears WCAG 2 AA as is (weakest name ~5.4:1, measured in
+	   Quiet - Derek, 2026-09-22: that's the bar). A visitor who asks their
+	   system for MORE contrast gets every bar the same (Derek): paper, an
+	   ink edge, ink words. The staircase shape still tells the story; the
+	   color was only ever garnish on it.
+	   (:nth-child(n) is only there to outrank the single-layer rules above.) */
+	@media (prefers-contrast: more) {
+		li:nth-child(n) {
+			--tone: var(--fill-primary);
+			--tone-ink: var(--ink-primary);
+			box-shadow: inset 0 0 0 1px var(--ink-primary);
+		}
+	}
+
+	/* The bar: its name, and a + at the right edge that says "there is more
+	   in here" (a - once open). Click, not hover - hover was tried in the lab
+	   and the chart jumped around under the pointer. */
+	.tag {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: var(--space);
+		min-block-size: var(--bar-height);
+		padding-inline: var(--space);
+		cursor: pointer;
+		list-style: none;
+
+		&::-webkit-details-marker {
+			display: none;
+		}
+
+		&::after {
+			content: '+';
+		}
+	}
+
+	details[open] > .tag::after {
+		content: '\2212';
+	}
+
+	.telling {
+		padding: 0 var(--space) var(--space);
+
+		p {
+			margin: 0;
+		}
+
+		/* headline -> paragraph -> skill words: a step, then a bigger step */
+		p + p {
+			margin-block-start: 0.75rem;
+		}
+
+		.skills {
+			margin-block-start: 1.25rem;
+		}
+
+		/* A short display line: balance first for Safari before 26 (which
+		   lacks pretty), pretty where the browser has it. */
+		p:first-child {
+			text-wrap: balance;
+			text-wrap: pretty;
+		}
+	}
+}

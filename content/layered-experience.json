@@ -1,0 +1,54 @@
+[
+	{
+		"tag": "Art + technical education",
+		"what": "Visual thinking, critical thinking, and the tools to make things.",
+		"why": "Critical thinking. Judgment about what's worth making. Comfort with ambiguity. Storytelling. Enough technical foundation to build the thing, not just picture it.",
+		"skills": "visual thinking · critique · theory · technical craft"
+	},
+	{
+		"tag": "Web design + development",
+		"what": "Design and code as one job.",
+		"why": "Design decisions get argued out in the browser as much as in the sketch. The build teaches the design what's possible; the design teaches the build what matters. Implementation isn't the thing that happens after design — it's part of the thing.",
+		"skills": "HTML · CSS · JavaScript · SVG · animation · accessibility"
+	},
+	{
+		"tag": "Front-end engineering",
+		"what": "Good work has to survive contact with a team.",
+		"why": "Building code other people can live with. Meeting real production constraints. Working across teams without the work getting lost in handoff.",
+		"skills": "production · performance · QA · systems · cross-functional teams"
+	},
+	{
+		"tag": "Early-stage product development",
+		"what": "Building when the answer isn't known yet.",
+		"why": "Moving from unclear problem to something concrete enough to test. Comfort with everything moving at once. Deciding what to build, and what not to.",
+		"skills": "UX · UI · prototyping · research · testing · shipping"
+	},
+	{
+		"tag": "Product + technical consulting",
+		"what": "The thing you're asked to fix isn't always the problem.",
+		"why": "Diagnosing the actual problem underneath the stated one. Reading team dynamics. Working across design, engineering, and product without allegiance to any of them.",
+		"skills": "discovery · facilitation · strategy · systems thinking · alignment"
+	},
+	{
+		"tag": "Product design",
+		"what": "Holding the whole product in view.",
+		"why": "The user, the business, the system, the interface, the technology — and the tradeoffs between them. Not just can we build it? but what are we trying to accomplish?",
+		"skills": "research · interaction · UI · design systems · product strategy"
+	},
+	{
+		"tag": "Design education + systems",
+		"what": "Making practice into a system other people can use.",
+		"why": "Turning years of instinct into something another person can pick up. Precision about what I actually know and don't. Building feedback loops that produce outcomes, not just information.",
+		"skills": "curriculum · teaching · feedback · assessment · mentorship"
+	},
+	{
+		"tag": "AI + agentic workflows",
+		"what": "AI on top of the layers, not instead of them.",
+		"why": "Shortens the loop between thinking and making. The value isn't doing more — it's knowing what to accelerate, what to question, and what shouldn't be handed over.",
+		"skills": "agents · LLMs · rapid prototyping · workflow design · experimentation"
+	},
+	{
+		"tag": "What's next?",
+		"what": "I'm looking for a team that can use all of this."
+	}
+]

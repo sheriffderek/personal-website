@@ -122,6 +122,11 @@ $target_notes = $target['milestones'] ?? [];
 	</details>
 </header>
 
+<?php /* The layered experience chart - the whole career as layers that
+	stack, between the intro and the timeline. Large screens only (the
+	composition rule in styles/modules/layered-experience-chart.css). */ ?>
+<?= partial('layered-experience-chart', ['layers' => load_json('layered-experience.json')]) ?>
+
 <?php /* ---- The settings band ----
 	The SECOND rendered instance of the settings rows (the first is the panel
 	popover in the tray - includes/settings-panel.php). Shown only on the grid's
