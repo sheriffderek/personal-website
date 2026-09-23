@@ -42,6 +42,12 @@
 		at the plain URL. */ ?>
 	<link rel='canonical' href='<?= $meta_url ?>'>
 
+	<?php /* Unlisted pages (the /hello/ introductions) ask search engines to
+		leave them out - a note to one person shouldn't turn up for their name. */ ?>
+	<?php if (!empty($page_noindex)): ?>
+		<meta name='robots' content='noindex'>
+	<?php endif; ?>
+
 	<?php /* Share cards: Open Graph (Facebook/LinkedIn/iMessage) + Twitter. */ ?>
 	<meta property='og:type' content='<?= empty($page_article) ? 'website' : 'article' ?>'>
 	<meta property='og:site_name' content='<?= SITE_TITLE ?>'>

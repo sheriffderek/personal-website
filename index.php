@@ -272,6 +272,36 @@ if (strpos($slug, 'resume/') === 0) {
 	}
 }
 
+// Personal introductions live at /hello/<their-name> (Derek, 2026-09-23):
+// a short video on why he's reaching out, a few lines, the exact
+// connections, and a way to reply. One folder per person or company -
+// content/hello/<slug>/ - holding hello.json (the words) beside video.mp4
+// and an optional video.jpg poster (fixed names, presence = rendered, the
+// same contract as the target folders). UNLISTED on purpose: no menu, no
+// feed, noindex - the link only works for whoever Derek sends it to, and
+// an unknown name is a plain 404, so guessing names reveals nothing.
+if (strpos($slug, 'hello/') === 0) {
+	// The whole slug must already be clean - anything else is a 404, never a
+	// scrubbed near-match that could land on someone else's folder.
+	$hello_slug = substr($slug, strlen('hello/'));
+	$hello = preg_match('/^[a-z0-9-]+$/', $hello_slug) ? load_json('hello/' . $hello_slug . '/hello.json') : [];
+
+	if (!empty($hello)) {
+		$hello['slug'] = $hello_slug;
+		$hello_poster = '/content/hello/' . $hello_slug . '/video.jpg';
+
+		$pages[$slug] = [
+			'file' => 'hello.php',
+			'title' => 'Hello ' . $hello['name'] . ' - ' . SITE_TITLE,
+			'description' => $hello['description'] ?? SITE_DESCRIPTION,
+			// the video's poster doubles as the share card, so the link
+			// preview in their inbox is Derek's face, not the site default
+			'image' => is_file(SITE_ROOT . $hello_poster) ? $hello_poster : null,
+			'noindex' => true,
+		];
+	}
+}
+
 // The menu derives from the MENU_PAGES list (config.php) - a page shows a
 // menu door only if the list says so for this environment. Every surface
 // that lists menu'd pages (the Pages panel, the site-map, the
@@ -316,6 +346,7 @@ $page_description = $current['description'];
 $page_image = $current['image'] ?? null;
 $page_article = $current['article'] ?? null;
 $page_controls = $current['controls'] ?? null;
+$page_noindex = $current['noindex'] ?? false;
 
 // The settings panel is back on site-wide with the lab-port shell (JS panel
 // placement + the data-over shade replaced the machinery the old mobile

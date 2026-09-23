@@ -1,0 +1,68 @@
+/* Hello - the /hello/<name> introductions (templates/pages/hello.php).
+   One column, one job: the greeting, the video big enough to say "watch
+   this", then the few lines that carry the point without it. Voices and
+   tokens do the type and color; this file is spacing and arrangement. */
+
+.hello {
+	/* The same lockup as home's page-header: loud name, stamp-voice role. */
+	.lockup {
+		margin: 0;
+
+		.name {
+			display: block;
+		}
+
+		.role {
+			display: block;
+			margin-top: 0.75em;
+			color: var(--ink-auxiliary);
+		}
+	}
+
+	h1 {
+		margin-top: 2em;
+	}
+
+	.hello-video {
+		margin: 0.75em 0 0;
+
+		video,
+		iframe {
+			display: block;
+			border: 0;
+			width: 100%;
+			aspect-ratio: 16 / 9;
+			background: var(--fill-secondary);
+		}
+	}
+
+	.message {
+		margin-top: 1.5em;
+	}
+
+	.connections {
+		margin-top: 1em;
+		padding-inline-start: 1.25em;
+
+		li + li {
+			margin-top: 0.4em;
+		}
+	}
+
+	.closing {
+		margin-top: 1.5em;
+	}
+
+	.related {
+		margin-top: 4em;
+
+		ul {
+			margin-top: 0.75em;
+			padding-inline-start: 1.25em;
+		}
+
+		li + li {
+			margin-top: 0.4em;
+		}
+	}
+}
