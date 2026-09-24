@@ -185,16 +185,18 @@ main {
    dim derives to not-over on its own (the extent test in settings-panel.js
    needs no knowledge of this). Below 1450 the panel overlays and dims,
    which is correct where the room doesn't exist. Scoped to the pages that
-   carry wide figures (journal entries, case studies) on purpose: other
+   carry wide figures (journal entries, case studies, How I work) on purpose: other
    pages keep today's centered composition. */
 @media (width >= 1450px) {
 	.page-wrapper[data-page^='journal/'],
-	.page-wrapper[data-page^='case-studies/'] {
+	.page-wrapper[data-page^='case-studies/'],
+	.page-wrapper[data-page='how-i-work'] {
 		grid-template-columns: 1fr minmax(0, var(--layout-list-column)) var(--layout-figure-breakout) var(--layout-tray-sidebar) 1fr;
 	}
 
 	.page-wrapper[data-page^='journal/'] > .site-tray,
-	.page-wrapper[data-page^='case-studies/'] > .site-tray {
+	.page-wrapper[data-page^='case-studies/'] > .site-tray,
+	.page-wrapper[data-page='how-i-work'] > .site-tray {
 		grid-column: 4;
 	}
 }

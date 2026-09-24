@@ -19,4 +19,11 @@
 		background: var(--ink-primary);
 		mix-blend-mode: var(--media-blend, normal);
 	}
+
+	/* The wide size - the same right-side-only breakout as the case-study
+	   videos (journal.css explains it; default-layout.css reserves its
+	   lane). The talk-through is the page's main event, so it gets the room. */
+	@media (min-width: 1200px) {
+		width: calc(100% + var(--layout-figure-breakout));
+	}
 }
