@@ -33,9 +33,9 @@ $lanes = [
 
 	<h1 class='loud-voice'>Resume</h1>
 
-	<p>I know the generic wisdom is to "pick a lane" and "pick a niche" (and that's what I have my students do - because that's where they're at). My fancy recruiter friends would rewrite everything about me to fit a <em>very specific</em> role. But the truth is, there is more than one role where I can give 100% - with experience and passion.</p>
+	<p>I know the generic wisdom is to “pick a lane” and “pick a niche” (and that’s what I have my students do - because that’s where they’re at). My fancy recruiter friends would rewrite everything about me to fit a <em>very specific</em> role. But the truth is, there is more than one role where I can give 100% - with experience and passion.</p>
 
-	<p>Sometimes people ask me: "What's your stack?" This is it. Depending on your goals, the size of the org/project, the shape of the team - and other factors: how I can bring the most value changes. There needs to be a fit beyond "role" and salary for me.</p>
+	<p>Sometimes people ask me: “What’s your stack?” This is it. Depending on your goals, the size of the org/project, the shape of the team - and other factors: how I can bring the most value changes. There needs to be a fit beyond “role” and salary for me.</p>
 
 </text-content>
 

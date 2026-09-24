@@ -6,7 +6,7 @@
 ?>
 
 <section>
-	<p>Over at <a class='link' href='https://perpetual.education'>Perpetual Education</a>, lessons use a live code editor I built called CodeStudy - real files, syntax highlighting, an output pane, a console. It was made for one site. The obvious question: if I want to use it somewhere else, how simple is it? And if it's not simple - what has to change so it is?</p>
+	<p>Over at <a class='link' href='https://perpetual.education'>Perpetual Education</a>, lessons use a live code editor I built called CodeStudy - real files, syntax highlighting, an output pane, a console. It was made for one site. The obvious question: if I want to use it somewhere else, how simple is it? And if it’s not simple - what has to change so it is?</p>
 
 	<p>This entry is the experiment. The editors below are running live, on this site, right now.</p>
 </section>
@@ -14,7 +14,7 @@
 <section>
 	<h2 class='attention-voice'>The first test: does it mount?</h2>
 
-	<p>This site is plain PHP - no build step, no bundler. CodeStudy ships as a prebuilt bundle, so adoption is: copy two files in, add a small mount include, pass it some code. Try it - it's editable:</p>
+	<p>This site is plain PHP - no build step, no bundler. CodeStudy ships as a prebuilt bundle, so adoption is: copy two files in, add a small mount include, pass it some code. Try it - it’s editable:</p>
 
 	<?= partial('code-study', [
 		'files' => [
@@ -40,9 +40,9 @@
 
 	<p>The harder question. This site has a theme system with a lot of dials - five characters, three moods, light and dark, the red-light override. A component earns its place here by repainting under all of them without being edited.</p>
 
-	<p>CodeStudy's whole skin is CSS custom properties, so the answer is a single adapter stylesheet: map this site's semantic tokens onto the editor's slots. No fork, no vendored-file edits. Open the settings panel, change anything - the editors on this page follow.</p>
+	<p>CodeStudy’s whole skin is CSS custom properties, so the answer is a single adapter stylesheet: map this site’s semantic tokens onto the editor’s slots. No fork, no vendored-file edits. Open the settings panel, change anything - the editors on this page follow.</p>
 
-	<p>One design decision fell out of the constraint: CodeStudy's own themes use a multi-hue syntax palette, but this site's token system deliberately carries a single accent. So the code you see here wears a monochrome-plus-accent syntax theme derived entirely from the page's tokens. The constraint made a better-looking choice than I would have made on purpose.</p>
+	<p>One design decision fell out of the constraint: CodeStudy’s own themes use a multi-hue syntax palette, but this site’s token system deliberately carries a single accent. So the code you see here wears a monochrome-plus-accent syntax theme derived entirely from the page’s tokens. The constraint made a better-looking choice than I would have made on purpose.</p>
 
 	<?= partial('code-study', [
 		'files' => [
@@ -71,8 +71,8 @@
 
 		<li><strong>Theming: one file, with one snag.</strong> Almost every slot themes cleanly from the wrapper. But the bundle re-declares its pane-header tokens at an inner scope with literal values, so the adapter has to match that selector to win. The fix belongs upstream: a component should state its token defaults once, at its root, so a host can always paint from above.</li>
 
-		<li><strong>Contrast is the real theming contract.</strong> The first run had an invisible cursor and unreadable console warnings - CodeStudy's fallback colors are a dark-theme palette, so any token that has to contrast with the host's background (the cursor, selection, console status text) disappears on a light one. The adapter fixes it here, but the lesson is upstream: a component's default colors should just always work - derived from its own background, not fixed values that assume one theme. Related hole on this site's side: the token vocabulary has no semantic status colors for warn and error, so status reads from an icon and a tinted band instead of a hue.</li>
+		<li><strong>Contrast is the real theming contract.</strong> The first run had an invisible cursor and unreadable console warnings - CodeStudy’s fallback colors are a dark-theme palette, so any token that has to contrast with the host’s background (the cursor, selection, console status text) disappears on a light one. The adapter fixes it here, but the lesson is upstream: a component’s default colors should just always work - derived from its own background, not fixed values that assume one theme. Related hole on this site’s side: the token vocabulary has no semantic status colors for warn and error, so status reads from an icon and a tinted band instead of a hue.</li>
 	</ul>
 
-	<p>Verdict: portable enough to be worth finishing. The gap between "works on a second site" and "anyone could drop this into theirs" is mostly the upstream token cleanup and a lighter loading story - both now on CodeStudy's list.</p>
+	<p>Verdict: portable enough to be worth finishing. The gap between “works on a second site” and “anyone could drop this into theirs” is mostly the upstream token cleanup and a lighter loading story - both now on CodeStudy’s list.</p>
 </section>

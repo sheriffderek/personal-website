@@ -121,7 +121,7 @@
 			<strong><?= $total ?></strong> application<?= $total === 1 ? '' : 's' ?> logged
 			across <?= count($ordered) ?> section<?= count($ordered) === 1 ? '' : 's' ?>.
 			<?php if ($skipped > 0): ?>
-				<span class='quiet-voice'>(<?= $skipped ?> line<?= $skipped === 1 ? '' : 's' ?> skipped - didn't match the format)</span>
+				<span class='quiet-voice'>(<?= $skipped ?> line<?= $skipped === 1 ? '' : 's' ?> skipped - didn’t match the format)</span>
 			<?php endif; ?>
 		</p>
 

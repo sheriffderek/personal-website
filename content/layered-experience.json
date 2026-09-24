@@ -1,20 +1,20 @@
 [
 	{
 		"tag": "Art + technical education",
-		"what": "Art school isn't painting a still life...",
+		"what": "Art school isn’t painting a still life...",
 		"why": "Dealing with ambiguity? Yes. Who else gets trained to explore and defend abstract art in critique, learn typography with actual printing presses, face the facts of whether your work is successful?",
 		"skills": "visual thinking · critique · theory · technical craft"
 	},
 	{
 		"tag": "Web design + development",
-		"what": "When you're the “web master” you have to own it all.",
-		"why": "You're not just handed a finished Figma file to casually transform into code. You're setting up hosting, handling the clients, planning, executing, testing, writing front-end / back-end, handling visual design, iterating, and you're basically ALL the roles. The projects might be smaller, but that's the foundation that everything grows from.",
+		"what": "When you’re the “web master” you have to own it all.",
+		"why": "You’re not just handed a finished Figma file to casually transform into code. You’re setting up hosting, handling the clients, planning, executing, testing, writing front-end / back-end, handling visual design, iterating, and you’re basically ALL the roles. The projects might be smaller, but that’s the foundation that everything grows from.",
 		"skills": "HTML · CSS · PHP · JavaScript · SVG · animation · accessibility"
 	},
 	{
 		"tag": "Front-end engineering",
 		"what": "As projects get bigger, you need to specialize.",
-		"why": "Smooth UI doesn't just happen, it takes extreme attention to detail - not only in the clicks and the borders and the micro-interactions, but how the whole system works. Most web-app code is boilerplate, but this is where the real product differentiation happens - at the edge.",
+		"why": "Smooth UI doesn’t just happen, it takes extreme attention to detail - not only in the clicks and the borders and the micro-interactions, but how the whole system works. Most web-app code is boilerplate, but this is where the real product differentiation happens - at the edge.",
 		"skills": "production · performance · QA · systems · cross-functional teams"
 	},
 	{
@@ -32,23 +32,23 @@
 	{
 		"tag": "Product design",
 		"what": "You have to own your scope.",
-		"why": "People aren't robots, markets change, there are timelines and constraints: if you're going to design something - you can't get stuck in the code - you have to move fast, understand the opportunity space, know what matters when - and how to program at a higher level.",
+		"why": "People aren’t robots, markets change, there are timelines and constraints: if you’re going to design something - you can’t get stuck in the code - you have to move fast, understand the opportunity space, know what matters when - and how to program at a higher level.",
 		"skills": "research · interaction · UI · design systems · product strategy"
 	},
 	{
 		"tag": "Design education + systems",
-		"what": "There's no real school for this... so, I designed one.",
-		"why": "Watching a video of some guy coding - isn't how you learn. UX design, product design, typography, information architecture -- want to learn it? Here's how. And when you learn this way - you're not learning to be a “coder” or “designer” - you're learning everything.",
+		"what": "There’s no real school for this... so, I designed one.",
+		"why": "Watching a video of some guy coding - isn’t how you learn. UX design, product design, typography, information architecture -- want to learn it? Here’s how. And when you learn this way - you’re not learning to be a “coder” or “designer” - you’re learning everything.",
 		"skills": "curriculum · teaching · feedback · assessment · mentorship"
 	},
 	{
 		"tag": "AI + agentic workflows",
 		"what": "What can these emerging technologies add to the mix?",
-		"why": "There are people just starting now... but I've spent years using agents to build real projects. I've felt all the elation - and all the pain. Maturity in this space is the difference between 100x and -100x.",
+		"why": "There are people just starting now... but I’ve spent years using agents to build real projects. I’ve felt all the elation - and all the pain. Maturity in this space is the difference between 100x and -100x.",
 		"skills": "agents · LLMs · rapid prototyping · workflow design · experimentation"
 	},
 	{
-		"tag": "What's next?",
-		"what": "I'm looking for a team that can use all of this."
+		"tag": "What’s next?",
+		"what": "I’m looking for a team that can use all of this."
 	}
 ]

@@ -135,6 +135,7 @@ Visitor-facing copy is written by Derek or approved by him line by line. A reque
 Derek sometimes writes how he speaks. When tidying copy he typed:
 
 - **Fix freely:** plain misspellings and typos ("gauranteee", "lik ehere").
+- **Fix freely: straight quotes become curly** (2026-09-24). Derek types `"` and `'` in his editor, and nothing on this site converts them (no WordPress-style filter, on purpose), so every copy review swaps them: “ ” for quotes, ’ for apostrophes, ‘ ’ for single quotes. Only in visible text - never inside HTML attributes, code, or PHP/JSON syntax. The resume system's files are excluded (see Resume pages).
 - **Leave alone:** his rhythm marks - ` - `, `--`, ` / ` as a pause, a comma after "so", `(sorry;)`, a colon before "and". They may look odd and be on purpose. Point one out if it seems like a slip; never change it without his call.
 - **Never ship:** anything that is obviously a note-to-self or a hole - `[link]`, `[... figure this out]`, `what?`, `(maybe we need this in a config btw`, `TODO`. Those are placeholders, not voice. Resolve the obvious ones (wire the link), ask about the rest, and keep them out of the visitor's path until answered.
 

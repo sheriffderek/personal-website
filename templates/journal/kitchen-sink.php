@@ -20,7 +20,7 @@
 <section>
 	<h2 class='attention-voice'>Video</h2>
 
-	<p>Most entries lead with a video - a normal Vimeo embed, no custom player, no autoplay rules, none of the timeline's local-video machinery. The iframe sits in a figure, holds its 16:9 frame before the player loads, and can carry a caption the same way an image does.</p>
+	<p>Most entries lead with a video - a normal Vimeo embed, no custom player, no autoplay rules, none of the timeline’s local-video machinery. The iframe sits in a figure, holds its 16:9 frame before the player loads, and can carry a caption the same way an image does.</p>
 
 	<figure class='entry-figure'>
 		<iframe src='https://player.vimeo.com/video/76979871' title='Sample Vimeo embed' allow='fullscreen; picture-in-picture' loading='lazy'></iframe>
@@ -44,7 +44,7 @@
 <section>
 	<h2 class='attention-voice'>Figures</h2>
 
-	<p>An image travels inside a figure with a caption. The caption is the quiet voice, and it should say something the image doesn't - what to notice, not what's depicted.</p>
+	<p>An image travels inside a figure with a caption. The caption is the quiet voice, and it should say something the image doesn’t - what to notice, not what’s depicted.</p>
 
 	<figure class='entry-figure'>
 		<img src='<?= asset('/content/placeholder/poster-wide.png') ?>' alt='Placeholder poster graphic'>
@@ -52,7 +52,7 @@
 		<figcaption class='quiet-voice'>The caption sits under the image in the quiet voice. This one is a placeholder graphic standing in for a real screenshot.</figcaption>
 	</figure>
 
-	<p>Media files for a real entry live in a folder beside it at <code>content/journal/&lt;slug&gt;/</code>, named the house way, so the folder listing reads as the entry's storyboard.</p>
+	<p>Media files for a real entry live in a folder beside it at <code>content/journal/&lt;slug&gt;/</code>, named the house way, so the folder listing reads as the entry’s storyboard.</p>
 </section>
 
 <section>
@@ -92,7 +92,7 @@
 <section>
 	<h2 class='attention-voice'>Quotes</h2>
 
-	<p>A blockquote is for someone else's words - a line from a book, a thing a client actually said. The stroke down the side marks the border between their voice and mine.</p>
+	<p>A blockquote is for someone else’s words - a line from a book, a thing a client actually said. The stroke down the side marks the border between their voice and mine.</p>
 
 	<blockquote>
 		<p>The details are not the details. They make the design.</p>
@@ -136,7 +136,7 @@
 <section>
 	<h2 class='attention-voice'>Dividers</h2>
 
-	<p>A horizontal rule marks a change of subject inside one entry - the "anyway" move. Use it when the entry genuinely shifts gears, not as decoration between every section.</p>
+	<p>A horizontal rule marks a change of subject inside one entry - the “anyway” move. Use it when the entry genuinely shifts gears, not as decoration between every section.</p>
 
 	<hr>
 
@@ -146,5 +146,5 @@
 <section>
 	<h2 class='attention-voice'>How this page is wired</h2>
 
-	<p>An entry is three small pieces. The metadata (title, date, description) is an entry in <code>content/journal.json</code>. The body is a file like this one at <code>templates/journal/&lt;slug&gt;.php</code>. The shared shell at <code>templates/pages/journal-entry.php</code> renders the header and includes the body. Both the JSON entry and the body file have to exist before the URL does, and the /journal list shows everything in the JSON that isn't marked unlisted.</p>
+	<p>An entry is three small pieces. The metadata (title, date, description) is an entry in <code>content/journal.json</code>. The body is a file like this one at <code>templates/journal/&lt;slug&gt;.php</code>. The shared shell at <code>templates/pages/journal-entry.php</code> renders the header and includes the body. Both the JSON entry and the body file have to exist before the URL does, and the /journal list shows everything in the JSON that isn’t marked unlisted.</p>
 </section>

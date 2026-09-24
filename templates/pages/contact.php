@@ -45,7 +45,7 @@ $contact_data = [
 
 	<p>You can email me at <a class='link' href='mailto:<?= CONTACT_EMAIL ?>'><?= CONTACT_EMAIL ?></a>.</p>
 
-	<p>I'm @sheriffderek most places. My real name is Derek Wood.</p>
+	<p>I’m @sheriffderek most places. My real name is Derek Wood.</p>
 
 	<p>I live in South Pasadena (Los Angeles). You can find me at the LA Design and Dev meetup, maybe the JavaScript meetup, or come to my weekly open office hours.</p>
 

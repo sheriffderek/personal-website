@@ -26,7 +26,7 @@
 
 	<h1 class='loud-voice'>Journal</h1>
 
-	<p>So, here's what I'm thinking... </p>
+	<p>So, here’s what I’m thinking... </p>
 
 	<?php if (empty($listed)): ?>
 		<p>First entries are on the way.</p>
@@ -84,7 +84,7 @@
 
 			<li>
 
-				<a class='link' href='https://sheriffderek.substack.com/' target='_blank'>Some thoughts on Substack (that I'll likely move over here)</a>
+				<a class='link' href='https://sheriffderek.substack.com/' target='_blank'>Some thoughts on Substack (that I’ll likely move over here)</a>
 
 			</li>
 

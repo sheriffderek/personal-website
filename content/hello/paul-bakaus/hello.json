@@ -1,8 +1,8 @@
 {
 	"name": "Paul Bakaus",
-	"greeting": "Paul. I'm Derek.",
+	"greeting": "Paul. I’m Derek.",
 	"vimeo": "1229701932",
-	"message": "<p>I have a feeling you like getting to the point. You asked for \"whatever best shows your work\" -- here it is. I'm interested in both roles but I'm betting the advocate role is where I'd be most valuable / and could act as combo product designer as well. <a class='relaxed' target='calendar' href='CALL_URL'>I'm ready to chat.</a></p>",
+	"message": "<p>I have a feeling you like getting to the point. You asked for “whatever best shows your work” -- here it is. I’m interested in both roles but I’m betting the advocate role is where I’d be most valuable / and could act as combo product designer as well. <a class='relaxed' target='calendar' href='CALL_URL'>I’m ready to chat.</a></p>",
 	"resumes": [
 		"advocate",
 		"product-designer"
@@ -13,32 +13,32 @@
 			"items": [
 				{
 					"them": "You already use AI agents and workflows in your day-to-day work. Today, not eventually.",
-					"me": "<p>Every day. I'm building real web applications with agents, I've built this stuff into my design/dev curriculum, and I've taught hundreds of students how to use it.</p>"
+					"me": "<p>Every day. I’m building real web applications with agents, I’ve built this stuff into my design/dev curriculum, and I’ve taught hundreds of students how to use it.</p>"
 				},
 				{
 					"them": "You haven’t cognitively surrendered to it, though. You delegate to AI when it makes sense, but you think for yourself and stay responsible for everything you ship.",
-					"me": "<p>I'm art-school trained, I've been writing code by hand for a long time, and I've spent years teaching design and development. I'm the one in charge. I'm using chat as an interface to put in place what I already understand at the fundamental level.</p><p>I've also worked on teams using AI in ways that caused more harm than good. I use these tools constantly, but that doesn't mean I trust everything they do or hand over the thinking. I'm using LLMs for what they're best for - and weighing things at all times.</p>"
+					"me": "<p>I’m art-school trained, I’ve been writing code by hand for a long time, and I’ve spent years teaching design and development. I’m the one in charge. I’m using chat as an interface to put in place what I already understand at the fundamental level.</p><p>I’ve also worked on teams using AI in ways that caused more harm than good. I use these tools constantly, but that doesn’t mean I trust everything they do or hand over the thinking. I’m using LLMs for what they’re best for - and weighing things at all times.</p>"
 				},
 				{
 					"them": "Extreme agency. You’re a self-starter, and you treat every problem as everyone’s problem.",
-					"me": "<p>\"Agency\" is one of my favorite words.</p><p>We have a shared goal. I'm going to do what I need to do to get us there, and I'm going to help everyone around me do the same.</p>"
+					"me": "<p>“Agency” is one of my favorite words.</p><p>We have a shared goal. I’m going to do what I need to do to get us there, and I’m going to help everyone around me do the same.</p>"
 				},
 				{
 					"them": "You’re a designer yourself, with the taste to back up your opinions.",
-					"me": "<p>I'm a designer and developer who spent six years teaching people how to design and build web applications from scratch. I'm certainly not a renowned graphic designer in specialty - but when it comes to the web - I actually know what I'm talking about - and I love talking about it. I'm often asked to guest critique at local art colleges.</p><p>I can explain why something works, why it doesn't, and what we could try next. I'm also completely comfortable exploring that in public and changing my mind when we learn something.</p>"
+					"me": "<p>I’m a designer and developer who spent six years teaching people how to design and build web applications from scratch. I’m certainly not a renowned graphic designer in specialty - but when it comes to the web - I actually know what I’m talking about - and I love talking about it. I’m often asked to guest critique at local art colleges.</p><p>I can explain why something works, why it doesn’t, and what we could try next. I’m also completely comfortable exploring that in public and changing my mind when we learn something.</p>"
 				}
 			]
 		},
 		{
-			"heading": "What I'd actually own",
+			"heading": "What I’d actually own",
 			"items": [
 				{
 					"them": "The voice and ears of the Impeccable community, and being one of them.",
-					"me": "<p>That's the plan. Use the product. Help people use it. Watch what they're doing. Ask questions. Find the friction. Bring that back into the product.</p><p>This is where I think the advocate/product designer combination gets really interesting.</p>"
+					"me": "<p>That’s the plan. Use the product. Help people use it. Watch what they’re doing. Ask questions. Find the friction. Bring that back into the product.</p><p>This is where I think the advocate/product designer combination gets really interesting.</p>"
 				},
 				{
 					"them": "A real, public point of view on design quality and slop. You call it out loudly and specifically.",
-					"me": "<p>I've read all the typography books. I know what scares people away. I know how it feels to be lost - and then how to build that confidence up with practical exercises. I'm interested in goal-driven design, not just picking out what's cool or making something that looks vaguely like everything else.</p><p>I have opinions - and opinions about opinions.</p>"
+					"me": "<p>I’ve read all the typography books. I know what scares people away. I know how it feels to be lost - and then how to build that confidence up with practical exercises. I’m interested in goal-driven design, not just picking out what’s cool or making something that looks vaguely like everything else.</p><p>I have opinions - and opinions about opinions.</p>"
 				},
 				{
 					"them": "Make the videos, tutorials, demos, and writing that show what amplified craft looks like, not just tell.",
@@ -46,11 +46,11 @@
 				},
 				{
 					"them": "Show up where builders are: social, meetups, conferences, the talks nobody else wants to give.",
-					"me": "<p>Yes. I love giving the talks. I'm at the meetups. I'd love to be out at the conferences.</p><p>Especially when there's an actual stance to take / and I'm not afraid of taking a stand.</p>"
+					"me": "<p>Yes. I love giving the talks. I’m at the meetups. I’d love to be out at the conferences.</p><p>Especially when there’s an actual stance to take / and I’m not afraid of taking a stand.</p>"
 				},
 				{
 					"them": "Turn what you hear from the community into signal I can act on.",
-					"me": "<p>That's product design.</p><p>Talk to people. Watch them use the thing. Figure out what's actually happening instead of guessing. Bring it back. Make something better. Repeat. But we also need to pay attention to the bigger situation / and plan ahead with more than user feedback. We can give them what they <em>really</em> want.</p>"
+					"me": "<p>That’s product design.</p><p>Talk to people. Watch them use the thing. Figure out what’s actually happening instead of guessing. Bring it back. Make something better. Repeat. But we also need to pay attention to the bigger situation / and plan ahead with more than user feedback. We can give them what they <em>really</em> want.</p>"
 				},
 				{
 					"them": "Build real relationships across the design and builder world.",
@@ -58,7 +58,7 @@
 				},
 				{
 					"them": "Carry the Renaissance Geek voice. Editorial and opinionated, never hype.",
-					"me": "<p>I'm allergic to hype. So, whatever we build - it'll be legit.</p>"
+					"me": "<p>I’m allergic to hype. So, whatever we build - it’ll be legit.</p>"
 				}
 			]
 		},
@@ -67,7 +67,7 @@
 			"items": [
 				{
 					"them": "An existing audience or body of work: writing, talks, or open source.",
-					"me": "<p>I don't have a giant YouTube following I can hand over to you. But I know how to teach, I know how to make things, I like being in public, and I've got plenty to say. I have a track record - and I hear a lot of \"Wow, this was the most useful video I've ever seen on this subject\"</p><p>If there's an audience - I'll be able to energize them and make them feel comfortable / and included - and excited.</p>"
+					"me": "<p>I don’t have a giant YouTube following I can hand over to you. But I know how to teach, I know how to make things, I like being in public, and I’ve got plenty to say. I have a track record - and I hear a lot of “Wow, this was the most useful video I’ve ever seen on this subject”</p><p>If there’s an audience - I’ll be able to energize them and make them feel comfortable / and included - and excited.</p>"
 				},
 				{
 					"them": "Hands-on experience with AI coding agents and design tooling.",
@@ -80,15 +80,15 @@
 			"items": [
 				{
 					"them": "In-person in San Francisco preferred, with remote open for the right person — as long as you’re based in the US.",
-					"me": "<p>I'm in LA right now. I love the Bay Area and I'm happy to be up there often. I'd also move back if this turned into the right thing.</p>"
+					"me": "<p>I’m in LA right now. I love the Bay Area and I’m happy to be up there often. I’d also move back if this turned into the right thing.</p>"
 				},
 				{
 					"them": "A first call with me to see if there’s a real fit, both ways.",
-					"me": "<p>Yes please. That's the fastest way to know if this is worth more time.</p>"
+					"me": "<p>Yes please. That’s the fastest way to know if this is worth more time.</p>"
 				},
 				{
 					"them": "A paid work sample or working session on a real problem, so we both see how you work under real conditions. No free spec work.",
-					"me": "<p>I prefer this. Put me in the actual problem and let's see what happens.</p>"
+					"me": "<p>I prefer this. Put me in the actual problem and let’s see what happens.</p>"
 				}
 			]
 		}

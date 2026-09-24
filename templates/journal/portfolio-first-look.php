@@ -13,6 +13,6 @@
 		<iframe src='https://player.vimeo.com/video/1225790200' title='A first look at the new portfolio structure' allow='fullscreen; picture-in-picture' loading='lazy'></iframe>
 	</figure>
 
-	<p>The natural progression of trying to answer this question up until September 9. I'm getting some key screenshots with more details added below right now.</p>
+	<p>The natural progression of trying to answer this question up until September 9. I’m getting some key screenshots with more details added below right now.</p>
 
 </section>

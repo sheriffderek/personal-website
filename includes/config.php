@@ -18,7 +18,7 @@ define('INCLUDES_DIR', SITE_ROOT . '/includes');
                      to be punchier than the tab title. */
 define('SITE_TITLE', 'Derek Wood');
 define('SITE_META_TITLE', 'Derek Wood: Technical Product Designer at Large');
-define('SITE_DESCRIPTION', 'I help teams do their best work, whether that\'s big-picture vision and strategy, research and user testing, interfaces and code, design systems and cross-team collaboration, or auditing and maintaining what\'s already shipped.');
+define('SITE_DESCRIPTION', 'I help teams do their best work, whether that’s big-picture vision and strategy, research and user testing, interfaces and code, design systems and cross-team collaboration, or auditing and maintaining what’s already shipped.');
 
 /* SITE_VERSION - the site's version, set by hand (Derek, 2026-09-23): a
    statement, not a measurement. Under 1 says "not at a finished version 1
