@@ -6,7 +6,7 @@ Status: **idea, parked** (Derek, 2026-09-19). Not pressing. This file keeps what
 
 On large screens, a control that puts the site into a phone- or tablet-width **stage**, so a desktop visitor sees the small-screen design without resizing their window - and **without losing their place** (scroll position, open read-mores, a playing video).
 
-It is a viewer, not a theme axis - it doesn't multiply the theme states. It belongs with the other band-side ideas in `next-up.md` (Reset / Random / Theme chat).
+It is a viewer, not a theme axis - it doesn't multiply the theme states. It belongs with the other band-side ideas in `backlog.md` (Reset / Random / Theme chat).
 
 ## Decisions so far
 

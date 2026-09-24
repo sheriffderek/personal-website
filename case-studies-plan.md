@@ -2,7 +2,7 @@
 
 Started 2026-09-15 from Derek's braindump; direction updated 2026-09-17.
 
-Rule of thumb Derek noted: you're only really supposed to have 4-5 case studies. Everything else is either a smaller feature study or a journal piece. The top 4-5 also **live on the homepage** as case-study-like conversations (per the "Homepage direction" section in `next-up.md`, 2026-09-17) — simple, sweet, not-much-to-snag-on entries a visitor sees before opting in to the full history grid.
+Rule of thumb Derek noted: you're only really supposed to have 4-5 case studies. Everything else is either a smaller feature study or a journal piece. (The 2026-09-17 idea of the top 4-5 living on a case-study homepage is dropped; the replacement idea - the timeline filter narrowing below 16 to only the case studies - is in `backlog.md`.)
 
 ## Page design direction (2026-09-17)
 

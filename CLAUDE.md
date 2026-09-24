@@ -22,7 +22,7 @@ The long-term source of truth would be in the resume-exploration project (or in 
 
 ## Working notes
 
-The repo root holds only the files in active use (`CLAUDE.md`, `next-up.md`, `case-studies-plan.md`, `case-study-rubric.md`, `copy-notes.md`). Everything else - specs for built systems, plans for unbuilt ones, raw material for future writing - lives in `notes/`, flat, grouped by filename prefix. All `*.md` is walled off from HTTP at any depth (`.htaccess` + `.claude/router.php`). Temporary notes get deleted when their job is done, not archived - git is the archive.
+The repo root holds only the files in active use (`CLAUDE.md`, `v1.md`, `backlog.md`, `case-studies-plan.md`, `case-study-rubric.md`, `copy-notes.md`). Everything else - specs for built systems, plans for unbuilt ones, raw material for future writing - lives in `notes/`, flat, grouped by filename prefix. All `*.md` is walled off from HTTP at any depth (`.htaccess` + `.claude/router.php`). Temporary notes get deleted when their job is done, not archived - git is the archive. **The work lists:** `v1.md` is what has to be true before `SITE_VERSION` goes to 1.0; `backlog.md` holds future ideas and parked work, with their reasoning. New work goes in one or the other.
 
 ## Content model
 
