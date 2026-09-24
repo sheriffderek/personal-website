@@ -72,7 +72,9 @@
 		"skills": [
 			"product-strategy",
 			"product-design",
-			"ux-research"
+			"prototyping",
+			"ux-research",
+			"agentic-workflows"
 		],
 		"variant": "moss",
 		"invertible": true,
@@ -123,10 +125,10 @@
 			"dev"
 		],
 		"skills": [
-			"product-design",
+			"developer-tools",
 			"ui-design",
-			"full-stack-dev",
-			"developer-tools"
+			"design-systems",
+			"full-stack-dev"
 		],
 		"variant": "cool",
 		"invertible": true,
@@ -283,10 +285,11 @@
 			"product"
 		],
 		"skills": [
-			"ux-research",
-			"product-strategy",
 			"product-design",
-			"leadership"
+			"ux-research",
+			"ui-design",
+			"full-stack-dev",
+			"agentic-workflows"
 		],
 		"variant": "moss",
 		"media": [
@@ -399,7 +402,8 @@
 			"product-design",
 			"ux-research",
 			"prototyping",
-			"information-architecture"
+			"ui-design",
+			"branding"
 		],
 		"variant": "rose",
 		"poster": true,
@@ -666,9 +670,10 @@
 			"product"
 		],
 		"skills": [
-			"curriculum-design",
 			"product-strategy",
-			"leadership"
+			"product-design",
+			"curriculum-design",
+			"mentorship"
 		],
 		"variant": "moss",
 		"poster": true,
@@ -707,7 +712,8 @@
 		],
 		"skills": [
 			"front-end-dev",
-			"motion"
+			"motion",
+			"mentorship"
 		],
 		"variant": "night",
 		"invertible": true,
@@ -762,8 +768,8 @@
 		"skills": [
 			"product-design",
 			"cross-functional-collaboration",
-			"stakeholder-management",
-			"branding"
+			"leadership",
+			"ui-design"
 		],
 		"variant": "cool",
 		"poster": true,
