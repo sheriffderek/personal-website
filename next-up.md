@@ -23,6 +23,8 @@ Derek's insignia (the little two-tone pink circle) as this site's way home: abov
 - [ ] **Hello video on the site** — Derek saying hello, on camera. The tradeoff Derek named (2026-09-15): in some ways it's giving them too much information — but if they don't like him right away, that's a pretty big hurdle to get over, and he wants people who want somebody who's enthusiastic and outgoing. So the video *is* the filter, and better upfront than after three interview rounds.
   - **Probably a `?target=` thing, not the general site** (Derek, 2026-09-15). Rather than one video for everyone, the general site stays text-first and the tailored view (`?target=<company>`) gets a per-target hello: "Hi GoFundMe team..." Personal, screens hard, only made for applications that matter. Depends on the per-target URL plumbing below.
 
+- [ ] **Decide what the share images are for** (2026-09-24 - backlog, a decision before any build). The link preview is often the first thing someone sees, and it was never designed: pages use the site default, journal entries get a generated title card, and Paul's /hello/ note went out with the default. Work out the cases (the site, a journal entry, a case study, a /hello/ note, a ?target= page), what each preview needs to say and why, then build only what that answer needs. One option on the table: a /hello/ note with a Vimeo id could use the video's own thumbnail automatically.
+
 ## Per-target URL plumbing (the seam that unlocks tailored intros)
 
 Discussion 2026-09-15. The `?target=<company>` view works when a recruiter clicks a link, but the resume PDF is what actually leaves the site — and a naked domain typed after seeing the PDF loses the target. Fixes, in order:
