@@ -28,6 +28,11 @@
 		if (!empty($page_article)) {
 			$share_title = $page_article['headline'];
 		}
+		/* A page may name its own share headline outright (a /hello/ note
+		   shares as its greeting - the preview in their inbox is the note). */
+		if (!empty($page_share_title)) {
+			$share_title = $page_share_title;
+		}
 		$meta_description = $page_description ?? SITE_DESCRIPTION;
 		/* Versioned by mtime like the CSS: images serve with a year-long cache,
 		   and share scrapers cache by URL, so a replaced image needs a new URL. */

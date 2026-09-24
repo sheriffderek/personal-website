@@ -26,6 +26,14 @@
 	.hello-video {
 		margin: 0.75em 0 0;
 
+		/* Big - "watch this" (Derek's mockup): from 1024 the video reaches
+		   across the column gap and the tray's lane to the toolbar's edge,
+		   while the words stay in the reading column. main and the tray both
+		   pad with --gutter, so those cancel out. */
+		@media (width >= 1024px) {
+			width: calc(100% + var(--layout-column-gap) + var(--layout-tray-sidebar));
+		}
+
 		video,
 		iframe {
 			display: block;
@@ -40,12 +48,61 @@
 		margin-top: 1.5em;
 	}
 
-	.connections {
-		margin-top: 1em;
-		padding-inline-start: 1.25em;
+	/* A ledger: their line, Derek's answer, a hairline between rows (Derek,
+	   2026-09-23: "this looks nice" - after a quote-bar read as template
+	   output). Stacked on phones; side by side once there's room, their line
+	   in the narrow column so the answer carries the row. */
+	.mirror {
+		margin-top: 2.5em;
 
-		li + li {
+		ul {
+			margin: 0.75em 0 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		li {
+			padding-block: 1em;
+			border-top: 1px solid var(--stroke-secondary);
+
+			@media (width >= 768px) {
+				display: grid;
+				grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+				column-gap: 2em;
+			}
+		}
+
+		.them {
+			color: var(--ink-auxiliary);
+		}
+
+		.me {
 			margin-top: 0.4em;
+
+			@media (width >= 768px) {
+				margin-top: 0;
+			}
+		}
+	}
+
+	/* The doors at the end - two rows (the résumés, then the ways to reach
+	   him), each wrapping like the documents row on a target page. */
+	.next-steps {
+		margin-top: 4em;
+		padding-top: 1.25em;
+		border-top: 1px solid var(--stroke-secondary);
+
+		ul {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.75em 1.5em;
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		ul + ul {
+			margin-top: 1em;
 		}
 	}
 

@@ -290,10 +290,16 @@ if (strpos($slug, 'hello/') === 0) {
 		$hello['slug'] = $hello_slug;
 		$hello_poster = '/content/hello/' . $hello_slug . '/video.jpg';
 
+		// The link preview is the first thing they see, so it's the note's own:
+		// the greeting as its headline, and its line a `description` if one is
+		// written, else Derek's opening lines from the message itself.
+		$hello_opening = trim(preg_replace('/\s+/', ' ', strip_tags($hello['message'] ?? '')));
+
 		$pages[$slug] = [
 			'file' => 'hello.php',
 			'title' => 'Hello ' . $hello['name'] . ' - ' . SITE_TITLE,
-			'description' => $hello['description'] ?? SITE_DESCRIPTION,
+			'share_title' => $hello['greeting'] ?? null,
+			'description' => $hello['description'] ?? ($hello_opening !== '' ? $hello_opening : SITE_DESCRIPTION),
 			// the video's poster doubles as the share card, so the link
 			// preview in their inbox is Derek's face, not the site default
 			'image' => is_file(SITE_ROOT . $hello_poster) ? $hello_poster : null,
@@ -347,6 +353,7 @@ $page_image = $current['image'] ?? null;
 $page_article = $current['article'] ?? null;
 $page_controls = $current['controls'] ?? null;
 $page_noindex = $current['noindex'] ?? false;
+$page_share_title = $current['share_title'] ?? null;
 
 // The settings panel is back on site-wide with the lab-port shell (JS panel
 // placement + the data-over shade replaced the machinery the old mobile
