@@ -20,6 +20,12 @@
 			color: var(--ink-secondary);
 		}
 
+		/* The title's own line-height leaves no air above its caps, so the
+		   date sat flush against them. */
+		h1 {
+			margin-top: 0.3em;
+		}
+
 		.summary {
 			margin-top: 0.75em;
 			color: var(--ink-secondary);
