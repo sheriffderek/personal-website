@@ -452,6 +452,25 @@
 		display: none;
 	}
 
+	/* What the project was heavy on: a row of chips right above the first
+	   paragraph. The tint comes from the mood's accent, so the chips repaint
+	   with the theme; the words stay full ink, so they read on any tint. */
+	.skills {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4em;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+
+		li {
+			padding: 0.2em 0.6em;
+			border-radius: var(--corners, 0);
+			background: color-mix(in oklab, var(--accent), var(--fill-primary) 82%);
+			color: var(--ink-primary);
+		}
+	}
+
 	.info {
 		.target-note {
 			/* the optional per-milestone sentence injected by ?target=companyname */

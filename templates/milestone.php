@@ -91,6 +91,18 @@
 
 	<?php endif; ?>
 
+	<?php /* What this project was HEAVY on - not everything that happened
+		(Derek: "I do all of these things on every project"). Heaviest first,
+		in posting language, so a recruiter can match their list against the
+		timeline. A row right above the first paragraph (Derek, 2026-09-22).
+		Slugs in the JSON, words from content/skills.json. */ ?>
+	<?php if (!empty($milestone['skills'])): ?>
+		<ul class='skills label-voice'>
+			<?php foreach ($milestone['skills'] as $skill): ?>
+				<li><?= skill_label($skill) ?></li>
+			<?php endforeach; ?>
+		</ul>
+	<?php endif; ?>
 
 	<text-content class='styled info'>
 		<?= $milestone['description'] ?>

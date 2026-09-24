@@ -43,6 +43,12 @@
 			"dev",
 			"design"
 		],
+		"skills": [
+			"design-systems",
+			"theming",
+			"typography",
+			"ui-design"
+		],
 		"variant": "stone",
 		"poster": "medium",
 		"media": [
@@ -62,6 +68,11 @@
 			"job",
 			"education",
 			"product"
+		],
+		"skills": [
+			"product-strategy",
+			"product-design",
+			"ux-research"
 		],
 		"variant": "moss",
 		"invertible": true,
@@ -85,6 +96,12 @@
 			"education",
 			"design"
 		],
+		"skills": [
+			"design-systems",
+			"theming",
+			"ui-design",
+			"front-end-dev"
+		],
 		"variant": "warm",
 		"poster": "medium",
 		"media": [
@@ -104,6 +121,12 @@
 			"job",
 			"education",
 			"dev"
+		],
+		"skills": [
+			"product-design",
+			"ui-design",
+			"full-stack-dev",
+			"developer-tools"
 		],
 		"variant": "cool",
 		"invertible": true,
@@ -141,6 +164,12 @@
 			"community",
 			"leadership"
 		],
+		"skills": [
+			"leadership",
+			"information-architecture",
+			"stakeholder-management",
+			"community-building"
+		],
 		"variant": "warm",
 		"poster": true,
 		"media": [
@@ -176,6 +205,11 @@
 			"dev",
 			"design"
 		],
+		"skills": [
+			"r-and-d",
+			"prototyping",
+			"interaction-design"
+		],
 		"variant": "cool",
 		"invertible": true,
 		"media": [
@@ -200,6 +234,11 @@
 			"music",
 			"design"
 		],
+		"skills": [
+			"r-and-d",
+			"interaction-design",
+			"prototyping"
+		],
 		"variant": "night",
 		"poster": true,
 		"media": [
@@ -220,6 +259,10 @@
 			"speaking",
 			"education"
 		],
+		"skills": [
+			"public-speaking",
+			"mentorship"
+		],
 		"variant": "night",
 		"poster": "small",
 		"media": [
@@ -238,6 +281,12 @@
 		"tags": [
 			"job",
 			"product"
+		],
+		"skills": [
+			"ux-research",
+			"product-strategy",
+			"product-design",
+			"leadership"
 		],
 		"variant": "moss",
 		"media": [
@@ -265,6 +314,10 @@
 			"education",
 			"speaking"
 		],
+		"skills": [
+			"public-speaking",
+			"curriculum-design"
+		],
 		"variant": "night",
 		"poster": "medium",
 		"media": [
@@ -289,6 +342,10 @@
 			"education",
 			"community",
 			"mentoring"
+		],
+		"skills": [
+			"mentorship",
+			"community-building"
 		],
 		"variant": "rose",
 		"poster": true,
@@ -315,6 +372,10 @@
 			"education",
 			"community"
 		],
+		"skills": [
+			"public-speaking",
+			"mentorship"
+		],
 		"variant": "warm",
 		"poster": "small",
 		"media": [
@@ -333,6 +394,12 @@
 		"tags": [
 			"job",
 			"product"
+		],
+		"skills": [
+			"product-design",
+			"ux-research",
+			"prototyping",
+			"information-architecture"
 		],
 		"variant": "rose",
 		"poster": true,
@@ -358,6 +425,10 @@
 			"education",
 			"dev"
 		],
+		"skills": [
+			"full-stack-dev",
+			"ui-design"
+		],
 		"variant": "night",
 		"invertible": true,
 		"poster": "medium",
@@ -379,6 +450,12 @@
 			"consulting",
 			"education",
 			"accessibility"
+		],
+		"skills": [
+			"accessibility",
+			"theming",
+			"motion",
+			"stakeholder-management"
 		],
 		"variant": "cool",
 		"invertible": true,
@@ -406,6 +483,11 @@
 			"education",
 			"design"
 		],
+		"skills": [
+			"product-design",
+			"interaction-design",
+			"full-stack-dev"
+		],
 		"variant": "cool",
 		"poster": "medium",
 		"media": [
@@ -426,6 +508,10 @@
 			"speaking",
 			"education",
 			"community"
+		],
+		"skills": [
+			"public-speaking",
+			"curriculum-design"
 		],
 		"variant": "moss",
 		"poster": "small",
@@ -448,6 +534,11 @@
 			"education",
 			"design"
 		],
+		"skills": [
+			"r-and-d",
+			"ux-research",
+			"prototyping"
+		],
 		"variant": "moss",
 		"poster": true,
 		"media": [
@@ -468,6 +559,12 @@
 			"design-systems",
 			"dev"
 		],
+		"skills": [
+			"design-systems",
+			"theming",
+			"typography",
+			"front-end-dev"
+		],
 		"variant": "cool",
 		"poster": true,
 		"media": [
@@ -487,6 +584,11 @@
 			"job",
 			"writing",
 			"design-systems"
+		],
+		"skills": [
+			"design-systems",
+			"typography",
+			"theming"
 		],
 		"variant": "warm",
 		"poster": "medium",
@@ -513,6 +615,11 @@
 			"education",
 			"design"
 		],
+		"skills": [
+			"design-systems",
+			"information-architecture",
+			"full-stack-dev"
+		],
 		"variant": "warm",
 		"poster": true,
 		"media": [
@@ -533,6 +640,11 @@
 			"consulting",
 			"ecommerce"
 		],
+		"skills": [
+			"front-end-dev",
+			"ux-research",
+			"community-building"
+		],
 		"variant": "stone",
 		"poster": true,
 		"media": [
@@ -552,6 +664,11 @@
 			"job",
 			"education",
 			"product"
+		],
+		"skills": [
+			"curriculum-design",
+			"product-strategy",
+			"leadership"
 		],
 		"variant": "moss",
 		"poster": true,
@@ -588,6 +705,10 @@
 			"dev",
 			"agency"
 		],
+		"skills": [
+			"front-end-dev",
+			"motion"
+		],
 		"variant": "night",
 		"invertible": true,
 		"poster": true,
@@ -614,6 +735,10 @@
 			"community",
 			"mentoring"
 		],
+		"skills": [
+			"mentorship",
+			"curriculum-design"
+		],
 		"variant": "rose",
 		"poster": true,
 		"media": [
@@ -633,6 +758,12 @@
 			"job",
 			"product",
 			"design-systems"
+		],
+		"skills": [
+			"product-design",
+			"cross-functional-collaboration",
+			"stakeholder-management",
+			"branding"
 		],
 		"variant": "cool",
 		"poster": true,
@@ -657,6 +788,10 @@
 			"job",
 			"consulting"
 		],
+		"skills": [
+			"product-strategy",
+			"stakeholder-management"
+		],
 		"variant": "stone",
 		"poster": "medium",
 		"media": [
@@ -676,6 +811,12 @@
 			"job",
 			"design-systems",
 			"education"
+		],
+		"skills": [
+			"design-systems",
+			"theming",
+			"front-end-dev",
+			"cross-functional-collaboration"
 		],
 		"variant": "stone",
 		"poster": true,
@@ -700,6 +841,11 @@
 			"job",
 			"agency",
 			"dev"
+		],
+		"skills": [
+			"front-end-dev",
+			"motion",
+			"cross-functional-collaboration"
 		],
 		"variant": "warm",
 		"poster": true,
@@ -736,6 +882,11 @@
 			"product",
 			"dev"
 		],
+		"skills": [
+			"prototyping",
+			"full-stack-dev",
+			"interaction-design"
+		],
 		"variant": "cool",
 		"poster": "medium",
 		"media": [
@@ -756,6 +907,11 @@
 			"agency",
 			"dev"
 		],
+		"skills": [
+			"front-end-dev",
+			"ux-research",
+			"stakeholder-management"
+		],
 		"variant": "warm",
 		"poster": "medium",
 		"media": [
@@ -774,6 +930,10 @@
 		"tags": [
 			"job",
 			"freelance"
+		],
+		"skills": [
+			"front-end-dev",
+			"ui-design"
 		],
 		"variant": "warm",
 		"poster": true,
@@ -801,6 +961,10 @@
 			"music",
 			"art"
 		],
+		"skills": [
+			"branding",
+			"public-speaking"
+		],
 		"poster": "medium",
 		"media": [
 			"/content/placeholder/poster-wide.png"
@@ -817,6 +981,10 @@
 		"weight": 6,
 		"tags": [
 			"life"
+		],
+		"skills": [
+			"leadership",
+			"cross-functional-collaboration"
 		],
 		"poster": "small",
 		"media": [
@@ -836,6 +1004,11 @@
 			"job",
 			"art",
 			"education"
+		],
+		"skills": [
+			"branding",
+			"motion",
+			"interaction-design"
 		],
 		"poster": true,
 		"media": [

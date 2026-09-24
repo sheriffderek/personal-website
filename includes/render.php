@@ -171,6 +171,20 @@ function real_media_items($milestone) {
 	return $items;
 }
 
+/* A milestone's skills are slugs ("design-systems"); the words a visitor reads
+   live once, in content/skills.json - so a later filter can use the slugs in
+   URLs and the wording can change in one place. A slug missing from the
+   vocabulary shows as itself, so a typo is visible on the card instead of
+   silently dropped. The file is read once per page, not once per card. */
+function skill_label($slug) {
+	static $vocabulary = null;
+	if ($vocabulary === null) {
+		$vocabulary = load_json('skills.json');
+	}
+
+	return $vocabulary[$slug] ?? $slug;
+}
+
 /* Cache-busting: append a file's mtime to its URL so a changed file gets a new
    URL (forces a fresh fetch) while an unchanged file still caches. $path is
    web-absolute (/scripts/x.js). */
