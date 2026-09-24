@@ -29,8 +29,10 @@
 			differ per sync), the fingerprint is code-truth, and two numbers
 			where one can disagree just re-opens the "am I current?" question
 			this line exists to close. */ ?>
+		<?php /* The hand-set version (SITE_VERSION, config.php) says where
+			the site stands; the build in parentheses says which code this is. */ ?>
 		<p class='data-voice'>
-			Version: <?= build_fingerprint() ?>
+			Version <?= SITE_VERSION ?> (build <?= build_fingerprint() ?>)
 		</p>
 
 		<?php /* Testing knob for the carousel nudge, riding its flag: the link

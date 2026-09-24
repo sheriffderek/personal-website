@@ -20,6 +20,13 @@ define('SITE_TITLE', 'Derek Wood');
 define('SITE_META_TITLE', 'Derek Wood: Technical Product Designer at Large');
 define('SITE_DESCRIPTION', 'I help teams do their best work, whether that\'s big-picture vision and strategy, research and user testing, interfaces and code, design systems and cross-team collaboration, or auditing and maintaining what\'s already shipped.');
 
+/* SITE_VERSION - the site's version, set by hand (Derek, 2026-09-23): a
+   statement, not a measurement. Under 1 says "not at a finished version 1
+   yet" out loud. It moves when Derek decides the site has moved; the build
+   fingerprint beside it in the footer (build_fingerprint(), render.php)
+   changes with every code edit and only answers "same code?". */
+define('SITE_VERSION', '0.9');
+
 /* CALL_URL - the one book-a-call link. Every "let's talk" door on the site
    (home intro, Contact, How I work) points here, so changing the scheduler
    is a one-line edit. */
