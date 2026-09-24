@@ -53,7 +53,8 @@ $pages = [
 		'file' => 'resume.php',
 		'menu' => 'Resume',
 		'title' => 'Resume - ' . SITE_TITLE,
-		'description' => 'Derek Wood\'s resume, told three ways - product designer, design engineer, and design advocate/educator.',
+		'share_title' => 'Derek Wood: Resume',
+		'description' => 'Technical Product Designer, Advocate/Educator, Design Engineer - how does it stack up?',
 	],
 
 	'now' => [
