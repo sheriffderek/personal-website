@@ -200,8 +200,10 @@ if (strpos($slug, 'journal/') === 0) {
 // journal: metadata in content/case-studies.json, the body at
 // templates/case-studies/<slug>.php, and both must exist or it's a 404.
 // Deliberately NOT journal entries: undated, revised over time, never in the
-// feed, and built from sections rather than one prose column. 'description'
-// is optional in the JSON - until Derek writes one, the site's own stands in.
+// feed, and built from sections rather than one prose column. A study is
+// shared as ITSELF, like a journal entry: its title is the card's headline,
+// and its 'description' the card's text - optional in the JSON; until Derek
+// writes one, the teaser stands in (tags stripped - meta is plain text).
 if (strpos($slug, 'case-studies/') === 0) {
 	$study_slug = substr($slug, strlen('case-studies/'));
 	$case_studies = load_json('case-studies.json');
@@ -213,7 +215,8 @@ if (strpos($slug, 'case-studies/') === 0) {
 		$pages[$slug] = [
 			'file' => 'case-study.php',
 			'title' => $study['title'] . ' - ' . SITE_TITLE,
-			'description' => $study['description'] ?? SITE_DESCRIPTION,
+			'share_title' => $study['title'],
+			'description' => $study['description'] ?? strip_tags($study['teaser']),
 		];
 	}
 }
