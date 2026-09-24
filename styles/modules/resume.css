@@ -368,14 +368,16 @@
        screen breakpoints serve the narrow layout to print; the print
        layout is fully declared here with fixed dimensions, no
        min/max-width logic.
-     - letter is 816x1056 CSS px; with @page margin 0.45in the content
-       box is ~730px wide.
+     - letter is 816x1056 CSS px; the @page margins below (0.4in at the
+       sides) leave a content box ~739px wide (816 - 2 x 38.4).
      - Chrome never auto-shrinks - overflow becomes extra pages, so page
        count is the fit signal.
    Scoped to the resume pages via data-page so the rest of the site's
    print behavior is untouched.
 
-   The verification loop (run after ANY change in here):
+   The verification loop (run after ANY change in here) is automated:
+   bin/resume-fit-check.sh runs all of it but the PDFKit probe, plus the
+   theme-proof check, and publishes only on a pass. The steps, by hand:
      chrome --headless --print-to-pdf=out.pdf --no-pdf-header-footer <route>
      pdfinfo out.pdf   -> exactly 1 page
      pdffonts out.pdf  -> zero Type 3 (Type 3 = broken copy/paste)
@@ -453,7 +455,10 @@
 }
 
 @media print {
-	@page {
+	/* A NAMED page, so only the resume sheets print on it - the rest of the
+	   site keeps the browser's own print page (this stylesheet loads on
+	   every page). The page wrapper opts in just below. */
+	@page resume-sheet {
 		size: letter;
 
 		/* Top is taller on purpose: Derek's physical test print clipped
@@ -468,7 +473,11 @@
 	   against the Figma comp. px on purpose - print is a fixed medium and
 	   these are design decisions, not preferences to scale. The root size
 	   still feeds the em-based spacing below. */
-	html {
+	[data-page^='resume/'] {
+		page: resume-sheet;
+	}
+
+	:root:has([data-page^='resume/']) {
 		font-size: 12.5px;
 	}
 
@@ -601,6 +610,64 @@
 		--font-heading: 'Quicksand Print', 'Quicksand', system-ui, sans-serif;
 		--font-body: 'Spline Sans Print', 'Spline Sans', system-ui, sans-serif;
 		--font-sans: 'General Sans Print', 'General Sans', system-ui, sans-serif;
+	}
+
+	/* THE SHEET IS THEME-PROOF (Derek, 2026-09-24: "cut and dry"). The PDF
+	   is the approved Product x Expressive x light sheet, whatever the site
+	   around it is doing - the site's default mood, or a visitor's saved
+	   character/mood/flavor/scheme/red light when they print with Cmd+P.
+	   Proven the hard way: DEFAULT_MOOD went to Quiet on 2026-09-18 and the
+	   next export's headings came out in Quiet's ink.
+
+	   So every token a theme layer can set (settings/characters.css,
+	   moods.css, flavors.css, red-light.css, scheme.css) is restated here
+	   with the approved value. This block is unlayered, so it beats every
+	   theme layer; it sits on :root for the same reason as the font block
+	   above (tokens that other tokens derive from resolve where they're
+	   declared). A copy of the base values ON PURPOSE - the sheet is pinned,
+	   not derived. If a theme layer ever learns a NEW token, add it here;
+	   the theme check in bin/resume-fit-check.sh fails until you do. */
+	:root:has([data-page^='resume/']) {
+		color-scheme: light;
+
+		/* Structure - the Product character (settings/base.css). */
+		--font-ui: var(--font-sans);
+		--font-heading-weight: 600;
+		--type-anchor: 1rem;
+		--scale-ratio: 1.25;
+		--border-width: 1px;
+		--corners: 0;
+		--calm-voice-font-size: var(--step-0);
+		--calm-voice-font-weight: 300;
+		--calm-voice-line-height: 1.55;
+		--calm-voice-strong-font-weight: 410;
+		--strong-voice-font-weight: 500;
+		--attention-voice-font-size: var(--step-up-2);
+		--attention-voice-font-weight: 530;
+		--attention-voice-line-height: 1.2;
+		--loud-voice-font-size: var(--step-up-4);
+		--loud-voice-font-weight: 500;
+		--loud-voice-line-height: 1.2;
+		--data-voice-font-size: calc(var(--step-0) * 0.85);
+		--stamp-voice-letter-spacing: 0.08em;
+
+		/* Color - the Expressive mood, light scheme (settings/moods.css). */
+		--fill-primary: var(--color-olive-50);
+		--fill-secondary: var(--color-olive-100);
+		--fill-auxiliary: var(--color-olive-200);
+		--ink-primary: var(--color-stone-900);
+		--ink-secondary: var(--color-stone-600);
+		--ink-auxiliary: var(--color-stone-500);
+		--stroke-primary: var(--color-olive-400);
+		--stroke-secondary: var(--color-olive-300);
+		--stroke-auxiliary: var(--color-olive-200);
+		--accent: var(--color-green-600);
+		--link-color: var(--accent);
+		--link-underline-color: var(--link-color);
+		--selection-fill: var(--color-yellow-200);
+		--selection-ink: var(--color-stone-900);
+		--heading-ink: var(--ink-primary);
+		--prose-ink: var(--ink-secondary);
 	}
 
 	.resume {

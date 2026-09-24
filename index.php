@@ -249,7 +249,16 @@ if (strpos($slug, 'resume/') === 0) {
 		$is_cover_letter = true;
 	}
 
-	if (isset($resume['lanes'][$lane_slug])) {
+	// A letter route needs its lane in BOTH files - a lane missing from
+	// letters.json stays a 404, never a blank letter with a 200 (the
+	// export check reads status codes, so a 404 fails it loudly).
+	$has_letter = true;
+	if ($is_cover_letter) {
+		$letters = load_json('letters.json');
+		$has_letter = isset($letters['lanes'][$lane_slug]);
+	}
+
+	if (isset($resume['lanes'][$lane_slug]) && $has_letter) {
 		$lane = $resume['lanes'][$lane_slug];
 
 		if ($is_text) {

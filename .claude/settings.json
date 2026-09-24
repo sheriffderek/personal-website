@@ -6,9 +6,9 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "grep -q 'content/resume.json' && \"${CLAUDE_PROJECT_DIR:-.}/bin/resume-fit-check.sh\" || true",
-						"timeout": 60,
-						"statusMessage": "Resume fit check (1-page assert per lane)..."
+						"command": "python3 -c 'import json, os, re, sys; path = json.load(sys.stdin).get(\"tool_input\", {}).get(\"file_path\", \"\"); root = os.environ.get(\"CLAUDE_PROJECT_DIR\", os.getcwd()) + \"/\"; rel = path[len(root):] if path.startswith(root) else \"\"; sys.exit(0 if re.match(r\"(content/(resume|letters)\\.json$|styles/|scripts/|includes/|fonts/|index\\.php$|templates/(resume-text|cover-letter-text)\\.php$|templates/pages/(resume-lane|cover-letter)\\.php$|bin/resume-)\", rel) else 1)' && \"${CLAUDE_PROJECT_DIR:-.}/bin/resume-fit-check.sh\" || true",
+						"timeout": 120,
+						"statusMessage": "Resume check (only for files the resume pages are built from or load)..."
 					}
 				]
 			}

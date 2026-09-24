@@ -51,6 +51,11 @@ $letter = resolve_letter($letters, $lane_slug, $target_slug);
 		$lens_parts = [];
 
 		foreach ($letters['lanes'] as $nav_slug => $nav_letter) {
+			// A letter lane with no resume lane has no page to link to.
+			if (!isset($resume['lanes'][$nav_slug])) {
+				continue;
+			}
+
 			$nav_label = $resume['lanes'][$nav_slug]['label'];
 
 			if ($nav_slug === $lane_slug) {
