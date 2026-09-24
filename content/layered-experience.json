@@ -1,50 +1,50 @@
 [
 	{
 		"tag": "Art + technical education",
-		"what": "Visual thinking, critical thinking, and the tools to make things.",
-		"why": "Critical thinking. Judgment about what's worth making. Comfort with ambiguity. Storytelling. Enough technical foundation to build the thing, not just picture it.",
+		"what": "Art school isn't painting a still life...",
+		"why": "Dealing with ambiguity? Yes. Who else gets trained to explore and defend abstract art in critique, learn typography with actual printing presses, face the facts of whether your work is successful?",
 		"skills": "visual thinking · critique · theory · technical craft"
 	},
 	{
 		"tag": "Web design + development",
-		"what": "Design and code as one job.",
-		"why": "Design decisions get argued out in the browser as much as in the sketch. The build teaches the design what's possible; the design teaches the build what matters. Implementation isn't the thing that happens after design — it's part of the thing.",
-		"skills": "HTML · CSS · JavaScript · SVG · animation · accessibility"
+		"what": "When you're the 'web master' you have to own it all.",
+		"why": "You're not just handed a finished Figma file to casually transform into code. You're setting up hosting, handling the clients, planning, executing, testing, writing front-end / back-end, handling visual design, iterating, and you're basically ALL the roles. The projects might be smaller, but that's the foundation that everything grows from.",
+		"skills": "HTML · CSS · PHP · JavaScript · SVG · animation · accessibility"
 	},
 	{
 		"tag": "Front-end engineering",
-		"what": "Good work has to survive contact with a team.",
-		"why": "Building code other people can live with. Meeting real production constraints. Working across teams without the work getting lost in handoff.",
+		"what": "As projects get bigger, you need to specialize.",
+		"why": "Smooth UI doesn't just happen, it takes extreme attention to detail - not only in the clicks and the borders and the micro-interactions, but how the whole system works. Most web-app code is boilerplate, but this is where the real product differentiation happens - at the edge.",
 		"skills": "production · performance · QA · systems · cross-functional teams"
 	},
 	{
 		"tag": "Early-stage product development",
-		"what": "Building when the answer isn't known yet.",
-		"why": "Moving from unclear problem to something concrete enough to test. Comfort with everything moving at once. Deciding what to build, and what not to.",
+		"what": "The code is just the medium.",
+		"why": "You can design it all out and then build it and hope for the best... or you can build it first - prototype it, test it, iterate, and discover the real product as you move and meet the needs of your users. The second way is better.",
 		"skills": "UX · UI · prototyping · research · testing · shipping"
 	},
 	{
 		"tag": "Product + technical consulting",
-		"what": "The thing you're asked to fix isn't always the problem.",
-		"why": "Diagnosing the actual problem underneath the stated one. Reading team dynamics. Working across design, engineering, and product without allegiance to any of them.",
+		"what": "To be our best, we need more people and more points of view.",
+		"why": "Where are we? What are we really doing? Should we build it? Did we build it right? Is our team working together? How do we build a system that enables everyone to be their best? How do we mitigate risk?",
 		"skills": "discovery · facilitation · strategy · systems thinking · alignment"
 	},
 	{
 		"tag": "Product design",
-		"what": "Holding the whole product in view.",
-		"why": "The user, the business, the system, the interface, the technology — and the tradeoffs between them. Not just can we build it? but what are we trying to accomplish?",
+		"what": "You have to own your scope.",
+		"why": "People aren't robots, markets change, there are timelines and constraints: if you're going to design something - you can't get stuck in the code - you have to move fast, understand the opportunity space, know what matters when - and how to program at a higher level.",
 		"skills": "research · interaction · UI · design systems · product strategy"
 	},
 	{
 		"tag": "Design education + systems",
-		"what": "Making practice into a system other people can use.",
-		"why": "Turning years of instinct into something another person can pick up. Precision about what I actually know and don't. Building feedback loops that produce outcomes, not just information.",
+		"what": "There's no real school for this... so, I designed one.",
+		"why": "Watching a video of some guy coding - isn't how you learn. UX design, product design, typography, information architecture -- want to learn it? Here's how. And when you learn this way - you're not learning to be a 'coder' or 'designer' - you're learning everything.",
 		"skills": "curriculum · teaching · feedback · assessment · mentorship"
 	},
 	{
 		"tag": "AI + agentic workflows",
-		"what": "AI on top of the layers, not instead of them.",
-		"why": "Shortens the loop between thinking and making. The value isn't doing more — it's knowing what to accelerate, what to question, and what shouldn't be handed over.",
+		"what": "What can these emerging technologies add to the mix?",
+		"why": "There are people just starting now... but I've spent years using agents to build real projects. I've felt all the elation - and all the pain. Maturity in this space is the difference between 100x and -100x.",
 		"skills": "agents · LLMs · rapid prototyping · workflow design · experimentation"
 	},
 	{

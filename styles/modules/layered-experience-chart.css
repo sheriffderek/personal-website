@@ -48,33 +48,26 @@
 	}
 
 	/*
-		THE PALETTE - "Deepening", the lab's working favorite: one step from
-		paper toward ink per layer, so the stacking reads as density - the
-		career gets deeper, not more colorful. It names no color, only the
-		mood contract's slots, so it repaints with every mood and scheme.
-		CONTRAST (Ivy, 2026-09-20): the steps are wide, and the ramp SKIPS the
-		middle grays on purpose - between roughly 38% and 58% of the way to
-		ink neither dark nor light words read well. So six light layers carry
-		dark words, then the last three turn dark with paper-colored words.
+		THE PALETTE - every other color (Derek, 2026-09-24, for legibility;
+		replaced the lab's "Deepening" ramp). Two light tones take turns so
+		each bar reads as its own layer, both carrying dark words; only the
+		top layer ("What's next?") goes dark with paper-colored words. It
+		names no color, only the mood contract's slots, so it repaints with
+		every mood and scheme. The mid tone is 14% of the way to ink: light
+		enough that the open layer's light-weight reading text still reads
+		(Derek, 2026-09-24 - 22% looked heavy), ~9:1 for ink-primary in
+		Quiet light, and well short of the middle grays (roughly 38-58%),
+		where neither dark nor light words read well.
 	*/
-	li:nth-child(1) { --tone: var(--fill-secondary); }
-	li:nth-child(2) { --tone: color-mix(in oklab, var(--fill-secondary), var(--ink-primary) 7%); }
-	li:nth-child(3) { --tone: color-mix(in oklab, var(--fill-secondary), var(--ink-primary) 14%); }
-	li:nth-child(4) { --tone: color-mix(in oklab, var(--fill-secondary), var(--ink-primary) 21%); }
-	li:nth-child(5) { --tone: color-mix(in oklab, var(--fill-secondary), var(--ink-primary) 28%); }
-	li:nth-child(6) { --tone: color-mix(in oklab, var(--fill-secondary), var(--ink-primary) 35%); }
-
-	li:nth-child(7) {
-		--tone: color-mix(in oklab, var(--fill-secondary), var(--ink-primary) 64%);
-		--tone-ink: var(--fill-primary);
+	li {
+		--tone: var(--fill-secondary);
 	}
 
-	li:nth-child(8) {
-		--tone: color-mix(in oklab, var(--fill-secondary), var(--ink-primary) 82%);
-		--tone-ink: var(--fill-primary);
+	li:nth-child(even) {
+		--tone: color-mix(in oklab, var(--fill-secondary), var(--ink-primary) 14%);
 	}
 
-	li:nth-child(9) {
+	li:last-child {
 		--tone: var(--ink-primary);
 		--tone-ink: var(--fill-primary);
 	}

@@ -1,0 +1,63 @@
+/* Resume index - /resume only: the intro, the layered experience chart,
+   and the three lane links. Its own file on purpose (Derek, 2026-09-24):
+   the core resume pages (resume.css - the lane pages, cover letters, and
+   their PDF exports) can't afford to get broken by work on this page, so
+   nothing here touches them and nothing there styles this. Every rule is
+   scoped to data-page='resume' (no slash - the lane pages are 'resume/...').
+
+   All type comes from the voices; this file is geometry only. */
+
+/* The /resume index's layered experience chart (Derek's sketch,
+   2026-09-24) - the reach it had on home (commit 8860e7a), seated under
+   the intro instead of rising beside it. Large screens only - smaller
+   screens get a simpler telling, not placed yet. */
+.page-wrapper[data-page='resume'] .layered-experience-chart {
+	display: none;
+
+	@media (width >= 1024px) {
+		display: flex;
+		/* Just under the intro, not rising beside it (Derek, 2026-09-24:
+		   the top bar crowded the intro's last line). */
+		margin-block: 1em 3em;
+		/* Reach right to the toolbar's edge: across the column gap and the
+		   tray's lane. main and the tray both pad with --gutter, so those
+		   two cancel out. */
+		margin-inline-end: calc(-1 * (var(--layout-column-gap) + var(--layout-tray-sidebar)));
+	}
+
+	/* Where there is room, the base bar breaks out past the text column on
+	   the left too - the same reach journal figures use. */
+	@media (width >= 1450px) {
+		margin-inline-start: calc(-1 * var(--layout-figure-breakout));
+	}
+}
+
+/* The /resume index lane picker - each lane is a small choice cluster
+   (the label link, the roles it covers, its letter): air between the
+   clusters, tight lines within - the same shape as the sheet's
+   designation clusters. The em literals match the hand-authored rhythm
+   in typography.css's .styled block. */
+.page-wrapper[data-page='resume'] .resume-lanes {
+	margin-top: 1.6em;
+
+	li + li {
+		margin-top: 1.4em;
+	}
+
+	li p {
+		margin-top: 0.35em;
+		max-width: 44em;
+	}
+
+	/* One voice per line: the global a.link rule carries calm-voice
+	   metrics, which would flatten the lane name down to body size and
+	   bump the letter link a step over its quiet-voice line (same fight
+	   as .resume-lane-nav). The link takes its line's voice. */
+	li h2 a,
+	li p a {
+		font-family: inherit;
+		font-size: inherit;
+		font-weight: inherit;
+		line-height: inherit;
+	}
+}

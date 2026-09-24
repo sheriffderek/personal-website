@@ -87,14 +87,9 @@
 		"heading": "Education",
 		"body": "BFA, California College of the Arts (2005). Individualized major: printmaking, painting, cross-disciplinary art and technology. Workshops on design-token architecture with Brad Frost and multi-brand theming at scale with Sam Gordashko."
 	},
-	"index": {
-		"intro": "",
-		"system_note": ""
-	},
 	"lanes": {
 		"product-designer": {
 			"label": "Product Designer",
-			"covers": "Product Designer, Senior/Staff Product Designer, Technical Product Designer, Founding Designer, UX Designer.",
 			"when_to_pick": "",
 			"resume_goal": "",
 			"letter_goal": "",
@@ -114,7 +109,6 @@
 		},
 		"advocate": {
 			"label": "Advocate & Educator",
-			"covers": "Developer Advocate, Design Advocate, Developer Experience (DX), Design Educator, Learning Experience Designer, Curriculum/Education Designer at a product company.",
 			"intro": [
 				"Cross-disciplinary dev and designer with 15+ years of experience. I started in art school, got obsessed with web dev in the early days of responsive design, and moved into product design and larger design systems. Answering questions on Stack Overflow led to mentoring, and eventually to founding and running Perpetual Education, a full-stack design school: hundreds of workshops and resources, interconnected by an overarching module system. Comfortable on camera, on stage, and in the docs, and excited to bring that mix of making and teaching to a product team that I can grow with."
 			],
@@ -139,7 +133,6 @@
 		},
 		"design-engineer": {
 			"label": "Design Engineer",
-			"covers": "Design Engineer, Design Technologist, UX Engineer, Design Systems Engineer, Technical Product Designer (when the posting is code-forward).",
 			"intro": [
 				"Design engineer who owns the seam between design and code. Fifteen years building products end to end: I've built component systems since jQuery and Knockout; these days mostly Vue, and I pick up whatever a team ships in. I turn design systems into working front-end (tokens, theming, states), prototype the hard interactions in real code, and give design and engineering one shared language. I build live style guides, and I drive design-system adoption through education and advocacy. I'm excited to bring that to a product team I can grow with."
 			],

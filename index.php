@@ -218,7 +218,8 @@ if (strpos($slug, 'case-studies/') === 0) {
 }
 
 // Resume lanes live at /resume/<lane>. One data file, content/resume.json,
-// drives the /resume index and every lane page: the `lanes` map holds what
+// drives every lane page (the /resume index is a normal page that links
+// here and reads none of it): the `lanes` map holds what
 // differs per lane (intro, skills order), everything else is shared. The
 // wording source of truth is job-search/briefing/resume-base.md + the lane
 // spec beside it - this JSON is the public rendering of that, not a fork.
