@@ -14,7 +14,7 @@
 	{
 		"tag": "Front-end engineering",
 		"what": "As projects get bigger, you need to specialize.",
-		"why": "Smooth UI doesn’t just happen, it takes extreme attention to detail - not only in the clicks and the borders and the micro-interactions, but how the whole system works. Most web-app code is boilerplate, but this is where the real product differentiation happens - at the edge.",
+		"why": "Smooth UI doesn’t just happen, it takes extreme attention to detail - not only in the clicks and the borders and the micro-interactions, but how the whole system works. Most web-app code is infrastructure, but this is where the real product differentiation happens - at the edge.",
 		"skills": "production · performance · QA · systems · cross-functional teams"
 	},
 	{
@@ -26,13 +26,13 @@
 	{
 		"tag": "Product + technical consulting",
 		"what": "To be our best, we need more people and more points of view.",
-		"why": "Where are we? What are we really doing? Should we build it? Did we build it right? Is our team working together? How do we build a system that enables everyone to be their best? How do we mitigate risk?",
+		"why": "Where are we? What are we really doing? Should we build it? Did we build it right? Is our team working together? How do we design the system the team works in? How do we mitigate risk?",
 		"skills": "discovery · facilitation · strategy · systems thinking · alignment"
 	},
 	{
 		"tag": "Product design",
 		"what": "You have to own your scope.",
-		"why": "People aren’t robots, markets change, there are timelines and constraints: if you’re going to design something - you can’t get stuck in the code - you have to move fast, understand the opportunity space, know what matters when - and how to program at a higher level.",
+		"why": "People aren’t robots. Markets change. There are timelines and constraints. If you’re going to design something, you can’t get stuck in the code. You have to move fast, understand the opportunity space, know what matters when - and how to program at a higher level.",
 		"skills": "research · interaction · UI · design systems · product strategy"
 	},
 	{
