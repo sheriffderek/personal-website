@@ -71,11 +71,11 @@ function share_facts($route) {
 		$facts[$key] = $match[1] ?? '';
 	}
 
-	/* What iMessage will likely show. Apple's link preview drops the site
-	   name from a title that starts or ends with it ("Derek Wood: Resume"
-	   arrives as just "Resume" - seen 2026-09-24). This is our best guess at
-	   that rule, not Apple's code: strip og:site_name plus its separator
-	   from either end. Empty when nothing would be trimmed. */
+	/* What iMessage will show. Observed 2026-09-24: it drops a leading
+	   "<og:site_name>: " ("Derek Wood: Resume" arrived as just "Resume";
+	   "Resume: Derek Wood, ..." arrived whole). The trailing case (" -
+	   Derek Wood" at the end) is untested, so it's flagged too, as a maybe.
+	   Empty when nothing would be trimmed. */
 	$facts['imessage_title'] = '';
 	if ($facts['site_name'] !== '') {
 		$name = preg_quote($facts['site_name'], '/');

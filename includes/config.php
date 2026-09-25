@@ -15,7 +15,12 @@ define('INCLUDES_DIR', SITE_ROOT . '/includes');
    SITE_TITLE      - the plain site name. Browser tab, the "- Derek Wood"
                      suffix on subpage titles, and og:site_name.
    SITE_META_TITLE - the share-card headline (og:title / twitter:title). Free
-                     to be punchier than the tab title. */
+                     to be punchier than the tab title.
+   iMessage drops a leading "<og:site_name>: " from a title (observed
+   2026-09-24), and og:site_name is SITE_TITLE - so a headline opening
+   with "Derek Wood:" arrives there WITHOUT the name ("Technical Product
+   Designer at Large"). Slack shows it whole. Check /share-previews, then
+   text yourself a fresh link. */
 define('SITE_TITLE', 'Derek Wood');
 define('SITE_META_TITLE', 'Derek Wood: Technical Product Designer at Large');
 define('SITE_DESCRIPTION', 'I help teams do their best work, whether that’s big-picture vision and strategy, research and user testing, interfaces and code, design systems and cross-team collaboration, or auditing and maintaining what’s already shipped.');
