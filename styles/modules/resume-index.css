@@ -33,7 +33,7 @@
 }
 
 /* The /resume index lane picker - each lane is a small choice cluster
-   (the label link, the roles it covers, its letter): air between the
+   (the label link and the roles it covers): air between the
    clusters, tight lines within - the same shape as the sheet's
    designation clusters. The em literals match the hand-authored rhythm
    in typography.css's .styled block. */
@@ -50,11 +50,9 @@
 	}
 
 	/* One voice per line: the global a.link rule carries calm-voice
-	   metrics, which would flatten the lane name down to body size and
-	   bump the letter link a step over its quiet-voice line (same fight
-	   as .resume-lane-nav). The link takes its line's voice. */
-	li h2 a,
-	li p a {
+	   metrics, which would flatten the lane name down to body size (same
+	   fight as .resume-lane-nav). The link takes its heading's voice. */
+	li h2 a {
 		font-family: inherit;
 		font-size: inherit;
 		font-weight: inherit;

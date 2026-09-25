@@ -56,13 +56,11 @@ $lanes = [
 						<a class='link' href='/resume/<?= $lane['slug'] ?><?= $target_query ?>'><?= $lane['label'] ?></a>
 					</h2>
 
+					<?php /* No cover letter link (Ivy + Derek, 2026-09-24): a letter
+						anyone can read here can't feel written for the person it's
+						sent to. The letter pages still exist - the PDFs are built
+						from them - they just aren't offered to visitors. */ ?>
 					<p>For roles like: <?= $lane['roles'] ?></p>
-
-					<?php /* Each lane travels with a letter. "Generic" says it
-						out loud: it wasn't written for the reader's company. */ ?>
-					<p class='quiet-voice'>
-						<a class='link' href='/resume/<?= $lane['slug'] ?>/cover-letter<?= $target_query ?>'>Generic cover letter</a>
-					</p>
 
 				</li>
 			<?php endforeach; ?>
