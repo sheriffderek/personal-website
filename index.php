@@ -54,16 +54,15 @@ $pages = [
 		'menu' => 'Resume',
 		// The tab title matches the share card on purpose (Derek, 2026-09-24):
 		// apps that read <title> instead of og:title get the same line.
-		// Open question (2026-09-24): iMessage shows this card as just
-		// "Resume" (Slack shows "Derek Wood: Resume"), even on a fresh ?v=2
-		// link. Could be Apple's cache; could be iMessage dropping a title
-		// prefix that matches og:site_name ("Derek Wood"). Left as is on
-		// purpose. If it persists, test first: text a link whose title
-		// doesn't carry the name (a case study) and see if it arrives whole.
-		// Candidate fixes, /resume only: "Derek Wood’s Resume", or this
-		// page's og:site_name as the domain.
-		'title' => 'Derek Wood: Resume',
-		'share_title' => 'Derek Wood: Resume',
+		// A recruiter holding this link needs two facts: it's Derek, and it's
+		// a resume. "Derek Wood: Resume" arrived in iMessage as just "Resume"
+		// (Slack showed it whole), even on a fresh ?v=2 link (2026-09-24) -
+		// cache, or iMessage dropping a prefix that matches og:site_name
+		// ("Derek Wood"). This title leads with "Resume" and keeps the name
+		// inside it, so there's no name prefix to drop - an experiment:
+		// check a fresh link in iMessage after deploy.
+		'title' => 'Resume: Derek Wood, Technical Product Designer',
+		'share_title' => 'Resume: Derek Wood, Technical Product Designer',
 		'description' => 'Technical Product Designer, Advocate/Educator, Design Engineer - how does it stack up?',
 	],
 
