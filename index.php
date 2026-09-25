@@ -52,7 +52,9 @@ $pages = [
 	'resume' => [
 		'file' => 'resume.php',
 		'menu' => 'Resume',
-		'title' => 'Resume - ' . SITE_TITLE,
+		// The tab title matches the share card on purpose (Derek, 2026-09-24):
+		// apps that read <title> instead of og:title get the same line.
+		'title' => 'Derek Wood: Resume',
 		'share_title' => 'Derek Wood: Resume',
 		'description' => 'Technical Product Designer, Advocate/Educator, Design Engineer - how does it stack up?',
 	],
