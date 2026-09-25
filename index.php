@@ -55,12 +55,11 @@ $pages = [
 		// The tab title matches the share card on purpose (Derek, 2026-09-24):
 		// apps that read <title> instead of og:title get the same line.
 		// A recruiter holding this link needs two facts: it's Derek, and it's
-		// a resume. "Derek Wood: Resume" arrived in iMessage as just "Resume"
-		// (Slack showed it whole), even on a fresh ?v=2 link (2026-09-24) -
-		// cache, or iMessage dropping a prefix that matches og:site_name
-		// ("Derek Wood"). This title leads with "Resume" and keeps the name
-		// inside it, so there's no name prefix to drop - an experiment:
-		// check a fresh link in iMessage after deploy.
+		// a resume. Observed in iMessage (2026-09-24): "Derek Wood: Resume"
+		// arrived as just "Resume" while Slack showed it whole; this title
+		// arrives whole. So iMessage drops a leading "<og:site_name>: " from
+		// the title - any title opening with "Derek Wood:" loses the name
+		// there (the site-wide SITE_META_TITLE included).
 		'title' => 'Resume: Derek Wood, Technical Product Designer',
 		'share_title' => 'Resume: Derek Wood, Technical Product Designer',
 		'description' => 'Technical Product Designer, Advocate/Educator, Design Engineer - how does it stack up?',
