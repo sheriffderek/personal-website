@@ -31,6 +31,16 @@ foreach (load_json('journal.json') as $entry_slug => $entry) {
 	$routes[] = '/journal/' . $entry_slug;
 }
 
+foreach (load_json('case-studies.json') as $study_slug => $study) {
+	$routes[] = '/case-studies/' . $study_slug;
+}
+
+/* /hello/ notes are unlisted, but they're sent as links - their card is the
+   first thing the person sees. One folder per note. */
+foreach (glob(CONTENT_DIR . '/hello/*/hello.json') as $hello_file) {
+	$routes[] = '/hello/' . basename(dirname($hello_file));
+}
+
 foreach (load_json('resume.json')['lanes'] ?? [] as $lane_slug => $lane) {
 	$routes[] = '/resume/' . $lane_slug;
 	$routes[] = '/resume/' . $lane_slug . '/cover-letter';
@@ -56,9 +66,23 @@ function share_facts($route) {
 
 	$facts = ['route' => $route];
 
-	foreach (['og:title' => 'title', 'og:description' => 'description', 'og:image' => 'image'] as $property => $key) {
+	foreach (['og:title' => 'title', 'og:description' => 'description', 'og:image' => 'image', 'og:site_name' => 'site_name'] as $property => $key) {
 		preg_match("/property='" . preg_quote($property, '/') . "' content='([^']*)'/", $html, $match);
 		$facts[$key] = $match[1] ?? '';
+	}
+
+	/* What iMessage will likely show. Apple's link preview drops the site
+	   name from a title that starts or ends with it ("Derek Wood: Resume"
+	   arrives as just "Resume" - seen 2026-09-24). This is our best guess at
+	   that rule, not Apple's code: strip og:site_name plus its separator
+	   from either end. Empty when nothing would be trimmed. */
+	$facts['imessage_title'] = '';
+	if ($facts['site_name'] !== '') {
+		$name = preg_quote($facts['site_name'], '/');
+		$trimmed = preg_replace('/^' . $name . '\s*[:|\-–—·]\s*|\s*[:|\-–—·]\s*' . $name . '$/u', '', $facts['title']);
+		if ($trimmed !== $facts['title']) {
+			$facts['imessage_title'] = $trimmed;
+		}
 	}
 
 	/* Say where the image came from - the three floors of the contract. */
@@ -111,6 +135,10 @@ function share_facts($route) {
 					</card-text>
 
 				</share-card>
+
+				<?php if ($facts['imessage_title'] !== ''): ?>
+					<p class='imessage-trim quiet-voice'>iMessage likely shows only: <?= $facts['imessage_title'] ?></p>
+				<?php endif; ?>
 
 			</li>
 		<?php endforeach; ?>

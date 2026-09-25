@@ -35,6 +35,12 @@
 		}
 	}
 
+	/* The warning under a card whose title iMessage will trim - the site
+	   name comes off, and this is what's left. */
+	.imessage-trim {
+		margin-top: 0.5em;
+	}
+
 	card-text {
 		display: block;
 		padding: 0.75em 1em 1em;
