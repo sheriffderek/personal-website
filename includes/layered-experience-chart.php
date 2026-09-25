@@ -13,6 +13,12 @@
 	screen readers - with no script. Source order is oldest first; the CSS
 	draws it bottom-up (styles/modules/layered-experience-chart.css). */ ?>
 
+<?php /* A link to Derek's booking calendar is written href='CALL_URL' in the
+	JSON (which can't read PHP constants) and filled in here, so changing
+	schedulers stays the one-line edit in config.php. */
+	$layers = json_decode(str_replace("'CALL_URL'", "'" . CALL_URL . "'", json_encode($layers)), true);
+?>
+
 <ol
 	class='layered-experience-chart'
 	style='--count: <?= count($layers) ?>'

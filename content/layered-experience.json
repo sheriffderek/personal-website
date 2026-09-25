@@ -1,7 +1,7 @@
 [
 	{
 		"tag": "Art + technical education",
-		"what": "Art school isn’t painting a still life...",
+		"what": "Art school isn’t just sitting there painting a still life...",
 		"why": "Dealing with ambiguity? Yes. Who else gets trained to explore and defend abstract art in critique, learn typography with actual printing presses, face the facts of whether your work is successful?",
 		"skills": "visual thinking · critique · theory · technical craft"
 	},
@@ -49,6 +49,7 @@
 	},
 	{
 		"tag": "What’s next?",
-		"what": "I’m ready to get to work."
+		"what": "I’m ready to get to work.",
+		"why": "<a class='relaxed' target='calendar' href='CALL_URL'>Let’s talk about it</a>"
 	}
 ]
