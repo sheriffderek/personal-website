@@ -97,7 +97,7 @@
 		timeline. A row right above the first paragraph (Derek, 2026-09-22).
 		Slugs in the JSON, words from content/skills.json. */ ?>
 	<?php if (!empty($milestone['skills'])): ?>
-		<ul class='skills label-voice'>
+		<ul class='skills label-voice' role='list'>
 			<?php foreach ($milestone['skills'] as $skill): ?>
 				<li><?= skill_label($skill) ?></li>
 			<?php endforeach; ?>

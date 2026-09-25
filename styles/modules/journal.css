@@ -41,7 +41,6 @@
 	ul,
 	ol {
 		margin-block: 1em;
-		padding-inline-start: 1.4em;
 
 		li + li {
 			margin-top: 0.4em;
@@ -142,8 +141,6 @@
 	}
 
 	ul {
-		list-style: none;
-		padding: 0;
 		margin-top: 1em;
 	}
 

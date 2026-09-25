@@ -85,7 +85,7 @@ function share_facts($route) {
 
 	<p>Every page's real og tags, fetched from the live routes and drawn as the unfurl a pasted link becomes. The final test is still pasting a URL into an actual message - this page is the sweep before that.</p>
 
-	<ul class='preview-list'>
+	<ul class='preview-list' role='list'>
 
 		<?php foreach ($routes as $route): ?>
 			<?php $facts = share_facts($route); ?>

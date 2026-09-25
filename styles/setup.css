@@ -151,6 +151,51 @@ audio {
 	display: block;
 }
 
+/* The one list style (Derek, 2026-09-24). The preset zeroes list padding,
+   which pushes the markers out past the column's left line. This gives
+   them room back inside it, so the text sits one indent in from the
+   heading above it, the same on every page. Structural lists (menus, card
+   stacks) opt out with role="list" below - that's also what keeps their
+   list meaning in Safari once the bullets are gone.
+   The indent is rem, not em: the list pads in ITS font and the dot offsets
+   in the ITEM's font, so an em indent would drift apart the moment an item
+   speaks in a bigger voice. One fixed length keeps the dot on the line. */
+:root {
+	--list-indent: 1.25rem;
+}
+
+ul,
+ol {
+	padding-inline-start: var(--list-indent);
+}
+
+/* The bullet is drawn, not the browser's disc: a native marker lands
+   wherever that font's spacing puts it, a few pixels off the column's
+   left line and differently per font. This dot's left edge IS the line.
+   It centers on the item's first line (1lh), so an item that speaks in
+   another voice (a strong-voice heading as its first line) gets a dot
+   sized and centered for that voice - put the voice class on the <li>.
+   :where() keeps these at zero specificity, so a voice class wins. */
+:where(ul:not([role='list'])) {
+	list-style: none;
+}
+
+:where(ul:not([role='list'])) > li {
+	position: relative;
+	line-height: var(--calm-voice-line-height);
+}
+
+:where(ul:not([role='list'])) > li::before {
+	content: '';
+	position: absolute;
+	inset-inline-start: calc(-1 * var(--list-indent));
+	top: calc(0.5lh - 0.175em);
+	width: 0.35em;
+	height: 0.35em;
+	border-radius: 50%;
+	background: currentColor;
+}
+
 ul[role="list"],
 ol[role="list"] {
 	list-style: none;

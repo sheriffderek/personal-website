@@ -166,7 +166,7 @@
 				$rows .= "<li><span class='chip' style='background: var({$token})'></span><code class='quiet-voice'>{$token}</code></li>";
 			}
 
-			return "<ul class='flow-rows'>{$rows}</ul>";
+			return "<ul class='flow-rows' role='list'>{$rows}</ul>";
 		}
 
 		// A token whose VALUE is the story (a font name, a ratio) gets a live
@@ -178,7 +178,7 @@
 				$rows .= "<li><code class='quiet-voice'>{$token}</code><span class='flow-readout quiet-voice' data-token-value='{$token}' data-value-kind='{$kind}'>&mdash;</span></li>";
 			}
 
-			return "<ul class='flow-rows'>{$rows}</ul>";
+			return "<ul class='flow-rows' role='list'>{$rows}</ul>";
 		}
 
 		// An axis switch. The attribute lives on <html>; absent = the default

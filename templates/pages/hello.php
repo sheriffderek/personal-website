@@ -92,7 +92,7 @@
 		<section class='mirror'>
 			<h2 class='strong-voice'><?= $section['heading'] ?></h2>
 
-			<ul>
+			<ul role='list'>
 				<?php foreach ($section['items'] as $item): ?>
 					<li>
 						<?php if (!empty($item['them'])): ?>
