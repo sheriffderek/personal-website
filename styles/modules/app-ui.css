@@ -13,6 +13,10 @@
 
 	/* One column per take, side by side, each the width of the designed
 	   panel measure - the size the card really is. */
+	.context-heading {
+		margin-top: 3rem;
+	}
+
 	.app-ui-board {
 		display: flex;
 		flex-wrap: wrap;
@@ -50,4 +54,110 @@
 			outline-offset: 0;
 		}
 	}
+}
+
+/* CONTEXT - a phone-sized frame over a stand-in page, so the bar, the
+   card, and the page can be seen meeting. px for the frame on purpose: it
+   IS a device's width, not a type-scaled measure. The bar's height is the
+   live tray's (a trigger plus its 0.5rem padding above and below) - which
+   is why the frame wears data-ui='app': --app-trigger-size only exists
+   inside the chrome's scope. */
+.phone-context {
+	--context-bar-height: calc(var(--app-trigger-size) + 1rem);
+
+	position: relative;
+	width: 375px;
+	height: 34rem;
+	overflow: hidden;
+	margin: 0;
+	border: 1px solid var(--stroke-secondary);
+	background: var(--fill-primary);
+
+	/* The page behind: a gray field ruled like lines of text - enough to
+	   judge the card's edges against, with no words to read. */
+	.stand-in-page {
+		position: absolute;
+		inset: var(--context-bar-height) 0 0 0;
+		background:
+			repeating-linear-gradient(
+				to bottom,
+				transparent 0 1.2rem,
+				color-mix(in oklch, var(--ink-primary) 12%, transparent) 1.2rem 1.9rem
+			)
+			var(--fill-secondary);
+		background-clip: content-box;
+		padding: 1.5rem var(--gutter);
+	}
+
+	/* No z-index, on purpose: like the live tray, the bar's background
+	   paints UNDER the card, and only the triggers (the toolbar's own
+	   z-index 2) ride above it. */
+	.context-bar {
+		position: absolute;
+		inset: 0 0 auto 0;
+		height: var(--context-bar-height);
+		padding: 0.5rem var(--gutter);
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		background: var(--fill-primary);
+	}
+
+	/* The card, as the live phone posture draws it: flush to the right
+	   edge, a strip of page left visible, no right border or corners. */
+	.context-card {
+		position: absolute;
+		right: 0;
+		z-index: 1;
+		width: calc(100% - 5rem);
+		border-right: none;
+		border-radius: var(--app-corners) 0 0 var(--app-corners);
+	}
+
+	figcaption {
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		z-index: 3;
+		padding: 0.25rem 0.5rem;
+		background: var(--fill-primary);
+	}
+}
+
+/* The three placements. */
+.phone-context[data-placement='straddle'] .context-card {
+	/* Today: the card's top edge through the triggers' midline. */
+	top: calc(var(--context-bar-height) / 2);
+}
+
+.phone-context[data-placement='below'] .context-card {
+	top: var(--context-bar-height);
+}
+
+.phone-context[data-placement='contain'] {
+	/* The card rises to include the bar, so the icons sit inside it - the
+	   bar steps back to let the card's own color show behind them. */
+	.context-bar {
+		background: transparent;
+	}
+
+	.context-card {
+		top: var(--layout-panel-gap);
+	}
+
+	.context-card .panel-scroll {
+		padding-top: var(--context-bar-height);
+	}
+}
+
+/* THE GHOST TAKE - flush buttons: no ring, no fill at rest, a soft tinted
+   square when open. Only the trigger's own --app-trigger-* slots are
+   repainted - a take is token values, never new rules on the button. */
+[data-take='ghost'] [data-ui='app'] {
+	--app-trigger-fill: transparent;
+	--app-trigger-stroke: transparent;
+	--app-trigger-open-fill: color-mix(in oklch, var(--app-ink) 8%, var(--app-fill));
+	--app-trigger-open-ink: var(--app-ink);
+	--app-trigger-open-stroke: transparent;
+	--app-trigger-radius: 25%;
 }
