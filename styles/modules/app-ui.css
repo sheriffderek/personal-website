@@ -371,17 +371,25 @@
    rule). A deliberate color alias: the page's flavor choosing the chrome's
    palette, never a page rule reaching in. */
 html[data-family='interface'][data-flavor='sweet'] [data-ui='app'] {
-	--app-fill: light-dark(var(--color-purple-50), var(--color-purple-950));
+	/* Slack's aubergine is a deep, MUTED plum (its sidebar, #3F0E40), far
+	   redder and quieter than the palette's violet purples - so the dark
+	   side names it in oklch here, fidelity being the point. */
+	--slack-aubergine: oklch(25% 0.085 328);
+	--slack-aubergine-deep: oklch(20% 0.07 328);
+	--slack-aubergine-edge: oklch(34% 0.09 328);
+	--slack-aubergine-chosen: oklch(38% 0.1 328);
+
+	--app-fill: light-dark(var(--color-purple-50), var(--slack-aubergine));
 	--app-ink: light-dark(var(--color-purple-950), var(--color-neutral-50));
-	--app-stroke: light-dark(var(--color-purple-200), var(--color-purple-800));
+	--app-stroke: light-dark(var(--color-purple-200), var(--slack-aubergine-edge));
 	--app-shadow:
-		0 0 0 6px light-dark(var(--color-purple-100), var(--color-purple-900)),
-		0 0 0 7px light-dark(var(--color-purple-200), var(--color-purple-800));
-	--app-pill-checked-fill: light-dark(var(--color-purple-100), var(--color-purple-800));
-	--app-pill-checked-stroke: light-dark(var(--color-purple-200), var(--color-purple-700));
-	--app-menu-row-current-fill: light-dark(var(--color-purple-100), var(--color-purple-800));
+		0 0 0 6px light-dark(var(--color-purple-100), var(--slack-aubergine-deep)),
+		0 0 0 7px light-dark(var(--color-purple-200), var(--slack-aubergine-edge));
+	--app-pill-checked-fill: light-dark(var(--color-purple-100), var(--slack-aubergine-chosen));
+	--app-pill-checked-stroke: light-dark(var(--color-purple-200), var(--slack-aubergine-edge));
+	--app-menu-row-current-fill: light-dark(var(--color-purple-100), var(--slack-aubergine-chosen));
 }
 
 html[data-family='interface'][data-flavor='sweet'] .plain-range:not(.is-grabbed) {
-	--range-track: light-dark(var(--color-purple-200), var(--color-purple-800));
+	--range-track: light-dark(var(--color-purple-200), oklch(34% 0.09 328));
 }
