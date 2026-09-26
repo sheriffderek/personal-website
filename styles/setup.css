@@ -95,8 +95,10 @@ a.relaxed,
    look like a terminal window, or it's a waste"). Every link speaks in the
    link color, relaxed ones included - a quiet unmarked link would simply
    vanish here, and terminals have no whisper register. The ::after glyph
-   marks (rel arrows) stay; they're very terminal already. */
-[data-brand-character="terminal"] :is(p a, a.link, a.relaxed, .relaxed a) {
+   marks (rel arrows) stay; they're very terminal already. It stops at the
+   chrome's wall (:not inside [data-ui='app']): the chrome is its own app
+   layer and decides its own underlines (2026-09-25). */
+[data-brand-character="terminal"] :is(p a, a.link, a.relaxed, .relaxed a):not([data-ui='app'] *) {
 	color: var(--link-color);
 	text-decoration: none;
 }

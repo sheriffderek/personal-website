@@ -350,9 +350,10 @@
 	   row's size), so it's an open-bank slot: the classic-web family keeps
 	   it, the app families drop it and let the row say "clickable". The
 	   defaults alias today's page link look so nothing moved when the slot
-	   arrived - a family repaints them with chrome values. Known leak,
-	   pre-dating the slot: the Terminal CHARACTER's no-underline rule
-	   (setup.css) still reaches these links through the wall. */
+	   arrived - a family repaints them with chrome values. The COLOR
+	   aliases are deliberate (Derek, 2026-09-25: the chrome is its own
+	   app layer "besides some aliased colors") - an alias is allowed; a
+	   page RULE reaching in is not (the Terminal one was closed, setup.css). */
 	--app-menu-link-color: var(--link-color);
 	--app-menu-link-decoration: underline;
 	--app-menu-link-underline-color: var(--link-underline-color);
