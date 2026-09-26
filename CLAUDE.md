@@ -282,7 +282,7 @@ Locked-in markup pattern (same in the home page-header `templates/pages/home.php
 
 ## Theme system (locked-in rules)
 
-**Live working state: `notes/walk-notes.md`** — the combo walk sheet with per-cell aims, verdicts, and the NEXT SESSION block at the top. "Let's work on the themes" = open that file and start at item 1.
+**Live working state: `notes/walk-notes.md`** — the combo walk sheet with per-cell aims, verdicts, and the NEXT SESSION block at the top. "Let's work on the themes" = open that file and start at item 1. **The chrome's own theming (the app UI - menus, panel, triggers, families) has its own map and queue: `notes/app-ui-walk.md`** - "let's work on the app UI" = open that file.
 
 
 The theming behavior is a load-bearing artifact of this site — it's part of the design-system-mastery demo, not just a nicety. Decisions below are pinned; don't re-litigate without a reason. **The live map is the header comment in `styles/settings.css`** — one file per axis under `styles/settings/`, and that header is kept current; this section carries the rules and reasons, the header carries the wiring.
