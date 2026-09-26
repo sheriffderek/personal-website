@@ -82,7 +82,9 @@ main {
    shell-tray, wearing the house's site- prefix). The old $refactor complaint
    here ("rail is a look-name") is resolved by the rename; what remains of it:
    the tag could still become <nav>, and the sentinel/.is-stuck machinery is
-   phone-only by design (the lab keeps it that way). */
+   phone-only by design (the lab keeps it that way). Why the phone bar is
+   full-width and fixed at all: THE PHONE POSTURE block on .panel in
+   settings-panel.css. */
 .site-tray {
 	position: sticky;
 	top: 0;

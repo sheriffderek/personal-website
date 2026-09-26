@@ -30,19 +30,26 @@
 	   [data-ui='app'] is ITS OWN APP with its own rules. The site's theming
 	   system stops at this boundary. (Derek, 2026-07-28; restated harder
 	   2026-08-10 after two accidents - see the history note below.)
+	   Its job (2026-09-25): the PAGE is the brochure/doc site - the
+	   characters are its registers; the CHROME is where the fine UI
+	   craft shows - handles, buttons, panel edges - in named patterns.
 
-	   1. FORM NEVER CHANGES. No brand, character, mood, flavor, scheme, or
-	      future axis may add, remove, swap, resize, or move a control in
-	      here. Not "re-form to match the theme's personality" - NEVER. The
-	      whole point is that the controls stay put under the visitor's hand
-	      while the page transforms around them.
+	   1. THE BOX NEVER CHANGES. No brand, character, mood, flavor, scheme,
+	      or future axis may add, remove, resize, or move a control in here,
+	      or change spacing or fonts (text width is size). Not "re-form to
+	      match the theme's personality" - NEVER. The whole point is that
+	      the controls stay put under the visitor's hand while the page
+	      transforms around them. What CAN change is anything painted on a
+	      box that keeps its size (Derek, 2026-09-25): handle and button
+	      shape, color, gradient, the panel's border, shadow, and corners,
+	      and icons - swapped only for ones the same size.
 
-	   2. THE ONLY DOOR IN IS THE --app-* COLOR SLOTS. They hold the chrome's
-	      own scheme-aware NEUTRAL baseline (2026-08-11 - they used to alias
-	      the page's semantic tokens, which let every theme's hues wash in
-	      passively). Chrome color changes ONLY as a deliberate take
-	      repainting these slots with clear direction. Color. That's the
-	      whole menu.
+	   2. THE ONLY DOOR IN IS THE --app-* OPEN BANK (below): surface slots
+	      that pass the no-reflow test - color, shadow, corners. They hold
+	      the chrome's own scheme-aware NEUTRAL baseline (2026-08-11 - they
+	      used to alias the page's semantic tokens, which let every theme's
+	      hues wash in passively). The chrome changes ONLY as a deliberate
+	      take repainting these slots with clear direction.
 
 	   3. EVERYTHING ELSE IS SEALED, EXPLICITLY. Geometry tokens are frozen.
 	      Font families are pinned to the UI stacks AND the metrics (size,
@@ -204,7 +211,21 @@
 	                   strokes, shadow at or near none - flat.
 	   Shadow reads as depth-without-movement, which is exactly the kind of
 	   expression this scope allows - elevation may change per mood, position
-	   never. */
+	   never.
+
+	   THE PATTERN VOCABULARY (2026-09-25) - a small set of treatments, with
+	   color doing the rest. Knobs: fill (none / tint / solid / inverted),
+	   edge (none / hairline / outline / double ring - drawn with outline or
+	   box-shadow, never border WIDTH), depth (flat / soft shadow), shape
+	   (circle / soft square / square), grouping (loose / joined capsule).
+	   A pattern is a named combo, named for the product it emulates, so we
+	   can say which one we mean: Floating (Claude app menus), Rail (Figma),
+	   App (Claude + ChatGPT + Linear - ghost buttons, tinted active square,
+	   quiet panel), Capsule (circles in an outlined pill), Toolbar (Claude's
+	   artifact viewer), Notch (Reddit's button on the divider), Chip (tinted
+	   square), Solid (shadcn), Hard key (brutalist boxes). Still open:
+	   whether patterns belong to characters or moods (this plan maps
+	   moods). Parked joke: a red "Delete" row that just closes the panel. */
 
 	/* Trigger skin - its own slots, resting and open, rather than the base
 	   chrome slots read straight. A trigger is the one control that has to
@@ -471,7 +492,53 @@ button.trigger {
 	-webkit-backface-visibility: hidden;
 	backface-visibility: hidden;
 
-	/* Two phone-range compositions (Derek, 2026-08-12), split at 700 -
+	/* THE PHONE POSTURE - the facts it answers (Derek, 2026-09-25):
+	     1. The controls must persist on a phone, so there IS a fixed
+	        header - accepted as a given.
+	     2. The trigger icons may never float over content - over busy
+	        page they're hard to see. They rest in a full-width bar (the
+	        tray, default-layout.css), and that bar is the thing that
+	        sticks.
+	     3. The panel is a CARD, never a full-screen takeover, for two
+	        reasons: its edges (border, corners, shadow) are surfaces the
+	        chrome's treatments paint on - a takeover has none to theme -
+	        and the page must stay visible behind it, so a visitor moving
+	        a theme slider watches the page repaint (the demo IS the
+	        change). Hence the strip of page on the left, below.
+	   What that leaves the chrome's treatments to paint on a phone: the
+	   card's right edge is flush to the screen (no right border, corners,
+	   or shadow can show), so only the left edge, the bottom edge, the
+	   bottom-left corner, the top join, and the trigger buttons (ringed,
+	   ghost, or ghost with a tinted active square - same box, all
+	   allowed). The status bar and Safari's moving URL bar are the
+	   device's, not the theme's.
+	   4. What that leaves to paint on a phone: the card's right edge is
+	      flush to the screen, so only its left edge, bottom edge,
+	      bottom-left corner, the top join, and the trigger buttons carry
+	      a treatment. The status bar and Safari's URL bar are the
+	      device's.
+	   Open (2026-09-25): the dim grays exactly the page they should be
+	   watching change - lighter on phones, off while a theme slider
+	   drags, or settings-panel-free? Undecided.
+	   Known limit (2026-09-25): top: 50% below runs the card's top edge
+	   through the circles' midline, which FORCES a visible top line - no
+	   subtle, borderless pattern can exist on a phone. The idea, untried:
+	   the card grows up to include the bar (top: 0), so the line becomes
+	   an optional treatment - but then bar and card must be one color, and
+	   today the bar paints the page's --fill-primary (default-layout.css)
+	   while the card paints --app-fill.
+	   Direction, untried (2026-09-25): top: 50% below puts the card's top
+	   edge through the circles' midline, which FORCES a visible top line -
+	   no subtle, borderless treatment can exist. The fix: the card grows
+	   up to include the bar (top: 0; the toolbar already paints above
+	   it), so the icons sit inside the card and the line becomes an
+	   optional treatment (ringed patterns redraw it as a border). The
+	   catch: bar and card must then be one color - the bar paints the
+	   page's --fill-primary (default-layout.css) and the card --app-fill,
+	   which part under most themes. Plan: the bar takes --app-fill only
+	   while the panel is open, and keeps matching the page when closed.
+
+	   Two phone-range compositions (Derek, 2026-08-12), split at 700 -
 	   phones keep the immersive card well past the smallest sizes; the
 	   dropdown takes over in tablet territory:
 
