@@ -68,76 +68,30 @@
 	</div>
 
 	<?php /* CONTEXT - where the parts meet the page on a phone, the tricky
-		part (Derek, 2026-09-25). Same real triggers and card, placed three
-		ways in a phone-sized frame over a stand-in page: straddling the
-		bar (today), dropped below it, and containing it. Flush (ghost)
-		buttons only work where the card can meet the bar cleanly - that is
-		what these test. The placements and the ghost take live in
+		part (Derek, 2026-09-25). Every pairing of button style and
+		placement, because neither can be judged alone: straddling the bar
+		(today), dropped below it, and containing it - each with ringed and
+		with ghost (flush) triggers. Flip the scheme or mood with the rows
+		above and all six repaint. The placements and takes live in
 		app-ui.css only; the live chrome never sees them. */ ?>
+	<?php
+		$placements = ['straddle' => 'Straddle', 'below' => 'Below', 'contain' => 'Contain'];
+		$takes = ['ringed' => 'Ringed', 'ghost' => 'Ghost'];
+	?>
+
 	<h2 class='strong-voice context-heading'>Context</h2>
 
-	<div class='app-ui-board'>
-
-		<figure class='phone-context' data-ui='app' data-placement='straddle' data-take='ringed'>
-			<div class='stand-in-page' aria-hidden='true'></div>
-
-			<div class='context-bar'>
-				<div class='toolbar' data-ui='app' inert>
-					<?= partial('app-ui/trigger', ['label' => 'Pages', 'glyph' => 'pages']) ?>
-
-					<?= partial('app-ui/trigger', ['label' => 'Display settings', 'glyph' => 'settings', 'expanded' => true]) ?>
-				</div>
-			</div>
-
-			<div class='app-card context-card' data-ui='app'>
-				<div class='panel-scroll settings-panel'>
-					<?= partial('settings-rows', ['id_suffix' => '-context-straddle', 'page_has_grid' => false, 'page_controls' => null]) ?>
-				</div>
-			</div>
-
-			<figcaption class='quiet-voice'>Straddle (today)</figcaption>
-		</figure>
-
-		<figure class='phone-context' data-ui='app' data-placement='below' data-take='ghost'>
-			<div class='stand-in-page' aria-hidden='true'></div>
-
-			<div class='context-bar'>
-				<div class='toolbar' data-ui='app' inert>
-					<?= partial('app-ui/trigger', ['label' => 'Pages', 'glyph' => 'pages']) ?>
-
-					<?= partial('app-ui/trigger', ['label' => 'Display settings', 'glyph' => 'settings', 'expanded' => true]) ?>
-				</div>
-			</div>
-
-			<div class='app-card context-card' data-ui='app'>
-				<div class='panel-scroll settings-panel'>
-					<?= partial('settings-rows', ['id_suffix' => '-context-below', 'page_has_grid' => false, 'page_controls' => null]) ?>
-				</div>
-			</div>
-
-			<figcaption class='quiet-voice'>Below</figcaption>
-		</figure>
-
-		<figure class='phone-context' data-ui='app' data-placement='contain' data-take='ghost'>
-			<div class='stand-in-page' aria-hidden='true'></div>
-
-			<div class='context-bar'>
-				<div class='toolbar' data-ui='app' inert>
-					<?= partial('app-ui/trigger', ['label' => 'Pages', 'glyph' => 'pages']) ?>
-
-					<?= partial('app-ui/trigger', ['label' => 'Display settings', 'glyph' => 'settings', 'expanded' => true]) ?>
-				</div>
-			</div>
-
-			<div class='app-card context-card' data-ui='app'>
-				<div class='panel-scroll settings-panel'>
-					<?= partial('settings-rows', ['id_suffix' => '-context-contain', 'page_has_grid' => false, 'page_controls' => null]) ?>
-				</div>
-			</div>
-
-			<figcaption class='quiet-voice'>Contain</figcaption>
-		</figure>
-
-	</div>
+	<?php foreach ($takes as $take => $take_name): ?>
+		<div class='app-ui-board context-board'>
+			<?php foreach ($placements as $placement => $placement_name): ?>
+				<?= partial('app-ui/phone-context', [
+					'placement' => $placement,
+					'take' => $take,
+					'caption' => $take_name . ' · ' . $placement_name,
+					'id_suffix' => '-context-' . $take . '-' . $placement,
+				]) ?>
+			<?php endforeach; ?>
+		</div>
+	<?php endforeach; ?>
 
 </div>

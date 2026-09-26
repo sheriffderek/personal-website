@@ -66,6 +66,9 @@
 	--context-bar-height: calc(var(--app-trigger-size) + 1rem);
 
 	position: relative;
+	/* A phone doesn't get narrower because the row is crowded - the frame
+	   keeps its width and the row scrolls. */
+	flex-shrink: 0;
 	width: 375px;
 	height: 34rem;
 	overflow: hidden;
@@ -122,6 +125,16 @@
 		padding: 0.25rem 0.5rem;
 		background: var(--fill-primary);
 	}
+}
+
+/* A context row keeps its three placements in one line - the comparison
+   IS the row - and scrolls sideways where the column is narrower than
+   three phones, instead of wrapping them apart. */
+.app-ui-playground .context-board {
+	flex-wrap: nowrap;
+	overflow-x: auto;
+	gap: 1.5rem;
+	padding-bottom: 0.5rem;
 }
 
 /* The three placements. */
