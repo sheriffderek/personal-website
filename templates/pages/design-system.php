@@ -133,7 +133,7 @@
 
 	<h1 class='loud-voice'>Design system</h1>
 
-	<p>Every token and voice on one surface. Change the axes in the settings panel to see them all react together. The journal template has its own surface: <a class='link' href='/journal/kitchen-sink'>the kitchen-sink entry</a> renders every module an entry can use.</p>
+	<p>Every token and voice on one surface. Change the axes in the settings panel to see them all react together. The journal template has its own surface: <a class='link' href='/journal/kitchen-sink'>the kitchen-sink entry</a> renders every module an entry can use. The chrome has one too: <a class='link' href='/app-ui'>the app-ui playground</a>.</p>
 
 	<section class='ds-section'>
 		<h2 class='attention-voice'>Color tokens</h2>

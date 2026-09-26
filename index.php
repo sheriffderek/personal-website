@@ -25,6 +25,24 @@ if ($slug === '') {
 $target_slug = isset($_GET['target']) ? preg_replace('/[^a-z0-9-]/', '', strtolower($_GET['target'])) : '';
 $target_query = $target_slug !== '' ? '?target=' . $target_slug : '';
 
+// A ?try=<take>-<placement> link previews one app-ui pairing on the LIVE
+// chrome, for that page view only - nothing saved, nothing default, and
+// anything off the lists is ignored. It exists so a pairing can be felt on
+// a real phone (the /app-ui playground lists the links); the rules it
+// switches on live in styles/modules/settings-panel.css (CHROME TAKES).
+// These two lists are also the playground's rows and columns.
+$app_ui_takes = ['ringed' => 'Ringed', 'ghost' => 'Ghost'];
+$app_ui_placements = ['straddle' => 'Straddle', 'below' => 'Below', 'contain' => 'Contain'];
+$try_take = '';
+$try_placement = '';
+if (isset($_GET['try'])) {
+	$try_parts = explode('-', (string) $_GET['try'], 2);
+	if (count($try_parts) === 2 && isset($app_ui_takes[$try_parts[0]]) && isset($app_ui_placements[$try_parts[1]])) {
+		$try_take = $try_parts[0];
+		$try_placement = $try_parts[1];
+	}
+}
+
 // The pages this site has. Each one is a body file in templates/pages/,
 // plus the <title> and meta description that go in its <head>.
 // 'menu' is the short label shown in the menu + footer (pages without it,

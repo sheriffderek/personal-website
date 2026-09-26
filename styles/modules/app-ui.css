@@ -4,6 +4,16 @@
    board and draws the "show boxes" outlines. */
 
 .app-ui-playground {
+	.try-links {
+		margin-top: 1rem;
+		padding: 0;
+		list-style: none;
+
+		li + li {
+			margin-top: 0.75rem;
+		}
+	}
+
 	.show-boxes {
 		display: inline-flex;
 		align-items: center;
@@ -63,7 +73,7 @@
    is why the frame wears data-ui='app': --app-trigger-size only exists
    inside the chrome's scope. */
 .phone-context {
-	--context-bar-height: calc(var(--app-trigger-size) + 1rem);
+	--context-bar-height: calc(var(--app-trigger-size) + var(--app-border-width) * 2 + 1rem);
 
 	position: relative;
 	/* A phone doesn't get narrower because the row is crowded - the frame
@@ -163,14 +173,6 @@
 	}
 }
 
-/* THE GHOST TAKE - flush buttons: no ring, no fill at rest, a soft tinted
-   square when open. Only the trigger's own --app-trigger-* slots are
-   repainted - a take is token values, never new rules on the button. */
-[data-take='ghost'] [data-ui='app'] {
-	--app-trigger-fill: transparent;
-	--app-trigger-stroke: transparent;
-	--app-trigger-open-fill: color-mix(in oklch, var(--app-ink) 8%, var(--app-fill));
-	--app-trigger-open-ink: var(--app-ink);
-	--app-trigger-open-stroke: transparent;
-	--app-trigger-radius: 25%;
-}
+/* The ghost take the frames wear lives with the chrome's other rules -
+   styles/modules/settings-panel.css, beside CHROME TAKES - because the
+   live tray uses the same one on a ?try= visit. */

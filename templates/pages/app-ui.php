@@ -74,16 +74,11 @@
 		with ghost (flush) triggers. Flip the scheme or mood with the rows
 		above and all six repaint. The placements and takes live in
 		app-ui.css only; the live chrome never sees them. */ ?>
-	<?php
-		$placements = ['straddle' => 'Straddle', 'below' => 'Below', 'contain' => 'Contain'];
-		$takes = ['ringed' => 'Ringed', 'ghost' => 'Ghost'];
-	?>
-
 	<h2 class='strong-voice context-heading'>Context</h2>
 
-	<?php foreach ($takes as $take => $take_name): ?>
+	<?php foreach ($app_ui_takes as $take => $take_name): ?>
 		<div class='app-ui-board context-board'>
-			<?php foreach ($placements as $placement => $placement_name): ?>
+			<?php foreach ($app_ui_placements as $placement => $placement_name): ?>
 				<?= partial('app-ui/phone-context', [
 					'placement' => $placement,
 					'take' => $take,
@@ -93,5 +88,27 @@
 			<?php endforeach; ?>
 		</div>
 	<?php endforeach; ?>
+
+	<?php /* The frames are a map; the phone is the test. Each link opens
+		the real home page with that pairing switched on for the one visit
+		(?try=, index.php), so it can be felt on an actual phone - thumb,
+		scroll, dim, Safari's bars and all. */ ?>
+	<h2 class='strong-voice context-heading'>Try on a phone</h2>
+
+	<ul
+		class='try-links'
+		role='list'
+	>
+		<?php foreach ($app_ui_takes as $take => $take_name): ?>
+			<?php foreach ($app_ui_placements as $placement => $placement_name): ?>
+				<li>
+					<a
+						class='link'
+						href='/?try=<?= $take ?>-<?= $placement ?>'
+					><?= $take_name ?> · <?= $placement_name ?></a>
+				</li>
+			<?php endforeach; ?>
+		<?php endforeach; ?>
+	</ul>
 
 </div>
