@@ -490,6 +490,11 @@ html[data-take='ghost'] .site-tray,
 	--app-trigger-open-ink: var(--app-ink);
 	--app-trigger-open-stroke: transparent;
 	--app-trigger-radius: 25%;
+
+	/* The rest -> hover -> press -> open ladder: nothing, a faint tint, a
+	   deeper one, then the held open tint. */
+	--app-trigger-hover-fill: color-mix(in oklch, var(--app-ink) 5%, var(--app-fill));
+	--app-trigger-press-fill: color-mix(in oklch, var(--app-ink) 12%, var(--app-fill));
 }
 
 
@@ -614,6 +619,20 @@ button.trigger {
 	   one truth, no companion class for the script to keep in sync. Only
 	   panel triggers wear the attribute; the plain buttons (back-to-top)
 	   never match and need no opt-out. */
+	/* HOVER and PRESS (2026-09-25) - slots a family fills; unset they
+	   repeat the rest look, so the Ring default is unchanged. Hover only
+	   where a mouse can hover (a touch screen goes rest -> press), and
+	   never over OPEN, which stays the stronger statement. */
+	@media (hover: hover) {
+		&:hover:not([aria-expanded='true']) {
+			background: var(--app-trigger-hover-fill, var(--app-trigger-fill));
+		}
+	}
+
+	&:active:not([aria-expanded='true']) {
+		background: var(--app-trigger-press-fill, var(--app-trigger-hover-fill, var(--app-trigger-fill)));
+	}
+
 	&[aria-expanded='true'] {
 		border-color: var(--app-trigger-open-stroke);
 		background: var(--app-trigger-open-fill);
