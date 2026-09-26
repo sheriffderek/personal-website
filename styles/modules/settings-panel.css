@@ -1094,6 +1094,16 @@ button.trigger {
 		color: var(--app-menu-link-visited-color, var(--app-menu-link-color));
 	}
 
+	/* HOVER and CURRENT are separate (Derek, 2026-09-25): in app menus the
+	   row lighting under the mouse is the thing you feel; the page you're
+	   on barely marks itself. Hover is mouse only; unset it repeats the
+	   row's rest fill, so the default look is unchanged. */
+	@media (hover: hover) {
+		&:hover {
+			background: var(--app-menu-row-hover-fill, var(--app-menu-row-fill));
+		}
+	}
+
 	&[aria-current='page'] {
 		background: var(--app-menu-row-current-fill);
 		color: var(--app-menu-row-current-ink, var(--app-menu-link-color));

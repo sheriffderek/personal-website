@@ -353,11 +353,13 @@
 	--app-pill-checked-fill: light-dark(var(--color-neutral-50), var(--color-neutral-800));
 	--app-pill-checked-stroke: light-dark(var(--color-stone-300), var(--color-neutral-700));
 
-	/* Menu, as in the Claude Code menu example. */
+	/* Menu, as in the Claude Code menu example - the row lights on HOVER;
+	   the current page doesn't fill (you know where you are). */
 	--app-menu-link-color: var(--app-ink);
 	--app-menu-link-decoration: none;
 	--app-menu-row-radius: 0.5rem;
-	--app-menu-row-current-fill: light-dark(var(--color-stone-100), var(--color-neutral-800));
+	--app-menu-row-hover-fill: light-dark(var(--color-stone-100), var(--color-neutral-800));
+	--app-menu-row-current-fill: transparent;
 }
 
 /* Sliders: a small flat knob, no halo at rest (the grab still gets its
@@ -398,7 +400,7 @@ html[data-family='interface'][data-flavor='sweet'] [data-ui='app'] {
 	--app-pill-group-fill: light-dark(var(--color-purple-100), oklch(16% 0.02 328));
 	--app-pill-checked-fill: light-dark(var(--color-neutral-50), var(--slack-chosen));
 	--app-pill-checked-stroke: light-dark(var(--color-purple-200), var(--slack-hairline));
-	--app-menu-row-current-fill: light-dark(var(--color-purple-100), var(--slack-chosen));
+	--app-menu-row-hover-fill: light-dark(var(--color-purple-100), var(--slack-chosen));
 }
 
 html[data-family='interface'][data-flavor='sweet'] .plain-range:not(.is-grabbed) {
