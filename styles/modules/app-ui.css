@@ -363,3 +363,25 @@
 	--range-halo-strength: 0%;
 	--range-track: light-dark(var(--color-stone-200), var(--color-neutral-800));
 }
+
+/* INTERFACE x SWEET - Slack (Derek, 2026-09-25): the Sweet flavor carries
+   Slack's aubergine into the Interface chrome. Dark is the aubergine
+   sidebar - deep purple surfaces, white text and knobs; light is a purple
+   tinted cream, so the flavor is purple in both schemes (the continuity
+   rule). A deliberate color alias: the page's flavor choosing the chrome's
+   palette, never a page rule reaching in. */
+html[data-family='interface'][data-flavor='sweet'] [data-ui='app'] {
+	--app-fill: light-dark(var(--color-purple-50), var(--color-purple-950));
+	--app-ink: light-dark(var(--color-purple-950), var(--color-neutral-50));
+	--app-stroke: light-dark(var(--color-purple-200), var(--color-purple-800));
+	--app-shadow:
+		0 0 0 6px light-dark(var(--color-purple-100), var(--color-purple-900)),
+		0 0 0 7px light-dark(var(--color-purple-200), var(--color-purple-800));
+	--app-pill-checked-fill: light-dark(var(--color-purple-100), var(--color-purple-800));
+	--app-pill-checked-stroke: light-dark(var(--color-purple-200), var(--color-purple-700));
+	--app-menu-row-current-fill: light-dark(var(--color-purple-100), var(--color-purple-800));
+}
+
+html[data-family='interface'][data-flavor='sweet'] .plain-range:not(.is-grabbed) {
+	--range-track: light-dark(var(--color-purple-200), var(--color-purple-800));
+}
