@@ -359,6 +359,7 @@
 	--app-menu-link-decoration: none;
 	--app-menu-row-radius: 0.5rem;
 	--app-menu-row-hover-fill: light-dark(var(--color-stone-100), var(--color-neutral-800));
+	--app-menu-row-press-fill: light-dark(var(--color-stone-200), var(--color-neutral-700));
 	--app-menu-row-current-fill: transparent;
 }
 

@@ -1104,6 +1104,13 @@ button.trigger {
 		}
 	}
 
+	/* PRESS - the brief moment a finger or mouse is down, before the page
+	   changes; on a phone it's the only feedback a tap gets. Each family
+	   decides its look; unset it repeats the hover (or rest) fill. */
+	&:active {
+		background: var(--app-menu-row-press-fill, var(--app-menu-row-hover-fill, var(--app-menu-row-fill)));
+	}
+
 	&[aria-current='page'] {
 		background: var(--app-menu-row-current-fill);
 		color: var(--app-menu-row-current-ink, var(--app-menu-link-color));
