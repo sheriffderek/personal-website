@@ -434,7 +434,11 @@
 	/* Control text sits between the body size and the data-voice labels: big
 	   enough to press, small enough that a pill doesn't outshout its own
 	   section label. Font size is metrics is geometry - frozen like the rest. */
-	--app-control-font-size: calc(var(--step-0) * 0.85);
+	/* The option text matches its label (the data voice) - the options
+	   used to be bigger than the question they answer (2026-09-25). */
+	--app-control-font-size: var(--app-data-voice-font-size);
+	/* One gap from every label to its control, pills and sliders alike. */
+	--app-row-label-gap: 0.5rem;
 
 	/* The chrome's label voice, pinned. */
 	--app-data-voice-font-family: var(--font-mono);
@@ -1066,6 +1070,30 @@ button.trigger {
 	display: grid;
 	gap: 1.5rem;
 
+	/* THE BASELINE PASS (2026-09-25) - one left edge, one label-to-control
+	   gap, one row rhythm. A fieldset legend carries the browser's own
+	   2px inline padding, which set two labels 2px right of the rest. */
+	legend {
+		padding: 0;
+	}
+
+	:is(legend, .app-data-voice) {
+		margin-bottom: var(--app-row-label-gap);
+	}
+
+	/* A slider's grab box is 40px tall with the visible halo (30px) in its
+	   middle, so its dead top and bottom used to pad the rhythm unevenly.
+	   Pulled in to the halo, the row measures what you see. The grab box
+	   itself is untouched - still 40px under a finger (the "butter" rule);
+	   only its layout footprint shrinks, and the pressed halo may paint a
+	   few px past it. */
+	.plain-range {
+		/* Block, or the input sits on a text line that reserves descender
+		   room under it - ~9px of invisible space below every slider. */
+		display: block;
+		margin-block: calc((var(--range-hit) - var(--range-halo)) / -2);
+	}
+
 	.axes-group {
 		display: grid;
 		gap: 12px; /* the three axis sliders read as one instrument - tighter than the panel's row rhythm; px per the control-geometry units rule */
@@ -1132,11 +1160,19 @@ button.trigger {
 	}
 }
 
-/* Options sit in a plain wrapping row now that each pill carries its own
-   radio dot. */
+/* Options sit in one row of EQUAL columns, each as wide as the widest
+   option (2026-09-25) - uneven pills read as separate buttons, even ones
+   as one control. That also gives a family the boxes to draw them joined
+   (a segmented control) or apart, without anything resizing. */
 .mode-button-group {
-	display: flex;
+	display: inline-grid;
+	grid-auto-flow: column;
+	grid-auto-columns: 1fr;
 	gap: 0.4rem;
+
+	button {
+		justify-content: center;
+	}
 }
 
 /* ----------------------------------------------------------------------------

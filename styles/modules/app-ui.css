@@ -37,7 +37,9 @@
 	.app-ui-column {
 		width: var(--layout-panel-max);
 
-		p {
+		/* The column's own captions only - a bare "p" here reached into
+		   the real panel's labels and skewed the "Today" measurements. */
+		> p {
 			margin-top: 1.5rem;
 		}
 
