@@ -1,0 +1,53 @@
+/* The app-ui playground - the internal tester at /app-ui
+   (templates/pages/app-ui.php). Geometry only: the parts inside wear the
+   real chrome classes and paint themselves; this file only lays out the
+   board and draws the "show boxes" outlines. */
+
+.app-ui-playground {
+	.show-boxes {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5em;
+		margin-top: 1.5em;
+	}
+
+	/* One column per take, side by side, each the width of the designed
+	   panel measure - the size the card really is. */
+	.app-ui-board {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 3rem;
+		margin-top: 2rem;
+	}
+
+	.app-ui-column {
+		width: var(--layout-panel-max);
+
+		p {
+			margin-top: 1.5rem;
+		}
+
+		.toolbar,
+		.app-card {
+			margin-top: 0.5rem;
+		}
+
+		/* Left-aligned here - the live toolbar's row-reverse sits it in
+		   the corner, but in a column the triggers read from the left. */
+		.toolbar {
+			justify-content: flex-end;
+		}
+	}
+
+	/* Show boxes: outline each control's real box - the tap/grab area -
+	   so the same-box rule and the target sizes are visible. Outline
+	   never takes space, so turning it on moves nothing. A focused
+	   control keeps its real focus ring instead - the dashes must never
+	   hide where the keyboard is. */
+	&:has(.show-boxes input:checked) {
+		:is(.trigger, input[type='range'], .mode-button-group button):not(:focus-visible) {
+			outline: 1px dashed var(--accent);
+			outline-offset: 0;
+		}
+	}
+}

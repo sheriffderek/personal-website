@@ -225,7 +225,16 @@
 	   artifact viewer), Notch (Reddit's button on the divider), Chip (tinted
 	   square), Solid (shadcn), Hard key (brutalist boxes). Still open:
 	   whether patterns belong to characters or moods (this plan maps
-	   moods). Parked joke: a red "Delete" row that just closes the panel. */
+	   moods). Parked joke: a red "Delete" row that just closes the panel.
+
+	   SIZING BY INPUT, not by screen (Derek, 2026-09-25): the range
+	   handle's ~40px grab box is what makes fingers feel like butter, and
+	   a mouse doesn't need it - so a smaller grab box belongs under
+	   @media (pointer: fine), never under a width query (a finger on a
+	   tablet still gets the big one). Tap areas grow by padding inside the
+	   control's own box, never by absolute overlays; triggers may sit
+	   touching in one group so the whole group is tappable. The playground
+	   for all of it is /app-ui. */
 
 	/* Trigger skin - its own slots, resting and open, rather than the base
 	   chrome slots read straight. A trigger is the one control that has to

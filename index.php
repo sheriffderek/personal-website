@@ -130,6 +130,15 @@ $pages = [
 		'description' => SITE_DESCRIPTION,
 	],
 
+	// Internal tester - the app-ui playground: every chrome part in every
+	// style (one column per take), default color only. No 'menu' key:
+	// reachable by URL only, like the other testers.
+	'app-ui' => [
+		'file' => 'app-ui.php',
+		'title' => 'App UI - ' . SITE_TITLE,
+		'description' => SITE_DESCRIPTION,
+	],
+
 	// Private log of every job applied to, when, and why - read live from
 	// the shared job-search repo's pipeline.md. Walled off from production
 	// AND non-loopback IPs below; no 'menu' key, no MENU_PAGES entry, no

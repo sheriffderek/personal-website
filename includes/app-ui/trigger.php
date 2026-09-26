@@ -11,7 +11,10 @@
 	         the panel state machine in settings-panel.js flips
 	  class  optional - an extra class beside .trigger (grid-invite)
 	  hook   optional - a bare data attribute the JS finds the button by
-	         (data-grid-invite, data-to-top) */ ?>
+	         (data-grid-invite, data-to-top)
+	  expanded  optional - true shows the OPEN state without a panel to
+	         open (the /app-ui playground); a live panel trigger leaves
+	         it out and starts closed */ ?>
 <button
 	type='button'
 	<?php if (!empty($panel)): ?>
@@ -19,8 +22,8 @@
 		aria-controls='<?= $panel ?>'
 	<?php endif; ?>
 	class='trigger<?= !empty($class) ? ' ' . $class : '' ?>'
-	<?php if (!empty($panel)): ?>
-		aria-expanded='false'
+	<?php if (!empty($panel) || isset($expanded)): ?>
+		aria-expanded='<?= !empty($expanded) ? 'true' : 'false' ?>'
 	<?php endif; ?>
 	<?php if (!empty($hook)): ?>
 		<?= $hook ?>
