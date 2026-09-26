@@ -31,7 +31,7 @@ $target_query = $target_slug !== '' ? '?target=' . $target_slug : '';
 // a real phone (the /app-ui playground lists the links); the rules it
 // switches on live in styles/modules/settings-panel.css (CHROME TAKES).
 // These two lists are also the playground's rows and columns.
-$app_ui_takes = ['ringed' => 'Ringed', 'ghost' => 'Ghost'];
+$app_ui_takes = ['ring' => 'Ring', 'ghost' => 'Ghost'];
 $app_ui_placements = ['straddle' => 'Straddle', 'below' => 'Below', 'contain' => 'Contain', 'float' => 'Float'];
 $try_take = '';
 $try_placement = '';

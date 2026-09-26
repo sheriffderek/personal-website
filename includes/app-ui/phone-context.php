@@ -5,8 +5,8 @@
 	(styles/modules/app-ui.css) keyed off the two data attributes.
 
 	Callers pass (via partial()):
-	  placement  straddle | below | contain - where the card meets the bar
-	  take       ringed | ghost - the trigger style
+	  placement  straddle | below | contain | float - where the card meets the bar
+	  take       ring | ghost - the trigger style
 	  caption    what the frame is labeled
 	  id_suffix  keeps the settings rows' label ids unique per frame */ ?>
 <figure

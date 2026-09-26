@@ -213,19 +213,79 @@
 	   expression this scope allows - elevation may change per mood, position
 	   never.
 
-	   THE PATTERN VOCABULARY (2026-09-25) - a small set of treatments, with
-	   color doing the rest. Knobs: fill (none / tint / solid / inverted),
-	   edge (none / hairline / outline / double ring - drawn with outline or
-	   box-shadow, never border WIDTH), depth (flat / soft shadow), shape
-	   (circle / soft square / square), grouping (loose / joined capsule).
-	   A pattern is a named combo, named for the product it emulates, so we
-	   can say which one we mean: Floating (Claude app menus), Rail (Figma),
-	   App (Claude + ChatGPT + Linear - ghost buttons, tinted active square,
-	   quiet panel), Capsule (circles in an outlined pill), Toolbar (Claude's
-	   artifact viewer), Notch (Reddit's button on the divider), Chip (tinted
-	   square), Solid (shadcn), Hard key (brutalist boxes). Still open:
-	   whether patterns belong to characters or moods (this plan maps
-	   moods). Parked joke: a red "Delete" row that just closes the panel.
+	   THE PATTERN VOCABULARY (2026-09-25) - the names we use, each with
+	   the line that defines it (a name alone didn't land; name + defining
+	   line did).
+
+	   THE RECOGNITION TEST - the bar for every family (Derek): it names
+	   the REAL product it emulates, and it passes only if someone who
+	   knows that product says "that's X" - states included, even when X
+	   is something silly. Not "look at this weird thing": "this looks and
+	   feels like a real app I know - that's pro." Fidelity lives in the
+	   small things (which side a bevel lights, a press sinking a pixel,
+	   hover timing, how a shortcut is written). No named product, no
+	   family.
+
+	   FAMILY - one whole grammar: trigger, handles, pills, and panel edge
+	   speak one language. The grammar continues DOWN the panel - a Ghost
+	   trigger over haloed dial handles is two dialects in one card.
+	   Families should disagree about what a button even is; two sizes of
+	   the same radius are not two families. Build few, fully:
+	     Constructed - everything drawn from the same strokes: Ring
+	                   triggers emerge from the panel's outline, ring
+	                   handles, outlined pills.
+	     Reveal      - the Claude / ChatGPT / Linear app: Ghost triggers,
+	                   Float panel, small flat handles, soft pills, Hints.
+	   Candidates, each needing its named reference first: Modern App
+	   (soft shadowed circles), Windows 95 (bevels, square handles),
+	   Terminal (block handle, dashed track), Editorial rule, GitHub
+	   utility, Instrument. A possible fit, undecided: five families for
+	   the five characters.
+
+	   TRIGGER STYLE - the button's own grammar:
+	     Ring   - brings its own edge (a bordered circle with a fill), so
+	              it holds anywhere: on a line, over a seam, over page.
+	     Ghost  - borrows its edge from the surface (icon only; the shape
+	              appears only in states), so it needs ONE calm chrome
+	              surface - never a line through it.
+	   STATES - every trigger has all five: Rest, Hover (mouse only, never
+	   touch), Press (finger or mouse down), Open (its panel is showing),
+	   Focus (the keyboard ring, never removed). A filled/inverted look
+	   means Open - a state, never a static style.
+
+	   PLACEMENT - where the panel meets the bar, on a phone only (bigger
+	   screens have their own postures):
+	     Straddle - the card's top edge runs through the triggers (today).
+	     Below    - the card starts at the bar's bottom edge.
+	     Contain  - the card rises to include the bar.
+	     Float    - the card hangs below with a gap, inset and rounded.
+	   Phone test (Derek, 2026-09-25): Ghost + Straddle is out (a tint cut
+	   by a line is "never ok"); Below is out (the bar/card seam is "ugly
+	   and feels bad"); Contain lost its top border (it "feels weird");
+	   Contain and Float are the live candidates - Ghost + Float is the
+	   Claude/ChatGPT read.
+
+	   THE PAGES MENU needs the same grain as the settings (Derek,
+	   2026-09-25): today it's bare underlined links, thinner than the
+	   panel beside it. Each item gets an icon - one set per family, every
+	   icon the same size, so a family swaps the set, never the layout - and
+	   shortcut keys where the family has them (a family without them hides
+	   them in place, the row keeps its box). A shown shortcut must really
+	   work - a fake one fails the recognition test. The icon row idea:
+	   Home, How I work, Resume, Now, Journal, Contact, per family.
+
+	   HINT - the small dark tooltip with a shortcut (Claude's "Browser
+	   ⇧⌘B"); belongs to families that have hover.
+	   PATTERN - one full combination, named for its product: "Claude" =
+	   Ghost + Float + Hints.
+
+	   Treatment knobs a family is built from: fill (none / tint / solid /
+	   inverted), edge (none / hairline / outline / double ring - drawn
+	   with outline or box-shadow, never border WIDTH), depth (flat / soft
+	   shadow / bevel), shape (circle / soft square / square), grouping
+	   (loose / joined). Still open: whether families belong to characters
+	   or moods (the takes plan above maps moods). Parked joke: a red
+	   "Delete" row that just closes the panel.
 
 	   SIZING BY INPUT, not by screen (Derek, 2026-09-25): the range
 	   handle's ~40px grab box is what makes fingers feel like butter, and
@@ -554,7 +614,7 @@ button.trigger {
 	   What that leaves the chrome's treatments to paint on a phone: the
 	   card's right edge is flush to the screen (no right border, corners,
 	   or shadow can show), so only the left edge, the bottom edge, the
-	   bottom-left corner, the top join, and the trigger buttons (ringed,
+	   bottom-left corner, the top join, and the trigger buttons (Ring,
 	   ghost, or ghost with a tinted active square - same box, all
 	   allowed). The status bar and Safari's moving URL bar are the
 	   device's, not the theme's.
@@ -578,7 +638,7 @@ button.trigger {
 	   no subtle, borderless treatment can exist. The fix: the card grows
 	   up to include the bar (top: 0; the toolbar already paints above
 	   it), so the icons sit inside the card and the line becomes an
-	   optional treatment (ringed patterns redraw it as a border). The
+	   optional treatment (Ring triggers redraw it as a border). The
 	   catch: bar and card must then be one color - the bar paints the
 	   page's --fill-primary (default-layout.css) and the card --app-fill,
 	   which part under most themes. Plan: the bar takes --app-fill only
