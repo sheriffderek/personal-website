@@ -165,7 +165,12 @@
 	}
 
 	.context-card {
-		top: var(--layout-panel-gap);
+		top: 0;
+
+		/* No top edge - matches the live try rule (settings-panel.css):
+		   on a real phone the line across the top read as a leftover. */
+		border-top: none;
+		border-top-left-radius: 0;
 	}
 
 	.context-card .panel-scroll {

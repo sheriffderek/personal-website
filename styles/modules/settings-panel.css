@@ -326,7 +326,7 @@
 	   tablet still gets the big one). Tap areas grow by padding inside the
 	   control's own box, never by absolute overlays; triggers may sit
 	   touching in one group so the whole group is tappable. The playground
-	   for all of it is /app-ui. */
+	   for all of it is /design-system/app-ui. */
 
 	/* Trigger skin - its own slots, resting and open, rather than the base
 	   chrome slots read straight. A trigger is the one control that has to
@@ -429,7 +429,7 @@
    square when open. Only the trigger's own --app-trigger-* slots are
    repainted - a take is token values, never new rules on the button. It
    reaches the live tray only on a ?try=ghost-... visit (data-take on
-   <html>, index.php) and the /app-ui frames that wear data-take='ghost';
+   <html>, index.php) and the /design-system/app-ui frames that wear data-take='ghost';
    the tray and a frame's toolbar are where these slots are declared. */
 html[data-take='ghost'] .site-tray,
 .phone-context[data-take='ghost'] [data-ui='app'] {
@@ -591,7 +591,7 @@ button.trigger {
 
 .app-card {
 	/* The card's PAINT - type, fill, ink, edge, corners, shadow - apart from
-	   .panel, which only PLACES it. Split (2026-09-25) so the /app-ui
+	   .panel, which only PLACES it. Split (2026-09-25) so the /design-system/app-ui
 	   playground can show the real card without the tray's positioning; the
 	   live panels wear both classes. .panel comes after this rule, so its
 	   phone flush-right override still wins. */
@@ -793,7 +793,7 @@ button.trigger {
 /* TRY-IT PLACEMENTS - phone only, and only for a ?try= visit (index.php
    puts data-placement on <html>; without it none of this matches, and the
    phone posture above is untouched). They move the real card so a pairing
-   can be felt on a real phone; the /app-ui playground draws the same three
+   can be felt on a real phone; the /design-system/app-ui playground draws the same three
    in frames. The bar is the tray's height: a trigger (content plus its
    border) and the tray's 0.5rem above and below. */
 @media (width < 700px) {

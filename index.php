@@ -28,7 +28,7 @@ $target_query = $target_slug !== '' ? '?target=' . $target_slug : '';
 // A ?try=<take>-<placement> link previews one app-ui pairing on the LIVE
 // chrome, for that page view only - nothing saved, nothing default, and
 // anything off the lists is ignored. It exists so a pairing can be felt on
-// a real phone (the /app-ui playground lists the links); the rules it
+// a real phone (the /design-system/app-ui playground lists the links); the rules it
 // switches on live in styles/modules/settings-panel.css (CHROME TAKES).
 // These two lists are also the playground's rows and columns.
 $app_ui_takes = ['ring' => 'Ring', 'ghost' => 'Ghost'];
@@ -148,10 +148,10 @@ $pages = [
 		'description' => SITE_DESCRIPTION,
 	],
 
-	// Internal tester - the app-ui playground: every chrome part in every
-	// style (one column per take), default color only. No 'menu' key:
-	// reachable by URL only, like the other testers.
-	'app-ui' => [
+	// The app-ui playground: every chrome part in every style, default
+	// color only. No 'menu' key - it's a door deeper from /design-system,
+	// which links to it (the design-system proof is public).
+	'design-system/app-ui' => [
 		'file' => 'app-ui.php',
 		'title' => 'App UI - ' . SITE_TITLE,
 		'description' => SITE_DESCRIPTION,

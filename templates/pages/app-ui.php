@@ -1,6 +1,6 @@
 <?php /* The app-ui playground - every chrome part in every style, one page
-	(Derek, 2026-09-25). Internal: reachable by URL only (no 'menu' key),
-	like /share-previews and /layout-lab.
+	(Derek, 2026-09-25). Lives under /design-system/app-ui and is linked
+	from /design-system - the design-system proof is public (Derek).
 
 	The axes: ROWS are the parts (triggers, the panel card with its real
 	rows), COLUMNS are the styles - one column per take, in the chrome's
@@ -75,6 +75,10 @@
 		with Ghost (flush) triggers. Flip the scheme or mood with the rows
 		above and every frame repaints. The placements and takes live in
 		app-ui.css only; the live chrome never sees them. */ ?>
+	<?php /* What the real-phone test ruled out (Derek, 2026-09-25) - kept
+		in the grid as evidence, labeled so they never read as options. */
+		$ruled_out = ['ghost-straddle', 'ring-below', 'ghost-below']; ?>
+
 	<h2 class='strong-voice context-heading'>Context</h2>
 
 	<?php foreach ($app_ui_takes as $take => $take_name): ?>
@@ -83,7 +87,7 @@
 				<?= partial('app-ui/phone-context', [
 					'placement' => $placement,
 					'take' => $take,
-					'caption' => $take_name . ' · ' . $placement_name,
+					'caption' => $take_name . ' · ' . $placement_name . (in_array($take . '-' . $placement, $ruled_out, true) ? ' - ruled out' : ''),
 					'id_suffix' => '-context-' . $take . '-' . $placement,
 				]) ?>
 			<?php endforeach; ?>
