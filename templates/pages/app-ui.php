@@ -75,6 +75,19 @@
 		with Ghost (flush) triggers. Flip the scheme or mood with the rows
 		above and every frame repaints. The placements and takes live in
 		app-ui.css only; the live chrome never sees them. */ ?>
+	<?php /* FAMILIES - a whole family painted down the whole panel:
+		triggers, card, pills, sliders, in a phone frame at its chosen
+		placement, light and dark side by side. Interface first (Claude
+		Code light, Linear dark, the flat-ring edge - the contract in
+		settings-panel.css). Token values only, app-ui.css FAMILIES. */ ?>
+	<h2 class='strong-voice context-heading'>Families</h2>
+
+	<div class='app-ui-board context-board'>
+		<?= partial('app-ui/phone-context', ['placement' => 'float', 'take' => 'ghost', 'family' => 'interface', 'scheme' => 'light', 'caption' => 'Interface · light (Claude Code)', 'id_suffix' => '-family-interface-light']) ?>
+
+		<?= partial('app-ui/phone-context', ['placement' => 'float', 'take' => 'ghost', 'family' => 'interface', 'scheme' => 'dark', 'caption' => 'Interface · dark (Linear)', 'id_suffix' => '-family-interface-dark']) ?>
+	</div>
+
 	<?php /* MENU - the real pages menu, painted after real products. Each
 		example is only token values on the menu's slots (link, row, icon,
 		card) - app-ui.css, MENU FAMILIES - so a family can't move a row,

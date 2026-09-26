@@ -8,12 +8,22 @@
 	  placement  straddle | below | contain | float - where the card meets the bar
 	  take       ring | ghost - the trigger style
 	  caption    what the frame is labeled
-	  id_suffix  keeps the settings rows' label ids unique per frame */ ?>
+	  id_suffix  keeps the settings rows' label ids unique per frame
+	  family     optional - a chrome family painting the whole frame
+	             (interface, ...), app-ui.css FAMILIES
+	  scheme     optional - light | dark, forcing the frame's scheme so a
+	             family's two sides show side by side */ ?>
 <figure
 	class='phone-context'
 	data-ui='app'
 	data-placement='<?= $placement ?>'
 	data-take='<?= $take ?>'
+	<?php if (!empty($family)): ?>
+		data-family='<?= $family ?>'
+	<?php endif; ?>
+	<?php if (!empty($scheme)): ?>
+		data-scheme='<?= $scheme ?>'
+	<?php endif; ?>
 >
 	<div
 		class='stand-in-page'

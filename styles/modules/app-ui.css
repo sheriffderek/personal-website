@@ -306,3 +306,59 @@
 	--app-menu-row-radius: 0.5rem;
 	--app-menu-row-current-fill: var(--color-stone-100);
 }
+
+
+/* FAMILIES - a family painted down the whole panel (the Families row).
+   A frame's forced scheme flips every light-dark() token inside it. */
+.phone-context[data-scheme='light'] {
+	color-scheme: light;
+}
+
+.phone-context[data-scheme='dark'] {
+	color-scheme: dark;
+}
+
+/* Restate the ink inside a forced-scheme frame: an inherited color was
+   already resolved in the page's own scheme, so the dark frame's caption
+   came through light-scheme gray on black. */
+.phone-context[data-scheme] {
+	color: var(--ink-primary);
+}
+
+/* INTERFACE - Claude Code in the light, Linear in the dark, the flat ring
+   for an edge (the contract, settings-panel.css). One light-dark() pair per
+   token, so the scheme flips it and nothing else. */
+:is(.phone-context[data-family='interface'], .phone-context[data-family='interface'] [data-ui='app']) {
+	--app-fill: light-dark(var(--color-stone-50), var(--color-neutral-950));
+	--app-ink: light-dark(var(--color-stone-900), var(--color-neutral-100));
+	--app-stroke: light-dark(var(--color-stone-300), var(--color-neutral-800));
+	--app-corners: 0.875rem;
+
+	/* The flat ring: a solid band and a hairline outside it - zero blur,
+	   zero offset, so the card extends into a frame without growing. */
+	--app-shadow:
+		0 0 0 6px light-dark(var(--color-stone-100), var(--color-neutral-900)),
+		0 0 0 7px light-dark(var(--color-stone-300), var(--color-neutral-800));
+
+	/* Pills: quiet until chosen, the chosen one a soft rounded tint. */
+	--app-pill-fill: transparent;
+	--app-pill-stroke: transparent;
+	--app-pill-radius: 0.5rem;
+	--app-pill-checked-fill: light-dark(var(--color-stone-100), var(--color-neutral-800));
+	--app-pill-checked-stroke: light-dark(var(--color-stone-200), var(--color-neutral-700));
+
+	/* Menu, as in the Claude Code menu example. */
+	--app-menu-link-color: var(--app-ink);
+	--app-menu-link-decoration: none;
+	--app-menu-row-radius: 0.5rem;
+	--app-menu-row-current-fill: light-dark(var(--color-stone-100), var(--color-neutral-800));
+}
+
+/* Sliders: a small flat knob, no halo at rest (the grab still gets its
+   halo - :not(.is-grabbed) leaves the grab rules alone), a hairline-toned
+   track. The knobs live on the input itself, so the family names it. */
+.phone-context[data-family='interface'] .plain-range:not(.is-grabbed) {
+	--range-dot: 12px;
+	--range-halo-strength: 0%;
+	--range-track: light-dark(var(--color-stone-200), var(--color-neutral-800));
+}

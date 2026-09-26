@@ -391,6 +391,16 @@
 	   aliases are deliberate (Derek, 2026-09-25: the chrome is its own
 	   app layer "besides some aliased colors") - an alias is allowed; a
 	   page RULE reaching in is not (the Terminal one was closed, setup.css). */
+	/* Option pills - their paint as slots (2026-09-25), defaulting to
+	   exactly the look they had written in, so a family can draw them as a
+	   joined segmented control, soft chips, or bevelled keys. Paint only:
+	   the border's WIDTH stays --app-border-width. */
+	--app-pill-fill: color-mix(in oklch, var(--app-ink) 6%, var(--app-fill));
+	--app-pill-stroke: color-mix(in oklch, var(--app-ink) 8%, var(--app-fill));
+	--app-pill-radius: 0px;
+	--app-pill-checked-fill: color-mix(in oklch, var(--app-ink) 14%, var(--app-fill));
+	--app-pill-checked-stroke: color-mix(in oklch, var(--app-ink) 45%, var(--app-fill));
+
 	--app-menu-row-fill: transparent;
 	--app-menu-row-current-fill: transparent;
 	--app-menu-row-radius: 0;
@@ -1132,11 +1142,10 @@ button.trigger {
 		gap: 0.45rem;
 		padding: 0.3rem 0.6rem;
 
-		border: var(--app-border-width) solid
-			color-mix(in oklch, var(--app-ink) 8%, var(--app-fill));
-		background: color-mix(in oklch, var(--app-ink) 6%, var(--app-fill));
+		border: var(--app-border-width) solid var(--app-pill-stroke);
+		background: var(--app-pill-fill);
 		color: var(--app-ink);
-		border-radius: 0px;
+		border-radius: var(--app-pill-radius);
 
 		&::after {
 			content: "";
@@ -1150,8 +1159,8 @@ button.trigger {
 		}
 
 		&[aria-checked="true"] {
-			background: color-mix(in oklch, var(--app-ink) 14%, var(--app-fill));
-			border-color: color-mix(in oklch, var(--app-ink) 45%, var(--app-fill));
+			background: var(--app-pill-checked-fill);
+			border-color: var(--app-pill-checked-stroke);
 		}
 	}
 
@@ -1267,7 +1276,7 @@ button.trigger {
 
 	&::-webkit-slider-runnable-track {
 		height: 4px;
-		background: var(--app-stroke-secondary);
+		background: var(--range-track, var(--app-stroke-secondary));
 		border-radius: 2px;
 	}
 
@@ -1291,7 +1300,7 @@ button.trigger {
 
 	&::-moz-range-track {
 		height: 4px;
-		background: var(--app-stroke-secondary);
+		background: var(--range-track, var(--app-stroke-secondary));
 		border-radius: 2px;
 	}
 
