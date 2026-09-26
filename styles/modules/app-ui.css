@@ -371,25 +371,30 @@
    rule). A deliberate color alias: the page's flavor choosing the chrome's
    palette, never a page rule reaching in. */
 html[data-family='interface'][data-flavor='sweet'] [data-ui='app'] {
-	/* Slack's aubergine is a deep, MUTED plum (its sidebar, #3F0E40), far
-	   redder and quieter than the palette's violet purples - so the dark
-	   side names it in oklch here, fidelity being the point. */
-	--slack-aubergine: oklch(25% 0.085 328);
-	--slack-aubergine-deep: oklch(20% 0.07 328);
-	--slack-aubergine-edge: oklch(34% 0.09 328);
-	--slack-aubergine-chosen: oklch(38% 0.1 328);
+	/* Slack puts its purple at the EDGES only - the title bar and the
+	   workspace rail - and reads on near-black with a hint of plum; the
+	   chosen channel is a slightly lighter plum-gray row (Derek's Slack
+	   screenshot, 2026-09-25: the all-purple card was "a bit over the
+	   top"). So here the flat ring is Slack's frame and carries the
+	   aubergine; the card is the near-black sidebar. Named in oklch -
+	   fidelity is the point. */
+	--slack-sidebar: oklch(19% 0.025 328);
+	--slack-frame: oklch(27% 0.085 328);
+	--slack-frame-edge: oklch(33% 0.09 328);
+	--slack-hairline: oklch(30% 0.03 328);
+	--slack-chosen: oklch(29% 0.035 328);
 
-	--app-fill: light-dark(var(--color-purple-50), var(--slack-aubergine));
-	--app-ink: light-dark(var(--color-purple-950), var(--color-neutral-50));
-	--app-stroke: light-dark(var(--color-purple-200), var(--slack-aubergine-edge));
+	--app-fill: light-dark(var(--color-purple-50), var(--slack-sidebar));
+	--app-ink: light-dark(var(--color-purple-950), oklch(93% 0.01 328));
+	--app-stroke: light-dark(var(--color-purple-200), var(--slack-hairline));
 	--app-shadow:
-		0 0 0 6px light-dark(var(--color-purple-100), var(--slack-aubergine-deep)),
-		0 0 0 7px light-dark(var(--color-purple-200), var(--slack-aubergine-edge));
-	--app-pill-checked-fill: light-dark(var(--color-purple-100), var(--slack-aubergine-chosen));
-	--app-pill-checked-stroke: light-dark(var(--color-purple-200), var(--slack-aubergine-edge));
-	--app-menu-row-current-fill: light-dark(var(--color-purple-100), var(--slack-aubergine-chosen));
+		0 0 0 6px light-dark(var(--color-purple-100), var(--slack-frame)),
+		0 0 0 7px light-dark(var(--color-purple-200), var(--slack-frame-edge));
+	--app-pill-checked-fill: light-dark(var(--color-purple-100), var(--slack-chosen));
+	--app-pill-checked-stroke: light-dark(var(--color-purple-200), var(--slack-hairline));
+	--app-menu-row-current-fill: light-dark(var(--color-purple-100), var(--slack-chosen));
 }
 
 html[data-family='interface'][data-flavor='sweet'] .plain-range:not(.is-grabbed) {
-	--range-track: light-dark(var(--color-purple-200), oklch(34% 0.09 328));
+	--range-track: light-dark(var(--color-purple-200), oklch(30% 0.03 328));
 }
