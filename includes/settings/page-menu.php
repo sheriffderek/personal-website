@@ -6,14 +6,15 @@
 			<li>
 				<?php /* Every row carries an icon slot (2026-09-25) - one fixed
 					size for every family, so a family swaps the icon set and
-					never the layout. The outlined circle holds the slot until a
-					family brings its own set (the menu notes in
-					styles/modules/settings-panel.css, CHROME TAKES). */ ?>
+					never the layout. Each page names its icon ('icon' in index.php,
+					a file in includes/app-ui/glyphs/ - Phosphor, regular weight,
+					2026-09-25); the outlined circle stands in for a page without
+					one. */ ?>
 				<a class='link' href='<?= ($page_slug === 'home' ? '/' : '/' . $page_slug) . ($target_query ?? '') ?>'<?= $page_slug === $slug ? " aria-current='page'" : '' ?>>
 					<span
 						class='menu-icon'
 						aria-hidden='true'
-					><?php include INCLUDES_DIR . '/app-ui/glyphs/circle.php'; ?></span>
+					><?php include INCLUDES_DIR . '/app-ui/glyphs/' . ($page['icon'] ?? 'circle') . '.php'; ?></span>
 					<?= $page['menu'] ?>
 				</a>
 			</li>

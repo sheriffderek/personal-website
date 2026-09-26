@@ -60,6 +60,7 @@ $pages = [
 	'home' => [
 		'file' => 'home.php',
 		'menu' => 'Home',
+		'icon' => 'house-line',
 		'title' => SITE_TITLE,
 		'description' => SITE_DESCRIPTION,
 		'controls' => 'filter-control',
@@ -68,6 +69,7 @@ $pages = [
 	'how-i-work' => [
 		'file' => 'how-i-work.php',
 		'menu' => 'How I work',
+		'icon' => 'compass',
 		'title' => 'How I work - ' . SITE_TITLE,
 		'description' => 'How Derek Wood approaches a project, stage by stage, with examples from real work.',
 	],
@@ -75,6 +77,7 @@ $pages = [
 	'resume' => [
 		'file' => 'resume.php',
 		'menu' => 'Resume',
+		'icon' => 'file-text',
 		// The tab title matches the share card on purpose (Derek, 2026-09-24):
 		// apps that read <title> instead of og:title get the same line.
 		// A recruiter holding this link needs two facts: it's Derek, and it's
@@ -91,6 +94,7 @@ $pages = [
 	'now' => [
 		'file' => 'now.php',
 		'menu' => 'Now',
+		'icon' => 'alarm',
 		'title' => 'Now - ' . SITE_TITLE,
 		'description' => 'What Derek Wood is focused on right now.',
 	],
@@ -98,6 +102,7 @@ $pages = [
 	'journal' => [
 		'file' => 'journal.php',
 		'menu' => 'Journal',
+		'icon' => 'notebook',
 		'title' => 'Journal - ' . SITE_TITLE,
 		'description' => 'Videos and stories from Derek Wood - takes on design and development, situations from real work, tips and tricks.',
 	],
@@ -113,6 +118,7 @@ $pages = [
 	'contact' => [
 		'file' => 'contact.php',
 		'menu' => 'Contact',
+		'icon' => 'at',
 		'title' => 'Contact - ' . SITE_TITLE,
 		'description' => 'Get in touch with Derek Wood about design and product roles.',
 	],
