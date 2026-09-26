@@ -173,6 +173,16 @@
 	}
 }
 
+/* Float: the card detached below the bar, inset, rounded - the same
+   placement the live chrome gets on a ?try=...-float visit
+   (settings-panel.css). */
+.phone-context[data-placement='float'] .context-card {
+	top: calc(var(--context-bar-height) + var(--layout-panel-gap));
+	right: var(--gutter);
+	border-right: var(--app-border-width) solid var(--app-stroke);
+	border-radius: calc(var(--app-trigger-size) / 3);
+}
+
 /* The ghost take the frames wear lives with the chrome's other rules -
    styles/modules/settings-panel.css, beside CHROME TAKES - because the
    live tray uses the same one on a ?try= visit. */

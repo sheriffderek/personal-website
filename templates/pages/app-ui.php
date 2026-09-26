@@ -70,9 +70,10 @@
 	<?php /* CONTEXT - where the parts meet the page on a phone, the tricky
 		part (Derek, 2026-09-25). Every pairing of button style and
 		placement, because neither can be judged alone: straddling the bar
-		(today), dropped below it, and containing it - each with ringed and
+		(today), dropped below it, containing it, and floating free of it
+		(the Claude/ChatGPT menu) - each with ringed and
 		with ghost (flush) triggers. Flip the scheme or mood with the rows
-		above and all six repaint. The placements and takes live in
+		above and every frame repaints. The placements and takes live in
 		app-ui.css only; the live chrome never sees them. */ ?>
 	<h2 class='strong-voice context-heading'>Context</h2>
 

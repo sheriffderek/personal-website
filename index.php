@@ -32,7 +32,7 @@ $target_query = $target_slug !== '' ? '?target=' . $target_slug : '';
 // switches on live in styles/modules/settings-panel.css (CHROME TAKES).
 // These two lists are also the playground's rows and columns.
 $app_ui_takes = ['ringed' => 'Ringed', 'ghost' => 'Ghost'];
-$app_ui_placements = ['straddle' => 'Straddle', 'below' => 'Below', 'contain' => 'Contain'];
+$app_ui_placements = ['straddle' => 'Straddle', 'below' => 'Below', 'contain' => 'Contain', 'float' => 'Float'];
 $try_take = '';
 $try_placement = '';
 if (isset($_GET['try'])) {

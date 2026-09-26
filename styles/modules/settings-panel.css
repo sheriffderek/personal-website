@@ -715,6 +715,22 @@ button.trigger {
 			padding-top: calc(var(--app-trigger-size) + var(--app-border-width) * 2 + 1rem);
 		}
 	}
+
+	/* FLOAT (2026-09-25) - the Claude / ChatGPT menu: the card detached
+	   below the bar with a gap, inset from the screen edge, every corner
+	   rounded, depth from its shadow - so no edge ever runs along the bar
+	   and no seam is drawn. Undoes the phone posture's flush-right edge on
+	   purpose: with rounding and a shadow, the gap reads as intended. */
+	html[data-placement='float'] .panel {
+		top: calc(100% + var(--layout-panel-gap));
+		right: var(--gutter);
+		border-right: var(--app-border-width) solid var(--app-stroke);
+		border-radius: calc(var(--app-trigger-size) / 3);
+
+		.panel-scroll {
+			max-height: calc(100svh - (var(--app-trigger-size) + var(--app-border-width) * 2 + 1rem) - var(--layout-panel-gap) * 2);
+		}
+	}
 }
 
 /* Desktop list (>= 1024): the tray is its own 300px sticky column
