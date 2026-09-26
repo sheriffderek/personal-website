@@ -354,6 +354,10 @@
 	   aliases are deliberate (Derek, 2026-09-25: the chrome is its own
 	   app layer "besides some aliased colors") - an alias is allowed; a
 	   page RULE reaching in is not (the Terminal one was closed, setup.css). */
+	--app-menu-row-fill: transparent;
+	--app-menu-row-current-fill: transparent;
+	--app-menu-row-radius: 0;
+	--app-menu-icon-color: currentColor;
 	--app-menu-link-color: var(--link-color);
 	--app-menu-link-decoration: underline;
 	--app-menu-link-underline-color: var(--link-underline-color);
@@ -968,7 +972,9 @@ button.trigger {
    zeroes role=list). */
 .page-menu ul {
 	display: grid;
-	gap: 0.75rem;
+	/* The rows' pitch from before the row box existed (their padding is
+	   pulled back out, so it adds nothing here). */
+	gap: 0.875rem;
 }
 
 .page-menu a {
@@ -982,12 +988,29 @@ button.trigger {
 	text-decoration-color: var(--app-menu-link-underline-color);
 
 	/* icon - label (and a shortcut slot to come), on one line */
-	display: inline-flex;
+	display: flex;
 	align-items: center;
 	gap: 0.75rem;
 
+	/* THE ROW BOX (2026-09-25): every row is a full-width box a family can
+	   fill - the current page as a filled row (Finder), a hover surface
+	   (the app families), a selection bar (Windows 95). Padded and pulled
+	   back out by the same amounts, so the text sits exactly where it did
+	   before the box existed; the box is transparent until a family
+	   paints --app-menu-row-*. */
+	padding: 0.25rem 0.5rem;
+	margin: -0.25rem -0.5rem;
+	border-radius: var(--app-menu-row-radius);
+	background: var(--app-menu-row-fill);
+
+	&[aria-current='page'] {
+		background: var(--app-menu-row-current-fill);
+		color: var(--app-menu-row-current-ink, var(--app-menu-link-color));
+	}
+
 	.menu-icon {
 		flex: none;
+		color: var(--app-menu-icon-color);
 		display: inline-flex;
 		width: var(--app-menu-icon-size);
 		height: var(--app-menu-icon-size);
