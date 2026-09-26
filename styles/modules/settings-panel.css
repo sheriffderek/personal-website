@@ -453,6 +453,27 @@ button.trigger {
 	pointer-events: none;
 }
 
+.app-card {
+	/* The card's PAINT - type, fill, ink, edge, corners, shadow - apart from
+	   .panel, which only PLACES it. Split (2026-09-25) so the /app-ui
+	   playground can show the real card without the tray's positioning; the
+	   live panels wear both classes. .panel comes after this rule, so its
+	   phone flush-right override still wins. */
+	font-family: var(--app-data-voice-font-family);
+	font-size: var(--app-data-voice-font-size);
+	line-height: var(--app-data-voice-line-height);
+	letter-spacing: var(--app-data-voice-letter-spacing);
+
+	/* Chrome reads --app-* only (the sealed-scope contract at the top of this
+	   file). Color slots are free; the border stays 1px and fakes "no border"
+	   via --app-stroke, never by zeroing --app-border-width. */
+	background: var(--app-fill);
+	color: var(--app-ink);
+	border: var(--app-border-width) solid var(--app-stroke);
+	border-radius: var(--app-corners);
+	box-shadow: var(--app-shadow);
+}
+
 .panel {
 	/* A button opens an element just below it - so the panel is an ABSOLUTE
 	   CHILD of the sticky tray (markup in settings-panel.php, right after
@@ -569,25 +590,11 @@ button.trigger {
 		width: var(--layout-panel-max);
 	}
 
-	font-family: var(--app-data-voice-font-family);
-	font-size: var(--app-data-voice-font-size);
-	line-height: var(--app-data-voice-line-height);
-	letter-spacing: var(--app-data-voice-letter-spacing);
-
 	/* The panel arrives and leaves INSTANTLY - no transition, on purpose. It
 	   is opaque chrome, and an opacity ramp lets the page ghost through it
 	   mid-fade (Derek, 2026-07-19). The soft edge of the choreography is the
 	   SHADE's job - it fades on its own clock (section 3); the panel just
-	   appears, already solid, on top of it. */
-
-	/* Chrome reads --app-* only (the sealed-scope contract at the top of this
-	   file). Color slots are free; the border stays 1px and fakes "no border"
-	   via --app-stroke, never by zeroing --app-border-width. */
-	background: var(--app-fill);
-	color: var(--app-ink);
-	border: var(--app-border-width) solid var(--app-stroke);
-	border-radius: var(--app-corners);
-	box-shadow: var(--app-shadow);
+	   appears, already solid, on top of it. Its paint is .app-card, above. */
 
 	/* The small-screen card sits flush against the screen's right edge, so
 	   that side has no seam to draw: no right border, no right corners -
