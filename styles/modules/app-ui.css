@@ -288,3 +288,19 @@
 	--app-menu-row-current-fill: var(--color-green-400);
 	--app-menu-row-current-ink: var(--color-neutral-950);
 }
+
+/* Claude Code - the desktop app's own menus: a warm cream surface and a
+   warm near-black ink (never cold gray), a hairline warm border, generous
+   corners, a soft shadow, line icons in the text's own ink, and the
+   current row a soft rounded warm-gray fill. No underlines. */
+.menu-example[data-family='claude-code'] [data-ui='app'] {
+	--app-fill: var(--color-stone-50);
+	--app-ink: var(--color-stone-900);
+	--app-stroke: var(--color-stone-200);
+	--app-corners: 0.875rem;
+	--app-shadow: 0 6px 20px rgb(0 0 0 / 0.08);
+	--app-menu-link-color: var(--app-ink);
+	--app-menu-link-decoration: none;
+	--app-menu-row-radius: 0.5rem;
+	--app-menu-row-current-fill: var(--color-stone-100);
+}

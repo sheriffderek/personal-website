@@ -86,6 +86,7 @@
 			'finder' => 'Finder (macOS)',
 			'shadcn' => 'shadcn dropdown',
 			'reveal' => 'Reveal (Claude, Linear)',
+			'claude-code' => 'Claude Code (desktop app)',
 			'win95' => 'Windows 95',
 			'terminal' => 'Terminal',
 		]; ?>
