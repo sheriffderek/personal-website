@@ -454,6 +454,11 @@
 	--app-control-font-size: var(--app-data-voice-font-size);
 	/* One gap from every label to its control, pills and sliders alike. */
 	--app-row-label-gap: 0.5rem;
+	/* One width for EVERY option button in the chrome - the widest option
+	   ("Light", measured at 76px) - so option columns line up from row to
+	   row instead of each group sizing to its own longest word
+	   (2026-09-25). A new, longer option means raising this once. */
+	--app-pill-width: 4.75rem;
 
 	/* The chrome's label voice, pinned. */
 	--app-data-voice-font-family: var(--font-mono);
@@ -1220,14 +1225,15 @@ button.trigger {
 	}
 }
 
-/* Options sit in one row of EQUAL columns, each as wide as the widest
-   option (2026-09-25) - uneven pills read as separate buttons, even ones
-   as one control. That also gives a family the boxes to draw them joined
+/* Options sit in one row of EQUAL columns, every one --app-pill-width -
+   the same width in every group, so columns line up down the panel
+   (2026-09-25) - uneven pills read as separate buttons, even ones as one
+   control. That also gives a family the boxes to draw them joined
    (a segmented control) or apart, without anything resizing. */
 .mode-button-group {
 	display: inline-grid;
 	grid-auto-flow: column;
-	grid-auto-columns: 1fr;
+	grid-auto-columns: var(--app-pill-width);
 	gap: 0.4rem;
 	background: var(--app-pill-group-fill);
 	border-radius: var(--app-pill-group-radius);
