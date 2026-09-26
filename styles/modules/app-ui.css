@@ -326,9 +326,10 @@
 }
 
 /* INTERFACE - Claude Code in the light, Linear in the dark, the flat ring
-   for an edge (the contract, settings-panel.css). One light-dark() pair per
+   for an edge (the contract, settings-panel.css). Paints the frames here,
+   and the live chrome on a ?family=interface visit (index.php). One light-dark() pair per
    token, so the scheme flips it and nothing else. */
-:is(.phone-context[data-family='interface'], .phone-context[data-family='interface'] [data-ui='app']) {
+:is(html[data-family='interface'] [data-ui='app'], .phone-context[data-family='interface'], .phone-context[data-family='interface'] [data-ui='app']) {
 	--app-fill: light-dark(var(--color-stone-50), var(--color-neutral-950));
 	--app-ink: light-dark(var(--color-stone-900), var(--color-neutral-100));
 	--app-stroke: light-dark(var(--color-stone-300), var(--color-neutral-800));
@@ -357,7 +358,7 @@
 /* Sliders: a small flat knob, no halo at rest (the grab still gets its
    halo - :not(.is-grabbed) leaves the grab rules alone), a hairline-toned
    track. The knobs live on the input itself, so the family names it. */
-.phone-context[data-family='interface'] .plain-range:not(.is-grabbed) {
+:is(html[data-family='interface'], .phone-context[data-family='interface']) .plain-range:not(.is-grabbed) {
 	--range-dot: 12px;
 	--range-halo-strength: 0%;
 	--range-track: light-dark(var(--color-stone-200), var(--color-neutral-800));

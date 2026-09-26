@@ -3,7 +3,7 @@
 <?php /* The starting mood (DEFAULT_MOOD, config.php) is dressed server-side so it
 	holds with no JS and with storage blocked. Expressive is :root, so it
 	gets no attribute. */ ?>
-<html lang='en'<?php if (DEFAULT_MOOD !== 'expressive'): ?> data-brand-mood='<?= DEFAULT_MOOD ?>'<?php endif; ?><?php if (!empty($try_take)): ?> data-take='<?= $try_take ?>' data-placement='<?= $try_placement ?>'<?php endif; ?>>
+<html lang='en'<?php if (DEFAULT_MOOD !== 'expressive'): ?> data-brand-mood='<?= DEFAULT_MOOD ?>'<?php endif; ?><?php if (!empty($try_take)): ?> data-take='<?= $try_take ?>' data-placement='<?= $try_placement ?>'<?php endif; ?><?php if (!empty($try_family)): ?> data-family='<?= $try_family ?>'<?php endif; ?>>
 
 <head>
 	<meta charset='utf-8'>

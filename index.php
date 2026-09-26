@@ -33,6 +33,11 @@ $target_query = $target_slug !== '' ? '?target=' . $target_slug : '';
 // These two lists are also the playground's rows and columns.
 $app_ui_takes = ['ring' => 'Ring', 'ghost' => 'Ghost'];
 $app_ui_placements = ['straddle' => 'Straddle', 'below' => 'Below', 'contain' => 'Contain', 'float' => 'Float'];
+// ?family=<name> does the same for a whole chrome family (app-ui.css
+// FAMILIES) - one page view, nothing saved - so a family can be seen on
+// the real panel before it's wired to its character.
+$app_ui_families = ['interface' => 'Interface'];
+$try_family = isset($_GET['family'], $app_ui_families[$_GET['family']]) ? (string) $_GET['family'] : '';
 $try_take = '';
 $try_placement = '';
 if (isset($_GET['try'])) {
