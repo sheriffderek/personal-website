@@ -239,8 +239,40 @@
 	   Candidates, each needing its named reference first: Modern App
 	   (soft shadowed circles), Windows 95 (bevels, square handles),
 	   Terminal (block handle, dashed track), Editorial rule, GitHub
-	   utility, Instrument. A possible fit, undecided: five families for
-	   the five characters.
+	   utility, Instrument.
+
+	   FAMILIES FOLLOW THE CHARACTERS (2026-09-25) - not a new rule: each
+	   character is already defined by the product it emulates
+	   (includes/settings/character-switcher.php), and the chrome carries
+	   that into its own grammar. The character picks the family; the MOOD
+	   picks the family's palette (moods only ever change color):
+	     Product   (the Stripe-ish lane)         -> crisp, shadcn-like
+	     Marketing (the GoFundMe brochure lane)  -> friendly, bold
+	     Interface (the Claude/OpenAI dashboard) -> Claude Code / Reveal
+	     Editorial (the magazine lane)           -> rules, refined links
+	     Terminal  (the console lane)            -> Terminal
+	   Classic web, Windows 95, and Finder match no lane - showpieces on
+	   /design-system/app-ui for now; whether they ever become switches of
+	   their own (like Red light) is open.
+
+	   INTERFACE, the first family carried all the way down:
+	     Light - Claude Code: a warm cream surface and warm near-black
+	             ink, hairline warm border, generous corners, the current
+	             row a soft rounded fill, no underlines.
+	     Dark  - Linear: near-black surfaces, hairlines a step lighter
+	             than the surface, color only in the accent (quiet mood).
+	             Slack's aubergine stays open for a mood that is purple in
+	             BOTH schemes (see continuity, below).
+	     Edge  - the flat ring: the card wrapped in a solid band of one
+	             color with a hairline on its outer edge - a bezel, zero
+	             blur, zero offset (a spread-only box-shadow plus an
+	             outline, so nothing grows). The card extends into a frame;
+	             it doesn't float in a cloud.
+
+	   SCHEME CONTINUITY (Derek, 2026-09-25) - dark is the same mood in the
+	   dark, never a new hue. A mood that is green in the light stays green
+	   in the dark; a purple dark (Slack) needs a mood that is purple in
+	   the light too. Applies to every family's dark side.
 
 	   TRIGGER STYLE - the button's own grammar:
 	     Ring   - brings its own edge (a bordered circle with a fill), so
@@ -315,9 +347,10 @@
 	   inverted), edge (none / hairline / outline / double ring - drawn
 	   with outline or box-shadow, never border WIDTH), depth (flat / soft
 	   shadow / bevel), shape (circle / soft square / square), grouping
-	   (loose / joined). Still open: whether families belong to characters
-	   or moods (the takes plan above maps moods). Parked joke: a red
-	   "Delete" row that just closes the panel.
+	   (loose / joined). Families belong to characters (above) - the
+	   takes plan's older per-mood mapping is now the mood's PALETTE for a
+	   family, not the family itself. Parked joke: a red "Delete" row that
+	   just closes the panel.
 
 	   SIZING BY INPUT, not by screen (Derek, 2026-09-25): the range
 	   handle's ~40px grab box is what makes fingers feel like butter, and
