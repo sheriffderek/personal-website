@@ -75,6 +75,46 @@
 		with Ghost (flush) triggers. Flip the scheme or mood with the rows
 		above and every frame repaints. The placements and takes live in
 		app-ui.css only; the live chrome never sees them. */ ?>
+	<?php /* MENU - the real pages menu, painted after real products. Each
+		example is only token values on the menu's slots (link, row, icon,
+		card) - app-ui.css, MENU FAMILIES - so a family can't move a row,
+		only paint it. "Now" is shown as the current page. Inert: they show
+		how it looks, the live menu is the one to use. */
+		$menu_families = [
+			'today' => 'Today',
+			'classic' => 'Classic web (Wikipedia)',
+			'finder' => 'Finder (macOS)',
+			'shadcn' => 'shadcn dropdown',
+			'reveal' => 'Reveal (Claude, Linear)',
+			'win95' => 'Windows 95',
+			'terminal' => 'Terminal',
+		]; ?>
+
+	<h2 class='strong-voice context-heading'>Menu</h2>
+
+	<div class='app-ui-board context-board'>
+		<?php foreach ($menu_families as $family => $family_name): ?>
+			<figure
+				class='menu-example'
+				data-family='<?= $family ?>'
+				inert
+			>
+				<figcaption class='quiet-voice'><?= $family_name ?></figcaption>
+
+				<div
+					class='app-card'
+					data-ui='app'
+				>
+					<div class='panel-scroll'>
+						<h2 class='app-data-voice panel-heading'>Menu</h2>
+
+						<?= partial('settings/page-menu', ['pages' => $pages, 'slug' => 'now', 'target_query' => '']) ?>
+					</div>
+				</div>
+			</figure>
+		<?php endforeach; ?>
+	</div>
+
 	<?php /* What the real-phone test ruled out (Derek, 2026-09-25) - kept
 		in the grid as evidence, labeled so they never read as options. */
 		$ruled_out = ['ghost-straddle', 'ring-below', 'ghost-below']; ?>

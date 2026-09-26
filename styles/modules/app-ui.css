@@ -191,3 +191,89 @@
 /* The ghost take the frames wear lives with the chrome's other rules -
    styles/modules/settings-panel.css, beside CHROME TAKES - because the
    live tray uses the same one on a ?try= visit. */
+
+
+/* MENU FAMILIES - the pages menu painted after real products, on the
+   /design-system/app-ui Menu row. Token values only (the menu's slots in
+   settings-panel.css): link, row, icon, card. Nothing here can move a
+   row. Raw product colors are named at their use: fidelity to the real
+   thing is the point (the recognition test). */
+.menu-example {
+	flex-shrink: 0;
+	width: 16rem;
+	margin: 0;
+
+	.app-card {
+		margin-top: 0.5rem;
+	}
+}
+
+/* Classic web - Wikipedia: blue underlined links, the current page as
+   plain dark text (Wikipedia doesn't link the page you're on). */
+.menu-example[data-family='classic'] [data-ui='app'] {
+	--app-menu-link-color: var(--color-blue-700);
+	--app-menu-link-underline-color: currentColor;
+	--app-menu-row-current-ink: var(--app-ink);
+}
+
+/* Finder - macOS sidebar: no underline, ink text, blue icons, the
+   current row a soft rounded fill. */
+.menu-example[data-family='finder'] [data-ui='app'] {
+	--app-menu-link-color: var(--app-ink);
+	--app-menu-link-decoration: none;
+	--app-menu-icon-color: var(--color-blue-500);
+	--app-menu-row-radius: 0.375rem;
+	--app-menu-row-current-fill: color-mix(in oklch, var(--app-ink) 10%, var(--app-fill));
+	--app-corners: 0.75rem;
+}
+
+/* shadcn - its dropdown: crisp black and white, small radius, a faint
+   row fill, monochrome icons. */
+.menu-example[data-family='shadcn'] [data-ui='app'] {
+	--app-menu-link-color: var(--app-ink);
+	--app-menu-link-decoration: none;
+	--app-menu-row-radius: 0.25rem;
+	--app-menu-row-current-fill: color-mix(in oklch, var(--app-ink) 6%, var(--app-fill));
+	--app-corners: 0.5rem;
+	--app-shadow: 0 4px 12px rgb(0 0 0 / 0.08);
+}
+
+/* Reveal - Claude / Linear: soft and quiet, rounder rows and card, a
+   gentle tint for the current row. */
+.menu-example[data-family='reveal'] [data-ui='app'] {
+	--app-menu-link-color: var(--app-ink);
+	--app-menu-link-decoration: none;
+	--app-menu-row-radius: 0.5rem;
+	--app-menu-row-current-fill: color-mix(in oklch, var(--app-ink) 7%, var(--app-fill));
+	--app-corners: 1rem;
+	--app-stroke: color-mix(in oklch, var(--app-ink) 10%, var(--app-fill));
+	--app-shadow: 0 8px 24px rgb(0 0 0 / 0.1);
+}
+
+/* Windows 95 - the silver window: a raised bevel (light top-left, dark
+   bottom-right), square everything, the current item as the navy
+   selection bar with white text. */
+.menu-example[data-family='win95'] [data-ui='app'] {
+	--app-fill: var(--color-neutral-300);
+	--app-ink: var(--color-neutral-950);
+	--app-stroke: var(--color-neutral-950);
+	--app-shadow:
+		inset 1px 1px 0 var(--color-neutral-50),
+		inset -1px -1px 0 var(--color-neutral-600);
+	--app-menu-link-color: var(--app-ink);
+	--app-menu-link-decoration: none;
+	--app-menu-row-current-fill: var(--color-blue-900);
+	--app-menu-row-current-ink: var(--color-neutral-50);
+}
+
+/* Terminal - green on black, the current item inverted. */
+.menu-example[data-family='terminal'] [data-ui='app'] {
+	--app-fill: var(--color-neutral-950);
+	--app-ink: var(--color-green-400);
+	--app-stroke: var(--color-green-700);
+	--app-shadow: none;
+	--app-menu-link-color: var(--app-ink);
+	--app-menu-link-decoration: none;
+	--app-menu-row-current-fill: var(--color-green-400);
+	--app-menu-row-current-ink: var(--color-neutral-950);
+}
