@@ -1003,9 +1003,17 @@ button.trigger {
 	border-radius: var(--app-menu-row-radius);
 	background: var(--app-menu-row-fill);
 
+	/* A visited link may only change COLOR (the browser's privacy rule for
+	   :visited) - which is all the classic-web family needs. Unset, it
+	   stays the link color. */
+	&:visited {
+		color: var(--app-menu-link-visited-color, var(--app-menu-link-color));
+	}
+
 	&[aria-current='page'] {
 		background: var(--app-menu-row-current-fill);
 		color: var(--app-menu-row-current-ink, var(--app-menu-link-color));
+		text-decoration-line: var(--app-menu-row-current-decoration, var(--app-menu-link-decoration));
 	}
 
 	.menu-icon {

@@ -208,12 +208,15 @@
 	}
 }
 
-/* Classic web - Wikipedia: blue underlined links, the current page as
-   plain dark text (Wikipedia doesn't link the page you're on). */
+/* Classic web - Wikipedia: blue underlined links, purple once visited,
+   the current page as plain dark text with no underline (Wikipedia
+   doesn't link the page you're on). */
 .menu-example[data-family='classic'] [data-ui='app'] {
 	--app-menu-link-color: var(--color-blue-700);
+	--app-menu-link-visited-color: var(--color-purple-800);
 	--app-menu-link-underline-color: currentColor;
 	--app-menu-row-current-ink: var(--app-ink);
+	--app-menu-row-current-decoration: none;
 }
 
 /* Finder - macOS sidebar: no underline, ink text, blue icons, the
@@ -256,10 +259,18 @@
 .menu-example[data-family='win95'] [data-ui='app'] {
 	--app-fill: var(--color-neutral-300);
 	--app-ink: var(--color-neutral-950);
-	--app-stroke: var(--color-neutral-950);
+
+	/* The real Windows 95 raised edge is two layers, lit from the top
+	   left: white then light gray on the lit sides, near-black then dark
+	   gray on the shaded ones. The 1px border takes the outermost dark
+	   ring's color on its shaded sides only - drawn in box-shadow, so
+	   nothing grows. */
+	--app-stroke: var(--color-neutral-300);
 	--app-shadow:
 		inset 1px 1px 0 var(--color-neutral-50),
-		inset -1px -1px 0 var(--color-neutral-600);
+		inset -1px -1px 0 var(--color-neutral-950),
+		inset 2px 2px 0 var(--color-neutral-200),
+		inset -2px -2px 0 var(--color-neutral-500);
 	--app-menu-link-color: var(--app-ink);
 	--app-menu-link-decoration: none;
 	--app-menu-row-current-fill: var(--color-blue-900);
