@@ -905,6 +905,10 @@ button.trigger {
 	html[data-placement='float'] .panel {
 		top: calc(100% + var(--layout-panel-gap));
 		right: var(--gutter);
+		/* A floating card keeps its designed measure - the phone rule's
+		   "screen minus a strip" stretched it on big phones and small
+		   tablets (Derek, 2026-09-25: "too wide"). */
+		width: min(calc(100% - 5rem), var(--layout-panel-max));
 		border-right: var(--app-border-width) solid var(--app-stroke);
 		border-radius: calc(var(--app-trigger-size) / 3);
 
