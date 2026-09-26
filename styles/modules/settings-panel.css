@@ -1081,6 +1081,17 @@ button.trigger {
 		margin-bottom: var(--app-row-label-gap);
 	}
 
+	/* A slider is measured the way the eye reads it - label to the TOP OF
+	   THE DOT, the same 8px as label to a pill's edge. The dot sits
+	   (halo - dot) / 2 below the pulled-in box's top, which is already 8px
+	   here, so its label takes no gap of its own. Without this the track
+	   sat midway between its label and the next one, and the eye couldn't
+	   tell which label a slider belonged to (Derek's screenshot,
+	   2026-09-25). */
+	.app-data-voice:has(+ .plain-range) {
+		margin-bottom: calc(var(--app-row-label-gap) - (var(--range-halo, 30px) - var(--range-dot, 14px)) / 2);
+	}
+
 	/* A slider's grab box is 40px tall with the visible halo (30px) in its
 	   middle, so its dead top and bottom used to pad the rhythm unevenly.
 	   Pulled in to the halo, the row measures what you see. The grab box
