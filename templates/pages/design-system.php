@@ -135,6 +135,31 @@
 
 	<p>Every token and voice on one surface. Change the axes in the settings panel to see them all react together. The journal template has its own surface: <a class='link' href='/journal/kitchen-sink'>the kitchen-sink entry</a> renders every module an entry can use. The chrome has one too: <a class='link' href='/app-ui'>the app-ui playground</a>.</p>
 
+	<?php /* First on purpose: this list is used ON A PHONE, so it sits at
+		the top - one tap per pairing. Each link opens the home page with
+		that app-ui pairing switched on for the one visit (?try=,
+		index.php); the lists are $app_ui_takes / $app_ui_placements. The
+		/app-ui playground draws the same six in frames. */ ?>
+	<section class='ds-section'>
+		<h2 class='attention-voice'>App UI - try on a phone</h2>
+
+		<ul
+			class='try-links'
+			role='list'
+		>
+			<?php foreach ($app_ui_takes as $take => $take_name): ?>
+				<?php foreach ($app_ui_placements as $placement => $placement_name): ?>
+					<li>
+						<a
+							class='link'
+							href='/?try=<?= $take ?>-<?= $placement ?>'
+						><?= $take_name ?> · <?= $placement_name ?></a>
+					</li>
+				<?php endforeach; ?>
+			<?php endforeach; ?>
+		</ul>
+	</section>
+
 	<section class='ds-section'>
 		<h2 class='attention-voice'>Color tokens</h2>
 

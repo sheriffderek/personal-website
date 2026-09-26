@@ -566,3 +566,15 @@
 		}
 	}
 }
+
+/* The try-on-a-phone links at the top of /design-system: a plain list,
+   spaced for thumbs. */
+.design-system .try-links {
+	margin-top: 1rem;
+	padding: 0;
+	list-style: none;
+
+	li + li {
+		margin-top: 0.75rem;
+	}
+}
