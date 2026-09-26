@@ -338,15 +338,20 @@
 	/* The flat ring: a solid band and a hairline outside it - zero blur,
 	   zero offset, so the card extends into a frame without growing. */
 	--app-shadow:
-		0 0 0 6px light-dark(var(--color-stone-100), var(--color-neutral-900)),
-		0 0 0 7px light-dark(var(--color-stone-300), var(--color-neutral-800));
+		0 0 0 3px light-dark(var(--color-stone-100), var(--color-neutral-900)),
+		0 0 0 4px light-dark(var(--color-stone-300), var(--color-neutral-800));
 
-	/* Pills: quiet until chosen, the chosen one a soft rounded tint. */
+	/* Pills: a soft rounded TRACK holds the options (so the row reads as
+	   one control even when only one part is lit), the chosen one raised
+	   on it in the card's own color with a hairline. */
+	--app-pill-group-fill: light-dark(var(--color-stone-100), var(--color-neutral-900));
+	--app-pill-group-radius: 0.5rem;
 	--app-pill-fill: transparent;
+	--app-pill-hover-fill: light-dark(var(--color-stone-200), var(--color-neutral-800));
 	--app-pill-stroke: transparent;
 	--app-pill-radius: 0.5rem;
-	--app-pill-checked-fill: light-dark(var(--color-stone-100), var(--color-neutral-800));
-	--app-pill-checked-stroke: light-dark(var(--color-stone-200), var(--color-neutral-700));
+	--app-pill-checked-fill: light-dark(var(--color-neutral-50), var(--color-neutral-800));
+	--app-pill-checked-stroke: light-dark(var(--color-stone-300), var(--color-neutral-700));
 
 	/* Menu, as in the Claude Code menu example. */
 	--app-menu-link-color: var(--app-ink);
@@ -388,9 +393,10 @@ html[data-family='interface'][data-flavor='sweet'] [data-ui='app'] {
 	--app-ink: light-dark(var(--color-purple-950), oklch(93% 0.01 328));
 	--app-stroke: light-dark(var(--color-purple-200), var(--slack-hairline));
 	--app-shadow:
-		0 0 0 6px light-dark(var(--color-purple-100), var(--slack-frame)),
-		0 0 0 7px light-dark(var(--color-purple-200), var(--slack-frame-edge));
-	--app-pill-checked-fill: light-dark(var(--color-purple-100), var(--slack-chosen));
+		0 0 0 3px light-dark(var(--color-purple-100), var(--slack-frame)),
+		0 0 0 4px light-dark(var(--color-purple-200), var(--slack-frame-edge));
+	--app-pill-group-fill: light-dark(var(--color-purple-100), oklch(16% 0.02 328));
+	--app-pill-checked-fill: light-dark(var(--color-neutral-50), var(--slack-chosen));
 	--app-pill-checked-stroke: light-dark(var(--color-purple-200), var(--slack-hairline));
 	--app-menu-row-current-fill: light-dark(var(--color-purple-100), var(--slack-chosen));
 }
