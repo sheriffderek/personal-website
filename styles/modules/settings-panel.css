@@ -703,6 +703,12 @@ button.trigger {
 		   card stays page-colored - the seam this exists to judge. */
 		.panel {
 			top: 0;
+
+			/* No top edge (Derek's phone test, 2026-09-25: the line across
+			   the top "feels weird"). Once the card contains the bar, that
+			   edge marks nothing - the card simply starts at the top. */
+			border-top: none;
+			border-top-left-radius: 0;
 		}
 
 		.panel .panel-scroll {
