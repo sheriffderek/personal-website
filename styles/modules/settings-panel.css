@@ -273,6 +273,14 @@
 	   them in place, the row keeps its box). A shown shortcut must really
 	   work - a fake one fails the recognition test. The icon row idea:
 	   Home, How I work, Resume, Now, Journal, Contact, per family.
+	   Menu references (Derek, 2026-09-25): the shadcn dropdown (group
+	   label, label + shortcut, hairline separators, submenu chevron,
+	   faded disabled item) and the macOS Finder sidebar (group label,
+	   accent-colored icon + label). So the row is icon - label - shortcut,
+	   with room for group labels and separators - every slot present in
+	   EVERY family at a fixed size, shown or hidden in place, so no family
+	   ever changes the menu's size. Grouping the six pages is an IA call
+	   (Derek's), open.
 
 	   HINT - the small dark tooltip with a shortcut (Claude's "Browser
 	   ⇧⌘B"); belongs to families that have hover.
