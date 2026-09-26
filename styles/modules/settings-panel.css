@@ -282,6 +282,30 @@
 	   ever changes the menu's size. Grouping the six pages is an IA call
 	   (Derek's), open.
 
+	   UNDERLINES AND SHORTCUTS, BY FAMILY (2026-09-25) - two principles:
+	   an underline says "a link inside text", so families that emulate
+	   documents keep it and families that emulate apps drop it (an app
+	   menu is a list of commands; its row surface says clickable). And a
+	   shortcut shows only where the real product shows one, only if it
+	   works, and never on touch - no keyboard there, so the slot hides in
+	   place on (hover: none) whatever the family.
+	     Classic web (Wikipedia, Craigslist) - underline, blue + purple
+	                     visited; no shortcuts.
+	     Editorial (a magazine site) - a refined underline; no shortcuts.
+	     Reveal (Claude, ChatGPT, Linear) - no underline; shortcuts as
+	                     hints (the Cmd-K style).
+	     shadcn (its dropdown) - no underline; shortcuts right-aligned.
+	     Finder (macOS sidebar) - no underline; no shortcuts (icons only).
+	     Windows 95 - no underline, except the accelerator letter: the one
+	                     family where an underline IS the shortcut
+	                     (Alt + the underlined letter).
+	     Terminal - no underline; keys as numbers [1]-[6] or a > prompt.
+	     Constructed - no underline, no shortcuts: its point is the drawn
+	                     strokes.
+	   One real keymap serves every family that shows keys - the same
+	   behavior, each family writing it in its own notation. The keymap
+	   itself is undecided (see the open question it raised).
+
 	   HINT - the small dark tooltip with a shortcut (Claude's "Browser
 	   ⇧⌘B"); belongs to families that have hover.
 	   PATTERN - one full combination, named for its product: "Claude" =
@@ -320,6 +344,18 @@
 	--app-trigger-open-fill: var(--app-ink);
 	--app-trigger-open-ink: var(--app-fill);
 	--app-trigger-open-stroke: var(--app-stroke);
+
+	/* Menu links - the pages menu's link paint, per family (2026-09-25).
+	   Underline or not is pure paint (text-decoration never changes a
+	   row's size), so it's an open-bank slot: the classic-web family keeps
+	   it, the app families drop it and let the row say "clickable". The
+	   defaults alias today's page link look so nothing moved when the slot
+	   arrived - a family repaints them with chrome values. Known leak,
+	   pre-dating the slot: the Terminal CHARACTER's no-underline rule
+	   (setup.css) still reaches these links through the wall. */
+	--app-menu-link-color: var(--link-color);
+	--app-menu-link-decoration: underline;
+	--app-menu-link-underline-color: var(--link-underline-color);
 
 	/* Corners - the one free GEOMETRY lever (unfrozen 2026-08-11, see the
 	   contract above): radius never moves a target's center, so a theme may
@@ -939,6 +975,10 @@ button.trigger {
 	font-size: var(--step-0);
 	font-weight: 400;
 	letter-spacing: 0;
+
+	color: var(--app-menu-link-color);
+	text-decoration-line: var(--app-menu-link-decoration);
+	text-decoration-color: var(--app-menu-link-underline-color);
 
 	/* icon - label (and a shortcut slot to come), on one line */
 	display: inline-flex;
