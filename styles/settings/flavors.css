@@ -373,6 +373,15 @@ html[data-flavor="earth"][data-brand-mood="technical"] {
    Derek: "this orange seems to leak everywhere." CSS can't count to one;
    if a single warm counterpoint ever returns, it's authored per-milestone,
    not per-slot.) */
+/* The images sit in a well: in dark, the poster ground is a step DARKER
+   than the room (Derek, 2026-09-27: "dark behind the image"), so the art
+   reads as a lit screen set into the page. Light keeps the page's own
+   paper. Every slot that doesn't state its own ground (night does, below,
+   and wins by source order). */
+html[data-flavor="earth"][data-brand-mood="technical"] [data-variant] {
+	--poster-fill: light-dark(var(--fill-primary), color-mix(in oklab, var(--fill-primary), black 30%));
+}
+
 html[data-flavor="earth"][data-brand-mood="technical"] [data-variant="cool"] {
 	--poster-ink: light-dark(var(--color-emerald-700), var(--color-emerald-300));
 
