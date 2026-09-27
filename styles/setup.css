@@ -25,6 +25,36 @@ label {
 	color: var(--selection-ink, var(--fill-primary));
 }
 
+/* Find-in-page (Ctrl/Cmd+F) wears the same highlighter pair, and the match
+   you're on flips to the scope's own ink so it stands out the way the
+   browser's orange does. Chrome only for now (::search-text, 2026) -
+   elsewhere the browser keeps its yellow. Kept as separate rules on
+   purpose: a selector list holding a pseudo-element a browser doesn't know
+   is dropped whole, which would take ::selection down with it.
+   .search-match / .is-current / .is-selected are the kitchen sink's stand-ins
+   for states a page can't show on its own (templates/journal/kitchen-sink.php)
+   - same tokens, so they repaint with the real thing. */
+::search-text {
+	background-color: var(--selection-fill, color-mix(in oklab, var(--ink-primary) 75%, transparent));
+	color: var(--selection-ink, var(--fill-primary));
+}
+
+::search-text:current {
+	background-color: var(--ink-primary);
+	color: var(--fill-primary);
+}
+
+.is-selected,
+.search-match {
+	background-color: var(--selection-fill, color-mix(in oklab, var(--ink-primary) 75%, transparent));
+	color: var(--selection-ink, var(--fill-primary));
+}
+
+.search-match.is-current {
+	background-color: var(--ink-primary);
+	color: var(--fill-primary);
+}
+
 /* A highlighted run of prose (<mark>) wears the same pair as a text
    selection - it IS a highlighter stroke, so the mood that picked the
    highlighter color has already picked this one. Ends bleed a hair past

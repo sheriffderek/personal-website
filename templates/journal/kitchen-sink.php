@@ -7,86 +7,23 @@
 	// for the journal - change character, mood, or scheme in the settings panel
 	// and check that the whole page holds together. Marked "unlisted" in
 	// journal.json, so it never appears on the public /journal list.
+	//
+	// Order: the modules that carry paint (links, the quote's stroke, the
+	// code panel) come first, so the first screen shows the theme working on
+	// real entry content; the big embeds sit lower (Derek, 2026-09-26: real
+	// page content, denser - not a design-system showcase).
 ?>
 
 <section>
 	<h2 class='attention-voice'>Text sections</h2>
 
-	<p>This is a plain text section - a heading in the attention voice, followed by paragraphs in the calm voice. Nothing here is styled per-entry. The paragraph rhythm comes from the shared <code>.styled</code> rules in typography.css, the measure caps at a readable width, and the colors come from whatever mood and scheme the visitor has set.</p>
+	<?php /* Stand-ins for states the page can't show by itself: a find-in-page
+		search for "the" (the first match is the current one, as a fresh
+		search lands; the rest wear the highlighter), and a text selection -
+		setup.css, beside ::search-text. */ ?>
+	<p>This is a plain text section - a heading in <span class='search-match is-current'>the</span> attention voice, followed by paragraphs in <span class='search-match'>the</span> calm voice. Nothing here is styled per-entry. <span class='search-match'>The</span> paragraph rhythm comes from <span class='search-match'>the</span> shared <code>.styled</code> rules in typography.css, <span class='is-selected'>the measure caps at a readable width</span>, and the colors come from whatever mood and scheme the visitor has set.</p>
 
 	<p>An entry is just a stack of these sections. A section can be one paragraph or many, and prose can carry <a class='link' href='/design-system'>links</a>, <em>emphasis</em>, and <strong>strong claims</strong> the same way it does anywhere else on the site.</p>
-</section>
-
-<section>
-	<h2 class='attention-voice'>Video</h2>
-
-	<p>Most entries lead with a video - a normal Vimeo embed, no custom player, no autoplay rules, none of the timeline’s local-video machinery. The iframe sits in a figure, holds its 16:9 frame before the player loads, and can carry a caption the same way an image does.</p>
-
-	<figure class='entry-figure'>
-		<iframe src='https://player.vimeo.com/video/76979871' title='Sample Vimeo embed' allow='fullscreen; picture-in-picture' loading='lazy'></iframe>
-
-		<figcaption class='quiet-voice'>A sample embed. Swap the video id in the iframe src for the real one.</figcaption>
-	</figure>
-</section>
-
-<section>
-	<h2 class='attention-voice'>Full-size media</h2>
-
-	<p>Figures come in two sizes. The default holds the prose column. Adding <code>figure-full</code> gives the breakout size - the left edge stays on the prose line and the shape grows rightward into the margin, where the room exists (below 1200px every figure is column-width). For the video or image that IS the entry.</p>
-
-	<figure class='entry-figure figure-full'>
-		<iframe src='https://player.vimeo.com/video/76979871' title='Sample full-size Vimeo embed' allow='fullscreen; picture-in-picture' loading='lazy'></iframe>
-
-		<figcaption class='quiet-voice'>The same embed at the full size - compare its right edge with the paragraphs above.</figcaption>
-	</figure>
-</section>
-
-<section>
-	<h2 class='attention-voice'>Figures</h2>
-
-	<p>An image travels inside a figure with a caption. The caption is the quiet voice, and it should say something the image doesn’t - what to notice, not what’s depicted.</p>
-
-	<figure class='entry-figure'>
-		<img src='<?= asset('/content/placeholder/poster-wide.png') ?>' alt='Placeholder poster graphic'>
-
-		<figcaption class='quiet-voice'>The caption sits under the image in the quiet voice. This one is a placeholder graphic standing in for a real screenshot.</figcaption>
-	</figure>
-
-	<p>Media files for a real entry live in a folder beside it at <code>content/journal/&lt;slug&gt;/</code>, named the house way, so the folder listing reads as the entry’s storyboard.</p>
-</section>
-
-<section>
-	<h2 class='attention-voice'>Subheadings</h2>
-
-	<p>A longer section can break into parts with a smaller heading in the strong voice. It sits a full step below the section heading, so the hierarchy reads at a glance.</p>
-
-	<h3 class='strong-voice'>Like this one</h3>
-
-	<p>The paragraph under a subheading carries on in the calm voice. If a section wants more than two levels of heading, it probably wants to be two sections.</p>
-</section>
-
-<section>
-	<h2 class='attention-voice'>Lists</h2>
-
-	<p>Plain lists keep their bullets - the journal register is casual, and a bullet list is often the honest shape for working an idea out loud:</p>
-
-	<ul>
-		<li>an unordered list for things without a sequence</li>
-
-		<li>each item a phrase or a sentence, not a paragraph</li>
-
-		<li>if an item grows past two lines, it wants to be prose</li>
-	</ul>
-
-	<p>An ordered list is for real sequences - steps that happened in an order, or a ranking that means something:</p>
-
-	<ol>
-		<li>first this happened</li>
-
-		<li>then this</li>
-
-		<li>and this is where it landed</li>
-	</ol>
 </section>
 
 <section>
@@ -118,6 +55,54 @@
 </section>
 
 <section>
+	<h2 class='attention-voice'>Lists</h2>
+
+	<p>Plain lists keep their bullets - the journal register is casual, and a bullet list is often the honest shape for working an idea out loud:</p>
+
+	<ul>
+		<li>an unordered list for things without a sequence</li>
+
+		<li>each item a phrase or a sentence, not a paragraph</li>
+
+		<li>if an item grows past two lines, it wants to be prose</li>
+	</ul>
+
+	<p>An ordered list is for real sequences - steps that happened in an order, or a ranking that means something:</p>
+
+	<ol>
+		<li>first this happened</li>
+
+		<li>then this</li>
+
+		<li>and this is where it landed</li>
+	</ol>
+</section>
+
+<section>
+	<h2 class='attention-voice'>Subheadings</h2>
+
+	<p>A longer section can break into parts with a smaller heading in the strong voice. It sits a full step below the section heading, so the hierarchy reads at a glance.</p>
+
+	<h3 class='strong-voice'>Like this one</h3>
+
+	<p>The paragraph under a subheading carries on in the calm voice. If a section wants more than two levels of heading, it probably wants to be two sections.</p>
+</section>
+
+<section>
+	<h2 class='attention-voice'>Figures</h2>
+
+	<p>An image travels inside a figure with a caption. The caption is the quiet voice, and it should say something the image doesn’t - what to notice, not what’s depicted.</p>
+
+	<figure class='entry-figure'>
+		<img src='<?= asset('/content/placeholder/poster-wide.png') ?>' alt='Placeholder poster graphic'>
+
+		<figcaption class='quiet-voice'>The caption sits under the image in the quiet voice. This one is a placeholder graphic standing in for a real screenshot.</figcaption>
+	</figure>
+
+	<p>Media files for a real entry live in a folder beside it at <code>content/journal/&lt;slug&gt;/</code>, named the house way, so the folder listing reads as the entry’s storyboard.</p>
+</section>
+
+<section>
 	<h2 class='attention-voice'>Image pairs</h2>
 
 	<p>Two images side by side when the point IS the comparison - a before and after, two directions considered. One caption under the pair says what changed; on phones they stack.</p>
@@ -130,6 +115,30 @@
 		</image-pair>
 
 		<figcaption class='quiet-voice'>Before on the left, after on the right. One caption carries the comparison.</figcaption>
+	</figure>
+</section>
+
+<section>
+	<h2 class='attention-voice'>Video</h2>
+
+	<p>Most entries lead with a video - a normal Vimeo embed, no custom player, no autoplay rules, none of the timeline’s local-video machinery. The iframe sits in a figure, holds its 16:9 frame before the player loads, and can carry a caption the same way an image does.</p>
+
+	<figure class='entry-figure'>
+		<iframe src='https://player.vimeo.com/video/76979871' title='Sample Vimeo embed' allow='fullscreen; picture-in-picture' loading='lazy'></iframe>
+
+		<figcaption class='quiet-voice'>A sample embed. Swap the video id in the iframe src for the real one.</figcaption>
+	</figure>
+</section>
+
+<section>
+	<h2 class='attention-voice'>Full-size media</h2>
+
+	<p>Figures come in two sizes. The default holds the prose column. Adding <code>figure-full</code> gives the breakout size - the left edge stays on the prose line and the shape grows rightward into the margin, where the room exists (below 1200px every figure is column-width). For the video or image that IS the entry.</p>
+
+	<figure class='entry-figure figure-full'>
+		<iframe src='https://player.vimeo.com/video/76979871' title='Sample full-size Vimeo embed' allow='fullscreen; picture-in-picture' loading='lazy'></iframe>
+
+		<figcaption class='quiet-voice'>The same embed at the full size - compare its right edge with the paragraphs above.</figcaption>
 	</figure>
 </section>
 
