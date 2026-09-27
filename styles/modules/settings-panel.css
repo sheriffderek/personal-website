@@ -231,9 +231,13 @@
 	   trigger over haloed dial handles is two dialects in one card.
 	   Families should disagree about what a button even is; two sizes of
 	   the same radius are not two families. Build few, fully:
-	     Constructed - everything drawn from the same strokes: Ring
-	                   triggers emerge from the panel's outline, ring
-	                   handles, outlined pills.
+	     Brutalist   - (was "Constructed"; named by Derek, 2026-09-27) the
+	                   default: hard buttons, hard corners, link-like
+	                   links - everything drawn from the same strokes:
+	                   Ring triggers emerge from the panel's outline, ring
+	                   handles, outlined boxes, underlined menu links.
+	                   Approved as it stands under every Quiet flavor,
+	                   light and dark.
 	     Reveal      - the Claude / ChatGPT / Linear app: Ghost triggers,
 	                   Float panel, small flat handles, soft pills, Hints.
 	   Candidates, each needing its named reference first: Modern App
@@ -336,8 +340,8 @@
 	                     family where an underline IS the shortcut
 	                     (Alt + the underlined letter).
 	     Terminal - no underline; keys as numbers [1]-[6] or a > prompt.
-	     Constructed - no underline, no shortcuts: its point is the drawn
-	                     strokes.
+	     Brutalist - underlined, link-like links (the plain web link is
+	                     part of the look); no shortcuts.
 	   One real keymap serves every family that shows keys - the same
 	   behavior, each family writing it in its own notation. The keymap
 	   itself is undecided (see the open question it raised).
