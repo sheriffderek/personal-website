@@ -129,8 +129,9 @@
 	   mono at ONE size - the three family tokens below catch all of them
 	   (heading/body/ui; data already reads --font-code = mono), and
 	   scale-ratio 1 flattens the whole step ladder. Hierarchy comes from
-	   weight and case alone, like a real terminal: bold for headings, tracking
-	   + uppercase (stamp-voice's own habit) for stamps. The two size
+	   weight alone, like a real terminal: bold for section headings, and
+	   everything stays on the character grid - stamps drop their tracking
+	   and uppercase (below). The two size
 	   overrides exist because those voices carry literal/derived sizes in
 	   base.css that would otherwise dodge the flat ladder. (--font-mono is the
 	   system stack for now - Fontshare has no mono; a picked code face slots
@@ -154,15 +155,21 @@
 	--font-heading-weight: 700;
 	--attention-voice-font-weight: 700;
 	--attention-voice-line-height: 1.4;
-	--loud-voice-font-weight: 700;
+	/* The page title (the name on home) reads as plain output, not a bold
+	   banner (Derek, 2026-09-27: "my name shouldn't be bold"). */
+	--loud-voice-font-weight: 400;
 	--loud-voice-line-height: 1.4;
 	--strong-voice-font-weight: 700;
 	--calm-voice-font-weight: 400;
 	--calm-voice-line-height: 1.6;
 	--calm-voice-strong-font-weight: 700;
 
-	/* The stamp reads like an environment variable: wide and spare. */
-	--stamp-voice-letter-spacing: 0.14em;
+	/* Stamps stay on the grid: no tracking, lowercase (Derek, 2026-09-27:
+	   the wide uppercase stamp "doesn't look monospace" - tracking spreads
+	   the cells, so the line stopped reading as terminal text). Was 0.14em
+	   uppercase, "like an environment variable". */
+	--stamp-voice-letter-spacing: 0;
+	--stamp-voice-text-transform: lowercase;
 }
 
 /* ----------------------------------------------------------------------------
