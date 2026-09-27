@@ -9,6 +9,13 @@
 		display: block;
 		margin-top: 0.75em;
 		color: var(--ink-auxiliary);
+
+		/* The "for hire" link speaks in the role's stamp voice - a.link
+		   otherwise carries the calm-voice size (typography.css). */
+		a.link {
+			font: inherit;
+			letter-spacing: inherit;
+		}
 	}
 
 	h1 {

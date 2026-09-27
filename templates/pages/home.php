@@ -37,7 +37,9 @@ $target_notes = $target['milestones'] ?? [];
 	<h1>
 		<span class='name loud-voice'>Derek Wood</span>
 
-		<span class='role stamp-voice'>Technical Product Designer</span>
+		<?php /* The role reads as an offer - one connected phrase, the "for
+		         hire" part the door to the resume (Derek, 2026-09-26). */ ?>
+		<span class='role stamp-voice'>Technical Product Designer <a class='link' href='/resume<?= $target_query ?>'>for hire</a></span>
 		<?php // specific role text could be target-based too ?>
 	</h1>
 
