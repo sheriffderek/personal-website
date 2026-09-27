@@ -325,6 +325,20 @@
 	color: var(--ink-primary);
 }
 
+/* MARKETING - roundy (Derek, 2026-09-26). The front-door character wears
+   soft corners on the page (--corners, characters.css), and families follow
+   characters, so its chrome rounds too: the card and menu at the page's own
+   radius, the options as full-round pills - the GoFundMe-lane button. Shape
+   only; the baseline's colors and edges stay (Marketing x Quiet was
+   approved as it stood). Corners are the one free geometry lever - a radius
+   never moves a box. */
+:is(html[data-brand-character='marketing'] [data-ui='app'], .phone-context[data-family='marketing'], .phone-context[data-family='marketing'] [data-ui='app']) {
+	--app-corners: var(--corners);
+	--app-pill-radius: 999px;
+	--app-pill-group-radius: 999px;
+	--app-menu-row-radius: var(--corners);
+}
+
 /* INTERFACE - Claude Code in the light, Linear in the dark, the flat ring
    for an edge (the contract, settings-panel.css). Paints the frames here,
    and the live chrome whenever the Interface character is on (families
