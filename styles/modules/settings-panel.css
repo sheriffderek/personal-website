@@ -489,9 +489,11 @@
 /* THE GHOST TAKE - flush buttons: no ring, no fill at rest, a soft tinted
    square when open. Only the trigger's own --app-trigger-* slots are
    repainted - a take is token values, never new rules on the button. It
-   reaches the live tray only on a ?try=ghost-... visit (data-take on
-   <html>, index.php) and the /design-system/app-ui frames that wear data-take='ghost';
-   the tray and a frame's toolbar are where these slots are declared. */
+   reaches the live tray through its family's character (Interface wears
+   Ghost), a ?try=ghost-... visit (data-take on <html>, index.php), and the
+   /design-system/app-ui frames that wear data-take='ghost'; the tray and a
+   frame's toolbar are where these slots are declared. */
+html[data-brand-character='interface'] .site-tray,
 html[data-take='ghost'] .site-tray,
 .phone-context[data-take='ghost'] [data-ui='app'] {
 	--app-trigger-fill: transparent;
@@ -911,8 +913,9 @@ button.trigger {
 	   below the bar with a gap, inset from the screen edge, every corner
 	   rounded, depth from its shadow - so no edge ever runs along the bar
 	   and no seam is drawn. Undoes the phone posture's flush-right edge on
-	   purpose: with rounding and a shadow, the gap reads as intended. */
-	html[data-placement='float'] .panel {
+	   purpose: with rounding and a shadow, the gap reads as intended.
+	   The Interface character wears it for real (Ghost can't straddle). */
+	:is(html[data-placement='float'], html[data-brand-character='interface']) .panel {
 		top: calc(100% + var(--layout-panel-gap));
 		right: var(--gutter);
 		/* A floating card keeps its designed measure - the phone rule's
