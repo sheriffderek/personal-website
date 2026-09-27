@@ -89,10 +89,9 @@ define('TOUR_ENABLED', false);
    Expressive is still :root / no attribute; header.php server-renders
    data-brand-mood for any other default, and a visitor's saved choice
    (now including 'expressive') overrides it in the FOUC script.
-   Keep matched with DEFAULT_MOOD in scripts/settings-panel.js. The starting
-   mood is also listed FIRST in the slider order (MOODS there, $mood_names in
-   settings/mood-switcher.php) so the thumb starts at the left - when this
-   changes, move the new starting mood to the front in both. */
+   Keep matched with DEFAULT_MOOD in scripts/settings-panel.js. The slider
+   ORDER is separate and stays put (Derek, 2026-09-27: loud to calm tells the
+   better story) - the thumb simply starts wherever this mood sits. */
 define('DEFAULT_MOOD', 'quiet');
 
 /* SETTINGS_ENABLED - the visitor-facing settings panel (theme, scheme, sound,

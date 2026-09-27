@@ -83,14 +83,14 @@
 		},
 
 		character: {
-			def: 0,
+			def: 1,
 			apply: function (value) {
 				settings.applyCharacter(value, { persist: false });
 			}
 		},
 
 		mood: {
-			def: 0,
+			def: 2,
 			apply: function (value) {
 				settings.applyMood(value, { persist: false });
 			}
@@ -112,12 +112,14 @@
 	};
 
 	/* --- Author these against the finished video. Placeholder timings. -----
-	   character/mood values are slider indices (character: 0 product,
-	   1 marketing, 2 interface; mood: 0 quiet, 1 expressive, 2 technical);
+	   character/mood values are slider indices (character: 0 marketing,
+	   1 product, 2 interface, 3 editorial, 4 terminal; mood: 0 expressive,
+	   1 technical, 2 quiet - the story order, 2026-09-27; def = the visitor's
+	   starting position, Product and Quiet);
 	   filter values are tiers shown (1 Top ... 6 All); times are seconds. */
 	var spans = [
 		{ channel: 'menu',      value: 'open', from: 3,  to: 15 },
-		{ channel: 'character', value: 1,      from: 5,  to: 10 },
+		{ channel: 'character', value: 0,      from: 5,  to: 10 },
 		{ channel: 'filter', value: 4,      from: 8,  to: 13 },
 		{ channel: 'scheme', value: 'dark', from: 11, to: 15 }
 	];

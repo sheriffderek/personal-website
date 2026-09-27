@@ -423,9 +423,9 @@
 		   on <html>" (the :root block IS that look). Usually values[0].
 		   defaultIdx is the STARTING POSITION - where a visitor with no saved
 		   choice lands, and the one value that needs no storage key.
-		   Every slider starts at the LEFT, so the starting value is listed
-		   first - which is why mood's bare value (expressive) is not its
-		   first stop for now. */
+		   Neither has to be the first stop: the slider ORDER tells the story
+		   and the default is its own call (Derek, 2026-09-27), so Product
+		   starts second and Quiet starts last. */
 		var bareValue = cfg.bareValue || cfg.values[0];
 		var defaultIdx = cfg.defaultIdx || 0;
 
@@ -529,17 +529,23 @@
 	}
 
 	/* Keep these lists matched to the FOUC script in includes/header.php and
-	   the sliders' max in includes/settings/{character,mood}-switcher.php.
-	   Index 0 is the default (Product = :root, no attribute written). */
-	var CHARACTERS      = ['product', 'marketing', 'interface', 'editorial', 'terminal'];
-	var CHARACTER_NAMES = ['Product', 'Marketing', 'Interface', 'Editorial', 'Terminal'];
-	var MOODS           = ['quiet', 'expressive', 'technical'];
-	var MOOD_NAMES      = ['Quiet', 'Expressive', 'Technical'];
+	   the sliders' max and starting value in
+	   includes/settings/{character,mood}-switcher.php.
+	   The ORDER is the story (Derek, 2026-09-27): characters run the
+	   surfaces of one company, front door first (Marketing, then Product one
+	   level in, the app, the blog, the developer surface); moods run loud to
+	   calm. Where a visitor STARTS is separate - Product (the :root look, no
+	   attribute written) and DEFAULT_MOOD below. */
+	var CHARACTERS      = ['marketing', 'product', 'interface', 'editorial', 'terminal'];
+	var CHARACTER_NAMES = ['Marketing', 'Product', 'Interface', 'Editorial', 'Terminal'];
+	var DEFAULT_CHARACTER_IDX = CHARACTERS.indexOf('product');
+	var MOODS           = ['expressive', 'technical', 'quiet'];
+	var MOOD_NAMES      = ['Expressive', 'Technical', 'Quiet'];
 
 	/* The starting mood - keep matched with DEFAULT_MOOD in includes/config.php
-	   (the why lives there). It is listed FIRST in MOODS so the thumb starts
-	   at the left like every other slider. Expressive is still the bare /
-	   no-attribute value (bareValue below). */
+	   (the why lives there). Quiet starts the visitor but sits LAST in the
+	   order, so the thumb starts at the right end. Expressive is still the
+	   bare / no-attribute value (bareValue below). */
 	var DEFAULT_MOOD     = 'quiet';
 	var DEFAULT_MOOD_IDX = MOODS.indexOf(DEFAULT_MOOD);
 
@@ -548,7 +554,9 @@
 		attr: 'data-brand-character',
 		storageKey: 'character-preference',
 		values: CHARACTERS,
-		names: CHARACTER_NAMES
+		names: CHARACTER_NAMES,
+		bareValue: 'product',
+		defaultIdx: DEFAULT_CHARACTER_IDX
 	});
 
 	var applyMood = sliderSwitcher({
@@ -1489,8 +1497,8 @@
 		try { savedMood = localStorage.getItem('mood-preference'); } catch (error) {}
 		try { savedFilter = localStorage.getItem('filter-preference'); } catch (error) {}
 
-		var characterIdx = savedCharacter ? CHARACTERS.indexOf(savedCharacter) : 0;
-		if (characterIdx < 0) characterIdx = 0;
+		var characterIdx = savedCharacter ? CHARACTERS.indexOf(savedCharacter) : DEFAULT_CHARACTER_IDX;
+		if (characterIdx < 0) characterIdx = DEFAULT_CHARACTER_IDX;
 		applyCharacter(characterIdx, { persist: false });
 
 		var moodIdx = savedMood ? MOODS.indexOf(savedMood) : DEFAULT_MOOD_IDX;
