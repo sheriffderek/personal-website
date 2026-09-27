@@ -650,6 +650,7 @@
 		--loud-voice-line-height: 1.2;
 		--data-voice-font-size: calc(var(--step-0) * 0.85);
 		--stamp-voice-letter-spacing: 0.08em;
+		--stamp-voice-text-transform: uppercase;
 
 		/* Color - the Expressive mood, light scheme (settings/moods.css). */
 		--fill-primary: var(--color-olive-50);
