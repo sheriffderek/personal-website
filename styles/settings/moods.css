@@ -173,4 +173,9 @@
 	--selection-fill: var(--color-stone-300);
 	--selection-ink: var(--color-stone-900);
 
+	/* Skill tags go gray: the one hint is spent on the posters' focal
+	   mark, so a row of accent-tinted chips would be a second voice
+	   (Derek, 2026-09-26: in Quiet the tags are "a color" problem). */
+	--tag-fill: var(--fill-secondary);
+
 }
