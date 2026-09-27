@@ -8,18 +8,33 @@
    gave "where color lands" to character; that was wrong under the settled
    model.)
 
+   THE CHARACTERS ARE THE SURFACES OF ONE COMPANY (Derek, 2026-09-26) -
+   one design system carrying every place a company shows up. Stripe is the
+   worked example: its homepage, its product pages, its Dashboard, its blog,
+   its CLI. The one surface deliberately left out: the ugly internal tool (a
+   factory screen with a density switch) - real, but past what the pitch
+   needs.
+
    Five characters (Editorial + Terminal added 2026-08-10):
-     Product     - the DEFAULT. :root (base.css) IS Product: Derek's own personal
-                   lane, which reads as the Stripe register too - friendly
-                   Quicksand/Spline, soft. No block here; absent attribute = it.
-     Marketing   - the brochure lane (GoFundMe): big display type, soft corners,
-                   a dramatic scale so headings tower.
-     Interface   - the Claude/OpenAI dashboard lane: one neutral workhorse family,
-                   tight near-uniform scale, small corners - calm, dense, UI.
-     Editorial   - the magazine lane: a flowery display serif over a readable
-                   serif, a dramatic scale, sharp print corners.
-     Terminal    - the console lane: everything monospace at ONE size (flat
-                   scale) - hierarchy comes from weight only. The posters swap
+     Marketing   - the FRONT DOOR, the landing page (GoFundMe; stripe.com's
+                   homepage): big display type, soft corners, a dramatic
+                   scale so headings tower.
+     Product     - the pages ONE LEVEL IN, explaining one thing (a Stripe
+                   sub-page: /billing, /connect) - friendly Quicksand/Spline,
+                   soft. Its chrome is a marketing site's nav, not an app's.
+                   :root (base.css) IS Product - no block here; absent
+                   attribute = it. It's the default character today, but the
+                   default look is a separate call (whichever combo is the
+                   safest good starter, notes/walk-notes.md).
+     Interface   - the APP you log into (the Claude/OpenAI dashboard; the
+                   Stripe Dashboard): one neutral workhorse family, tight
+                   near-uniform scale, small corners - calm, dense, UI.
+     Editorial   - the BLOG / publication (a magazine; Stripe Press): a
+                   flowery display serif over a readable serif, a dramatic
+                   scale, sharp print corners.
+     Terminal    - the DEVELOPER surface (a console; the Stripe CLI):
+                   everything monospace at ONE size (flat scale) - hierarchy
+                   comes from weight only. The posters swap
                    to ascii art under this character (milestone.css toggles,
                    includes/posters/poster-ascii.php is the art).
    (Personal folded into Product; Documentation dropped. Matrix in notes/theme-model.md.)

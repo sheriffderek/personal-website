@@ -51,10 +51,18 @@
 
 ## What each character EVOKES (Derek, 2026-08-25 - the measuring stick)
 
-- **Product** - approachable competence... but Derek: "a little confusing."
-  OPEN QUESTION: it's three things at once (site default / personal lane /
-  product register) and needs one identity. The rename-to-Personal question
-  lives here.
+- **Product** - the pages one level in: a company's marketing site past the
+  front door, explaining one thing (Derek, 2026-09-26: "like a sub page in
+  Stripe"). Settles the old "a little confusing / three things at once"
+  question: the characters are the surfaces of one company - the mapping
+  lives in the header of styles/settings/characters.css. So Product's chrome
+  is a marketing site's nav, and app chrome belongs to Interface.
+  The DEFAULT look is a separate call (Derek, 2026-09-26): whichever combo
+  reads as the safest good starter becomes the default - Product is not the
+  default by definition. (The default character is structural today -
+  :root in settings/base.css IS Product - so a different default character
+  would need its own knob, like DEFAULT_MOOD.) The rename question is parked
+  here; with the surface framing the name may simply stand.
 - **Marketing** - warm confident INVITATION: bigger display fonts, a
   landing-page / brochure feel. "We're successful and you're welcome."
   PARKED IDEA (2026-08-25): marketing brands often give their CARDS their

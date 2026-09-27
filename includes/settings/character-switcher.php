@@ -1,8 +1,7 @@
 <?php /* Character - the structural axis (type pair, corners, scale rhythm).
-         Five lanes of one person's work: Product (default - the personal /
-         Stripe-ish lane), Marketing (the GoFundMe brochure lane), Interface
-         (the Claude/OpenAI dashboard lane), Editorial (the magazine lane),
-         Terminal (the console lane). Slider index -> slug lives in
+         Five surfaces of one company (the mapping lives in the header of
+         styles/settings/characters.css): Product, Marketing, Interface,
+         Editorial, Terminal. Slider index -> slug lives in
          scripts/settings-panel.js (CHARACTERS); keep max in sync with it. */ ?>
 <div class='character-switcher' role='group' aria-labelledby='character-switcher-label<?= $id_suffix ?? '' ?>'>
 	<p class='app-data-voice' id='character-switcher-label<?= $id_suffix ?? '' ?>'>Character: <span data-character-name>Product</span></p>
