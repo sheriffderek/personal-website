@@ -112,7 +112,7 @@ flavor-free spending briefs; the flavor line above them supplies the hues.
 ### Expressive x House
 *Aim: YOUR rainbow ("hey Figma - I'm fun"): white lifted cards, per-card link colors, wild accent set; dark = colored ink streams per card on the black room*
 - [x] Product: Figma - playful canvas; accents on chips/posters, never on body type. Wrong when: page ground takes pigment or headings go colorful | VERDICT: type approved. 08-25: dark room approved ('dark colors are fun'); LIGHT poster/graphics colors still uninspiring - SAVED FOR LAST, the closing polish item
-- [x] Marketing: GoFundMe bands - full-bleed sections at full voice, display type may wear pigment. Wrong when: bands go timid or all land one hue | VERDICT: approved - structure makes its point; pill + band architecture open
+- [x] Marketing: GoFundMe bands - full-bleed sections at full voice, display type may wear pigment. Wrong when: bands go timid or all land one hue | VERDICT: approved - structure makes its point; pill + band architecture open | 09-27 (light + dark): on the right track, a way to go - it should look like Figma, with well-chosen colors (the saved-for-last Expressive color pass)
 - [ ] Interface: Anthropic - warm humane chrome, gentle washes on feature surfaces. Wrong when: chrome takes pigment or an accent hits alarm level
 - [ ] Editorial: WIRED - pigment as the headline act at display scale. Wrong when: color retreats to decoration
 - [x] Terminal: the colored-streams console (dark is home); readouts each their own hue | VERDICT 08-25: "this one makes sense" - colored-readout model confirmed (Option 1); panel-variants keep their panel under terminal (the ghost-text fix)
