@@ -120,7 +120,7 @@ flavor-free spending briefs; the flavor line above them supplies the hues.
 ### Expressive x Earth
 *Aim: the rainbow anchored in greens/browns: amber secondary fills, green accent*
 - [ ] Product: Figma - playful canvas; accents on chips/posters, never on body type. Wrong when: page ground takes pigment or headings go colorful
-- [ ] Marketing: GoFundMe bands - full-bleed sections at full voice, display type may wear pigment. Wrong when: bands go timid or all land one hue
+- [x] Marketing: GoFundMe bands - full-bleed sections at full voice, display type may wear pigment. Wrong when: bands go timid or all land one hue | VERDICT 09-27: good enough for now, light and dark (the brown date pill, roundy chrome) - come back and dial it in
 - [ ] Interface: Anthropic - warm humane chrome, gentle washes on feature surfaces. Wrong when: chrome takes pigment or an accent hits alarm level
 - [ ] Editorial: WIRED - pigment as the headline act at display scale. Wrong when: color retreats to decoration
 - [x] Terminal: the colored-streams console (dark is home); readouts each their own hue | VERDICT 08-25: "this one makes sense" - colored-readout model confirmed (Option 1); panel-variants keep their panel under terminal (the ghost-text fix)
