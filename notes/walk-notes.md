@@ -2,6 +2,11 @@
 
 ## NEXT SESSION - start here ("let's work on the themes")
 
+0. **Parked, not a problem (Derek, 2026-09-27): what House means.** House
+   denotes something personal - a little splash of Derek's own color - and
+   that's worth coming back to. As it stands there's not much a visitor
+   could complain about, so it waits.
+
 1. **Chrome overlays (decided 2026-08-25, unbuilt).** Each theme DECIDES if
    it dresses the chrome - chosen, never derived. Neutral baseline stays
    default; an opting theme adds one block repainting the --app-* slots.
