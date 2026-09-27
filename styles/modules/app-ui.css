@@ -373,6 +373,41 @@
 	--range-track: light-dark(var(--color-stone-200), var(--color-neutral-800));
 }
 
+/* INTERFACE x EXPRESSIVE - Claude (Derek, 2026-09-26: "claude stuff should
+   be these cream colors - maybe slightly exaggerated if they are so subtle
+   they don't prove the point"). The walk sheet's Anthropic cell: the same
+   Interface grammar in Claude's warm cream, a touch warmer than the real
+   app so it reads as cream and not as off-white; dark is Claude's warm
+   brown-black, never cold gray (scheme continuity). Neutral surfaces only -
+   the cell's wrong-when is the chrome taking pigment. Expressive is the
+   absent mood attribute; Sweet keeps Slack. Named in oklch - fidelity is
+   the point. */
+:is(html[data-brand-character='interface'], html[data-family='interface']):not([data-brand-mood], [data-flavor='sweet']) [data-ui='app'] {
+	--claude-card: light-dark(oklch(97.8% 0.011 85), oklch(24.5% 0.004 75));
+	--claude-sidebar: light-dark(oklch(95% 0.017 85), oklch(21.5% 0.004 75));
+	--claude-row: light-dark(oklch(92% 0.02 82), oklch(30% 0.005 75));
+	--claude-row-press: light-dark(oklch(89% 0.022 80), oklch(34% 0.006 75));
+	--claude-hairline: light-dark(oklch(88% 0.02 80), oklch(33% 0.006 75));
+	--claude-ink: light-dark(oklch(24% 0.012 60), oklch(96% 0.008 85));
+
+	--app-fill: var(--claude-card);
+	--app-ink: var(--claude-ink);
+	--app-stroke: var(--claude-hairline);
+	--app-shadow:
+		0 0 0 3px var(--claude-sidebar),
+		0 0 0 4px var(--claude-hairline);
+	--app-pill-group-fill: var(--claude-sidebar);
+	--app-pill-hover-fill: var(--claude-row);
+	--app-pill-checked-fill: var(--claude-card);
+	--app-pill-checked-stroke: var(--claude-hairline);
+	--app-menu-row-hover-fill: var(--claude-row);
+	--app-menu-row-press-fill: var(--claude-row-press);
+}
+
+:is(html[data-brand-character='interface'], html[data-family='interface']):not([data-brand-mood], [data-flavor='sweet']) .plain-range:not(.is-grabbed) {
+	--range-track: light-dark(oklch(90% 0.02 82), oklch(32% 0.005 75));
+}
+
 /* INTERFACE x SWEET - Slack (Derek, 2026-09-25): the Sweet flavor carries
    Slack's aubergine into the Interface chrome. Dark is the aubergine
    sidebar - deep purple surfaces, white text and knobs; light is a purple
