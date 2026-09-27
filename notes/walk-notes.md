@@ -56,6 +56,8 @@
 
 ## What each character EVOKES (Derek, 2026-08-25 - the measuring stick)
 
+**Naming, open (Derek, 2026-09-27): "Character" is increasingly "Platform."** Since the characters became the surfaces of one company (front door, pages one level in, the app, the blog, the developer surface) and started carrying the chrome's grammar (Interface = app chrome, Marketing = roundy, Terminal = TUI), the axis names *where you are* more than *a personality*. A note, not a rename - "Character" is wired through the attribute (`data-brand-character`), the storage key, the panel label, and the docs, so any rename is its own deliberate slice.
+
 - **Product** - the pages one level in: a company's marketing site past the
   front door, explaining one thing (Derek, 2026-09-26: "like a sub page in
   Stripe"). Settles the old "a little confusing / three things at once"
