@@ -8,27 +8,39 @@
    overrides everything." Follows the same MOOD CONTRACT slot order so it diffs
    cleanly against the moods.
 
-   Two takes on one red theme via light-dark():
-     light = the iPhone red-only filter look - the white page becomes FULL-ON
-             red (all the way, not a scale stop), ink near-black;
-     dark  = terminator view - a near-black room where the type glows red out
-             of the dark.
+   ONE take, dark in both schemes (Derek, 2026-09-26): terminator view - a
+   near-black room where the type glows red out of the dark. Red light is a
+   night mode (the iPhone red filter is a lights-off tool), and every light
+   take tried read as glare or mud: full red is the most contrast red-only
+   allows but glares; a dimmer red ground sinks the black text. So red light
+   forces the dark scheme, and the scheme row keeps working underneath -
+   the visitor's choice is saved and shows the moment red light goes off.
+   That's the phone's own behavior too: the iPhone filter overrides
+   everything under it until it's switched off.
+   Options kept in mind, if this is ever reopened: the best light try was
+   a dimmed room (ground about rgb(176 0 0), black ink, full-red links -
+   the filter plus Reduce White Point); and the scheme row could fade to
+   disabled while red light is on, instead of staying live underneath.
    ========================================================================== */
 
 [data-red-light] {
-	--fill-primary: light-dark(#fd2222, oklch(16% 0.05 26));
-	--fill-secondary: light-dark(#d40003, oklch(21% 0.07 26));
-	--fill-auxiliary: light-dark(#ff3236, var(--color-red-950));
+	/* Beats the scheme layer (settings.css layer order), so every
+	   light-dark() under red light - the chrome's included - resolves dark. */
+	color-scheme: dark;
 
-	--ink-primary: light-dark(oklch(16% 0.05 26), var(--color-red-300));
-	--ink-secondary: light-dark(var(--color-red-950), var(--color-red-400));
-	--ink-auxiliary: light-dark(var(--color-red-900), var(--color-red-500));
+	--fill-primary: oklch(16% 0.05 26);
+	--fill-secondary: oklch(21% 0.07 26);
+	--fill-auxiliary: var(--color-red-950);
 
-	--stroke-primary: light-dark(var(--color-red-800), var(--color-red-800));
-	--stroke-secondary: light-dark(var(--color-red-700), var(--color-red-900));
-	--stroke-auxiliary: light-dark(var(--color-red-700), var(--color-red-950));
+	--ink-primary: var(--color-red-300);
+	--ink-secondary: var(--color-red-400);
+	--ink-auxiliary: var(--color-red-500);
 
-	--accent: light-dark(var(--color-red-950), var(--color-red-500));
+	--stroke-primary: var(--color-red-800);
+	--stroke-secondary: var(--color-red-900);
+	--stroke-auxiliary: var(--color-red-950);
+
+	--accent: var(--color-red-500);
 	--scrim: rgb(0 0 0 / 0.6);
 
 	/* The media wash (mechanism in milestone.css; the journal, case-study
@@ -37,11 +49,11 @@
 	   (Was luminosity over #ff0004 until 2026-09-21: that forced every
 	   pixel to full-saturation red and read as a hot mess on a Vimeo
 	   player's UI. Multiply keeps the image's own contrast.) The gel is
-	   the room's red in light; a coral in dark so the image glows out of
-	   the near-black room instead of sinking into it. Carousel dots'
+	   a coral, so the image glows out of the near-black room instead of
+	   sinking into it. Carousel dots'
 	   difference ink goes red so the inversion stays in-theme. */
 	--media-blend: multiply;
-	--media-blend-fill: light-dark(var(--fill-primary), var(--color-red-400));
+	--media-blend-fill: var(--color-red-400);
 	--dot-ink: #ff0004;
 
 	/* Selection restates the inversion recipe (else the default highlighter

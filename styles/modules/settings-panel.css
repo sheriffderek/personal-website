@@ -518,12 +518,12 @@ html[data-take='ghost'] .site-tray,
    red-light rule could never override these slots; same-file + higher
    specificity is the one working door. */
 [data-red-light] [data-ui="app"] {
-	--app-fill: light-dark(#d40003, oklch(21% 0.07 26));
-	--app-ink: light-dark(oklch(16% 0.05 26), var(--color-red-300));
-	--app-ink-secondary: light-dark(var(--color-red-950), var(--color-red-400));
-	--app-stroke: light-dark(var(--color-red-800), var(--color-red-800));
-	--app-stroke-secondary: light-dark(var(--color-red-700), var(--color-red-900));
-	--app-accent: light-dark(oklch(16% 0.05 26), var(--color-red-500));
+	--app-fill: oklch(21% 0.07 26);
+	--app-ink: var(--color-red-300);
+	--app-ink-secondary: var(--color-red-400);
+	--app-stroke: var(--color-red-800);
+	--app-stroke-secondary: var(--color-red-900);
+	--app-accent: var(--color-red-500);
 	--app-shadow: 0 4px 12px rgb(0 0 0 / 0.35);
 }
 
