@@ -81,6 +81,25 @@ html:not([data-brand-mood]):not([data-flavor])[data-brand-character="marketing"]
 	--year-ink: light-dark(var(--color-stone-900), var(--color-yellow-100));
 }
 
+/* The year tag under Marketing's other moods (Derek, 2026-09-26/27). The
+   character states the pill's SHAPE for every mood; until a mood answered
+   with a fill, Technical and Quiet showed its padding with nothing in it,
+   which pushed the date off the title's edge. Each cell now answers:
+     technical -> a SQUARE tag in the flavor family's tint (the accent
+                  mixed into the paper, so every flavor tints its own);
+     quiet     -> no tag at all: no fill, no padding - a flush stamp on
+                  the title's edge. */
+html[data-brand-mood="technical"][data-brand-character="marketing"] {
+	--year-corners: 0;
+	--year-fill: color-mix(in oklab, var(--accent), var(--fill-primary) 85%);
+	--year-ink: var(--ink-primary);
+}
+
+html[data-brand-mood="quiet"][data-brand-character="marketing"] {
+	--year-padding: 0;
+	--year-fill: transparent;
+}
+
 /* ----------------------------------------------------------------------------
    MOOD TAKES (rewritten 2026-08-23 under the strict law: character has no
    colors). Color varies by MOOD (and flavor) only - every character shows
