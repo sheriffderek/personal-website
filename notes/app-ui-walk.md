@@ -15,6 +15,7 @@
 - The live default is unchanged for visitors: Ring triggers, Straddle placement - except the deliberate baseline pass on the settings panel (one left edge, 8px label-to-control, 24px rows, equal and aligned option widths, 12px option text), the menu's row box, and the menu icons (Phosphor regular: HouseLine, Compass, FileText, Alarm, Notebook, At).
 - Interface is the first family carried down the whole panel (Claude Code light, Linear dark, flat ring halved to 3px, soft track under options, hover/press ladders), previewable, NOT wired to the Interface character yet.
 - Derek's verdict: "a big difference in how pro it looks."
+- The default chrome is approved as it stands, light AND dark (Derek, 2026-09-26: "pretty happy with both of these - for the record"): Product x Quiet x House - square corners, outlined option boxes with the chosen one stroked, haloed knobs (white in dark), plain tracks, flat. It names no product (it's the neutral baseline, not a family), so any recipe we give Product later has to beat this, not just pass the recognition test.
 
 ## Queue (Derek decides order)
 
