@@ -10,6 +10,19 @@
 - **The playground** - `/design-system/app-ui` (`templates/pages/app-ui.php`): Families row, Menu row, Today column, Context grid (ruled-out pairings labeled), try links. `/design-system` lists the try links first, for phones.
 - **The live preview switches** - `index.php` near the top: `?try=<take>-<placement>` and `?family=<name>`, one page view, nothing saved. Best current look: `/?try=ghost-float&family=interface` (set Flavor to Sweet + Dark for Slack).
 
+## NEXT SESSION - start here (left 2026-09-26)
+
+The model that came clear: the CHARACTER does most of the chrome's work (its grammar - Interface = Ghost + Float + flat ring, Marketing = roundy + pill options, Terminal = TUI links and slug tags), the MOOD picks the palette and how loud things get, the FLAVOR the hue (and now and then a named product - Sweet makes Interface into Slack). Built on the real panel: Interface wired to its character, Claude cream (Interface x Expressive), Marketing roundy. Decisions waiting, in the order they came up:
+
+1. **The year tag** (milestone dates under Marketing) - its shape comes from the character, its fill from the mood, and under Technical/Quiet only the shape answers, so an invisible pill's padding pushes the date off the title's edge (a live bug). Proposed: the pill HANGS (padding reaches outward like `<mark>`, so the date never moves), filled under Expressive (exists) and Technical (a family tint), flush under Quiet.
+2. **Scrim** - menus and popovers don't dim, modals do; proposed none by default with dim kept as a slot (the open "dim over the page they're watching" call).
+3. **The pill mark as a slot** - radio / quiet radio / bracket / sunken / none; Interface = quiet radio first (the loudest cause of "bulbous").
+4. **tmux panes for Terminal's grid view** - list = one long session, grid = tiled panes with the title in the top border.
+5. **The shared-size middle ground** - one table of each reference product's sizes, then pick each frozen value inside everyone's range; the mono labels are the real outlier (every reference but Terminal is sans).
+6. **Recipes as data** - products as named trick recipes (edge rim / hairline / outline / none, shape, trigger, mark, row, lift) so families fall out and coverage is a table; start as a plain table here for ~8 products before any config.
+7. **The theme sheet** - every combo rendered on one page (built in scratch 2026-09-26 and used once); promote to `bin/theme-sheet.mjs` if it earns its place.
+8. **"Now interviewing" card doors** - resume + booking links on the card face; Derek is writing the words; mechanics = the card names its doors and the template renders them from config (CALL_URL stays in one place).
+
 ## Where we are (2026-09-25)
 
 - The live default is unchanged for visitors: Ring triggers, Straddle placement - except the deliberate baseline pass on the settings panel (one left edge, 8px label-to-control, 24px rows, equal and aligned option widths, 12px option text), the menu's row box, and the menu icons (Phosphor regular: HouseLine, Compass, FileText, Alarm, Notebook, At).
