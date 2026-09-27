@@ -5,8 +5,8 @@
 # automatically via the PostToolUse hook in .claude/settings.json whenever
 # a file the resume pages are built from or load is edited; also runnable
 # by hand (run it before sending anything). Requires MAMP serving
-# derek.local:8888, pdfinfo/pdffonts/pdftotext/pdftoppm (poppler), PHP, and
-# Node 22+. Prints hook-JSON so the result surfaces in-session.
+# derek.local:8888, pdfinfo/pdffonts/pdftotext/pdftoppm (poppler), exiftool,
+# PHP, and Node 22+. Prints hook-JSON so the result surfaces in-session.
 #
 # THE RULES (Derek, 2026-09-24: "it should be cut and dry"):
 #   1. Any failed check publishes NOTHING - the last good kit survives.
@@ -164,17 +164,23 @@ pixels() {
 	pdftoppm -r 100 -singlefile "$1" "$OUT/raster" 2>/dev/null && md5 -q "$OUT/raster.ppm"
 }
 
+# A kit PDF with no build label is out of date, whatever its pixels say -
+# the label is part of what gets published.
+labeled() {
+	[ -n "$(exiftool -s3 -Subject "$1" 2>/dev/null)" ]
+}
+
 CHANGED=""
 
 if [ -z "$FAILS" ]; then
 	for lane in $RESUME_LANES; do
 		kit_pdf="$KIT/$lane/$(role_slug "$lane")-resume-derek-wood.pdf"
-		[ -f "$kit_pdf" ] && [ "$(pixels "$OUT/$lane.pdf")" = "$(pixels "$kit_pdf")" ] || CHANGED="$CHANGED $lane"
+		[ -f "$kit_pdf" ] && labeled "$kit_pdf" && [ "$(pixels "$OUT/$lane.pdf")" = "$(pixels "$kit_pdf")" ] || CHANGED="$CHANGED $lane"
 	done
 
 	for lane in $LETTER_LANES; do
 		kit_letter="$KIT/$lane/$(role_slug "$lane")-letter-derek-wood"
-		[ -f "$kit_letter.pdf" ] && [ "$(pixels "$OUT/letter-$lane.pdf")" = "$(pixels "$kit_letter.pdf")" ] || CHANGED="$CHANGED letter-$(letter_short "$lane")"
+		[ -f "$kit_letter.pdf" ] && labeled "$kit_letter.pdf" && [ "$(pixels "$OUT/letter-$lane.pdf")" = "$(pixels "$kit_letter.pdf")" ] || CHANGED="$CHANGED letter-$(letter_short "$lane")"
 		cmp -s "$OUT/letter-$lane.txt" "$kit_letter.txt" || CHANGED="$CHANGED letter-$(letter_short "$lane")-txt"
 	done
 fi
@@ -184,6 +190,23 @@ KIT_SYSTEM_HASH=$(awk '/^system:/{print $2}' "$KIT/version.txt" 2>/dev/null)
 
 if [ -z "$FAILS" ] && [ -n "$CHANGED" ] && [ "$SYSTEM_HASH" = "$KIT_SYSTEM_HASH" ] && [ -z "$ACCEPT" ]; then
 	fail "the sheets changed ($CHANGED ) but no resume-system file did - something outside the system reached the PDF. Look at what changed; for a deliberate outside change, rerun bin/resume-fit-check.sh --accept"
+fi
+
+# The build label - which commit of this site made the sheet. It counts
+# only the resume-system files as "uncommitted": an unrelated working
+# edit elsewhere in the repo doesn't make the sheet any less this build.
+BUILD="$(cd "$ROOT" && git rev-parse --short HEAD)$(cd "$ROOT" && [ -n "$(git status --porcelain -- $SYSTEM_FILES)" ] && echo '+uncommitted')"
+
+# Every published PDF carries the label inside it (the Subject field), so
+# a file that has left the kit can still say which build it is. Hidden
+# metadata on purpose: nothing on the sheet, nothing in the text layer,
+# and the title stays clean. Read it back: exiftool -Subject <file>, or
+# Preview > Tools > Show Inspector. A sheet that can't be labeled doesn't
+# ship (rule 1).
+if [ -z "$FAILS" ] && [ -n "$CHANGED" ]; then
+	for pdf in "$OUT"/*.pdf; do
+		exiftool -q -overwrite_original -Subject="derekthomaswood.com build $BUILD" "$pdf" >/dev/null 2>&1 || fail "could not label $(basename "$pdf") with its build (is exiftool installed?)"
+	done
 fi
 
 if [ -z "$FAILS" ] && [ -n "$CHANGED" ]; then
@@ -210,7 +233,7 @@ if [ -z "$FAILS" ] && [ -n "$CHANGED" ]; then
 		echo "resume:    $(md5 -q "$ROOT/content/resume.json" | cut -c1-8)"
 		echo "letters:   $(md5 -q "$ROOT/content/letters.json" | cut -c1-8)"
 		echo "system:    $SYSTEM_HASH"
-		echo "code:      $(cd "$ROOT" && git rev-parse --short HEAD)$(cd "$ROOT" && [ -n "$(git status --porcelain)" ] && echo '+uncommitted')"
+		echo "code:      $BUILD"
 		echo ""
 		echo "files (md5, first 8) - staleness is mechanically checkable:"
 		(cd "$KIT" && find . -name '*derek-wood*' -type f | sort | while read -r f; do
