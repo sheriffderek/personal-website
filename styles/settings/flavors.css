@@ -344,8 +344,10 @@ html[data-flavor="earth"]:not([data-brand-mood]) {
    discipline run on the green family. --- */
 html[data-flavor="earth"][data-brand-mood="technical"] {
 	/* Dark ground hand-picked by Derek (2026-08-25), same pass as sweet's
-	   #2b000c: a deep moss-black instead of the scale's green-950. */
-	--fill-primary: light-dark(white, #243028);
+	   #2b000c: a deep moss-black instead of the scale's green-950. Taken a
+	   step darker 2026-09-27 (was #243028 - "a darker background will
+	   help"): the greens need a deeper ground to glow against. */
+	--fill-primary: light-dark(white, #141b17);
 	--fill-secondary: light-dark(var(--color-green-100), var(--color-green-900));
 	--fill-auxiliary: light-dark(var(--color-green-200), var(--color-green-800));
 
