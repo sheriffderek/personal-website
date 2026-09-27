@@ -115,7 +115,7 @@ flavor-free spending briefs; the flavor line above them supplies the hues.
 - [x] Marketing: GoFundMe bands - full-bleed sections at full voice, display type may wear pigment. Wrong when: bands go timid or all land one hue | VERDICT: approved - structure makes its point; pill + band architecture open | 09-27 (light + dark): on the right track, a way to go - it should look like Figma, with well-chosen colors (the saved-for-last Expressive color pass)
 - [ ] Interface: Anthropic - warm humane chrome, gentle washes on feature surfaces. Wrong when: chrome takes pigment or an accent hits alarm level
 - [ ] Editorial: WIRED - pigment as the headline act at display scale. Wrong when: color retreats to decoration
-- [x] Terminal: the colored-streams console (dark is home); readouts each their own hue | VERDICT 08-25: "this one makes sense" - colored-readout model confirmed (Option 1); panel-variants keep their panel under terminal (the ghost-text fix)
+- [x] Terminal: the colored-streams console (dark is home); readouts each their own hue | VERDICT 08-25: "this one makes sense" - colored-readout model confirmed (Option 1); panel-variants keep their panel under terminal (the ghost-text fix) | 09-27 LIGHT: "not very cool or inspired" - dark is home; the light take needs its own idea
 
 ### Expressive x Earth
 *Aim: the rainbow anchored in greens/browns: amber secondary fills, green accent*
@@ -183,7 +183,7 @@ flavor-free spending briefs; the flavor line above them supplies the hues.
 - [x] Marketing: Lemonaid whisper-brochure - line art, white, one hint. Wrong when: a full-bleed pigment band appears | VERDICT 09-26: approved with its chrome ("also pretty great"), roundy since
 - [x] Interface: OpenAI/Linear - near-monochrome; accent only marks the active thing. Wrong when: two things marked at once | VERDICT: approved as-is, light AND dark (08-25)
 - [ ] Editorial: Kinfolk - newsprint + one deliberate mark per view. Wrong when: a second mark shows up
-- [ ] Terminal: Plan 9/acme - pale paper, barely-there marks. Wrong when (all Terminal): hierarchy arrives by size instead of weight
+- [x] Terminal: Plan 9/acme - pale paper, barely-there marks. Wrong when (all Terminal): hierarchy arrives by size instead of weight | VERDICT 09-27: pretty good, light and dark (all four flavors)
 
 ### Quiet x Earth
 *Aim: forest-green hint on the grays*
@@ -191,7 +191,7 @@ flavor-free spending briefs; the flavor line above them supplies the hues.
 - [ ] Marketing: Lemonaid whisper-brochure - line art, white, one hint. Wrong when: a full-bleed pigment band appears
 - [ ] Interface: OpenAI/Linear - near-monochrome; accent only marks the active thing. Wrong when: two things marked at once
 - [ ] Editorial: Kinfolk - newsprint + one deliberate mark per view. Wrong when: a second mark shows up
-- [ ] Terminal: Plan 9/acme - pale paper, barely-there marks. Wrong when (all Terminal): hierarchy arrives by size instead of weight
+- [x] Terminal: Plan 9/acme - pale paper, barely-there marks. Wrong when (all Terminal): hierarchy arrives by size instead of weight | VERDICT 09-27: pretty good, light and dark (all four flavors)
 
 ### Quiet x Cool
 *Aim: sky hint on the grays*
@@ -199,7 +199,7 @@ flavor-free spending briefs; the flavor line above them supplies the hues.
 - [ ] Marketing: Lemonaid whisper-brochure - line art, white, one hint. Wrong when: a full-bleed pigment band appears
 - [ ] Interface: OpenAI/Linear - near-monochrome; accent only marks the active thing. Wrong when: two things marked at once
 - [ ] Editorial: Kinfolk - newsprint + one deliberate mark per view. Wrong when: a second mark shows up
-- [ ] Terminal: Plan 9/acme - pale paper, barely-there marks. Wrong when (all Terminal): hierarchy arrives by size instead of weight
+- [x] Terminal: Plan 9/acme - pale paper, barely-there marks. Wrong when (all Terminal): hierarchy arrives by size instead of weight | VERDICT 09-27: pretty good, light and dark (all four flavors)
 
 ### Quiet x Sweet
 *Aim: rose hint on the grays*
@@ -207,4 +207,4 @@ flavor-free spending briefs; the flavor line above them supplies the hues.
 - [ ] Marketing: Lemonaid whisper-brochure - line art, white, one hint. Wrong when: a full-bleed pigment band appears
 - [ ] Interface: OpenAI/Linear - near-monochrome; accent only marks the active thing. Wrong when: two things marked at once
 - [ ] Editorial: Kinfolk - newsprint + one deliberate mark per view. Wrong when: a second mark shows up
-- [ ] Terminal: Plan 9/acme - pale paper, barely-there marks. Wrong when (all Terminal): hierarchy arrives by size instead of weight
+- [x] Terminal: Plan 9/acme - pale paper, barely-there marks. Wrong when (all Terminal): hierarchy arrives by size instead of weight | VERDICT 09-27: pretty good, light and dark (all four flavors)
