@@ -30,7 +30,12 @@
    Claude = a little organic / wheat; editorial could go COLOR TEXT
    (the Fuzzco all-red-type careers page); Chrome and Apple do pill
    "islands" of circular controls (which the tray's trigger cluster
-   already is); Netflix = dark + red. Loose axis gravity: DOS/green ->
+   already is); Netflix = dark + red; Chrome dark (2026-09-26) = WORKING
+   GRAYS, not black - mid-gray layers where a higher surface is a LIGHTER
+   gray (dropdown lighter than toolbar, toolbar lighter than tab strip),
+   no borders, no shadows, rows as big-radius pills a step lighter on
+   hover, white text with light-gray secondary. The trick worth naming:
+   elevation by lightness. Loose axis gravity: DOS/green ->
    Terminal, Photoshop-gray/Linear -> Interface, wheat/organic ->
    a warm Quiet or Technical take, Fuzzco red-type -> Editorial,
    Netflix dark+red -> practically red-light's cousin. Vercel and
