@@ -99,7 +99,14 @@
 	<?php if (!empty($milestone['skills'])): ?>
 		<ul class='skills label-voice' role='list'>
 			<?php foreach ($milestone['skills'] as $skill): ?>
-				<li><?= skill_label($skill) ?></li>
+				<?php /* The slug rides along for the Terminal character, which shows
+					it instead of the words (milestone.css) - display:none keeps
+					whichever one isn't showing out of the reading too. */ ?>
+				<li>
+					<span class='label'><?= skill_label($skill) ?></span>
+
+					<span class='slug'><?= $skill ?></span>
+				</li>
 			<?php endforeach; ?>
 		</ul>
 	<?php endif; ?>

@@ -97,10 +97,35 @@ a.relaxed,
    vanish here, and terminals have no whisper register. The ::after glyph
    marks (rel arrows) stay; they're very terminal already. It stops at the
    chrome's wall (:not inside [data-ui='app']): the chrome is its own app
-   layer and decides its own underlines (2026-09-25). */
-[data-brand-character="terminal"] :is(p a, a.link, a.relaxed, .relaxed a):not([data-ui='app'] *) {
+   layer and decides its own underlines (2026-09-25). It stops at the
+   resume's wall too (the resume/ pages): the sheet is theme-proof, and a
+   theme rule reaching its header links failed the guard (2026-09-26).
+   And they read as selectable the way a TUI marks an item (Derek,
+   2026-09-26: "a mark/selected style"): at rest a soft highlight in the
+   link's own color, and under the mouse or the keyboard the full reverse
+   video of a selected row. The read-more summaries' .link spans join in -
+   they're this character's other door. Paint only, like <mark>: the ends
+   bleed a hair past the glyphs, so nothing reflows. */
+[data-brand-character="terminal"] :is(p a, a.link, a.relaxed, .relaxed a, .read-more .link):not([data-ui='app'] *, [data-page^='resume/'] *) {
 	color: var(--link-color);
 	text-decoration: none;
+	background-color: color-mix(in oklab, var(--link-color) 18%, transparent);
+	padding-inline: 0.15em;
+	margin-inline: -0.15em;
+	box-decoration-break: clone;
+	-webkit-box-decoration-break: clone;
+
+	&:hover,
+	&:focus-visible {
+		background-color: var(--link-color);
+		color: var(--fill-primary);
+	}
+}
+
+/* A read-more takes focus on its <summary>, not the .link inside it. */
+[data-brand-character="terminal"] .read-more:focus-visible > .link {
+	background-color: var(--link-color);
+	color: var(--fill-primary);
 }
 
 /* Link marks - the relationship each link has to this page, said by glyph

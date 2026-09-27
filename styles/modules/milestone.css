@@ -465,6 +465,10 @@
 		padding: 0;
 		list-style: none;
 
+		.slug {
+			display: none;
+		}
+
 		li {
 			padding: 0.2em 0.6em;
 			border-radius: var(--corners, 0);
@@ -630,16 +634,42 @@
 	}
 
 	/* Read more wears command dress: $-prefixed, lowercase, no underline -
-	   it reads as the next thing you could type. */
+	   it reads as the next thing you could type. The $ is the prompt, not
+	   part of the command, so it sits outside the link's highlight (setup.css)
+	   in plain ink, like the card's own "$ open" line (Derek, 2026-09-26). */
 	.read-more {
 		text-transform: lowercase;
 
+		&::before {
+			content: '$ ';
+			color: var(--ink-primary);
+		}
+
 		.link {
 			text-decoration: none;
+		}
+	}
 
-			&::before {
-				content: '$ ';
-			}
+	/* Skill tags are a line of output, not chips (Derek, 2026-09-26): the
+	   slugs themselves (product-strategy, ux-research) as colored text,
+	   space-separated the way a CLI lists values - no fill, no padding. The
+	   dashes keep multi-word tags apart without a box. Color by pointing at
+	   the page's own accent slot, never a hue. */
+	.skills {
+		gap: 0 1ch;
+
+		li {
+			padding: 0;
+			background: none;
+			color: var(--accent);
+		}
+
+		.label {
+			display: none;
+		}
+
+		.slug {
+			display: inline;
 		}
 	}
 
