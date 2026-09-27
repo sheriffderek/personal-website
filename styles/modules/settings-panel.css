@@ -514,6 +514,26 @@ html[data-take='ghost'] .site-tray,
 }
 
 
+/* THE TECHNICAL CHROME TAKE (Derek, 2026-09-27: "the chrome/ui needs to
+   also be themed"). Technical's rooms are tinted - moss-black under Earth,
+   navy under Cool, wine under Sweet - and the chrome's neutral grays sat on
+   them unrelated (the "green-room complaint", walk-notes). So Technical
+   opts in, the way red light does: the chrome's slots point at the ROOM'S
+   own tokens - a panel one step lifted from the ground, the room's
+   hairlines and inks, its accent for focus - so every Technical flavor
+   dresses its own chrome without naming a hue. A deliberate take through
+   the open bank, not a passive wash-in: only this mood does it. The
+   Interface family keeps its own palette (its rule is more specific). */
+html[data-brand-mood="technical"] [data-ui="app"] {
+	--app-fill: color-mix(in oklab, var(--fill-primary), var(--ink-primary) 5%);
+	--app-ink: var(--ink-primary);
+	--app-ink-secondary: var(--ink-secondary);
+	--app-stroke: var(--stroke-primary);
+	--app-stroke-secondary: var(--stroke-secondary);
+	--app-accent: var(--accent);
+}
+
+
 /* THE FIRST CHROME TAKE: red light (Derek, 2026-08-25 - "the tool they're
    holding follows along"). The finale is the one theme allowed to repaint
    the chrome, and it enters through the sanctioned door only: the --app-*
