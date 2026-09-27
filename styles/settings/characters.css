@@ -94,6 +94,9 @@
 	   text, and caption. Dramatic scale so the display face gets room; sharp
 	   print corners. (Boska/Sentient are audition placeholders like every
 	   other pairing - swap freely.) */
+	/* $todo - Derek doesn't love Boska (2026-09-27): pick another FREE
+	   display serif that does the magazine job (Fontshare or another free
+	   library; the font-loading notes in CLAUDE.md say how to add one). */
 	--font-heading: "Boska", Georgia, serif;
 	--font-body: "Sentient", Georgia, serif;
 
