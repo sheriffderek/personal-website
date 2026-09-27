@@ -149,7 +149,7 @@ flavor-free spending briefs; the flavor line above them supplies the hues.
 - [ ] Marketing: same bands, monochromatic confidence. Wrong when: a neighboring hue sneaks into a band
 - [x] Interface: GitHub/Stack Overflow - color is DATA (tags, statuses). Wrong when: color appears where it encodes nothing | was navy, not loved (08-25) - fixed to neutral slate rooms; RE-JUDGE
 - [ ] Editorial: The Verge - one family used HARD, duotone-leaning. Wrong when: the family loosens
-- [ ] Terminal: the analogous console (Solarized/Nord territory)
+- [x] Terminal: the analogous console (Solarized/Nord territory) | VERDICT 09-27: pretty good, light and dark (all four flavors); what the chrome could do better here is still open
 
 ### Technical x Earth
 *Aim: climate-fintech: green family analogous, emerald accent, lime->emerald ramp; dark room #243028 (hand-picked)*
@@ -157,7 +157,7 @@ flavor-free spending briefs; the flavor line above them supplies the hues.
 - [ ] Marketing: same bands, monochromatic confidence. Wrong when: a neighboring hue sneaks into a band
 - [ ] Interface: GitHub/Stack Overflow - color is DATA (tags, statuses). Wrong when: color appears where it encodes nothing
 - [ ] Editorial: The Verge - one family used HARD, duotone-leaning. Wrong when: the family loosens
-- [ ] Terminal: the analogous console (Solarized/Nord territory)
+- [x] Terminal: the analogous console (Solarized/Nord territory) | VERDICT 09-27: pretty good, light and dark (all four flavors); what the chrome could do better here is still open
 
 ### Technical x Cool
 *Aim: THE STRIPE READ light / LINEAR dark - Cool OWNS this identity. Richened 08-25 ("miles ahead"): near-black navy room #0a102e, blurple accent full-strength both schemes, indigo->fuchsia glow ramp in dark.*
@@ -165,7 +165,7 @@ flavor-free spending briefs; the flavor line above them supplies the hues.
 - [ ] Marketing: same bands, monochromatic confidence. Wrong when: a neighboring hue sneaks into a band
 - [ ] Interface: GitHub/Stack Overflow - color is DATA (tags, statuses). Wrong when: color appears where it encodes nothing
 - [ ] Editorial: The Verge - one family used HARD, duotone-leaning. Wrong when: the family loosens
-- [ ] Terminal: the analogous console (Solarized/Nord territory)
+- [x] Terminal: the analogous console (Solarized/Nord territory) | VERDICT 09-27: pretty good, light and dark (all four flavors); what the chrome could do better here is still open
 
 ### Technical x Sweet
 *Aim: the Lemonaid read: pink family analogous, rose->fuchsia ramp; dark room #2b000c (hand-picked)*
@@ -173,7 +173,7 @@ flavor-free spending briefs; the flavor line above them supplies the hues.
 - [ ] Marketing: same bands, monochromatic confidence. Wrong when: a neighboring hue sneaks into a band
 - [ ] Interface: GitHub/Stack Overflow - color is DATA (tags, statuses). Wrong when: color appears where it encodes nothing
 - [ ] Editorial: The Verge - one family used HARD, duotone-leaning. Wrong when: the family loosens
-- [ ] Terminal: the analogous console (Solarized/Nord territory)
+- [x] Terminal: the analogous console (Solarized/Nord territory) | VERDICT 09-27: pretty good, light and dark (all four flavors); what the chrome could do better here is still open
 
 ## Quiet - color nearly absent - grays pulled toward the middle, ONE murmured hint; nothing shouts, nothing pure black/white
 
