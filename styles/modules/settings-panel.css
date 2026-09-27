@@ -190,12 +190,30 @@
 	   chrome color arrives ONLY as a deliberate take repainting these slots
 	   with clear direction - the chrome-takes plan below - never by aliasing
 	   a page token back in. */
-	--app-fill: light-dark(var(--color-neutral-50), var(--color-neutral-900));
-	--app-ink: light-dark(var(--color-neutral-900), var(--color-neutral-100));
-	--app-ink-secondary: light-dark(var(--color-neutral-600), var(--color-neutral-400));
-	--app-stroke: light-dark(var(--color-neutral-400), var(--color-neutral-600));
-	--app-stroke-secondary: light-dark(var(--color-neutral-300), var(--color-neutral-700));
-	--app-accent: light-dark(var(--color-neutral-900), var(--color-neutral-100));
+	/* THE GRAY - defined once, reused by name (Derek, 2026-09-27: "gray
+	   only just happens to work by luck - even if we use gray in some
+	   cases, that should be defined in a single place to reuse"). Gray is
+	   a CHOICE a mood makes, not what's left when nobody chooses. Who
+	   chose what (the takes live further down this file):
+	     Quiet      -> gray (Brutalist's black and white)
+	     Expressive -> gray, for now
+	     Technical  -> the room (THE TECHNICAL CHROME TAKE)
+	     Red light  -> the red room (THE FIRST CHROME TAKE)
+	   Anything that wants the chrome's gray reads these, never a palette
+	   step directly. */
+	--app-gray-fill: light-dark(var(--color-neutral-50), var(--color-neutral-900));
+	--app-gray-ink: light-dark(var(--color-neutral-900), var(--color-neutral-100));
+	--app-gray-ink-secondary: light-dark(var(--color-neutral-600), var(--color-neutral-400));
+	--app-gray-stroke: light-dark(var(--color-neutral-400), var(--color-neutral-600));
+	--app-gray-stroke-secondary: light-dark(var(--color-neutral-300), var(--color-neutral-700));
+	--app-gray-accent: light-dark(var(--color-neutral-900), var(--color-neutral-100));
+
+	--app-fill: var(--app-gray-fill);
+	--app-ink: var(--app-gray-ink);
+	--app-ink-secondary: var(--app-gray-ink-secondary);
+	--app-stroke: var(--app-gray-stroke);
+	--app-stroke-secondary: var(--app-gray-stroke-secondary);
+	--app-accent: var(--app-gray-accent);
 	--app-shadow: var(--panel-shadow, 0 4px 12px rgb(0 0 0 / 0.12));
 
 	/* CHROME TAKES - PLANNED, NOT PAINTED (Derek, 2026-08-11; do not build
