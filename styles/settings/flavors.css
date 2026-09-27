@@ -224,8 +224,11 @@ html[data-flavor="sweet"]:not([data-brand-mood]) [data-variant="night"] {
    tier-2 shape as sweet: year tag, heading, accent baseline, variant takes;
    everything unstated falls through. --- */
 html[data-flavor="earth"][data-brand-character="marketing"]:not([data-brand-mood]) {
-	--year-fill: light-dark(var(--color-olive-300), var(--color-olive-900));
-	--year-ink: light-dark(var(--color-stone-900), var(--color-olive-100));
+	/* The date pill is a light brown - earth, not gray (Derek, 2026-09-27:
+	   olive-300 read as gray). The palette has no brown, so it's amber's
+	   brown end washed into the paper; dark keeps it a deep brown. */
+	--year-fill: light-dark(color-mix(in oklab, var(--color-amber-600) 30%, var(--color-stone-300)), color-mix(in oklab, var(--color-amber-900) 70%, var(--color-stone-900)));
+	--year-ink: light-dark(var(--color-stone-900), var(--color-amber-100));
 	--milestone-heading-color: light-dark(var(--color-green-800), var(--color-olive-300));
 }
 
