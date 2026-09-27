@@ -86,11 +86,13 @@ html:not([data-brand-mood]):not([data-flavor])[data-brand-character="marketing"]
    with a fill, Technical and Quiet showed its padding with nothing in it,
    which pushed the date off the title's edge. Each cell now answers:
      technical -> a SQUARE tag in the flavor family's tint (the accent
-                  mixed into the paper, so every flavor tints its own);
+                  mixed into the paper, so every flavor tints its own),
+                  and the skill tags square with it (2026-09-27);
      quiet     -> no tag at all: no fill, no padding - a flush stamp on
                   the title's edge. */
 html[data-brand-mood="technical"][data-brand-character="marketing"] {
 	--year-corners: 0;
+	--tag-corners: 0;
 	--year-fill: color-mix(in oklab, var(--accent), var(--fill-primary) 85%);
 	--year-ink: var(--ink-primary);
 }

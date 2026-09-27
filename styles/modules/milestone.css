@@ -456,7 +456,9 @@
 	   paragraph. The tint comes from the mood's accent, so the chips repaint
 	   with the theme; the words stay full ink, so they read on any tint.
 	   --tag-fill is an optional mood slot: a mood that keeps its accent
-	   for one thing (Quiet) re-points it, moods.css. */
+	   for one thing (Quiet) re-points it, moods.css. --tag-corners lets a
+	   cell square them while the character stays round (Marketing x
+	   Technical, flavors.css). */
 	.skills {
 		display: flex;
 		flex-wrap: wrap;
@@ -471,7 +473,7 @@
 
 		li {
 			padding: 0.2em 0.6em;
-			border-radius: var(--corners, 0);
+			border-radius: var(--tag-corners, var(--corners, 0));
 			background: var(--tag-fill, color-mix(in oklab, var(--accent), var(--fill-primary) 82%));
 			color: var(--ink-primary);
 		}
