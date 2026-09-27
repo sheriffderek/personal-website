@@ -47,3 +47,62 @@ Three ways to drive the same system, all in the settings band (grid view, >= 145
 ## Viewers
 
 - [ ] **Device stage - parked, not pressing** (2026-09-19). On large screens, show the site in a phone/tablet-width stage so a desktop visitor sees the small-screen design without resizing or losing their place. Iframe ruled out; the route is container queries. Everything learned, the hazards, and the one-hour experiment to run first: `notes/device-stage-plan.md`.
+
+## Mock reviews - a joke testimonials section (Derek, 2026-09-26 - an idea)
+
+Inspired by CodeKit's "Entirely legitimate and serious opinions" reviews block: a wall of deadpan testimonial cards that are obviously jokes. First one Derek named: Claude saying something very AI about him ("Derek always has the very best ideas...") - the joke lands because the flattery is exactly the sycophancy everyone recognizes.
+
+The one line to hold: **every "reviewer" is either not a real person (Claude, a cat, a linter) or a real person who actually said it and is fine with it.** CodeKit puts made-up words in real executives' mouths, which works for a famous app's parody but not on a hiring site - a recruiter skimming could take a fabricated quote from a real, named person as real, and that's a credibility cost, not a laugh. Real quotes from real people (a student, Ivy, a former colleague) are the strongest version anyway: funny AND true. Where it would live, and whether it's a first-layer thing or behind a door, is open (the progressive-disclosure rule decides).
+
+**Lines so far (2026-09-26)** - Derek: "I care more about making the good jokes than anything else." Picks marked ★. Raw material, not final copy - his call on every word when the section gets built.
+
+Claude (the sycophant) - a bookend pair Derek likes: open the wall with the first, close it with the callback:
+- ★ **Claude**, *Enthusiastically Agreeable Assistant*: "Derek always has the very best ideas."
+- ★ **Claude**, *Enthusiastically Agreeable Assistant*: "You're absolutely right!"
+
+What makes CodeKit's set work (their full text was pasted 2026-09-26 - borrow the shape, never the lines): the reviewers talk to each other like a group chat (Tim Cook: "stop quoting my employees" / Ternus: "*My* employees"); callbacks (Siri twice, funnier the second time); the job titles are half the joke; and one card is TRUE (their trademark rejection, "Not Kidding; This Really Happened"). Open: Derek's own true card - something absurd that actually happened.
+
+The industry types (the testimonial genre itself is the joke - the title does the work):
+- ★ **Trendy Conference Guy**, *Has Not Taken the Course*: "Derek's course is really great. The way he teaches, just - wow." (Derek's)
+- ★ **Hipster Design Leader**, *Loves Fantasy Football*: "Derek is always asking questions and saying things. I'm not really sure - back to posting about design being dead and shilling for random AI startups" (Derek's)
+
+The bots (the joke is how that bot actually talks):
+- ★ **LinkedIn AI**, *Profile Writing Assistant*: "Derek Wood is an experienced professional with experience in experiences."
+- ★ **Automated Recruiter**, *Personalized Just For You*: "Hi Derek, your background in Java looks like a great fit for our Senior Java role!" (every recruiter reading it has sent one)
+- ★ **Grace Hopper**, *Rear Admiral, U.S. Navy*: "Derek's right. It's not a 'bug' if you just wrote a broken program." (Derek's line. Deliberately NO mention of the 1947 Mark II moth - the people who know the history get it instantly, and explaining it kills the joke. The deadpan true title does the work.)
+
+**The rule for real people (Derek, 2026-09-26):** we're imagining what these people would say, in good faith - the test is **would that person see it and laugh?** Their real persona, affectionately exaggerated, passes (Theo's sponsor cutoff, Prime being upset that PHP is fast). Words that would embarrass them or misrepresent them fail - and so does making them Derek's hype man ("Derek's a genius" is bragging in someone else's voice). Only the obvious fakes gush (Claude, the bots, the conference guy who never took the course) - their praise IS the joke because it's hollow.
+
+YouTube (each one in their own on-camera voice):
+- ★ **Theo**, *Has Thoughts*: "He doesn't use React?? This is actually insane. And he understands CSS margins? Nobody understands margins. Anyway, this video is sponsored by…" (Derek's riff - the React shock plus Theo's own CSS-margins confusion. If Theo really said something like the margins line on video, find the clip: a real quote is the TRUE card, and a timestamp link is the punchline.)
+- ThePrimeagen, *Reads It Out Loud So You Don't Have To* (unpicked; joke on him, per the rule): "It's plain PHP. It's actually blazingly fast. I'm upset." / "Does he use Vim? No? …I'm going to allow it."
+
+Steve Jobs (riffing on his own famous lines):
+- ★ "Derek is exactly who Apple should hire. But he cares whether you can read the button, and right now we're doing Liquid Glass." (Derek's, tightened - Liquid Glass's legibility complaints)
+- ★ "I always said design is how it works. Derek actually went and checked." (Derek's trim)
+- "He'd have been perfect at Apple. But he's intent on making things people can read." (the short Liquid Glass jab - Derek's wording)
+- ★ "I took one calligraphy class and it changed the Mac. Derek took the whole art school. Honestly, it's a little much." (Derek: Jobs would never say "it's a little much" - it's Gen Z, which is what makes it funnier)
+- "…and one more thing. He writes the CSS by hand."
+- "Derek is a true visionary. Unfortunately, he'll have to wait around until people have the higher resolution to see it." (Derek's first one)
+
+**Round 2 (2026-09-26, Derek + an outside brainstorm session)**
+
+**Format decision: quote first, always** (Derek: "objectively better in every way"). The attribution is the reveal: the reader meets the testimonial, believes it for a beat, then the name + title flips the whole thing. It's also just the right order for any testimonial - the words carry it and the name backs them after. Never lead with the person. Quotes can run long and earnest - the length is the setup. (Cards earlier in this list are written name-first as shorthand; they get flipped when this is built.)
+
+    "Derek's course is really great. The way he teaches, just - wow. I mean, you can tell he really knows this stuff. The whole thing is very thoughtful. Really great course. I've heard nothing but great things."
+    ~ Trendy Conference Guy
+    Has Not Taken The Course
+
+**The balance rule.** One "the org didn't get it" joke is great; a category of them tells recruiters "brilliant, but nobody knows what to do with him" - the wrong subtext. The recurring character is Derek asking for the thing everyone already agreed they wanted, while perfectly recognizable workplace behavior happens around him. Spread the targets: sometimes the organization, sometimes AI, sometimes the industry - and sometimes Derek is absolutely the problem.
+
+Derek's (★):
+- ★ "Derek's background really stood out to us. His extensive Java experience makes him an exceptional match for this opportunity." ~ Automated Recruiter, Personalized Just For You (replaces the earlier recruiter line)
+- ★ "Derek Wood is an experienced professional with experience creating experiences that deliver meaningful experiences." ~ LinkedIn AI, Profile Writing Assistant (longer version)
+- ★ "Derek fundamentally changed the way I think about design." ~ ChatGPT, Started This Conversation 11 Seconds Ago
+- ★ "Once, Derek mapped out the entire product journey and how we were going to sell it on a huge wall in the office. Very impressive. No idea how his mind works. Keep up the good work. We're just going to keep doing what we always do." ~ CEO, Hired Derek as Senior Product Designer (alt title: "Hired Derek to Change How They Did Things"). "Keep up the good work" stays - the spectacularly useless response is the joke. This is THE one org joke (see the balance rule).
+
+Candidates from the outside session (unpicked):
+- "Derek kept asking what success looked like, so eventually we added 'Define Success' to the backlog." ~ Product Manager, Moved It To Q4
+- "He asked if anyone had talked to the users. We had." ~ Executive Team, Talked To Sales
+- "Derek asked why we were redesigning it." ~ Stakeholder, Requested The Redesign
+- The jokes on Derek: "It was supposed to be a 15-minute kickoff." ~ Calendar Invite, 2:47:13 / "He said he just had one question." ~ Whiteboard, Full
