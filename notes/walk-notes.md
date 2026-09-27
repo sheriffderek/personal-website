@@ -174,8 +174,8 @@ flavor-free spending briefs; the flavor line above them supplies the hues.
 
 ### Quiet x House
 *Aim: gray room + SAGE hint (the House green at whisper volume) - APPROVED reference state in dark*
-- [x] Product: Notion/Muji - gray on white, generous space. Wrong when: anything demands attention by color | VERDICT: LOVED in dark - the reference state
-- [ ] Marketing: Lemonaid whisper-brochure - line art, white, one hint. Wrong when: a full-bleed pigment band appears
+- [x] Product: Notion/Muji - gray on white, generous space. Wrong when: anything demands attention by color | VERDICT: LOVED in dark - the reference state. 09-27: the whole default approved with its chrome - light, dark, and red light over it ("theming is going great")
+- [x] Marketing: Lemonaid whisper-brochure - line art, white, one hint. Wrong when: a full-bleed pigment band appears | VERDICT 09-26: approved with its chrome ("also pretty great"), roundy since
 - [x] Interface: OpenAI/Linear - near-monochrome; accent only marks the active thing. Wrong when: two things marked at once | VERDICT: approved as-is, light AND dark (08-25)
 - [ ] Editorial: Kinfolk - newsprint + one deliberate mark per view. Wrong when: a second mark shows up
 - [ ] Terminal: Plan 9/acme - pale paper, barely-there marks. Wrong when (all Terminal): hierarchy arrives by size instead of weight
