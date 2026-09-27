@@ -115,7 +115,7 @@ flavor-free spending briefs; the flavor line above them supplies the hues.
 - [x] Marketing: GoFundMe bands - full-bleed sections at full voice, display type may wear pigment. Wrong when: bands go timid or all land one hue | VERDICT: approved - structure makes its point; pill + band architecture open | 09-27 (light + dark): on the right track, a way to go - it should look like Figma, with well-chosen colors (the saved-for-last Expressive color pass)
 - [ ] Interface: Anthropic - warm humane chrome, gentle washes on feature surfaces. Wrong when: chrome takes pigment or an accent hits alarm level
 - [ ] Editorial: WIRED - pigment as the headline act at display scale. Wrong when: color retreats to decoration
-- [x] Terminal: the colored-streams console (dark is home); readouts each their own hue | VERDICT 08-25: "this one makes sense" - colored-readout model confirmed (Option 1); panel-variants keep their panel under terminal (the ghost-text fix) | 09-27 LIGHT: "not very cool or inspired" - dark is home; the light take needs its own idea
+- [x] Terminal: the colored-streams console (dark is home); readouts each their own hue | VERDICT 08-25: "this one makes sense" - colored-readout model confirmed (Option 1); panel-variants keep their panel under terminal (the ghost-text fix) | 09-27 LIGHT: "not very cool or inspired" - dark is home; the light take needs its own idea | 09-27 DARK: "kinda fun" - confirmed; only the light take needs the new idea (printout / greenbar, or a recognizable light terminal theme)
 
 ### Expressive x Earth
 *Aim: the rainbow anchored in greens/browns: amber secondary fills, green accent*
