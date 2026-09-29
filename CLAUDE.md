@@ -69,7 +69,7 @@ This is the same line the spec draws - WCAG's reduced-motion guidance targets *n
 
 ## Contrast policy (Derek, 2026-09-29)
 
-**Every theme combination meets WCAG 2.2 AA; a visitor who asks for more contrast gets AAA.** AA is the floor in every character x mood x flavor x scheme cell (4.5:1 body text, 3:1 large text and UI parts like borders and knobs). Under `@media (prefers-contrast: more)` the bar is AAA (7:1 text) - the layered experience chart's high-contrast block in `styles/modules/layered-experience-chart.css` is the first worked example. Measure, don't eyeball: a hue that "looks fine" in one mood can fail in another. APCA (the WCAG 3 method) is still a draft - fine as a second opinion, not the bar.
+**WCAG 2.2 AA in every theme cell; AAA when the visitor asks for more contrast (`prefers-contrast: more`).** The full bar, and where each cell gets measured, lives with the color work: the contrast section of `notes/walk-notes.md`.
 
 ## Progressive disclosure (the IA principle - Derek, 2026-09-11)
 

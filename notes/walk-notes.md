@@ -59,6 +59,10 @@
    session, not a patch.
 
 
+## The contrast bar - every cell (Derek, 2026-09-29)
+
+Every character x mood x flavor x scheme cell meets **WCAG 2.2 AA**: 4.5:1 for body text, 3:1 for large text and for UI parts (borders, knobs, option edges). Under `@media (prefers-contrast: more)` the bar is **AAA** (7:1 text) - a visitor who asks for more gets way more. Measure every cell, don't eyeball it: a hue that looks fine in one mood can fail in another, and the ink/fill pairs in `settings/moods.css` are where it's won or lost. APCA (the WCAG 3 method) is still a draft - a useful second opinion, not the bar. First worked high-contrast example: the layered experience chart (`styles/modules/layered-experience-chart.css`). Open: how each mood answers `prefers-contrast: more` site-wide (per-mood AAA ink/fill pairs, or one shared high-contrast pass).
+
 ## What each character EVOKES (Derek, 2026-08-25 - the measuring stick)
 
 **Naming, open (Derek, 2026-09-27): "Character" is increasingly "Platform."** Since the characters became the surfaces of one company (front door, pages one level in, the app, the blog, the developer surface) and started carrying the chrome's grammar (Interface = app chrome, Marketing = roundy, Terminal = TUI), the axis names *where you are* more than *a personality*. A note, not a rename - "Character" is wired through the attribute (`data-brand-character`), the storage key, the panel label, and the docs, so any rename is its own deliberate slice.
