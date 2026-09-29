@@ -60,38 +60,37 @@
 	}
 }
 
-/* A study video (includes/study-video.php): the graphic, the play button,
-   and - once pressed - the Vimeo player, all stacked in one 16:9 cell.
-   data-state (scripts/study-video.js lists them) decides which layer shows.
-   Every color is a theme token, so the button repaints with the theme. */
+/* A study video (includes/study-video.php): the Vimeo player, the graphic
+   over it, and the play cue, stacked in one 16:9 box. Taps fall through the
+   graphic and the cue to the player (the partial says why). data-state
+   (scripts/study-video.js lists them) decides what shows. Every color is a
+   theme token, so the cue repaints with the theme. */
 study-video {
 	--play-size: 3.5rem;
 
-	display: grid;
+	position: relative;
+	display: block;
 	aspect-ratio: 16 / 9;
 	overflow: hidden;
 	border-radius: var(--corners, 0);
-	/* A plain themed panel until a graphic is made. */
 	background: var(--fill-secondary);
 	/* The media wash - same wiring as .entry-figure in journal.css. */
 	mix-blend-mode: var(--media-blend, normal);
 
-	/* One grid cell, three layers: player, graphic, button (DOM order). */
-	> * {
-		grid-area: 1 / 1;
-		min-width: 0;
-	}
-
-	.player iframe {
-		display: block;
+	/* Every layer covers the whole box. Absolute, not a percentage height:
+	   iOS Safari left the iframe short when it sized by height: 100%. */
+	iframe,
+	.face {
+		position: absolute;
+		inset: 0;
 		width: 100%;
 		height: 100%;
 		border: 0;
 	}
 
-	/* Opaque, so it fully covers the player while it loads - even before a
-	   graphic exists. */
+	/* Opaque, so it fully covers the player - even before a graphic exists. */
 	.face {
+		pointer-events: none;
 		background: var(--fill-secondary);
 		transition:
 			opacity 0.4s ease,
@@ -105,24 +104,15 @@ study-video {
 		}
 	}
 
-	/* The whole graphic is the hit area; the circle is just the cue. */
-	.play {
-		display: flex;
-		align-items: flex-end;
-		justify-content: flex-start;
-		padding: 1rem;
-
-		&:focus-visible {
-			outline: 2px solid var(--accent);
-			outline-offset: -4px;
-		}
-	}
-
-	.glyph {
+	.cue {
+		position: absolute;
+		bottom: 1rem;
+		left: 1rem;
 		display: grid;
 		place-items: center;
 		width: var(--play-size);
 		aspect-ratio: 1;
+		pointer-events: none;
 		border: 2px solid var(--accent);
 		border-radius: 50%;
 		background: var(--fill-primary);
@@ -138,23 +128,23 @@ study-video {
 		}
 	}
 
-	.play:hover .glyph {
+	&:hover .cue {
 		scale: 1.08;
 	}
 
-	/* Pressed: the button goes at once, so it never sits on top of Vimeo's
-	   control bar (which appears on hover as the player arrives). The graphic
-	   holds until the video is really playing - that's where a loader goes. */
-	&[data-state='loading'] .play {
+	/* Tapped: the cue goes at once, so it never sits on top of Vimeo's
+	   control bar. The graphic holds until the video is really playing -
+	   that's where a loader goes. */
+	&[data-state='loading'] .cue {
 		visibility: hidden;
 	}
 
-	/* Playing (or waiting on Vimeo's own play button): the graphic and our
-	   button step aside so Vimeo's controls are reachable. */
+	/* Playing - or a keyboard visitor has tabbed into the player, and needs
+	   to see Vimeo's own buttons: the graphic and the cue step aside. */
 	&[data-state='playing'],
-	&[data-state='ready'] {
+	&:focus-within {
 		.face,
-		.play {
+		.cue {
 			visibility: hidden;
 			opacity: 0;
 		}

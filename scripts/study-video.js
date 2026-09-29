@@ -1,23 +1,20 @@
 /* Case-study videos (includes/study-video.php) - the graphic is the face,
-   the Vimeo player waits behind it.
+   the Vimeo player sits underneath and takes the tap itself (the partial
+   says why).
 
    Each <study-video> walks through a few states, written to its data-state
    so the CSS (and any animation later) can key off one attribute:
 
-     idle    - the graphic and the play button. Nothing from Vimeo loaded.
-     loading - pressed; the player is being built behind the graphic.
+     idle    - the graphic and the play cue, over a paused player.
+     loading - tapped; Vimeo is starting. The cue goes, the graphic holds.
      playing - the video is really playing; the graphic has faded away and
                Vimeo's own controls take over.
-     ready   - the browser refused to start it for us (iOS can refuse sound
-               in a freshly made player), so the graphic steps aside and
-               Vimeo's own play button is one more tap away.
-     ended   - finished; the graphic comes back, and pressing play again
-               starts it over.
+     ended   - finished; the graphic comes back. A tap starts it over.
 
    Only one study video talks at a time: starting one pauses the other.
 
-   Needs Vimeo's player.js (loaded in header.php). Without it the play
-   button stays a plain link to the video on Vimeo. */
+   Needs Vimeo's player.js (loaded in header.php). Without it the players
+   still work - the graphic just never steps aside. */
 (function () {
 	var videos = document.querySelectorAll('study-video');
 	if (!videos.length || !window.Vimeo) return;
@@ -25,67 +22,31 @@
 	var talking = null;
 
 	videos.forEach(function (element) {
-		var button = element.querySelector('.play');
-		var player = null;
-
-		// The link is for no-JS visitors. With JS it acts as a button.
-		button.setAttribute('role', 'button');
+		var player = new Vimeo.Player(element.querySelector('iframe'));
 
 		function setState(state) {
 			element.dataset.state = state;
 		}
 
-		function build() {
-			var holder = document.createElement('div');
-			holder.className = 'player';
-			element.prepend(holder);
-
-			player = new Vimeo.Player(holder, {
-				id: element.dataset.vimeo,
-				dnt: true,
-			});
-
-			player.ready().then(function () {
-				player.element.title = element.dataset.title;
-			});
-
-			player.on('playing', function () {
-				if (talking && talking !== player) {
-					talking.pause();
-				}
-
-				talking = player;
-
-				// The button is about to hide under the video; keep a keyboard
-				// visitor's place by handing focus to the player itself.
-				if (document.activeElement === button) {
-					player.element.focus();
-				}
-
-				setState('playing');
-			});
-
-			player.on('ended', function () {
-				if (talking === player) {
-					talking = null;
-				}
-
-				setState('ended');
-			});
-		}
-
-		button.addEventListener('click', function (event) {
-			event.preventDefault();
-
-			if (!player) {
-				build();
+		player.on('play', function () {
+			if (talking && talking !== player) {
+				talking.pause();
 			}
 
+			talking = player;
 			setState('loading');
+		});
 
-			player.play().catch(function () {
-				setState('ready');
-			});
+		player.on('playing', function () {
+			setState('playing');
+		});
+
+		player.on('ended', function () {
+			if (talking === player) {
+				talking = null;
+			}
+
+			setState('ended');
 		});
 	});
 })();

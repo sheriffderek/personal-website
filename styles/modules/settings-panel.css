@@ -830,8 +830,21 @@ button.trigger {
 	   sheet; the circles straddle its top edge (the tray is one centered
 	   row, so 50% of its box IS their midline). */
 	top: 50%;
-	right: 0;
-	width: calc(100% - 5rem);
+	/* ONE PHONE GEOMETRY FOR EVERY CHARACTER (Derek, 2026-09-29): the
+	   character slider lives inside this card, so a card that moved per
+	   character slid every control out from under the visitor's finger
+	   (Product straddled flush-right, Interface floated inset - ~70px
+	   apart). The chrome's first law: the box never moves. So every
+	   character shares Float's right edge and measure, and the controls'
+	   top is pinned too - the straddle look survives as paint: this card
+	   still rises behind the circles, and .panel-scroll's phone padding
+	   below makes up the difference so its first row lands exactly where
+	   Float's does. History (Derek): the straddle began as a way to save
+	   space - starting the card mid-bar bought back half a bar - and it
+	   looked cool, so it stayed. With the rows pinned it no longer saves
+	   anything; it stays purely as a look. */
+	right: var(--gutter);
+	width: min(calc(100% - 5rem), var(--layout-panel-max));
 
 	/* BIGGER SCREENS (700 up to the 1024 sidebar) - a classic anchored
 	   dropdown, three rules and nothing unstated (Derek, 2026-08-12:
@@ -855,14 +868,6 @@ button.trigger {
 	   mid-fade (Derek, 2026-07-19). The soft edge of the choreography is the
 	   SHADE's job - it fades on its own clock (section 3); the panel just
 	   appears, already solid, on top of it. Its paint is .app-card, above. */
-
-	/* The small-screen card sits flush against the screen's right edge, so
-	   that side has no seam to draw: no right border, no right corners -
-	   the card blends into the edge instead of outlining against it. */
-	@media (width < 700px) {
-		border-right: none;
-		border-radius: var(--app-corners) 0 0 var(--app-corners);
-	}
 
 	/* A closed panel MUST be display:none - THE lesson that must not regress
 	   (it predates the manual state machine and survives it). Anything less
@@ -914,6 +919,18 @@ button.trigger {
 	border-radius: inherit;
 }
 
+/* The straddle card starts at the bar's middle, the float card one gap
+   below the bar - half a bar plus a gap apart. This padding makes up
+   exactly that, so on a phone every character's first row sits at the
+   same height (see ONE PHONE GEOMETRY on .panel). Float resets it. The
+   bar's height is a trigger (content + border) plus the tray's 0.5rem
+   above and below. */
+@media (width < 700px) {
+	.panel .panel-scroll {
+		padding-top: calc(var(--gutter) + (var(--app-trigger-size) + var(--app-border-width) * 2 + 1rem) / 2 + var(--layout-panel-gap));
+	}
+}
+
 /* TRY-IT PLACEMENTS - phone only, and only for a ?try= visit (index.php
    puts data-placement on <html>; without it none of this matches, and the
    phone posture above is untouched). They move the real card so a pairing
@@ -929,6 +946,8 @@ button.trigger {
 
 		.panel-scroll {
 			max-height: calc(100svh - (var(--app-trigger-size) + var(--app-border-width) * 2 + 1rem) - var(--layout-panel-gap));
+			/* Already below the bar - no straddle make-up. */
+			padding-top: var(--gutter);
 		}
 	}
 
@@ -969,6 +988,8 @@ button.trigger {
 
 		.panel-scroll {
 			max-height: calc(100svh - (var(--app-trigger-size) + var(--app-border-width) * 2 + 1rem) - var(--layout-panel-gap) * 2);
+			/* Float already sits below the bar - no straddle make-up. */
+			padding-top: var(--gutter);
 		}
 	}
 }
