@@ -106,3 +106,7 @@ Candidates from the outside session (unpicked):
 - "He asked if anyone had talked to the users. We had." ~ Executive Team, Talked To Sales
 - "Derek asked why we were redesigning it." ~ Stakeholder, Requested The Redesign
 - The jokes on Derek: "It was supposed to be a 15-minute kickoff." ~ Calendar Invite, 2:47:13 / "He said he just had one question." ~ Whiteboard, Full
+
+## Prose rhythm: the container owns the space (Derek, 2026-09-29 - house-level, pssst first)
+
+Today three one-offs each space a figure inside prose - `.entry-figure` (journal.css), `.study-figure` (case-study.css), `.page-figure` (how-i-work.css) - because the shared rhythm in `typography.css` only knows specific pairs (p+p, h+p, div+p), so any new pairing falls through (the How I work sketch sat flush against the paragraph below it). The long-term plan: one flow rule on the prose container - `:where(.styled) > * + * { margin-block-start: var(--flow, 1em) }`, with figures/pre/tables (and the element after them) setting `--flow: 2em` - so the container owns the space between its children and no child sets its own outer margin (the "components never position themselves" rule, applied to prose). Rollout order: pssst-css first (the methodology source), then this site (replace the pair rules, strip the spacing from the three figure classes), then other sites on next touch. `--flow` is also the natural first `--rhythm-*` token that typography.css's comment already names. A good PE lesson too: the same idea as `gap`, applied to flowing text.
