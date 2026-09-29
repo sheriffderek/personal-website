@@ -50,21 +50,113 @@
 		isolation: isolate;
 		background-color: var(--media-blend-fill, transparent);
 
-		iframe {
-			width: 100%;
-			aspect-ratio: 16 / 9;
-			border: 0;
-			border-radius: var(--corners, 0);
-			background: var(--fill-secondary);
-			mix-blend-mode: var(--media-blend, normal);
-		}
-
 		/* Every study video is the wide size - the same right-side-only
 		   breakout as the journal's .figure-full (journal.css explains it;
 		   default-layout.css reserves its lane). Here it's the default, not
 		   an opt-in: the videos are screen recordings and need the room. */
 		@media (min-width: 1200px) {
 			width: calc(100% + var(--layout-figure-breakout));
+		}
+	}
+}
+
+/* A study video (includes/study-video.php): the graphic, the play button,
+   and - once pressed - the Vimeo player, all stacked in one 16:9 cell.
+   data-state (scripts/study-video.js lists them) decides which layer shows.
+   Every color is a theme token, so the button repaints with the theme. */
+study-video {
+	--play-size: 3.5rem;
+
+	display: grid;
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+	border-radius: var(--corners, 0);
+	/* A plain themed panel until a graphic is made. */
+	background: var(--fill-secondary);
+	/* The media wash - same wiring as .entry-figure in journal.css. */
+	mix-blend-mode: var(--media-blend, normal);
+
+	/* One grid cell, three layers: player, graphic, button (DOM order). */
+	> * {
+		grid-area: 1 / 1;
+		min-width: 0;
+	}
+
+	.player iframe {
+		display: block;
+		width: 100%;
+		height: 100%;
+		border: 0;
+	}
+
+	/* Opaque, so it fully covers the player while it loads - even before a
+	   graphic exists. */
+	.face {
+		background: var(--fill-secondary);
+		transition:
+			opacity 0.4s ease,
+			visibility 0.4s;
+
+		img,
+		svg {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+
+	/* The whole graphic is the hit area; the circle is just the cue. */
+	.play {
+		display: flex;
+		align-items: flex-end;
+		justify-content: flex-start;
+		padding: 1rem;
+
+		&:focus-visible {
+			outline: 2px solid var(--accent);
+			outline-offset: -4px;
+		}
+	}
+
+	.glyph {
+		display: grid;
+		place-items: center;
+		width: var(--play-size);
+		aspect-ratio: 1;
+		border: 2px solid var(--accent);
+		border-radius: 50%;
+		background: var(--fill-primary);
+		transition: scale 0.2s ease;
+
+		/* The triangle, nudged right so it sits optically centered. */
+		&::before {
+			content: '';
+			margin-left: 0.2rem;
+			border-style: solid;
+			border-width: 0.6rem 0 0.6rem 1rem;
+			border-color: transparent transparent transparent var(--ink-primary);
+		}
+	}
+
+	.play:hover .glyph {
+		scale: 1.08;
+	}
+
+	/* Pressed: the button goes at once, so it never sits on top of Vimeo's
+	   control bar (which appears on hover as the player arrives). The graphic
+	   holds until the video is really playing - that's where a loader goes. */
+	&[data-state='loading'] .play {
+		visibility: hidden;
+	}
+
+	/* Playing (or waiting on Vimeo's own play button): the graphic and our
+	   button step aside so Vimeo's controls are reachable. */
+	&[data-state='playing'],
+	&[data-state='ready'] {
+		.face,
+		.play {
+			visibility: hidden;
+			opacity: 0;
 		}
 	}
 }

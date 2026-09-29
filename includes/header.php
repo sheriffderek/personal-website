@@ -182,6 +182,11 @@
 	<?php endif; ?>
 	<script src='https://player.vimeo.com/api/player.js' defer></script>
 	<script src='<?= asset('/scripts/audio.js') ?>' defer></script>
+
+	<?php /* The case studies' graphic-first videos (includes/study-video.php). */ ?>
+	<?php if (strpos($slug, 'case-studies/') === 0): ?>
+		<script src='<?= asset('/scripts/study-video.js') ?>' defer></script>
+	<?php endif; ?>
 	<?php /* The settings script and the panel markup (in <body> below) gate
 		together on $settings_panel_on (index.php) - one flag to pull the whole
 		apparatus if it ever needs to go dark again. */ ?>

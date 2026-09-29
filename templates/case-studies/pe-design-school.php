@@ -46,7 +46,7 @@
 	<h2 class='attention-voice'>Avoiding blindly following the common pattern</h2>
 
 	<figure class='study-figure'>
-		<iframe src='https://player.vimeo.com/video/1228952549' title='Avoiding blindly following the common pattern' allow='fullscreen; picture-in-picture' loading='lazy'></iframe>
+		<?= partial('study-video', ['vimeo' => '1228952549', 'title' => 'Avoiding blindly following the common pattern']) ?>
 	</figure>
 
 	<?php if (!IS_PRODUCTION): ?>
@@ -66,7 +66,7 @@
 	<h2 class='attention-voice'>Exploring a common school day</h2>
 
 	<figure class='study-figure'>
-		<iframe src='https://player.vimeo.com/video/1228952586' title='Exploring a common school day' allow='fullscreen; picture-in-picture' loading='lazy'></iframe>
+		<?= partial('study-video', ['vimeo' => '1228952586', 'title' => 'Exploring a common school day']) ?>
 	</figure>
 
 	<?php if (!IS_PRODUCTION): ?>
@@ -86,7 +86,7 @@
 	<h2 class='attention-voice'>Subtle shifts between modes</h2>
 
 	<figure class='study-figure'>
-		<iframe src='https://player.vimeo.com/video/1228959941' title='Subtle shifts between modes' allow='fullscreen; picture-in-picture' loading='lazy'></iframe>
+		<?= partial('study-video', ['vimeo' => '1228959941', 'title' => 'Subtle shifts between modes']) ?>
 	</figure>
 
 	<?php if (!IS_PRODUCTION): ?>
@@ -106,7 +106,7 @@
 	<h2 class='attention-voice'>Exploring initial content types</h2>
 
 	<figure class='study-figure'>
-		<iframe src='https://player.vimeo.com/video/1228980047' title='Exploring initial content types' allow='fullscreen; picture-in-picture' loading='lazy'></iframe>
+		<?= partial('study-video', ['vimeo' => '1228980047', 'title' => 'Exploring initial content types']) ?>
 	</figure>
 
 	<?php if (!IS_PRODUCTION): ?>
@@ -126,7 +126,7 @@
 	<h2 class='attention-voice'>Enough to start building and testing</h2>
 
 	<figure class='study-figure'>
-		<iframe src='https://player.vimeo.com/video/1229033043' title='Enough to start building and testing' allow='fullscreen; picture-in-picture' loading='lazy'></iframe>
+		<?= partial('study-video', ['vimeo' => '1229033043', 'title' => 'Enough to start building and testing']) ?>
 	</figure>
 
 	<?php if (!IS_PRODUCTION): ?>
@@ -148,7 +148,7 @@
 	<h2 class='attention-voice'>Naming matters</h2>
 
 	<figure class='study-figure'>
-		<iframe src='https://player.vimeo.com/video/1229034463' title='Naming matters' allow='fullscreen; picture-in-picture' loading='lazy'></iframe>
+		<?= partial('study-video', ['vimeo' => '1229034463', 'title' => 'Naming matters']) ?>
 	</figure>
 
 	<?php if (!IS_PRODUCTION): ?>
@@ -170,7 +170,7 @@
 	<h2 class='attention-voice'>Breaking things up into a journey of many parts</h2>
 
 	<figure class='study-figure'>
-		<iframe src='https://player.vimeo.com/video/1229039339' title='Breaking things up into a journey of many parts' allow='fullscreen; picture-in-picture' loading='lazy'></iframe>
+		<?= partial('study-video', ['vimeo' => '1229039339', 'title' => 'Breaking things up into a journey of many parts']) ?>
 	</figure>
 
 	<?php if (!IS_PRODUCTION): ?>
