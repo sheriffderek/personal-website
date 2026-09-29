@@ -17,10 +17,16 @@
 	            plain themed panel until the graphic is made. */
 
 	$face = $face ?? '';
+
+	/* The player, trimmed to what a talk-through needs: play, the progress
+	   bar, volume, captions, fullscreen. Vimeo's play button sits bottom-left,
+	   under our cue, so the tap that starts it is on the cue. */
+	$player_options = 'dnt=1&play_button_position=bottom&title=0&byline=0&portrait=0'
+		. '&speed=0&pip=0&transcript=0&quality_selector=0&chromecast=0&vimeo_logo=0';
 ?>
 <study-video data-state='idle'>
 	<iframe
-		src='https://player.vimeo.com/video/<?= $vimeo ?>?dnt=1'
+		src='https://player.vimeo.com/video/<?= $vimeo ?>?<?= $player_options ?>'
 		title='<?= quote_safe($title) ?>'
 		allow='autoplay; fullscreen; picture-in-picture'
 		loading='lazy'></iframe>
