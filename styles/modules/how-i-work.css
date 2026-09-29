@@ -2,6 +2,23 @@
    prose below. Same media framing as the journal's entry-figure: 16:9 frame,
    character corners, quiet ground while the embed loads. */
 
+/* A photo in the page's flow (the notebook sketch): full column width,
+   same top rhythm and corners as the video below it. */
+.page-figure {
+	/* Space below too: it sits between paragraphs, and the prose rhythm
+	   (text-content.styled) has no rule for a paragraph after a figure.
+	   $todo - a one-off, one of three (.entry-figure, .study-figure): when
+	   the prose flow rule lands (backlog.md, "Prose rhythm: the container
+	   owns the space"), delete this margin and keep only the image paint. */
+	margin: 2em 0;
+
+	img {
+		display: block;
+		height: auto;
+		border-radius: var(--corners, 0);
+	}
+}
+
 .page-video {
 	margin: 2em 0 0;
 	/* The media wash - same wiring as .entry-figure in journal.css. */

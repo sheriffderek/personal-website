@@ -45,6 +45,11 @@
 	}
 
 	.study-figure {
+		/* $todo - figure spacing is re-solved per page (one of three: .entry-figure,
+		   .study-figure, .page-figure). When the prose flow rule lands (backlog.md,
+		   "Prose rhythm: the container owns the space"), this figure's outer
+		   margin goes and the container spaces it. */
+
 		margin-block: 1.5em;
 		/* The media wash - same wiring as .entry-figure in journal.css. */
 		isolation: isolate;

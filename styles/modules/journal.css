@@ -79,6 +79,11 @@
 	   tokens in default-layout.css - the entry-page grid reserves a lane
 	   of the same width at full size. */
 	.entry-figure {
+		/* $todo - figure spacing is re-solved per page (one of three: .entry-figure,
+		   .study-figure, .page-figure). When the prose flow rule lands (backlog.md,
+		   "Prose rhythm: the container owns the space"), this figure's outer
+		   margin goes and the container spaces it. */
+
 		margin-block: 1.5em;
 		/* The media wash (mechanism and the why in milestone.css): an iframe
 		   blends like an img - mode on the embed, backdrop on the figure,
