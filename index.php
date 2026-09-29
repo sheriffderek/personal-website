@@ -311,6 +311,15 @@ if (strpos($slug, 'resume/') === 0) {
 	if (isset($resume['lanes'][$lane_slug]) && $has_letter) {
 		$lane = $resume['lanes'][$lane_slug];
 
+		// A special application (?target= with an entry in resume.json's
+		// targets map) swaps in its unique parts before anything renders,
+		// so the page, the letter, and both text twins all agree.
+		$sheet_target = sheet_target($resume, $lane_slug, $target_slug);
+
+		if ($sheet_target !== '') {
+			$lane = array_merge($lane, $resume['targets'][$sheet_target]);
+		}
+
 		if ($is_text) {
 			require TEMPLATES_DIR . '/' . ($is_cover_letter ? 'cover-letter-text.php' : 'resume-text.php');
 			exit;

@@ -55,7 +55,7 @@ function resume_entry($entry, $lane, $is_contract = false) {
 
 	<?php /* The identity block is shared with the cover letters - same
 		header, same sheet family (includes/resume-header.php). */ ?>
-	<?= partial('resume-header', ['resume' => $resume, 'lane' => $lane, 'intro_paragraphs' => $lane['intro']]) ?>
+	<?= partial('resume-header', ['resume' => $resume, 'lane' => $lane, 'sheet_target' => $sheet_target, 'intro_paragraphs' => $lane['intro']]) ?>
 
 	<div class='timeline-axis' aria-hidden='true'></div>
 

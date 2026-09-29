@@ -21,7 +21,10 @@
 
 		<a class='link' href='tel:<?= preg_replace('/[^0-9]/', '', $resume['header']['phone']) ?>'><?= $resume['header']['phone'] ?></a> <span aria-hidden='true'>·</span>
 
-		<a class='link' href='https://<?= $resume['header']['website'] ?>'><?= $resume['header']['website'] ?></a>
+		<?php /* A special application's sheet links to its target page. The
+			visible text stays the bare domain - it's what a paper reader
+			types, and what a parser reads. */ ?>
+		<a class='link' href='https://<?= $resume['header']['website'] ?><?= ($sheet_target ?? '') !== '' ? '/?target=' . $sheet_target : '' ?>'><?= $resume['header']['website'] ?></a>
 
 		<a class='link' href='mailto:<?= $resume['header']['email'] ?>'><?= $resume['header']['email'] ?></a> <span aria-hidden='true'>|</span>
 

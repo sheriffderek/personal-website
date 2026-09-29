@@ -22,7 +22,7 @@ $letter = resolve_letter($letters, $lane_slug, $target_slug);
 
 <article class='resume cover-letter' aria-label='Cover letter - <?= $lane['label'] ?>'>
 
-	<?= partial('resume-header', ['resume' => $resume, 'lane' => $lane]) ?>
+	<?= partial('resume-header', ['resume' => $resume, 'lane' => $lane, 'sheet_target' => $sheet_target]) ?>
 
 	<div class='timeline-axis' aria-hidden='true'></div>
 

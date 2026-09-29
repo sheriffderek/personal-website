@@ -74,6 +74,19 @@ function resolve_letter($letters, $lane_slug, $target_slug) {
 	return $letter;
 }
 
+/* Which special application, if any, this sheet is built for. A target in
+   resume.json's targets map holds the unique parts of one application
+   (a role line, an intro - any lane field, merged over its lane by the
+   router) and is pinned to ONE lane, same rule as resolve_letter. Returns
+   the target slug when it applies here, else ''. */
+function sheet_target($resume, $lane_slug, $target_slug) {
+	if ($target_slug !== '' && isset($resume['targets'][$target_slug]) && $resume['targets'][$target_slug]['lane'] === $lane_slug) {
+		return $target_slug;
+	}
+
+	return '';
+}
+
 /* Journal dates are authored as ISO (2026-09-09) in journal.json - the
    sortable truth - and rendered long-form (September 9, 2026) wherever a
    person reads them. One formatter so every surface says it the same way. */
