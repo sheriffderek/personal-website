@@ -93,7 +93,8 @@ list-then-grid, panel-then-band); it's now the governing IA rule:
 - Entries can be: static image, slider (3-5 slides), or short local video (under 1 min)
 - `?target=companyname` inserts tailored paragraphs connecting work to that company's needs, and auto-links any application PDFs dropped in `content/targets/<company>/` (`cover-letter.pdf` / `resume.pdf` / `questions.pdf` - fixed names, presence = rendered; details in the target-notes skill)
 - Weighted timeline (filter slider reveals more/fewer entries) and theme switcher (type patterns, font pairs, color) - both built; see the Timeline weights and Theme system sections below
-- Videos are local files, not YouTube/Vimeo embeds
+- **Talk-through videos live on Vimeo - never self-hosted, and don't propose it** (Derek, 2026-09-29). Local files are only for short loop-type clips of specific interactions.
+- Timeline clips are local files, not YouTube/Vimeo embeds
 - Video behavior: muted, playsinline, autoplay on scroll into view (IntersectionObserver), loop. Always have a poster frame fallback. Use preload="none" on off-screen videos.
 
 ## Naming conventions
