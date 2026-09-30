@@ -140,9 +140,11 @@
 						   styles/layouts/grid-view.css - keep the two matched); below
 						   it the preference waits, unapplied, and settings-panel.js
 						   re-checks on resize. Gated to the timeline page - a saved
-						   grid preference means nothing anywhere else. */
+						   view preference means nothing anywhere else. Grid is the
+						   DEFAULT where it exists (Derek + Ivy, 2026-09-29), so only a
+						   saved 'list' keeps a visitor out of it. */
 						var view = localStorage.getItem('view-preference');
-						if (view === 'grid' && window.matchMedia('(min-width: 1200px)').matches) html.setAttribute('data-view', 'grid');
+						if (view !== 'list' && window.matchMedia('(min-width: 1200px)').matches) html.setAttribute('data-view', 'grid');
 					<?php endif; ?>
 				} catch (error) {
 					/* private-mode storage throw — the defaults need no attributes. */

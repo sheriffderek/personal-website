@@ -922,7 +922,9 @@
 
 		if (shouldPersist(opts)) {
 			try {
-				if (value === 'list') {
+				/* Grid is the default (2026-09-29), so it's the value never
+				   written - only a visitor choosing list is remembered. */
+				if (value === 'grid') {
 					localStorage.removeItem('view-preference');
 				} else {
 					localStorage.setItem('view-preference', value);
@@ -961,7 +963,7 @@
 
 		var savedView = null;
 		try { savedView = localStorage.getItem('view-preference'); } catch (error) {}
-		applyView(savedView === 'grid' ? 'grid' : 'list', { persist: false });
+		applyView(savedView === 'list' ? 'list' : 'grid', { persist: false });
 
 		/* Same radiogroup keyboard pattern as the SWITCHERS above: one tab
 		   stop (the checked radio, via the roving tabindex in applyView),
@@ -1528,7 +1530,7 @@
 		if (viewButtons.length) {
 			var savedView = null;
 			try { savedView = localStorage.getItem('view-preference'); } catch (error) {}
-			applyView(savedView === 'grid' ? 'grid' : 'list', { persist: false });
+			applyView(savedView === 'list' ? 'list' : 'grid', { persist: false });
 		}
 	}
 
