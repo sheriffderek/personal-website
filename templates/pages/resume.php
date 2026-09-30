@@ -13,7 +13,7 @@ $brief = [
 $lanes = [
 	[
 		'slug' => 'product-designer',
-		'label' => 'Product Designer',
+		'label' => 'Technical Product Designer',
 		'roles' => 'Product Designer, Senior/Staff Product Designer, Technical Product Designer, Founding Designer, UX Designer, someone who can understand the whole system and figure out what to do next - at any scope - for any industry.',
 	],
 	[
@@ -23,7 +23,7 @@ $lanes = [
 	],
 	[
 		'slug' => 'design-engineer',
-		'label' => 'Design Engineer',
+		'label' => 'UX/Design Engineer',
 		'roles' => 'Developer with taste and attention to detail, Design Technologist, UX Engineer, Design Systems Engineer, bridging the gap between design and dev.',
 	],
 ];
