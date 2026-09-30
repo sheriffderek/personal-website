@@ -127,13 +127,5 @@
 		.skills {
 			margin-block-start: 1.25rem;
 		}
-
-		/* A short display line (one or two lines): balance evens them out,
-		   so "…this... / so, I designed one." breaks at the thought, not at
-		   the edge. Balance alone - a `pretty` after it used to win in
-		   current browsers and silently undo it (Derek, 2026-09-29). */
-		p:first-child {
-			text-wrap: balance;
-		}
 	}
 }

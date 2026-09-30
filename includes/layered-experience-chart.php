@@ -31,7 +31,7 @@
 				</summary>
 
 				<div class='telling'>
-					<p class='calm-voice'>
+					<p class='calm-voice display'>
 						<?= $layer['what'] ?>
 					</p>
 
