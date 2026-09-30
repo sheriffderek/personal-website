@@ -108,7 +108,7 @@
 	--quiet-voice-font-family: var(--font-ui);
 	--quiet-voice-font-size: var(--step-down-1);
 	--quiet-voice-font-weight: 300;
-	--quiet-voice-line-height: 1.3;
+	--quiet-voice-line-height: 1.37;
 
 	/* data-voice - numbers, timestamps */
 	--data-voice-font-family: var(--font-code);
