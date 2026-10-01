@@ -1264,7 +1264,9 @@ button.trigger {
 
 		border: var(--app-border-width) solid var(--app-pill-stroke);
 		background: var(--app-pill-fill);
-		color: var(--app-ink);
+		/* Own ink slot so a family can set its options as solid blocks
+		   (Editorial's black keys); unset it's the chrome's ink as before. */
+		color: var(--app-pill-ink, var(--app-ink));
 		border-radius: var(--app-pill-radius);
 
 		&::after {
@@ -1289,6 +1291,7 @@ button.trigger {
 		&[aria-checked="true"] {
 			background: var(--app-pill-checked-fill);
 			border-color: var(--app-pill-checked-stroke);
+			color: var(--app-pill-checked-ink, var(--app-pill-ink, var(--app-ink)));
 		}
 	}
 

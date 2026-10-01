@@ -462,3 +462,74 @@
 :is(html[data-brand-character='interface'], html[data-family='interface'])[data-flavor='sweet']:not([data-brand-mood]) .plain-range:not(.is-grabbed) {
 	--range-track: light-dark(var(--color-purple-200), oklch(30% 0.03 328));
 }
+
+/* EDITORIAL - the reversed block (Derek, 2026-09-30). The page is all
+   reading, so the chrome is the one solid thing on it: print's black
+   sidebar box, the reversed nameplate. The panel is an INVERSION, not a
+   new color - its fill is the page's primary ink and its text the page's
+   paper - so every mood and flavor carries it without a line of its own
+   (Quiet reads black; others read as their own ink). Dark scheme gets
+   judged cell by cell, not by rule. Red light keeps the whole chrome (the
+   finale stomps everything, so the family stands down under it). */
+
+/* The triggers are the icon alone, in the page's ink - no ring, no
+   fill, no edge in any state. Open, the icon takes the page's accent:
+   the one spot of color in the chrome, marking which trigger the black
+   block belongs to (Derek, 2026-09-30). */
+html[data-brand-character='editorial']:not([data-red-light]) .site-tray {
+	--app-trigger-fill: transparent;
+	--app-trigger-stroke: transparent;
+	--app-trigger-ink: var(--ink-primary);
+	--app-trigger-hover-fill: transparent;
+	--app-trigger-press-fill: transparent;
+	--app-trigger-open-fill: transparent;
+	--app-trigger-open-ink: var(--accent);
+	--app-trigger-open-stroke: transparent;
+}
+
+/* The options are keys (Derek's "Allow once" reference, 2026-09-30):
+   rounded, and the chosen one is the REVERSAL - a solid ink block with
+   paper text - while the rest sit as a soft tint of the ground. Named from
+   the --app-* slots, so inside the black panel the same rule flips: there
+   the chosen key is paper on ink. Declared on the panel too, so the slots
+   re-resolve against the panel's inverted ink and fill. */
+:is(html[data-brand-character='editorial']:not([data-red-light]) [data-ui='app'], html[data-brand-character='editorial']:not([data-red-light]) .site-tray .panel) {
+	--app-pill-radius: 0.5rem;
+	--app-pill-ink: var(--app-ink);
+	--app-pill-fill: color-mix(in oklch, var(--app-ink) 9%, var(--app-fill));
+	--app-pill-stroke: color-mix(in oklch, var(--app-ink) 9%, var(--app-fill));
+	--app-pill-hover-fill: color-mix(in oklch, var(--app-ink) 16%, var(--app-fill));
+	--app-pill-checked-fill: var(--app-ink);
+	--app-pill-checked-stroke: var(--app-ink);
+	--app-pill-checked-ink: var(--app-fill);
+}
+
+/* The panel repaints its own slots, so the inversion stays inside the
+   block - the tray bar and the settings band keep the baseline. Rounded
+   to match the keys. */
+html[data-brand-character='editorial']:not([data-red-light]) .site-tray .panel {
+	--app-fill: var(--ink-primary);
+	--app-ink: var(--fill-primary);
+	--app-ink-secondary: color-mix(in oklch, var(--fill-primary) 72%, var(--ink-primary));
+	--app-stroke: var(--ink-primary);
+	--app-stroke-secondary: color-mix(in oklch, var(--fill-primary) 30%, var(--ink-primary));
+	--app-accent: var(--fill-primary);
+	--app-shadow: none;
+	--app-corners: 0.75rem;
+
+	/* No underlines - the black block already says "these are the
+	   links", and the row lights on hover. */
+	--app-menu-link-color: var(--app-ink);
+	--app-menu-link-decoration: none;
+	--app-menu-row-hover-fill: color-mix(in oklch, var(--fill-primary) 12%, var(--ink-primary));
+}
+
+html[data-brand-character='editorial']:not([data-red-light]) .site-tray .panel .plain-range:not(.is-grabbed) {
+	--range-halo-strength: 0%;
+}
+
+/* No dim: the reversed block already stands apart from the page by value,
+   and the page stays fully legible beside it. */
+html[data-brand-character='editorial']:not([data-red-light]) .site-shade {
+	--scrim: transparent;
+}
