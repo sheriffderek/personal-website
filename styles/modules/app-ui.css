@@ -378,6 +378,12 @@
 	--app-menu-row-current-fill: transparent;
 }
 
+/* No dim: app menus (Claude, Slack, Linear) open over the work without
+   greying it - the card's ring and shadow set it apart. */
+html[data-brand-character='interface']:not([data-red-light]) .site-shade {
+	--scrim: transparent;
+}
+
 /* Sliders: a small flat knob, no halo at rest (the grab still gets its
    halo - :not(.is-grabbed) leaves the grab rules alone), a hairline-toned
    track. The knobs live on the input itself, so the family names it. */
