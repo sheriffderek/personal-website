@@ -25,6 +25,7 @@
 		'agency-work': '150 -220 1300 1300',
 		'freelancing-2019': '200 -150 1200 1200',
 		'smart-text-editor': '150 -200 1300 1300',
+		'design-systems-study': '50 -50 1500 1000',
 		'midi-sequencing': '150 -182 1300 1300',
 		'open-office-hours': '200 -150 1200 1200',
 	};

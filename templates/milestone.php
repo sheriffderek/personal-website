@@ -118,6 +118,27 @@
 			<p class='target-note'><?= $target_note ?></p>
 		<?php endif; ?>
 
+		<?php /* The card's end slot - its one "go deeper" action, last before
+		   the Read more so it's the final thing a scan hits. One slot, one
+		   look, whatever fills it (Derek, 2026-09-30), and a card has at most
+		   one:
+		     "case_study" - the slug of this card's deep write-up
+		       (content/case-studies.json + templates/case-studies/<slug>.php).
+		       Authored, never derived from weight - the opener rides tier 0
+		       without a study. $todo: when a study is published this becomes
+		       the link to it (/case-studies/<slug>) - its wording is Derek's.
+		     "link" + "link_label" - somewhere else to go (a resource, a page);
+		       a targeted link wears the ↗ mark on its own (setup.css). */ ?>
+		<?php if (!empty($milestone['case_study'])): ?>
+			<p class='card-action stamp-voice'>Comprehensive case study in progress</p>
+		<?php elseif (!empty($milestone['link'])):
+			$is_external = strpos($milestone['link'], 'http') === 0;
+		?>
+			<p class='card-action stamp-voice'>
+				<a class='relaxed' href='<?= $milestone['link'] ?>'<?= $is_external ? " target='_blank'" : '' ?>><?= $milestone['link_label'] ?? $milestone['link'] ?></a>
+			</p>
+		<?php endif; ?>
+
 		<?php if (!empty($milestone['details'])): ?>
 			<details class='more'>
 				<summary class='read-more'>
@@ -129,11 +150,6 @@
 					<?= $milestone['details'] ?>
 				</text-content>
 			</details>
-		<?php elseif (!empty($milestone['link'])):
-			$is_external = strpos($milestone['link'], 'http') === 0;
-			$label = isset($milestone['link_label']) ? $milestone['link_label'] : 'Read more';
-		?>
-			<a class='read-more link' href='<?= $milestone['link'] ?>'<?= $is_external ? " target='_blank'" : '' ?>><?= $label ?></a>
 		<?php endif; ?>
 	</text-content>
 </article>

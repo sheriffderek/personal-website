@@ -73,6 +73,28 @@
 		min-width: 0;
 	}
 
+	/* The card's end slot (templates/milestone.php): the one "go deeper"
+	   action - a case study in progress, or a link out. It wears the accent
+	   so it's the most noticeable thing at the end of a card; a link inside
+	   is relaxed, so it takes this color and lets the underline say "link".
+	   Sits in the card's text flow, so the prose rhythm spaces it. */
+	.card-action {
+		/* A solid pill - the skill chips inverted (they're a pale accent
+		   tint with dark ink; this is the accent itself with paper ink), so
+		   it reads as the card's action, not another tag, and never as a
+		   plain link like the Read more beside it. Same geometry as a chip. */
+		width: fit-content;
+		padding: 0.2em 0.6em;
+		border-radius: var(--tag-corners, var(--corners, 0));
+		background: var(--accent);
+		color: var(--fill-primary);
+
+		/* A link inside takes the pill's ink and underlines in it - the
+		   scope's own stroke would vanish on the accent. */
+		--link-relaxed-color: inherit;
+		--link-relaxed-underline-color: currentColor;
+	}
+
 	.setup {
 		.year {
 			color: var(--year-ink, var(--ink-auxiliary));
