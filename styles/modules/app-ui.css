@@ -530,8 +530,11 @@ html[data-brand-character='editorial']:not([data-red-light]) .site-tray .panel {
 	--app-menu-row-hover-fill: color-mix(in oklch, var(--fill-primary) 12%, var(--ink-primary));
 }
 
+/* No halo at rest - removed by SIZE (the band shrinks inside the dot), not
+   by a 0% color-mix, which iOS Safari painted as a dark smudge on the
+   black card (Derek's phone screenshot, 2026-09-30). */
 html[data-brand-character='editorial']:not([data-red-light]) .site-tray .panel .plain-range:not(.is-grabbed) {
-	--range-halo-strength: 0%;
+	--range-halo: var(--range-dot);
 }
 
 /* No dim: the reversed block already stands apart from the page by value,

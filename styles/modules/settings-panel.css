@@ -975,8 +975,10 @@ button.trigger {
 	   rounded, depth from its shadow - so no edge ever runs along the bar
 	   and no seam is drawn. Undoes the phone posture's flush-right edge on
 	   purpose: with rounding and a shadow, the gap reads as intended.
-	   The Interface character wears it for real (Ghost can't straddle). */
-	:is(html[data-placement='float'], html[data-brand-character='interface']) .panel {
+	   The Interface character wears it for real (Ghost can't straddle), and
+	   so does Editorial: its bare icons would vanish into a black card
+	   rising behind them (Derek's phone test, 2026-09-30). */
+	:is(html[data-placement='float'], html[data-brand-character='interface'], html[data-brand-character='editorial']) .panel {
 		top: calc(100% + var(--layout-panel-gap));
 		right: var(--gutter);
 		/* A floating card keeps its designed measure - the phone rule's
