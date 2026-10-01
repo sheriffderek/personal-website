@@ -52,7 +52,7 @@ Round 1 target: GoFundMe Senior Product Designer application. Five entries neede
 - **Layout + print**: `styles/modules/resume.css` - the file's comments carry the load-bearing knowledge (left-column-first grid, absolute-grid-item centering and its auto-end-line gotcha, and the whole measured PDF pipeline: Type 3 variable-font fix, paint-order-equals-extraction-order, the verification loop).
 - **Templates**: `templates/pages/cover-letter.php` and the shared header partial `includes/resume-header.php` belong to the system too.
 - **Template**: `templates/pages/resume-lane.php` - semantic groups, reader-only ATS headings ("Experience" wording is deliberate), source order = reading order = parse order. Open `$todo`: advocate lane's `speaking_first`.
-- **Export**: headless Chrome `--print-to-pdf` per route (command in resume.css's print comment); exports land in `~/Desktop/resume-exports/` by convention.
+- **Export**: `bin/resume-fit-check.sh` is the only export path - it prints each route with headless Chrome, checks it, and publishes to the kit in `job-search/resumes/`. Its header comment carries the two ways to apply (the lane defaults, and `--target <slug>` for a special application), the filename rule, and the `SENT` freeze.
 - **Journal raw material**: `notes/resume-system-notes.md` (private).
 
 ## Motion policy (2026-07-14)
