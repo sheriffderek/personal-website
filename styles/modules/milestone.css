@@ -79,20 +79,52 @@
 	   is relaxed, so it takes this color and lets the underline say "link".
 	   Sits in the card's text flow, so the prose rhythm spaces it. */
 	.card-action {
-		/* A solid pill - the skill chips inverted (they're a pale accent
-		   tint with dark ink; this is the accent itself with paper ink), so
-		   it reads as the card's action, not another tag, and never as a
-		   plain link like the Read more beside it. Same geometry as a chip. */
-		width: fit-content;
-		padding: 0.2em 0.6em;
-		border-radius: var(--tag-corners, var(--corners, 0));
-		background: var(--accent);
-		color: var(--fill-primary);
+		/* The mood accent, which fits every theme cell; the motion below
+		   is what makes it stand out (Derek, 2026-09-30). Tried and dropped
+		   the same day: a filled pill, a fixed per-mood second color (it
+		   clashed - rose beside a green card), and a deeper tone of the
+		   card's own color (too close to its links). A different-hue rule
+		   with per-cell overrides is the open idea if it ever needs more. */
+		--highlight: var(--accent);
+		color: var(--highlight);
 
-		/* A link inside takes the pill's ink and underlines in it - the
-		   scope's own stroke would vanish on the accent. */
+		/* A link inside takes the slot's color and underlines in it. */
 		--link-relaxed-color: inherit;
 		--link-relaxed-underline-color: currentColor;
+
+		/* In progress: a soft fade passes across the letters, left to
+		   right, on a loop - "being written right now", the feel of a
+		   working status. The band is the same color at lower alpha (an
+		   alpha step, not a new color). Ambient motion nobody asked for,
+		   so it stands down under reduced motion (CLAUDE.md motion policy). */
+		&[data-status='in-progress'] .label {
+			background: linear-gradient(
+				90deg,
+				var(--highlight) 35%,
+				oklch(from var(--highlight) l c h / 0.15) 50%,
+				var(--highlight) 65%
+			);
+			background-size: 300% 100%;
+			background-clip: text;
+			color: transparent;
+			animation: card-action-fade 4.8s linear infinite;
+
+			@media (prefers-reduced-motion: reduce) {
+				animation: none;
+			}
+		}
+
+		/* The "live" dot - the universal "happening now" mark, ahead of the
+		   words. In CSS, not the copy: it's a status signal, not a sentence.
+		   An escape, not the literal glyph (setup.css's charset note). */
+		&[data-status='in-progress']::before {
+			content: "\25CF\00A0";
+			animation: card-action-breathe 4.8s ease-in-out infinite;
+
+			@media (prefers-reduced-motion: reduce) {
+				animation: none;
+			}
+		}
 	}
 
 	.setup {
@@ -735,5 +767,39 @@
 		.meta {
 			color: var(--ink-secondary);
 		}
+	}
+}
+
+/* The in-progress fade's sweep (.card-action above): one steady pass,
+   left to right, then a rest - the "it's running" feel of a working
+   status, not a blink. The pass is the first half of the cycle; the
+   second half holds the band off-text (Derek, 2026-09-30: "3x as much
+   pause" - the pass alone left about a third as much gap). The dim band
+   moves over full-strength letters (rather than a bright band over dim
+   ones) so the text holds its contrast most of the time. */
+@keyframes card-action-fade {
+	0% {
+		background-position: 100% 0;
+	}
+
+	50%,
+	100% {
+		background-position: 0% 0;
+	}
+}
+
+/* The dot's breath (.card-action above) - the same 4.8s cycle as the
+   letter fade, timed to the fade's rest: the band sweeps the words in the
+   first half, the dot breathes once in the second. They take turns, so the
+   line reads as one living thing, never two motions competing. */
+@keyframes card-action-breathe {
+	0%,
+	50%,
+	100% {
+		opacity: 1;
+	}
+
+	75% {
+		opacity: 0.25;
 	}
 }

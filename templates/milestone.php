@@ -130,7 +130,7 @@
 		     "link" + "link_label" - somewhere else to go (a resource, a page);
 		       a targeted link wears the ↗ mark on its own (setup.css). */ ?>
 		<?php if (!empty($milestone['case_study'])): ?>
-			<p class='card-action stamp-voice'>Comprehensive case study in progress</p>
+			<p class='card-action stamp-voice' data-status='in-progress'><span class='label'>Comprehensive case study in progress</span></p>
 		<?php elseif (!empty($milestone['link'])):
 			$is_external = strpos($milestone['link'], 'http') === 0;
 		?>
