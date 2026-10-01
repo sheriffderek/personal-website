@@ -181,8 +181,12 @@ a[target]::after {
 	   browser guesses - fine in some contexts, Latin-1 in others. This escape
 	   fixes the glyphs, but any future non-ASCII in a CSS content: value will
 	   mojibake the same way. The real fix is serving .css as charset=utf-8
-	   (Apache AddDefaultCharset / a content-type header in the router). */
-	content: "\2197";
+	   (Apache AddDefaultCharset / a content-type header in the router).
+
+	   The \FE0E after it asks for the TEXT form of the arrow: ↗ has an
+	   emoji form too, and iOS Safari drew the blue emoji tile on every
+	   outbound link (Derek's phone screenshot, 2026-09-30). */
+	content: "\2197\FE0E";
 	display: inline-block;
 	padding-left: 0.05em;
 }
