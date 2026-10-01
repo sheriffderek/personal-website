@@ -2,7 +2,7 @@
 
 Started 2026-09-15 from Derek's braindump; direction updated 2026-09-17.
 
-Rule of thumb Derek noted: you're only really supposed to have 4-5 case studies. Everything else is either a smaller feature study or a journal piece. (The 2026-09-17 idea of the top 4-5 living on a case-study homepage is dropped; the replacement idea - the timeline filter narrowing below 16 to only the case studies - is in `backlog.md`.)
+Rule of thumb Derek noted: you're only really supposed to have 4-5 case studies. Everything else is either a smaller feature study or a journal piece. (The 2026-09-17 idea of the top 4-5 living on a case-study homepage is dropped; the replacement - the timeline filter narrowing one notch left of the default to only the case studies - is built: tier 0, see Timeline weights in CLAUDE.md.)
 
 ## Page design direction (2026-09-17)
 

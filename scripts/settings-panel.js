@@ -589,13 +589,15 @@
 	});
 
 	/* Timeline filter — slider sets number of weight tiers shown, cumulative.
-	   1 = weight-1 entries only (the gap-covered product-design pitch),
-	   6 = everything. Weight 1 is the HIGHEST tier — the slider value is also
-	   the deepest weight shown, so "show tiers 1..n" is just weight <= n.
-	   Six tiers per the weight rubric in CLAUDE.md. Names read cumulatively —
+	   0 = the case studies alone (the narrowest view, one notch LEFT of the
+	   default), 1 = the gap-covered pitch (the default), 6 = everything.
+	   Lower weight is the HIGHER tier — the slider value is also the deepest
+	   weight shown, so "show tiers 0..n" is just weight <= n. Seven tiers
+	   (0-6) per the weight rubric in CLAUDE.md. Names read cumulatively —
 	   each step ADDS to the view above it. 2–5 are working phrasings; reword
 	   freely (the label also shows the live count / total). */
 	var FILTER_NAMES = {
+		0: 'Key work examples',
 		1: 'Core product work',
 		2: '+ major support',
 		3: '+ broader projects',
@@ -758,7 +760,7 @@
 	var savedFilter = null;
 	try { savedFilter = localStorage.getItem('filter-preference'); } catch (error) {}
 	var initialFilter = savedFilter ? parseInt(savedFilter, 10) : FILTER_DEFAULT;
-	if (isNaN(initialFilter) || initialFilter < 1 || initialFilter > MAX_WEIGHT) initialFilter = FILTER_DEFAULT;
+	if (isNaN(initialFilter) || initialFilter < 0 || initialFilter > MAX_WEIGHT) initialFilter = FILTER_DEFAULT;
 
 	function cardWeight(card) {
 		var article = card.matches('[data-weight]') ? card : card.querySelector('[data-weight]');
@@ -779,7 +781,7 @@
 		filterSlider.addEventListener('input', function () {
 			var raw = parseFloat(filterSlider.value);
 			if (isNaN(raw)) raw = initialFilter;
-			var nextTiers = Math.max(1, Math.min(MAX_WEIGHT, Math.round(raw)));
+			var nextTiers = Math.max(0, Math.min(MAX_WEIGHT, Math.round(raw)));
 			if (nextTiers === lastTiersShown) return;
 			lastTiersShown = nextTiers;
 
@@ -811,22 +813,22 @@
 			}, 180);
 
 			if (window.ui && window.ui.sound) {
-				var t = (nextTiers - 1) / (MAX_WEIGHT - 1);
+				var t = nextTiers / MAX_WEIGHT;
 				window.ui.sound('tick', t);
 			}
 		});
 	});
 
 	/* Deep-link vs. filter: a shared link like /#pe-figure-cms-options can point
-	   at a milestone the default filter (weight 1 only) hides. At load that
+	   at a milestone the default filter (weights 0-1) hides. At load that
 	   target is display:none, so the browser's native hash-scroll lands on a
 	   collapsed element - the link looks broken. So before the first applyFilter,
 	   if the hash names a milestone, widen the initial filter just enough to
 	   reveal that milestone's weight, then scroll it in ourselves (the native
 	   scroll already ran against the hidden element and missed). The slider ends
 	   up reading the widened tier, honestly reflecting what's on screen.
-	   With weight 1 as the top tier, a card's weight IS the tier count that
-	   reveals it. */
+	   Because the slider value is the deepest weight shown, a card's weight
+	   IS the slider value that reveals it. */
 	function tiersToReveal(weight) {
 		return weight;
 	}
@@ -1523,7 +1525,7 @@
 
 		if (entries.length) {
 			var tiers = savedFilter ? parseInt(savedFilter, 10) : FILTER_DEFAULT;
-			if (isNaN(tiers) || tiers < 1 || tiers > MAX_WEIGHT) tiers = FILTER_DEFAULT;
+			if (isNaN(tiers) || tiers < 0 || tiers > MAX_WEIGHT) tiers = FILTER_DEFAULT;
 			applyFilter(tiers, { persist: false });
 		}
 

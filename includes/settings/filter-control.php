@@ -2,7 +2,7 @@
 	<p class='app-data-voice' id='filter-control-label<?= $id_suffix ?? '' ?>'>Scope: <span class='filter-count'><span data-filter-count>0</span> / <span data-filter-total>0</span></span></p>
 
 	<div class='filter-body'>
-		<input type='range' min='1' max='6' step='any' value='1' data-set-filter class='plain-range' aria-label='Timeline scope'>
+		<input type='range' min='0' max='6' step='any' value='1' data-set-filter class='plain-range' aria-label='Timeline scope'>
 
 		<?php /* The tier's descriptive name, under the slider. Hidden on the narrow
 		         popover (it would wrap); shown from the 1024px breakpoint where

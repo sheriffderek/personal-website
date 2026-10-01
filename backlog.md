@@ -2,10 +2,6 @@
 
 Future ideas and parked work - after version 1 (`v1.md`). Each item keeps the reasoning that got it here, so picking one up doesn't mean re-deriving it. Nothing here is scheduled; an item moves to `v1.md` only when Derek brings it up.
 
-## Timeline filter: below 16 shows only case studies (Derek, 2026-09-24 - an idea)
-
-Replaces the 2026-09-17 "homepage as 4-5 case-study conversations" direction, which is **dropped** - no new page. The idea instead: the filter sits at 16 (the weight-1 pitch) by default, and moving it further left narrows to only the case studies. This is the "Shape B" the Timeline weights section of CLAUDE.md says was chosen against (narrowing below the pitch), so it's a deliberate revisit of that call, not a drift into it. Needs case studies to exist first.
-
 ## Per-target URL plumbing (the seam that unlocks tailored intros)
 
 Discussion 2026-09-15. The `?target=<company>` view works when a recruiter clicks a link, but the resume PDF is what actually leaves the site - and a naked domain typed after seeing the PDF loses the target. Fixes, in order:
