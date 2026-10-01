@@ -27,7 +27,8 @@ label {
 
 /* Find-in-page (Ctrl/Cmd+F) wears the same highlighter pair, and the match
    you're on flips to the scope's own ink so it stands out the way the
-   browser's orange does. Chrome only for now (::search-text, 2026) -
+   browser's orange does - unless the mood names its own search pens
+   (--search-* and --search-current-*, settings/moods.css). Chrome only for now (::search-text, 2026) -
    elsewhere the browser keeps its yellow. Kept as separate rules on
    purpose: a selector list holding a pseudo-element a browser doesn't know
    is dropped whole, which would take ::selection down with it.
@@ -35,24 +36,28 @@ label {
    for states a page can't show on its own (templates/journal/kitchen-sink.php)
    - same tokens, so they repaint with the real thing. */
 ::search-text {
-	background-color: var(--selection-fill, color-mix(in oklab, var(--ink-primary) 75%, transparent));
-	color: var(--selection-ink, var(--fill-primary));
+	background-color: var(--search-fill, var(--selection-fill, color-mix(in oklab, var(--ink-primary) 75%, transparent)));
+	color: var(--search-ink, var(--selection-ink, var(--fill-primary)));
 }
 
 ::search-text:current {
-	background-color: var(--ink-primary);
-	color: var(--fill-primary);
+	background-color: var(--search-current-fill, var(--ink-primary));
+	color: var(--search-current-ink, var(--fill-primary));
 }
 
-.is-selected,
-.search-match {
+.is-selected {
 	background-color: var(--selection-fill, color-mix(in oklab, var(--ink-primary) 75%, transparent));
 	color: var(--selection-ink, var(--fill-primary));
 }
 
+.search-match {
+	background-color: var(--search-fill, var(--selection-fill, color-mix(in oklab, var(--ink-primary) 75%, transparent)));
+	color: var(--search-ink, var(--selection-ink, var(--fill-primary)));
+}
+
 .search-match.is-current {
-	background-color: var(--ink-primary);
-	color: var(--fill-primary);
+	background-color: var(--search-current-fill, var(--ink-primary));
+	color: var(--search-current-ink, var(--fill-primary));
 }
 
 /* A highlighted run of prose (<mark>) wears the same pair as a text

@@ -40,8 +40,13 @@
 
    OPTIONAL (a mood declares these ONLY to override the default highlighter):
        --selection-fill   --selection-ink
+       --search-fill   --search-ink   (find-in-page matches; undeclared =
+         the selection pair)
+       --search-current-fill   --search-current-ink   (the match you're on;
+         undeclared = the scope's own ink, inverted)
+       --scrim   (the dim under an over-content panel; default in base.css)
    Left undeclared, a mood inherits Expressive's highlighter (it binds to :root
-   below), which is the shared default. Technical restates it; Quiet inherits it.
+   below), which is the shared default. Technical and Quiet restate it.
 
    EXPRESSIVE is the DEFAULT: its palette binds to `:root` as well as its own
    attribute, so the page paints by default AND Expressive is a findable named
@@ -168,10 +173,23 @@
 	   verdict, not a placeholder; don't re-tune it casually. */
 	--accent: light-dark(var(--color-olive-700), var(--color-olive-400));
 
-	/* The quiet marker: a gray highlighter, not the shared yellow - nothing
-	   shouts in this room, the selection included. */
-	--selection-fill: var(--color-stone-300);
+	/* The quiet markers: three pale pens, one per job - yellow for a
+	   selection, blue for find-in-page matches, red for the match you're on
+	   (Derek, 2026-09-29: the gray marker read as dim, not marked, and the
+	   full-ink current match was the one loud thing in the room).
+	   Yellow/blue/red is Derek's own "house" - the art-school primaries, his
+	   go-to. $todo: an open question whether these pens graduate to the
+	   default (the Expressive block, so every mood inherits them unless it
+	   restates). They start here in Quiet. */
+	--selection-fill: var(--color-yellow-100);
 	--selection-ink: var(--color-stone-900);
+	--search-fill: var(--color-blue-100);
+	--search-ink: var(--color-stone-900);
+	--search-current-fill: var(--color-red-200);
+	--search-current-ink: var(--color-stone-900);
+
+	/* A lighter dim - on gray paper the default scrim reads heavy. */
+	--scrim: light-dark(rgb(0 0 0 / 0.08), rgb(0 0 0 / 0.35));
 
 	/* Skill tags go gray: the one hint is spent on the posters' focal
 	   mark, so a row of accent-tinted chips would be a second voice
