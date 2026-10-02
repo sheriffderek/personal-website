@@ -842,9 +842,13 @@ button.trigger {
 	   Float's does. History (Derek): the straddle began as a way to save
 	   space - starting the card mid-bar bought back half a bar - and it
 	   looked cool, so it stayed. With the rows pinned it no longer saves
-	   anything; it stays purely as a look. */
-	right: var(--gutter);
-	width: min(calc(100% - 5rem), var(--layout-panel-max));
+	   anything; it stays purely as a look.
+	   The shared edge is the SCREEN's (Derek, 2026-10-02, reversing the
+	   inset of 2026-09-29): flush right, every character, Float too - the
+	   card's own padding keeps the controls on the toolbar's line, and the
+	   inset only spent the controls' room on a sliver of page. */
+	right: 0;
+	width: calc(100% - 5rem);
 
 	/* BIGGER SCREENS (700 up to the 1024 sidebar) - a classic anchored
 	   dropdown, three rules and nothing unstated (Derek, 2026-08-12:
@@ -868,6 +872,14 @@ button.trigger {
 	   mid-fade (Derek, 2026-07-19). The soft edge of the choreography is the
 	   SHADE's job - it fades on its own clock (section 3); the panel just
 	   appears, already solid, on top of it. Its paint is .app-card, above. */
+
+	/* Flush against the screen's right edge, so that side has no seam to
+	   draw: no right border, no right corners - the card blends into the
+	   edge instead of outlining against it. */
+	@media (width < 700px) {
+		border-right: none;
+		border-radius: var(--app-corners) 0 0 var(--app-corners);
+	}
 
 	/* A closed panel MUST be display:none - THE lesson that must not regress
 	   (it predates the manual state machine and survives it). Anything less
@@ -980,13 +992,9 @@ button.trigger {
 	   rising behind them (Derek's phone test, 2026-09-30). */
 	:is(html[data-placement='float'], html[data-brand-character='interface'], html[data-brand-character='editorial']) .panel {
 		top: calc(100% + var(--layout-panel-gap));
-		right: var(--gutter);
-		/* A floating card keeps its designed measure - the phone rule's
-		   "screen minus a strip" stretched it on big phones and small
-		   tablets (Derek, 2026-09-25: "too wide"). */
-		width: min(calc(100% - 5rem), var(--layout-panel-max));
-		border-right: var(--app-border-width) solid var(--app-stroke);
-		border-radius: calc(var(--app-trigger-size) / 3);
+		/* Same right edge and width as every phone card (ONE PHONE
+		   GEOMETRY) - flush to the screen, so only the left corners round. */
+		border-radius: calc(var(--app-trigger-size) / 3) 0 0 calc(var(--app-trigger-size) / 3);
 
 		.panel-scroll {
 			max-height: calc(100svh - (var(--app-trigger-size) + var(--app-border-width) * 2 + 1rem) - var(--layout-panel-gap) * 2);
