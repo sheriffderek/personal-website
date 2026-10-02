@@ -5,3 +5,6 @@ meta-image/cache/
 
 # The theme-shots tool pulls puppeteer-core with npm install --no-save (see tools/theme-shots.js).
 node_modules/
+
+# The Vimeo API token - local only, read by the bin/ script that looks up video file links. Never committed, so never deployed.
+.vimeo-token

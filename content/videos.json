@@ -1,0 +1,51 @@
+{
+	"1228952549": {
+		"name": "01-intro",
+		"width": 1920,
+		"height": 1080,
+		"hls": "https://player.vimeo.com/external/1228952549.m3u8?s=33e93fad6ba9528311e602b9a80c25daa62876d7&oauth2_token_id=1827196329",
+		"mp4": "https://player.vimeo.com/progressive_redirect/playback/1228952549/rendition/720p/file.mp4%20%28720p%29.mp4?loc=external&oauth2_token_id=1827196329&signature=8d0a269f01110f70d993d033c1178753fc68dc46211f4b6b58258e49d3076758"
+	},
+	"1228952586": {
+		"name": "02-day-outline",
+		"width": 1920,
+		"height": 1080,
+		"hls": "https://player.vimeo.com/external/1228952586.m3u8?s=43a8cb20316c3734c182a45deb270cd5149f068c&oauth2_token_id=1827196329",
+		"mp4": "https://player.vimeo.com/progressive_redirect/playback/1228952586/rendition/720p/file.mp4%20%28720p%29.mp4?loc=external&oauth2_token_id=1827196329&signature=9ade01e8a3c46731f35bcb6d7e033efe7273232690893239c6e7190ff3a91dcf"
+	},
+	"1228959941": {
+		"name": "03-meaning-of-sections",
+		"width": 1920,
+		"height": 1080,
+		"hls": "https://player.vimeo.com/external/1228959941.m3u8?s=fab0a612ebaa8b5b8b199a5679ddb9f1a55940cf&oauth2_token_id=1827196329",
+		"mp4": "https://player.vimeo.com/progressive_redirect/playback/1228959941/rendition/720p/file.mp4%20%28720p%29.mp4?loc=external&oauth2_token_id=1827196329&signature=2455d73d27fef7c5d996245ae35ddd7615cdaf1792e148843be6ce5d250a5400"
+	},
+	"1228980047": {
+		"name": "04-content-types",
+		"width": 1920,
+		"height": 1080,
+		"hls": "https://player.vimeo.com/external/1228980047.m3u8?s=f779fa399e8136fb22c57490b208c23fc94bc25a&oauth2_token_id=1827196329",
+		"mp4": "https://player.vimeo.com/progressive_redirect/playback/1228980047/rendition/720p/file.mp4%20%28720p%29.mp4?loc=external&oauth2_token_id=1827196329&signature=3bef6581f7b799b69a184a3f91914564dd047a6aa23d4bee71489416241399ec"
+	},
+	"1229033043": {
+		"name": "05-enough-to-build",
+		"width": 1920,
+		"height": 1080,
+		"hls": "https://player.vimeo.com/external/1229033043.m3u8?s=fc1f681d4d03c989ca55f3f211a83d644a55f6e4&oauth2_token_id=1827196329",
+		"mp4": "https://player.vimeo.com/progressive_redirect/playback/1229033043/rendition/720p/file.mp4%20%28720p%29.mp4?loc=external&oauth2_token_id=1827196329&signature=96502cd764fa4ffe365887ffe666d61bcc32e3c4dabbc90dd91f832693994259"
+	},
+	"1229034463": {
+		"name": "06-naming-matters",
+		"width": 1920,
+		"height": 1080,
+		"hls": "https://player.vimeo.com/external/1229034463.m3u8?s=26aba4c5ed7cf57468c1225368a085958d6ad3ec&oauth2_token_id=1827196329",
+		"mp4": "https://player.vimeo.com/progressive_redirect/playback/1229034463/rendition/720p/file.mp4%20%28720p%29.mp4?loc=external&oauth2_token_id=1827196329&signature=d95f08eb66cadfd922df04b5d6484a2070185644c480d43e54011202d1d18cfa"
+	},
+	"1229039339": {
+		"name": "07-phases-the-journey",
+		"width": 1920,
+		"height": 1080,
+		"hls": "https://player.vimeo.com/external/1229039339.m3u8?s=d39ad9c4ad197694ccd8e8132da1812c5bade249&oauth2_token_id=1827196329",
+		"mp4": "https://player.vimeo.com/progressive_redirect/playback/1229039339/rendition/720p/file.mp4%20%28720p%29.mp4?loc=external&oauth2_token_id=1827196329&signature=31a57935e27a3d45b34a1892c1f21376e410ba1fd44219b326709b0f8623df3c"
+	}
+}

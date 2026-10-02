@@ -65,11 +65,10 @@
 	}
 }
 
-/* A study video (includes/study-video.php): the Vimeo player, the graphic
-   over it, and the play cue, stacked in one 16:9 box. Taps fall through the
-   graphic and the cue to the player (the partial says why). data-state
-   (scripts/study-video.js lists them) decides what shows. Every color is a
-   theme token, so the cue repaints with the theme. */
+/* A study video (includes/study-video.php): the video, the graphic over
+   it, and the play button, stacked in one 16:9 box. data-state (written by
+   scripts/study-video.js, which lists them) decides what shows. Every color
+   is a theme token, so the button repaints with the theme. */
 study-video {
 	--play-size: 3.5rem;
 
@@ -83,19 +82,23 @@ study-video {
 	mix-blend-mode: var(--media-blend, normal);
 
 	/* Every layer covers the whole box. Absolute, not a percentage height:
-	   iOS Safari left the iframe short when it sized by height: 100%. */
-	iframe,
-	.face {
+	   iOS Safari left a layer short when it sized by height: 100%. */
+	video,
+	.face,
+	.play {
 		position: absolute;
 		inset: 0;
 		width: 100%;
 		height: 100%;
-		border: 0;
 	}
 
-	/* Opaque, so it fully covers the player - even before a graphic exists. */
+	video {
+		display: block;
+		object-fit: cover;
+	}
+
+	/* Opaque, so it fully covers the video - even before a graphic exists. */
 	.face {
-		pointer-events: none;
 		background: var(--fill-secondary);
 		transition:
 			opacity 0.4s ease,
@@ -109,15 +112,27 @@ study-video {
 		}
 	}
 
-	.cue {
-		position: absolute;
-		bottom: 1rem;
-		left: 1rem;
+	/* The whole graphic is the hit area; the circle is just the cue. */
+	.play {
+		display: flex;
+		align-items: flex-end;
+		justify-content: flex-start;
+		padding: 1rem;
+		border: 0;
+		background: none;
+		cursor: pointer;
+
+		&:focus-visible {
+			outline: 2px solid var(--accent);
+			outline-offset: -4px;
+		}
+	}
+
+	.glyph {
 		display: grid;
 		place-items: center;
 		width: var(--play-size);
 		aspect-ratio: 1;
-		pointer-events: none;
 		border: 2px solid var(--accent);
 		border-radius: 50%;
 		background: var(--fill-primary);
@@ -133,23 +148,31 @@ study-video {
 		}
 	}
 
-	&:hover .cue {
+	.play:hover .glyph {
 		scale: 1.08;
 	}
 
-	/* Tapped: the cue goes at once, so it never sits on top of Vimeo's
-	   control bar. The graphic holds until the video is really playing -
-	   that's where a loader goes. */
-	&[data-state='loading'] .cue {
+	/* No script, no data-state: the graphic and button stay out of the way
+	   and the video keeps its own controls. (Only where there IS a video -
+	   one with no links yet just shows its graphic.) */
+	&:has(video):not([data-state]) {
+		.face,
+		.play {
+			display: none;
+		}
+	}
+
+	/* Pressed: the button goes at once. The graphic holds until the video
+	   is really playing - that's where a loader goes. */
+	&[data-state='loading'] .play {
 		visibility: hidden;
 	}
 
-	/* Playing - or a keyboard visitor has tabbed into the player, and needs
-	   to see Vimeo's own buttons: the graphic and the cue step aside. */
-	&[data-state='playing'],
-	&:focus-within {
+	/* Playing: the graphic and the button step aside for the video and the
+	   browser's own controls. */
+	&[data-state='playing'] {
 		.face,
-		.cue {
+		.play {
 			visibility: hidden;
 			opacity: 0;
 		}
