@@ -1427,11 +1427,21 @@ button.trigger {
 	&::-webkit-slider-thumb {
 		-webkit-appearance: none;
 		appearance: none;
-		width: var(--range-hit);
-		height: var(--range-hit);
-		/* Center the thumb box on the 4px track. */
-		margin-top: calc((var(--range-hit) - 4px) / -2);
+		/* Raw px, NOT var(--range-hit) - the house exception: iOS Safari
+		   mishandles custom properties in ::-webkit-slider-thumb geometry,
+		   so the box sized one way at rest and the full 40px only once
+		   .is-grabbed forced a recalc - every row below shifted down on a
+		   touch grab (Derek's phone screenshots, 2026-10-02). Must match
+		   --range-hit (40px); margin-top centers it on the 4px track. */
+		width: 40px;
+		height: 40px;
+		margin-top: -18px;
 		border: 0;
+		/* Cancel the default shadow iOS paints on the thumb - the white
+		   disc and soft shadow behind our knob on a phone (Derek's
+		   screenshots, 2026-10-02) are the browser's, not ours; the
+		   background shorthand below already clears its fill. */
+		box-shadow: none;
 		border-radius: 50%;
 		background: radial-gradient(
 			circle at center,
@@ -1449,8 +1459,9 @@ button.trigger {
 	}
 
 	&::-moz-range-thumb {
-		width: var(--range-hit);
-		height: var(--range-hit);
+		/* Raw px to match the WebKit thumb above (= --range-hit). */
+		width: 40px;
+		height: 40px;
 		border: 0;
 		border-radius: 50%;
 		background: radial-gradient(
