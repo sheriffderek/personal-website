@@ -73,9 +73,9 @@ foreach (array_keys($ids) as $id) {
 	}
 
 	// The adaptive stream (HLS) for every browser that plays it natively,
-	// and one plain MP4 for the ones that don't: 720p when Vimeo made one
-	// (plenty for a talk-through, and lighter than 1080p), otherwise the
-	// largest it did make. Not every upload gets every size.
+	// and the largest plain MP4 for the ones that don't. Largest, because
+	// on a desktop the video runs about 1600 CSS pixels wide - 720p looked
+	// soft there (Derek, 2026-10-02) - and it only loads once pressed.
 	$hls = '';
 	$mp4 = '';
 	$mp4_width = 0;
@@ -86,11 +86,7 @@ foreach (array_keys($ids) as $id) {
 			continue;
 		}
 
-		if ($file['type'] !== 'video/mp4' || $mp4_width === 1280) {
-			continue;
-		}
-
-		if ($file['width'] === 1280 || $file['width'] > $mp4_width) {
+		if ($file['type'] === 'video/mp4' && $file['width'] > $mp4_width) {
 			$mp4 = $file['link'];
 			$mp4_width = $file['width'];
 		}

@@ -163,7 +163,9 @@ study-video {
 	}
 
 	/* Pressed: the button goes at once. The graphic holds until the video
-	   is really playing - that's where a loader goes. */
+	   is really playing - that's where a loader goes. (On a phone it holds
+	   the whole time: the video plays in the phone's full-screen player,
+	   and the graphic is what they come back to.) */
 	&[data-state='loading'] .play {
 		visibility: hidden;
 	}

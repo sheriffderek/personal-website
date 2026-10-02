@@ -7,7 +7,9 @@
 	   Not Vimeo's own player: that's a separate page in an iframe, and iOS
 	   only allows sound when the tap lands inside the frame that plays it -
 	   so our play button could never start it with sound. Here the button
-	   and the video share a page, so one tap plays it, sound and all.
+	   and the video share a page, so one tap plays it, sound and all. On a
+	   phone that tap opens the phone's own full-screen player instead of
+	   playing inline (scripts/study-video.js says why).
 
 	   The links come from content/videos.json, keyed by the Vimeo id;
 	   bin/vimeo-links.php writes that file (its comment says when to run
