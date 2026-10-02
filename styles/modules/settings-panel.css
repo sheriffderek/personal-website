@@ -1217,33 +1217,38 @@ button.trigger {
 		margin-bottom: var(--app-row-label-gap);
 	}
 
-	/* A slider is measured the way the eye reads it - label to the TOP OF
-	   THE DOT, the same 8px as label to a pill's edge. The dot sits
-	   (halo - dot) / 2 below the pulled-in box's top, which is already 8px
-	   here, so its label takes no gap of its own. Without this the track
-	   sat midway between its label and the next one, and the eye couldn't
-	   tell which label a slider belonged to (Derek's screenshot,
-	   2026-09-25). */
-	.app-data-voice:has(+ .plain-range) {
-		margin-bottom: calc(var(--app-row-label-gap) - (var(--range-halo, 30px) - var(--range-dot, 14px)) / 2);
+	/* A slider's label sits HALF the shared gap above the halo's edge -
+	   4px to a pill's 8px. The halo is a soft ring, not a hard edge, so a
+	   full gap read as the label drifting off from its line (Derek,
+	   2026-10-02: "uniform - but the ranges need special optical
+	   adjustment"; the old measure-to-the-dot rule of 2026-09-25 left the
+	   halo touching its label). The Scope label counts too - its slider
+	   leads the .filter-body after it. */
+	.app-data-voice:is(:has(+ .plain-range), :has(+ .filter-body)) {
+		margin-bottom: calc(var(--app-row-label-gap) / 2);
 	}
 
-	/* A slider's grab box is 40px tall with the visible halo (30px) in its
-	   middle, so its dead top and bottom used to pad the rhythm unevenly.
-	   Pulled in to the halo, the row measures what you see. The grab box
-	   itself is untouched - still 40px under a finger (the "butter" rule);
-	   only its layout footprint shrinks, and the pressed halo may paint a
-	   few px past it. */
+	/* The rest of the adjustment is the slider's box itself: its
+	   grab area is 40px with the designed 30px halo in the middle, so it's
+	   pulled in 5px top and bottom and the row measures what you see. The
+	   grab area is untouched - still 40px under a finger (the "butter"
+	   rule); only its layout footprint shrinks.
+	   A FIXED 5px, never derived from --range-halo: a character may shrink
+	   its halo at rest (Editorial) and the grab swells it, so a derived
+	   pull-in would re-lay the rows on every grab - the jump this replaces. */
 	.plain-range {
 		/* Block, or the input sits on a text line that reserves descender
 		   room under it - ~9px of invisible space below every slider. */
 		display: block;
-		margin-block: calc((var(--range-hit) - var(--range-halo)) / -2);
+		margin-block: -5px;
 	}
 
 	.axes-group {
 		display: grid;
-		gap: 12px; /* the three axis sliders read as one instrument - tighter than the panel's row rhythm; px per the control-geometry units rule */
+		/* The panel's own row rhythm (Derek, 2026-10-02: uniform). It was a
+		   tighter 12px so the three sliders read as one instrument, but the
+		   halos crowded the next label. */
+		gap: 1.5rem;
 	}
 
 	/* Radio pills: a radio dot + label. The visible pill is deliberately slim
@@ -1487,7 +1492,9 @@ button.trigger {
 	.filter-body {
 		display: grid;
 		gap: 8px;
-		margin: 0.5rem 0 0;
+		/* No top margin: the Scope label above carries the slider's gap
+		   (the half gap, section 4), like every other slider's label. */
+		margin: 0;
 	}
 
 	/* The tier's descriptive name, under the slider. Subtle support, not real
