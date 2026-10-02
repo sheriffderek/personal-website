@@ -331,9 +331,8 @@ button.trigger[data-to-top] {
 			display: grid;
 			grid-template-columns: max-content minmax(0, 1fr) minmax(0, 1fr);
 			grid-template-areas:
-				"scheme    filter-label filter-label"
+				"scheme    filter-label tier-name"
 				"scheme    slider       slider"
-				"axes      tier-name    layout"
 				"axes      map          layout"
 				"axes      map          sounds"
 				"axes      map          red-light";
@@ -371,9 +370,11 @@ button.trigger[data-to-top] {
 			grid-area: red-light;
 		}
 
-		/* The "Filter: n / n" heading (the tier name below has its own row). */
+		/* The "Scope: n / n" heading (the tier name sits beside it). */
 		.settings-band .filter-control > .app-data-voice {
 			grid-area: filter-label;
+			/* Shares a baseline with the tier name beside it. */
+			align-self: baseline;
 		}
 
 		.settings-band .filter-body > .plain-range {
@@ -382,10 +383,14 @@ button.trigger[data-to-top] {
 
 		/* The band is the one surface wide enough for the tier-name aside
 		   (hidden everywhere else - see .filter-level-name in
-		   modules/settings-panel.css). It heads the minimap's column. */
+		   modules/settings-panel.css). It rides the Scope line, in the empty
+		   right half above the toggles (Derek, 2026-10-02): heading the map's
+		   narrow column it wrapped, and its height pushed the map and Layout
+		   rows out of line. Baseline-aligned so it reads as the label's aside. */
 		.settings-band .filter-level-name {
 			grid-area: tier-name;
 			display: block;
+			align-self: baseline;
 		}
 
 		/* In the band the map graduates from popover diagram to the
