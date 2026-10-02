@@ -293,7 +293,12 @@ button.trigger[data-to-top] {
 		   work starts. */
 		main {
 			display: grid;
-			grid-template-columns: 3fr 2fr;
+			/* 3:2 when there's room - but the band never narrower than its
+			   own controls (Derek, 2026-10-02): at the low end of this range
+			   a flat 2fr was thinner than the toggles, which spilled into
+			   the tray's lane under the menu button. The intro gives up the
+			   difference. */
+			grid-template-columns: minmax(0, 3fr) minmax(min-content, 2fr);
 			grid-template-areas:
 				"intro settings"
 				"wall  wall";
@@ -329,7 +334,12 @@ button.trigger[data-to-top] {
 		   map. */
 		.settings-band .settings-panel {
 			display: grid;
-			grid-template-columns: max-content minmax(0, 1fr) minmax(0, 1fr);
+			/* The toggles' column is as wide as its buttons (fixed-width
+			   pills); the map's column takes whatever is left, but never
+			   less than a readable two-lane diagram - the minimap is
+			   load-bearing, and at the band's narrowest a 0 floor let it
+			   vanish entirely. */
+			grid-template-columns: max-content minmax(9rem, 1fr) max-content;
 			grid-template-areas:
 				"scheme    filter-label filter-label"
 				"scheme    slider       slider"
