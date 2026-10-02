@@ -11,6 +11,12 @@ $brief = [
 
 $all_milestones = load_json('milestones.json');
 
+/* A link to Derek's booking calendar is written href='CALL_URL' in the
+   JSON (which can't read PHP constants) and filled in here - same move as
+   hello.php and the layered experience chart, so changing schedulers stays
+   the one-line edit in config.php. */
+$all_milestones = json_decode(str_replace("'CALL_URL'", "'" . CALL_URL . "'", json_encode($all_milestones)), true);
+
 // Which lane of the timeline? Defaults to job-relevant entries.
 $filter_tag = isset($_GET['filter']) ? $_GET['filter'] : 'job';
 
