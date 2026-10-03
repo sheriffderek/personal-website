@@ -47,7 +47,12 @@
    shadcn = strict black-and-white, hairline, flat -> Quiet (the
    chrome-takes comment in settings-panel.css already cites shadcn
    for Quiet's chrome; Vercel is the same citation at page scale).
-6. **Journal pages barely theme (Derek, 2026-09-10 - noted for the missing
+6. **Top band, BUILT and unpainted (2026-10-03).** The home page's top
+   (intro + settings band) can take its own ground, edge to edge - the
+   AngelList tonal-step hero. A theme sets `--band-fill` to use it; nothing
+   does yet. How it works, every file it touches, and how to revert: the
+   comment on `.page-top` in `styles/modules/page-header.css`.
+7. **Journal pages barely theme (Derek, 2026-09-10 - noted for the missing
    "emphasis" layer, not scheduled).** On an entry page the axes almost
    don't show: it's all calm-voice prose, no posters, no variant-carrying
    components - switching character/mood/flavor moves only type and inks,

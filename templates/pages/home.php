@@ -36,6 +36,14 @@ $target = isset($_GET['target']) ? load_target($_GET['target']) : null;
 $target_notes = $target['milestones'] ?? [];
 ?>
 
+<?php /* The page's top composition - the intro and (at >= 1450 in grid) the
+	settings band - in one box, so a theme can give the top of the page its
+	own ground (the "bands" idea: a tinted hero over the wall, like a
+	brochure's sections). Prepped, not painted: its fill is the --band-fill
+	slot, unset, so nothing shows until a theme chooses it (grid-view.css
+	lays the two out side by side; page-header.css holds the slot). */ ?>
+<div class='page-top'>
+
 <header class='page-header'>
 	<?php /* The lockup: big name over a small caps role line - identity loud,
 	         metadata quiet. Each span carries its own voice; the h1 is just
@@ -150,6 +158,8 @@ $target_notes = $target['milestones'] ?? [];
 		</div>
 	</section>
 <?php endif; ?>
+
+</div>
 
 <?php /* Shared paint server for poster mass gradients (one def per page -
 	ids are global). See the comment in the partial. */ ?>

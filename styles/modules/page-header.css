@@ -1,3 +1,65 @@
+/* The page's top composition (.page-top, home.php) - the intro plus the
+   settings band - as a BAND: a ground of its own, edge to edge, from the
+   top of the window down to just above the wall (Derek's diagram,
+   2026-10-03; the AngelList hero is the reference - a tonal step, no
+   border, the seam is the only divider).
+
+   Its color is a SLOT, unset: --band-fill paints nothing until a theme
+   chooses it (a mood, a flavor, a character's take - painted from above,
+   never written here). Unset, the layer below is transparent and the page
+   is pixel-identical to before.
+
+   Painted by a layer BEHIND the box, not by the box - so the layout never
+   moves (the box stays in the content column; nothing is restructured):
+     sideways   far past both window edges; .page-wrapper clips sideways
+                overflow (default-layout.css), so no scrollbar
+     upward     past the top of the page - nothing scrolls above it, so
+                the band simply starts at the window's top, behind the tray
+     downward   half-way into the gap before the wall (--band-reach, set
+                per layout beside the gap it halves), which is the band's
+                breathing room under its content without moving the wall
+   Only sideways is clipped, never vertical, so a grabbed slider's halo in
+   the settings band can't be trimmed.
+
+   Why a layer and not real full-width sections: main sits in the page
+   grid's content column with the tray rail beside it, and making sections
+   span the grid (subgrid, or main > section > inner-column) meant
+   reworking the shell for every page. This page only needed one band, so
+   the layer does it without touching the grid (Derek, 2026-10-03). If more
+   bands or other pages ever want this, that's the moment to revisit.
+
+   EVERY PIECE, so it can be changed or reverted as one unit:
+     1. templates/pages/home.php - the <div class='page-top'> wrapping the
+        intro and the settings band
+     2. this rule - the slot and the ::before layer
+     3. layouts/default-layout.css - overflow-x: clip on .page-wrapper
+     4. layouts/grid-view.css - .page-top owns the 1450 intro|settings
+        columns (main became one column of top + wall), and --band-reach
+        per grid layout
+   To revert: undo 1-4 and put the 3fr/2fr columns back on main. With the
+   slot unset none of it is visible, so it can also just sit unused.
+   Open calls, for when a theme first paints it: the phone's sticky top
+   bar keeps the page's own color over the band (match it or not), and
+   which themes want a band at all. */
+.page-top {
+	--band-reach: 2.5rem; /* half the list view's 5rem gap (milestone.css) */
+
+	position: relative;
+	/* Its own stacking context, so the layer's z-index -1 sits behind the
+	   box's content but never behind the page itself. */
+	isolation: isolate;
+
+	&::before {
+		content: '';
+		position: absolute;
+		z-index: -1;
+		inset-inline: -100vmax;
+		top: -100vmax;
+		bottom: calc(-1 * var(--band-reach));
+		background: var(--band-fill, transparent);
+	}
+}
+
 .page-header {
 	/* The lockup stacks: the spans carry the voices (loud name, stamp-voice
 	   caps role), this is just the geometry. */

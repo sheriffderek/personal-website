@@ -173,6 +173,12 @@ button.trigger[data-to-top] {
 			max-width: var(--layout-wall-lane);
 		}
 
+		/* The band's reach below its content: half the wall's 4rem top
+		   margin here (see .page-top in page-header.css). */
+		.page-top {
+			--band-reach: 2rem;
+		}
+
 		/* --- The wall itself. Cells keep the full card at column width. ---
 
 		   Cards vary a lot in height (media vs text-only), and the wall must
@@ -293,17 +299,28 @@ button.trigger[data-to-top] {
 		   work starts. */
 		main {
 			display: grid;
+			grid-template-columns: minmax(0, 1fr);
+			grid-template-areas:
+				"top"
+				"wall";
+			row-gap: 6rem;
+			align-items: start;
+		}
+
+		/* The top composition's own two columns (the .page-top box,
+		   home.php - one box so a theme can paint the top's ground). */
+		.page-top {
+			--band-reach: 3rem; /* half main's 6rem row-gap */
+			grid-area: top;
+			display: grid;
 			/* 3:2 when there's room - but the band never narrower than its
 			   own controls (Derek, 2026-10-02): at the low end of this range
 			   a flat 2fr was thinner than the toggles, which spilled into
 			   the tray's lane under the menu button. The intro gives up the
 			   difference. */
 			grid-template-columns: minmax(0, 3fr) minmax(min-content, 2fr);
-			grid-template-areas:
-				"intro settings"
-				"wall  wall";
+			grid-template-areas: "intro settings";
 			column-gap: var(--layout-wall-gap);
-			row-gap: 6rem;
 			align-items: start;
 		}
 
