@@ -9,7 +9,7 @@ $brief = [
 <text-content class='styled'>
 	<h1 class='loud-voice'>How I work</h1>
 
-	<p>There’s no official formula that works for every situation (sorry;). However, I think there’s a general mindset and some common phases (that may repeat) that I can outline so that you see how I work and what you can expect from me.</p>
+	<p>There’s no official formula that works for every situation (sorry;). It all depends on scope: are we auditing a feature, adding a new feature, building a microsite, a new arm of the company, or founding a brand new company? But there is a general mindset and some common phases (that may repeat). I’ll show examples from a cross-section of work so you can see the what and why.</p>
 
 	<?php /* The process, as Derek sketched it in his notebook. */ ?>
 	<figure class='page-figure'>
