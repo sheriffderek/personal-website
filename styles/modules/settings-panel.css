@@ -1330,17 +1330,27 @@ button.trigger {
    the same width in every group, so columns line up down the panel
    (2026-09-25) - uneven pills read as separate buttons, even ones as one
    control. That also gives a family the boxes to draw them joined
-   (a segmented control) or apart, without anything resizing. */
+   (a segmented control) or apart, without anything resizing.
+   SQUISHY (Derek, 2026-10-03: "everything should be squishy"):
+   --app-pill-width is the most a column takes, never a floor. Where the
+   room runs short - the panel in the 1024 list sidebar is 234px inside,
+   three options want 241 - the columns shrink together, still equal, and
+   the group never pushes past its row (that 7px was a sideways scrollbar
+   on the panel). Labels stay on one line and eat into their own padding
+   first. */
 .mode-button-group {
 	display: inline-grid;
 	grid-auto-flow: column;
-	grid-auto-columns: var(--app-pill-width);
+	grid-auto-columns: minmax(0, var(--app-pill-width));
+	max-width: 100%;
 	gap: 0.4rem;
 	background: var(--app-pill-group-fill);
 	border-radius: var(--app-pill-group-radius);
 
 	button {
 		justify-content: center;
+		min-width: 0;
+		white-space: nowrap;
 	}
 }
 
